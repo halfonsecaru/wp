@@ -1,0 +1,78 @@
+.sidenav-menu-nav {
+  width: 100%;
+  overflow: visible;
+}
+.sidenav-menu-nav ul {
+  margin: 0;
+  padding: 0;
+}
+
+.sidenav-menu-nav li {
+  margin-bottom: 2px; /* menos separación entre items */
+}
+
+.sidenav-menu-item {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  transition:
+    color 0.3s,
+    background 0.3s,
+    filter 0.3s,
+    opacity 1s cubic-bezier(0.4, 0, 0.2, 1),
+    width 0.3s,
+    margin 0.3s;
+    width: 100%;
+  &:hover {
+    color: #000 !important;
+    background: #00000014 !important;
+  }
+  span {
+    transition: color 0.3s;
+  }
+}
+.sidenav-submenu {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.sidenav-submenu li {
+  width: 100%;
+}
+
+.sidenav-submenu .sidenav-menu-item {
+  width: 100%;
+  padding-left: 15px;
+ // padding-left: 1.5rem; /* opcional: para mantener indentación visual */
+}
+.sidenav-menu-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5em;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 1;
+  color: inherit;
+  transition: color 0.3s;
+}
+
+.submenu-expand {
+  max-height: 500px;
+  opacity: 1;
+  pointer-events: auto;
+  transition:
+    max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.5s;
+  overflow: hidden;
+}
+
+.submenu-collapse {
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.5s;
+  overflow: hidden;
+}

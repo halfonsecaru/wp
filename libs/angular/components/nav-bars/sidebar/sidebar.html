@@ -1,0 +1,40 @@
+@if (isMobile) {
+<aside
+  class="sidebar-animated fixed inset-0 bg-white border-r border-gray-200 overflow-y-auto animate__animated sidebar-mobile-full"
+  [style.min-width.%]="minWidthPercent"
+  [style.width.%]="minWidthPercent"
+  [style.max-width.%]="minWidthPercent"
+>
+  <div class="h-full pt-8">
+    <app-sidenav-menu
+      [menuSignal]="menuSignal"
+      [menuClickFn]="menuClickFn"
+      [visible]="visible"
+    ></app-sidenav-menu>
+  </div>
+</aside>
+} @else {
+<aside
+  class="sidebar-animated h-full bg-white border-r border-gray-200 overflow-y-auto animate__animated"
+  [class.sidebar-expanded]="isExpanded()"
+  [class.sidebar-collapsed]="!isExpanded()"
+  [class.animate__slideInLeft]="isExpanded()"
+  [class.animate__slideOutLeft]="!isExpanded()"
+  (mouseenter)="restoreSubmenusSidebar()"
+  (mouseleave)="closeAllSubmenusSidebar()"
+  [style.min-width.%]="minWidthPercent"
+  [style.width.%]="minWidthPercent"
+  [style.max-width.%]="minWidthPercent"
+>
+  <div class="h-full">
+    @if (showMenu) {
+    <app-sidenav-menu
+      [menuSignal]="menuSignal"
+      [menuClickFn]="menuClickFn"
+      [visible]="visible"
+      #sidenavMenu
+    ></app-sidenav-menu>
+    }
+  </div>
+</aside>
+}

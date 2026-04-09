@@ -1,0 +1,42 @@
+<nav class="sidenav-menu-nav">
+  <ul>
+    @for (item of menuWithIds(); track item.id) {
+    <li>
+      <div
+        class="sidenav-menu-item flex items-center space-x-3 cursor-pointer transition-colors p-[5px] border border-transparent group"
+        [class.has-link]="isLink(item)"
+        (click)="item.subMenu ? toggleSubmenu(item) : (isLink(item) && menuClickFn(item))"
+        [class.fadein]="visible"
+        [class.fadeout]="!visible"
+      >
+        @if (item.unicode?.value) {
+        <span
+          class="sidenav-menu-icon whitespace-nowrap"
+          [ngStyle]="{ 'font-size': item.unicode?.fontSize }"
+        >
+          {{ item.unicode.value }}
+        </span>
+        }
+        <span
+          class="font-medium text-main-text group-hover:text-main-text-hover transition-colors whitespace-nowrap"
+        >
+          {{ item.text }}
+        </span>
+      </div>
+      @if (item.subMenu && item.subMenu.length > 0) {
+      <ul
+        class="sidenav-submenu ml-4"
+        [class.submenu-expand]="openSubmenuId() === item.id"
+        [class.submenu-collapse]="openSubmenuId() !== item.id"
+      >
+        <app-sidenav-menu
+          [menuSignal]="subMenuSignal(item)"
+          [menuClickFn]="menuClickFn"
+          [visible]="visible"
+        ></app-sidenav-menu>
+      </ul>
+      }
+    </li>
+    }
+  </ul>
+</nav>

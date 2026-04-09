@@ -1,0 +1,38 @@
+// Variables de colores principales (inspirados en Shein y el diseño actual)
+$color-bg: #ffffff;
+$color-text: #222;
+$color-text-hover: #000;
+$color-border: #e5e7eb;
+$color-hover-bg: #00000014;
+
+// Utilidades globales
+:root {
+  --color-bg: #f9fafb;
+  --color-text: #222;
+  --color-text-hover: #000;
+  --color-border: #e5e7eb;
+  --color-hover-bg: #00000014;
+}
+
+// Ejemplo de uso global
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+// Clases utilitarias
+.main-text {
+  color: var(--color-text) !important;
+}
+.main-text-hover {
+  color: var(--color-text-hover) !important;
+}
+
+// Fondo hover para menús
+.menu-hover-bg {
+  background: var(--color-hover-bg) !important;
+}
+
+.main-bg {
+  background: var(--color-bg) !important;
+}

@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "ms-vscode.extension-test-runner",
+    "nrwl.angular-console",
+    "angular.ng-template"
+  ]
+}

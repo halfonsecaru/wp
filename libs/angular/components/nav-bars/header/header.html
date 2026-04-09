@@ -1,0 +1,19 @@
+
+<!-- Vars definitions -->
+@let title = titleSignal();
+<!--  -->
+
+<header
+  class="bg-white shadow-sm border-b border-gray-200 h-header flex items-center px-6 z-50 relative"
+  style="height: 50px; background: #ffffff"
+>
+  <img style="max-height: 45px;" src="assets/img/logos/milenium.png" alt="Logo">
+  @if(title){
+    <h1
+      class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl font-bold text-gray-800 tracking-wide select-none"
+    >
+      {{ title }}
+    </h1>
+  }
+
+</header>

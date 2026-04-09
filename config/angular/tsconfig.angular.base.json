@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "outDir": "../../dist/angular",
+    "moduleResolution": "node",
+    "target": "es2020",
+    "declaration": true,
+    "sourceMap": true
+  }
+}
+    

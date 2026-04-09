@@ -1,0 +1,127 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "projects": {
+    "web": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "apps/front/web",
+      "sourceRoot": "apps/front/web/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "apps/front/web/src/main.ts",
+            "tsConfig": "apps/front/web/tsconfig.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "apps/front/web/public",
+                "output": "/"
+              },
+              {
+                "glob": "**/*",
+                "input": "libs/shared/img",
+                "output": "assets/img"
+              },
+              {
+                "glob": "**/*.svg",
+                "input": "libs/angular/icons/svg",
+                "output": "assets/icons"
+              },
+              {
+                "glob": "**/*",
+                "input": "libs/angular/i18n",
+                "output": "/libs/angular/i18n/"
+              }
+            ],
+            "styles": [
+              "apps/front/web/src/styles.css",
+              "apps/front/web/src/styles.scss"
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": ["libs/angular/styles"]
+            }
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "libs/angular/environments/environment.ts",
+                  "with": "libs/angular/environments/environment.prod.ts"
+                }
+              ],
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "fileReplacements": [
+                {
+                  "replace": "libs/angular/environments/environment.ts",
+                  "with": "libs/angular/environments/environment.dev.ts"
+                }
+              ],
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "web:build:production"
+            },
+            "development": {
+              "buildTarget": "web:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular/build:extract-i18n"
+        },
+        "test": {
+          "builder": "@angular/build:karma",
+          "options": {
+            "tsConfig": "apps/front/web/tsconfig.spec.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "apps/front/web/public",
+                "output": "/"
+              }
+            ],
+            "styles": ["apps/front/web/src/styles.scss"],
+            "stylePreprocessorOptions": {
+              "includePaths": ["libs/angular/styles"]
+            }
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "analytics": false
+  }
+}

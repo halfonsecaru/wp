@@ -1,0 +1,23 @@
+{
+  "extends": "../../config/libs/tsconfig.libs.base.json",
+  "compilerOptions": {
+    "outDir": "../../dist/libs/nestjs",
+    "rootDir": "./",
+    "baseUrl": "./",
+    "composite": true,
+    "tsBuildInfoFile": "./.tsbuildinfo",
+    "paths": {
+      "@libs/shared/*": ["../shared/*"]
+    }
+  },
+  "references": [
+    { "path": "../shared" }
+  ],
+  "include": [
+    "**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

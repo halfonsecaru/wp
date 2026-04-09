@@ -1,0 +1,27 @@
+@use '../../../styles/breakpoints.scss' as breakpoints;
+/* Estilos para el header */
+.bg-gradient-to-r {
+  background: none;
+}
+
+.shadow-sm {
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.06);
+}
+
+.border-yellow-300 {
+  border-bottom: 2.5px solid #fde68a;
+}
+
+.drop-shadow-lg {
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.15));
+}
+
+.h-header {
+  height: 50px !important;
+}
+
+@media (max-width: breakpoints.$screen-mobile) {
+  header {
+    max-height: none !important;
+  }
+}

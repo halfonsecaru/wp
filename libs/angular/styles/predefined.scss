@@ -1,0 +1,46 @@
+@use './breakpoints' as breakpoints;
+
+.crystal-bg {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(16px) saturate(180%) contrast(110%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%) contrast(110%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.08);
+}
+
+.hide-on-mobile {
+  @media (max-width: breakpoints.$screen-mobile) {
+    display: none !important;
+  }
+}
+
+.show-on-mobile {
+  display: none;
+  @media (max-width: breakpoints.$screen-mobile) {
+    display: flex !important;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.menu-fab {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1100;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  font-size: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

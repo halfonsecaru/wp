@@ -1,0 +1,43 @@
+// ============================================
+// ALF-SPINNER - Componente de carga reutilizable
+// ============================================
+
+:host {
+  // Posicionamiento absoluto centrado automático
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  // Tamaño adaptativo (60% de la altura del padre)
+  height: 60%;
+  aspect-ratio: 1; // Mantener proporción cuadrada
+
+  // Flex para centrar el SVG interno
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.alf-spinner-icon {
+  // El SVG ocupa el 100% del host
+  width: 100%;
+  height: 100%;
+  animation: spin 1s linear infinite;
+  // Añadir brillo sutil para que destaque más
+  filter: brightness(1.1) drop-shadow(0 0 1px currentColor);
+}
+
+.alf-spinner-circle {
+  stroke: currentColor;
+  // stroke-width se controla via input o atributo SVG por defecto.
+  // stroke-dasharray para que se vea la rotación (arco parcial ~75%)
+  stroke-dasharray: 45 200;
+  stroke-linecap: round;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}

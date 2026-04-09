@@ -1,0 +1,1 @@
+export { customEnv } from '../common/global';
