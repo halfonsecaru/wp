@@ -1,0 +1,52 @@
+<!-- Template del botón con contenido reutilizable -->
+@let cfg = effectiveConfig();
+@let linkData = cfg.link;
+@let isLink = !!linkData;
+@let linkUrl = linkData?.url;
+@let linkTarget = linkData?.target ?? '_self';
+
+@let isLoading = typeof cfg.loading === 'function' ? cfg.loading() : (cfg.loading ?? false);
+@let cfgDisabled = typeof cfg.disabled === 'function' ? cfg.disabled() : (cfg.disabled ?? false);
+@let isDisabled = isLoading || cfgDisabled;
+
+@let hasRipple = cfg.ripple ?? true;
+@let buttonLabel = cfg.label;
+@let variantClass = cfg.variant || '';
+@let sizeClass = cfg.size || '';
+
+@let prefixIcon = cfg.prefix;
+@let suffixIcon = cfg.suffix;
+@let customClass = cfg.customClass || '';
+@let animClass = animationClass();
+@let styles = styleString();
+
+@if (isLink) {
+<!-- Renderizar como enlace -->
+<a alfRipple class="alf-btn" [class]="variantClass + ' ' + sizeClass + ' ' + customClass + ' ' + animClass"
+  [class.loading]="isLoading" [enabled]="hasRipple && !isDisabled" [href]="linkUrl" [target]="linkTarget"
+  [attr.role]="cfg.role || null" [attr.aria-expanded]="cfg.ariaExpanded || null"
+  [attr.aria-controls]="cfg.ariaControls || null" [attr.aria-haspopup]="cfg.ariaHasPopup || null"
+  [attr.aria-describedby]="cfg.ariaDescribedBy || null" [attr.style]="styles"
+  [attr.aria-label]="cfg.ariaLabel || buttonLabel" [attr.aria-disabled]="isDisabled ? 'true' : null"
+  [AlfTooltipText]="cfg.tooltip || ''" (click)="handleClick($event)">
+
+  <alf-button-content [isLoading]="isLoading" [prefixIcon]="prefixIcon" [label]="buttonLabel" [suffixIcon]="suffixIcon">
+    <ng-content></ng-content>
+  </alf-button-content>
+</a>
+
+} @else {
+<!-- Renderizar como botón -->
+<button alfRipple class="alf-btn" [class]="variantClass + ' ' + sizeClass + ' ' + customClass + ' ' + animClass"
+  [class.loading]="isLoading" [enabled]="hasRipple && !isDisabled" [type]="cfg.type || 'button'" [disabled]="isDisabled"
+  [attr.role]="cfg.role || null" [attr.aria-expanded]="cfg.ariaExpanded || null"
+  [attr.aria-controls]="cfg.ariaControls || null" [attr.aria-haspopup]="cfg.ariaHasPopup || null"
+  [attr.aria-describedby]="cfg.ariaDescribedBy || null" [attr.style]="styles"
+  [attr.aria-label]="cfg.ariaLabel || buttonLabel" [attr.aria-busy]="isLoading ? 'true' : null"
+  [AlfTooltipText]="cfg.tooltip || ''" (click)="handleClick($event)">
+
+  <alf-button-content [isLoading]="isLoading" [prefixIcon]="prefixIcon" [label]="buttonLabel" [suffixIcon]="suffixIcon">
+    <ng-content></ng-content>
+  </alf-button-content>
+</button>
+}

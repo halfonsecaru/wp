@@ -8,6 +8,7 @@ export * from './enums';
 export * from './interfaces';
 export * from './predefined';
 export * from './directives';
+export * from './components';
 
 // Simple UI Components
 // export * from './ui/simple/button/button.component';

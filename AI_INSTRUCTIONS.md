@@ -1,5 +1,9 @@
 # 🚀 ALFONIZER ECOSYSTEM - AI MASTER INSTRUCTIONS
 
+> [!IMPORTANT]
+> **REGLA CARDINAL: NO REALIZAR NINGUNA ACCIÓN SIN QUE EL USUARIO LO ORDENE EXPLÍCITAMENTE.**
+> Se debe esperar siempre la instrucción directa antes de modificar archivos, crear nuevos componentes o realizar investigaciones profundas.
+
 Este documento contiene la verdad única del proyecto Alfonizer.
 
 > **🔥 PASO 1**: Lee **`RULES.md`** — Estándares de código obligatorios.  
@@ -45,16 +49,16 @@ Usa estos comandos para gestionar el proyecto desde la raíz:
 ## 🤖 Contexto para la Inteligencia Artificial
 Para cualquier tarea en este repositorio, la IA debe seguir estas pautas:
 1. **Consistencia Visual**: Antes de proponer un estilo, buscar el enum equivalente en `alfcomponents/enums`.
-2. **Modularidad**: La lógica debe residir preferiblemente en las librerías (`libs/`) para ser reutilizable.
-3. **Seguridad de Tipos**: Utilizar las interfaces de `libs/shared/interfaces` para cualquier definición de datos.
-4. **Seguridad de Dependencias**: Respetar los `overrides` del `package.json` (especialmente las versiones parcheadas de Axios y Vite).
-5. **i18n Nativo**: Utilizar el sistema de internacionalización de `libs/shared/helpers/i18n.helper.ts` para cualquier label en componentes.
-6. **Autonomía (Self-Contained)**: Priorizar **Web Animations API (WAAPI)** en el TypeScript para efectos dinámicos e interactivos.
-7. **Rigor Técnico Obligatorio**: 
+2. **Diseño Programático (Zero SCSS First)**: Priorizar el uso de TypeScript y Enums para definir estilos dinámicos (colores, sombras, radios). El SCSS solo se usa para variables base o layouts globales de Tailwind.
+3. **Modularidad**: La lógica debe residir preferiblemente en las librerías (`libs/`) para ser reutilizable.
+4. **Seguridad de Tipos**: Utilizar las interfaces de `libs/shared/interfaces` para cualquier definición de datos. Evitar `any` y preferir genéricos `<T>`.
+5. **Autonomía (Self-Contained)**: Obligatorio usar **Web Animations API (WAAPI)** en el TypeScript para efectos dinámicos (entrada/salida, hover, focos).
+6. **Rigor Técnico Obligatorio**: 
    - SIEMPRE usar modificadores de acceso (`public`, `private`, `protected`).
-   - SIEMPRE usar `readonly` para signals e inyecciones.
-   - SIEMPRE usar **Arrow Functions** para lógica de clase.
-   - NUNCA anidar funciones (callbacks/handlers) dentro de otras. Extraer a métodos de clase.
+   - SIEMPRE usar `readonly` para servicios e inyecciones.
+   - SIEMPRE usar **Arrow Functions** para lógica de clase para evitar problemas de contexto `this`.
+   - **Bridge Pattern**: Para inputs reactivos, usar la combinación `@Input() setter` + `private signal` para garantizar compatibilidad con Vitest y compilación JIT.
+
 
 ---
 

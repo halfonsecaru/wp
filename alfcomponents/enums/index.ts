@@ -63,3 +63,4 @@ export * from './alf-font-style.enum';
 export * from './alf-text-overflow.enum';
 export * from './alf-text-shadow.enum';
 export * from './alf-opacity.enum';
+export * from './alf-theme.enum';

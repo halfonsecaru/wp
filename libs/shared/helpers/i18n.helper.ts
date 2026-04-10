@@ -20,29 +20,41 @@ export const SUPPORTED_LANGUAGES: Record<SupportedLanguage, string> = {
 };
 
 /**
- * Detecta el idioma del navegador y devuelve el código de idioma soportado
- * @returns Código de idioma ('es', 'en', 'fr', etc.) o 'es' por defecto
+ * Detecta el idioma del usuario basándose en las preferencias del navegador.
+ * Versión Élite: Soporta navigator.languages para detectar la lista de preferencias del usuario.
+ * 
+ * @example
+ * ```typescript
+ * const lang = detectBrowserLanguage(); // 'es' | 'en' | ...
+ * ```
+ * @returns Código de idioma soportado o 'es' por defecto.
  */
 export const detectBrowserLanguage = (): SupportedLanguage => {
   if (typeof navigator === 'undefined') {
-    return 'es'; // Default para SSR
+    return 'es'; // Fallback para SSR
   }
 
-  const lang = navigator.language?.toLowerCase() || 'es';
+  // Obtenemos la lista de idiomas preferidos del usuario
+  const languages = navigator.languages || [navigator.language];
+  
+  for (const lang of languages) {
+    const normalizedLang = lang.toLowerCase();
+    
+    // 1. Intentar match exacto (ej: 'es-es')
+    if (normalizedLang in SUPPORTED_LANGUAGES) {
+      return normalizedLang as SupportedLanguage;
+    }
 
-  // Intentar match exacto (ej: 'es-ES')
-  if (lang in SUPPORTED_LANGUAGES) {
-    return lang as SupportedLanguage;
+    // 2. Intentar match por código base (ej: 'es' de 'es-MX')
+    const langCode = normalizedLang.split('-')[0] as SupportedLanguage;
+    if (langCode in SUPPORTED_LANGUAGES) {
+      return langCode;
+    }
   }
 
-  // Intentar match por código de idioma (ej: 'es' de 'es-MX')
-  const langCode = lang.split('-')[0];
-  if (langCode in SUPPORTED_LANGUAGES) {
-    return langCode as SupportedLanguage;
-  }
-
-  return 'es'; // Default español
+  return 'es'; // Default absoluto
 };
+
 
 /**
  * Crea un mapa de idiomas a partir de las traducciones

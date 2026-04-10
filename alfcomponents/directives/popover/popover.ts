@@ -1,7 +1,6 @@
 import {
   Directive,
   ElementRef,
-  input,
   Renderer2,
   OnDestroy,
   TemplateRef,
@@ -18,6 +17,9 @@ import {
 } from '@angular/core';
 import { AlfPositionEnum } from '../../enums/alf-position.enum';
 import { AlfColorEnum } from '../../enums/alf-color.enum';
+import { AlfShadowEnum } from '../../enums/alf-shadow.enum';
+import { AlfZIndexEnum } from '../../enums/alf-z-index.enum';
+import { AlfRadiusEnum } from '../../enums/alf-radius.enum';
 
 export interface AlfPopoverConfig {
   text?: string;
@@ -76,6 +78,11 @@ export class AlfPopover implements OnDestroy {
   private readonly defaultDelay = 300;
   private readonly defaultMaxWidth = '500px';
   private readonly uniqueId = `alf-popover-${Math.random().toString(36).substring(2, 9)}`;
+
+  // Default Colors and Styles
+  private readonly defaultBgColor = AlfColorEnum.White;
+  private readonly defaultTextColor = AlfColorEnum.Gray800;
+  private readonly defaultBorderColor = AlfColorEnum.Gray200;
 
   constructor() { }
 
@@ -161,10 +168,10 @@ export class AlfPopover implements OnDestroy {
       const textContainer = this.renderer.createElement('div');
       
       this.renderer.setStyle(textContainer, 'padding', '12px 16px');
-      this.renderer.setStyle(textContainer, 'background-color', config.backgroundColor ?? 'white');
-      this.renderer.setStyle(textContainer, 'color', config.color ?? '#1e293b');
-      this.renderer.setStyle(textContainer, 'border-radius', '8px');
-      this.renderer.setStyle(textContainer, 'border', '1px solid #e2e8f0');
+      this.renderer.setStyle(textContainer, 'background-color', config.backgroundColor ?? this.defaultBgColor);
+      this.renderer.setStyle(textContainer, 'color', config.color ?? this.defaultTextColor);
+      this.renderer.setStyle(textContainer, 'border-radius', AlfRadiusEnum.Lg);
+      this.renderer.setStyle(textContainer, 'border', `1px solid ${this.defaultBorderColor}`);
       this.renderer.setStyle(textContainer, 'white-space', 'pre-wrap');
       
       this.renderer.appendChild(textContainer, textNode);
@@ -304,11 +311,11 @@ export class AlfPopover implements OnDestroy {
     const styles: Record<string, string> = {
       'position': 'absolute',
       'padding': '0',
-      'border-radius': '8px',
-      'z-index': '10000',
+      'border-radius': AlfRadiusEnum.Lg,
+      'z-index': AlfZIndexEnum.Max,
       'opacity': '0',
       'pointer-events': 'none',
-      'box-shadow': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+      'box-shadow': AlfShadowEnum.Lg,
       'max-width': maxWidth,
       'max-height': '80vh',
       'overflow': 'auto',

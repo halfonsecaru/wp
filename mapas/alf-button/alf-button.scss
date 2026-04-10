@@ -1,0 +1,436 @@
+@use '../../../shared/styles/variables' as vars;
+@use '../../../shared/styles/colors' as colors;
+@use '../../../shared/styles/component-states' as states;
+@use '../../../shared/styles/transforms';
+@use '../../../shared/styles/mixins';
+@use '../../../shared/styles/animations';
+
+// ============================================
+// ALF-BUTTON - Estilos básicos del componente
+// ============================================
+
+:host {
+  display: inline-flex;
+  box-sizing: border-box;
+
+
+}
+
+.alf-btn {
+  // ============================================
+  // CSS VARIABLES - Default fallback values
+  --alf-btn-padding: 0.75rem 1.5rem;
+  --alf-btn-padding-top: 0.75rem;
+  --alf-btn-padding-right: 1.5rem;
+  --alf-btn-padding-bottom: 0.75rem;
+  --alf-btn-padding-left: 1.5rem;
+  --alf-btn-shadow: none;
+  --alf-btn-shadow-hover: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
+  // Default border values (for consistency with modified variants)
+  --alf-btn-border-width-default: 1px;
+  --alf-btn-border-style-default: solid;
+  --alf-btn-border-color-default: transparent;
+
+  // ============================================
+  // BASE BUTTON STYLES
+  // ============================================
+  // El botón necesita un contexto de posicionamiento para el ripple.
+  // Usamos sticky porque es similar a relative pero hay menos conflictos de z-index
+  // con otros componentes superpuestos en ciertos casos.
+  // El botón necesita un contexto de posicionamiento para el ripple.
+  // Usamos sticky porque es similar a relative pero hay menos conflictos de z-index
+  // con otros componentes superpuestos en ciertos casos.
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: var(--alf-btn-padding, 0.75rem 1.5rem);
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  // overflow: hidden; // Comentado para permitir que box-shadow sea visible (el ripple debe manejar su propio clipping si es necesario)
+  width: 100%;
+  transition: all 0.2s ease-in-out;
+  border: none; // Resetear border por defecto, los mixins lo manejan
+
+  // Crear stacking context para el ripple sin usar position: relative
+  // (position: relative causaria problemas de z-index con componentes superpuestos)
+  isolation: isolate;
+
+  // Aplicar TODOS los estados del componente usando el mixin maestro
+  // Esto incluye: colors, shadows, spacing, borders (default, hover, focus, active)
+  @include states.component-all-states('alf-btn');
+
+  // Ensure no ugly border on click/focus
+  &:focus,
+  &:active {
+    outline: none;
+  }
+
+  // Focus ring visible para accesibilidad de teclado (Tab navigation)
+  &:focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 2px rgba(255, 255, 255, 0.8),
+      0 0 0 4px rgba(59, 130, 246, 0.6); // Anillo azul visible
+  }
+
+  @include transforms.apply-transforms('alf-btn');
+
+  // Disabled state
+  // Disabled state
+  &:disabled,
+  &[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+// ============================================
+// ESTADO DE CARGA
+// ============================================
+.alf-btn.loading {
+  cursor: wait !important;
+
+  .alf-btn-text {
+    // Reducir opacidad del texto para que se vea el spinner superpuesto
+    opacity: 0.3;
+  }
+}
+
+// ============================================
+// TEXTO DEL BOTÓN y CONTENIDO
+// ============================================
+// Selector para el Ripple generado dinámicamente dentro del inner
+.alf-ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  animation: alf-ripple 0.6s linear;
+  pointer-events: none;
+  background-color: rgba(255, 255, 255, 0.4); // Default ripple color
+  z-index: -1; // Detrás del texto, pero dentro del inner
+}
+
+.alf-btn-text,
+.alf-btn-icon,
+alf-spinner {
+  // Asegurar position relative para que z-index: -1 del ripple funcione relativo a esto?
+  // No, ambos están en el inner. El texto es static/relative (auto). El ripple es -1.
+  // El ripple queda detrás.
+  position: inherit;
+  // z-index removed to keep it at level 0
+}
+
+.alf-btn-text {
+  transition: opacity 0.2s ease-in-out;
+  text-shadow: inherit;
+}
+
+// ============================================
+// VARIANTES SÓLIDAS
+// ============================================
+.alf-btn.primary {
+  @include mixins.variant-solid(vars.$color-primary, #ffffff, 'alf-btn');
+}
+
+.alf-btn.secondary {
+  @include mixins.variant-solid(vars.$color-secondary-start, #ffffff, 'alf-btn');
+}
+
+.alf-btn.success {
+  @include mixins.variant-solid(vars.$color-success-start, #ffffff, 'alf-btn');
+}
+
+.alf-btn.danger {
+  @include mixins.variant-solid(vars.$color-danger, #ffffff, 'alf-btn');
+}
+
+.alf-btn.warning {
+  @include mixins.variant-solid(vars.$color-warning-start, #ffffff, 'alf-btn');
+}
+
+.alf-btn.info {
+  @include mixins.variant-solid(vars.$color-info-start, #ffffff, 'alf-btn');
+}
+
+.alf-btn.light {
+  @include mixins.variant-solid(vars.$color-light-start, vars.$color-light-text, 'alf-btn');
+}
+
+.alf-btn.dark {
+  @include mixins.variant-solid(vars.$color-dark-start, #ffffff, 'alf-btn');
+}
+
+// ============================================
+// VARIANTES OUTLINE
+// ============================================
+.alf-btn.outline-primary {
+  @include mixins.variant-outlined(vars.$color-primary, vars.$color-primary, 'alf-btn');
+}
+
+.alf-btn.outline-secondary {
+  @include mixins.variant-outlined(vars.$color-secondary-start, vars.$color-secondary-start, 'alf-btn');
+}
+
+.alf-btn.outline-success {
+  @include mixins.variant-outlined(vars.$color-success-start, vars.$color-success-start, 'alf-btn');
+}
+
+.alf-btn.outline-danger {
+  @include mixins.variant-outlined(vars.$color-danger, vars.$color-danger, 'alf-btn');
+}
+
+.alf-btn.outline-warning {
+  @include mixins.variant-outlined(vars.$color-warning-start, vars.$color-warning-start, 'alf-btn');
+}
+
+.alf-btn.outline-info {
+  @include mixins.variant-outlined(vars.$color-info-start, vars.$color-info-start, 'alf-btn');
+}
+
+.alf-btn.outline-light {
+  @include mixins.variant-outlined(vars.$color-light-start, vars.$color-light-text, 'alf-btn');
+}
+
+.alf-btn.outline-dark {
+  @include mixins.variant-outlined(vars.$color-dark-start, vars.$color-dark-start, 'alf-btn');
+}
+
+// ============================================
+// VARIANTES GHOST
+// ============================================
+.alf-btn.ghost-primary {
+  @include mixins.variant-ghost(vars.$color-primary);
+}
+
+.alf-btn.ghost-secondary {
+  @include mixins.variant-ghost(vars.$color-secondary-start);
+}
+
+.alf-btn.ghost-success {
+  @include mixins.variant-ghost(vars.$color-success-start);
+}
+
+.alf-btn.ghost-danger {
+  @include mixins.variant-ghost(vars.$color-danger);
+}
+
+.alf-btn.ghost-warning {
+  @include mixins.variant-ghost(vars.$color-warning-start);
+}
+
+.alf-btn.ghost-info {
+  @include mixins.variant-ghost(vars.$color-info-start);
+}
+
+.alf-btn.ghost-light {
+  @include mixins.variant-ghost(vars.$color-light-text);
+}
+
+.alf-btn.ghost-dark {
+  @include mixins.variant-ghost(vars.$color-dark-start);
+}
+
+// ============================================
+// VARIANTES SOFT
+// ============================================
+.alf-btn.soft-primary {
+  @include mixins.variant-soft(vars.$color-primary);
+}
+
+.alf-btn.soft-secondary {
+  @include mixins.variant-soft(vars.$color-secondary-start);
+}
+
+.alf-btn.soft-success {
+  @include mixins.variant-soft(vars.$color-success-start);
+}
+
+.alf-btn.soft-danger {
+  @include mixins.variant-soft(vars.$color-danger);
+}
+
+.alf-btn.soft-warning {
+  @include mixins.variant-soft(vars.$color-warning-start);
+}
+
+.alf-btn.soft-info {
+  @include mixins.variant-soft(vars.$color-info-start);
+}
+
+.alf-btn.soft-light {
+  @include mixins.variant-soft(vars.$color-light-text);
+}
+
+.alf-btn.soft-dark {
+  @include mixins.variant-soft(vars.$color-dark-start);
+}
+
+// ============================================
+// VARIANTES CRYSTAL
+// ============================================
+.alf-btn.crystal-primary {
+  @include mixins.variant-crystal(vars.$color-primary);
+}
+
+.alf-btn.crystal-secondary {
+  @include mixins.variant-crystal(vars.$color-secondary-start);
+}
+
+.alf-btn.crystal-success {
+  @include mixins.variant-crystal(vars.$color-success-start);
+}
+
+.alf-btn.crystal-danger {
+  @include mixins.variant-crystal(vars.$color-danger);
+}
+
+.alf-btn.crystal-warning {
+  @include mixins.variant-crystal(vars.$color-warning-start);
+}
+
+.alf-btn.crystal-info {
+  @include mixins.variant-crystal(vars.$color-info-start);
+}
+
+.alf-btn.crystal-light {
+  @include mixins.variant-crystal(vars.$color-light-text);
+}
+
+.alf-btn.crystal-dark {
+  @include mixins.variant-crystal(vars.$color-dark-start);
+}
+
+// ============================================
+// VARIANTES GRADIENT PREMIUM
+// ============================================
+.alf-btn.gradient-purple {
+  @include mixins.variant-gradient-premium(vars.$gradient-purple, vars.$color-gradient-purple-start);
+}
+
+.alf-btn.gradient-sunset {
+  @include mixins.variant-gradient-premium(vars.$gradient-sunset, vars.$color-gradient-sunset-end);
+}
+
+.alf-btn.gradient-ocean {
+  @include mixins.variant-gradient-premium(vars.$gradient-ocean, vars.$color-gradient-ocean-start);
+}
+
+.alf-btn.gradient-forest {
+  @include mixins.variant-gradient-premium(vars.$gradient-forest, vars.$color-gradient-forest-start);
+}
+
+.alf-btn.gradient-primary {
+  @include mixins.variant-gradient-premium(vars.$gradient-primary, vars.$color-primary);
+}
+
+.alf-btn.gradient-danger {
+  @include mixins.variant-gradient-premium(vars.$gradient-danger, vars.$color-danger);
+}
+
+.alf-btn.gradient-success {
+  @include mixins.variant-gradient-premium(vars.$gradient-success, vars.$color-success-start);
+}
+
+.alf-btn.gradient-warning {
+  @include mixins.variant-gradient-premium(vars.$gradient-warning, vars.$color-warning-start);
+}
+
+.alf-btn.gradient-info {
+  @include mixins.variant-gradient-premium(vars.$gradient-info, vars.$color-info-start);
+}
+
+// ============================================
+// VARIANTES 3D
+// ============================================
+.alf-btn.depth-primary {
+  @include mixins.variant-3d(vars.$color-primary);
+}
+
+.alf-btn.depth-secondary {
+  @include mixins.variant-3d(vars.$color-secondary-start);
+}
+
+.alf-btn.depth-success {
+  @include mixins.variant-3d(vars.$color-success-start);
+}
+
+.alf-btn.depth-danger {
+  @include mixins.variant-3d(vars.$color-danger);
+}
+
+.alf-btn.depth-warning {
+  @include mixins.variant-3d(vars.$color-warning-start);
+}
+
+.alf-btn.depth-info {
+  @include mixins.variant-3d(vars.$color-info-start);
+}
+
+.alf-btn.depth-light {
+  @include mixins.variant-3d(vars.$color-light-start, vars.$color-light-text);
+}
+
+.alf-btn.depth-dark {
+  @include mixins.variant-3d(vars.$color-dark-start);
+}
+
+// ============================================
+// TAMAÑOS (SIZE)
+// ============================================
+.alf-btn.xs {
+  font-size: 0.75rem; // 12px
+  padding: 0.375rem 0.75rem; // 6px 12px
+}
+
+.alf-btn.sm {
+  font-size: 0.875rem; // 14px
+  padding: 0.5rem 1rem; // 8px 16px
+}
+
+.alf-btn.base {
+  font-size: 1rem; // 16px
+  padding: 0.625rem 1.25rem; // 10px 20px
+}
+
+.alf-btn.lg {
+  font-size: 1.125rem; // 18px
+  padding: 0.75rem 1.5rem; // 12px 24px
+}
+
+.alf-btn.xl {
+  font-size: 1.25rem; // 20px
+  padding: 0.875rem 1.75rem; // 14px 28px
+}
+
+.alf-btn.\32xl {
+  font-size: 1.5rem; // 24px
+  padding: 1rem 2rem; // 16px 32px
+}
+
+.alf-btn.\33xl {
+  font-size: 1.875rem; // 30px
+  padding: 1.125rem 2.25rem; // 18px 36px
+}
+
+// ============================================
+// ANIMATIONS
+// ============================================
+@keyframes alf-ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}

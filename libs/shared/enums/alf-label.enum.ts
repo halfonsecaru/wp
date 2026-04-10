@@ -3,8 +3,16 @@ import { SupportedLanguage } from '../helpers/i18n.helper';
 /**
  * Teclas para etiquetas globales y reutilizables en toda la aplicación.
  * Siguiendo el estándar del proyecto de usar Enums para todo.
+ * 
+ * @example
+ * ```typescript
+ * // En un componente o servicio
+ * const label = getAlfLabel(AlfLabelEnum.ACCEPT); // 'Aceptar'
+ * ```
  */
 export enum AlfLabelEnum {
+// ... (mantenemos los valores igual)
+
   ACCEPT = 'ACCEPT',
   CANCEL = 'CANCEL',
   SAVE = 'SAVE',
@@ -169,4 +177,5 @@ export const ALF_GLOBAL_TRANSLATIONS: Record<SupportedLanguage, Record<AlfLabelE
     [AlfLabelEnum.CLEAR_SELECTION]: 'Очистить выбор',
     [AlfLabelEnum.SELECT_ALL]: 'Выбрать все',
   },
-};
+} as const;
+

@@ -934,11 +934,12 @@ export function createResponseInterface(baseDir) {
 export interface ResponseInterface {
   statusCode: number;
   message: string;
-  Timestamps: string;
+  timestamps: string;
   path: string;
   error: any;
   data: any;
 }
+
 `.trim();
 
   fs.writeFileSync(path.join(interfacePath, 'response.interface.ts'), interfaceContent);

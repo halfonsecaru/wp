@@ -1,0 +1,300 @@
+// ============================================
+// COLOR VARIANTS - Matching AlfColorVariantEnum
+// ============================================
+
+// Primary colors - Angular Theme
+$color-primary-start: #DD0031;
+$color-primary-end: #C3002F;
+$color-primary: #DD0031;
+$color-primary-rgb: 221, 0, 49;
+
+// Secondary colors
+$color-secondary-start: #6b7280;
+$color-secondary-end: #4b5563;
+$color-secondary-rgb: 107, 114, 128;
+
+// Success colors
+$color-success-start: #10b981;
+$color-success-end: #059669;
+$color-success-rgb: 16, 185, 129;
+
+// Danger colors
+$color-danger-start: #ef4444;
+$color-danger-end: #dc2626;
+$color-danger: #ef4444;
+$color-danger-rgb: 239, 68, 68;
+
+// Warning colors
+$color-warning-start: #f59e0b;
+$color-warning-end: #d97706;
+$color-warning-rgb: 245, 158, 11;
+
+// Info colors
+$color-info-start: #3b82f6;
+$color-info-end: #2563eb;
+$color-info-rgb: 59, 130, 246;
+
+// Light colors
+$color-light-start: #f3f4f6;
+$color-light-end: #e5e7eb;
+$color-light-text: #374151;
+$color-light-rgb: 243, 244, 246;
+
+// Dark colors
+$color-dark-start: #374151;
+$color-dark-end: #1f2937;
+$color-dark-rgb: 55, 65, 81;
+
+// ============================================
+// UI COLORS
+// ============================================
+$color-surface: #ffffff;
+$color-surface-variant: #f5f5f5;
+$color-surface-dark: #1f2937;
+$color-border: #d1d5db;
+$color-border-light: #e5e7eb;
+$color-border-dark: #374151;
+$color-text: #1f2937;
+$color-text-secondary: #6b7280;
+$color-text-light: #374151;
+$color-disabled: #9ca3af;
+$color-disabled-bg: #f3f4f6;
+
+// UI Colors RGB
+$color-text-rgb: 31, 41, 55;
+$color-text-secondary-rgb: 107, 114, 128;
+$color-disabled-rgb: 156, 163, 175;
+$color-border-rgb: 209, 213, 219;
+
+// ============================================
+// GRADIENTS
+// ============================================
+$gradient-primary: linear-gradient(135deg, $color-primary-start 0%, $color-primary-end 100%);
+$gradient-secondary: linear-gradient(135deg, $color-secondary-start 0%, $color-secondary-end 100%);
+$gradient-success: linear-gradient(135deg, $color-success-start 0%, $color-success-end 100%);
+$gradient-danger: linear-gradient(135deg, $color-danger-start 0%, $color-danger-end 100%);
+$gradient-warning: linear-gradient(135deg, $color-warning-start 0%, $color-warning-end 100%);
+$gradient-info: linear-gradient(135deg, $color-info-start 0%, $color-info-end 100%);
+$gradient-light: linear-gradient(135deg, $color-light-start 0%, $color-light-end 100%);
+$gradient-dark: linear-gradient(135deg, $color-dark-start 0%, $color-dark-end 100%);
+
+// Premium gradient colors (purple/violet)
+$color-gradient-purple-start: #667eea;
+$color-gradient-purple-end: #764ba2;
+$gradient-purple: linear-gradient(135deg, $color-gradient-purple-start 0%, $color-gradient-purple-end 100%);
+
+// Sunset gradient (orange/pink)
+$color-gradient-sunset-start: #f093fb;
+$color-gradient-sunset-end: #f5576c;
+$gradient-sunset: linear-gradient(135deg, $color-gradient-sunset-start 0%, $color-gradient-sunset-end 100%);
+
+// Ocean gradient (cyan/blue)
+$color-gradient-ocean-start: #4facfe;
+$color-gradient-ocean-end: #00f2fe;
+$gradient-ocean: linear-gradient(135deg, $color-gradient-ocean-start 0%, $color-gradient-ocean-end 100%);
+
+// Forest gradient (green/teal)
+$color-gradient-forest-start: #11998e;
+$color-gradient-forest-end: #38ef7d;
+$gradient-forest: linear-gradient(135deg, $color-gradient-forest-start 0%, $color-gradient-forest-end 100%);
+
+// ============================================
+// TOOLTIP SPECIFIC COLORS
+// ============================================
+$tooltip-bg-primary: linear-gradient(135deg, $color-primary-start 0%, $color-primary-end 100%);
+$tooltip-bg-secondary: linear-gradient(135deg, $color-secondary-start 0%, $color-secondary-end 100%);
+$tooltip-bg-success: linear-gradient(135deg, $color-success-start 0%, $color-success-end 100%);
+$tooltip-bg-danger: linear-gradient(135deg, $color-danger-start 0%, $color-danger-end 100%);
+$tooltip-bg-warning: linear-gradient(135deg, $color-warning-start 0%, $color-warning-end 100%);
+$tooltip-bg-info: linear-gradient(135deg, $color-info-start 0%, $color-info-end 100%);
+$tooltip-bg-light: linear-gradient(135deg, $color-light-start 0%, $color-light-end 100%);
+$tooltip-bg-dark: linear-gradient(135deg, $color-dark-start 0%, $color-dark-end 100%);
+
+// ============================================
+// TYPOGRAPHY
+// ============================================
+$font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+$font-family-mono: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+
+// Font Sizes
+$font-size-xs: 0.75rem; // 12px
+$font-size-sm: 0.875rem; // 14px
+$font-size-base: 1rem; // 16px
+$font-size-lg: 1.125rem; // 18px
+$font-size-xl: 1.25rem; // 20px
+$font-size-2xl: 1.5rem; // 24px
+$font-size-3xl: 1.875rem; // 30px
+$font-size-4xl: 2.25rem; // 36px
+$font-size-5xl: 3rem; // 48px
+
+// Font Weights
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+$font-weight-extrabold: 800;
+
+// Line Heights
+$line-height-tight: 1.25;
+$line-height-normal: 1.5;
+$line-height-relaxed: 1.75;
+$line-height-loose: 2;
+
+// ============================================
+// SPACING
+// ============================================
+// Alias names (semantic)
+$spacing-xs: 0.25rem; // 4px
+$spacing-sm: 0.5rem; // 8px
+$spacing-md: 1rem; // 16px
+$spacing-lg: 1.5rem; // 24px
+$spacing-xl: 2rem; // 32px
+
+// Numbered scale (utility)
+$spacing-0: 0;
+$spacing-1: 0.25rem; // 4px
+$spacing-2: 0.5rem; // 8px
+$spacing-3: 0.75rem; // 12px
+$spacing-4: 1rem; // 16px
+$spacing-5: 1.25rem; // 20px
+$spacing-6: 1.5rem; // 24px
+$spacing-7: 1.75rem; // 28px
+$spacing-8: 2rem; // 32px
+$spacing-10: 2.5rem; // 40px
+$spacing-12: 3rem; // 48px
+$spacing-16: 4rem; // 64px
+$spacing-20: 5rem; // 80px
+$spacing-24: 6rem; // 96px
+$spacing-32: 8rem; // 128px
+
+// ============================================
+// TRANSITIONS
+// ============================================
+$transition-fast: 0.2s ease;
+$transition-normal: 0.3s ease;
+$transition-slow: 0.5s ease;
+
+// Extended transitions
+$transition-base: 200ms;
+$transition-slower: 500ms;
+
+$transition-ease-in: cubic-bezier(0.4, 0, 1, 1);
+$transition-ease-out: cubic-bezier(0, 0, 0.2, 1);
+$transition-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+// ============================================
+// SHADOWS
+// ============================================
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow-base: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+$shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+$shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+$shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+$shadow-none: none;
+
+// ============================================
+// BORDER RADIUS
+// ============================================
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 12px;
+$border-radius-xl: 16px;
+$border-radius-full: 9999px;
+
+// Extended border radius (utility scale)
+$border-radius-none: 0;
+$border-radius-base: 0.25rem; // 4px
+$border-radius-2xl: 1rem; // 16px
+$border-radius-3xl: 1.5rem; // 24px
+
+// ============================================
+// Z-INDEX
+// ============================================
+$z-tooltip: 1000;
+$z-modal: 1050;
+$z-dropdown: 1000;
+
+// Extended z-index
+$z-index-dropdown: 1000;
+$z-index-sticky: 1020;
+$z-index-fixed: 1030;
+$z-index-modal-backdrop: 1040;
+$z-index-modal: 1050;
+$z-index-popover: 1060;
+$z-index-tooltip: 1070;
+
+// ============================================
+// BREAKPOINTS
+// ============================================
+$breakpoint-xs: 480px;
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+$breakpoint-2xl: 1536px;
+
+// ============================================
+// OPACITY
+// ============================================
+$opacity-0: 0;
+$opacity-5: 0.05;
+$opacity-10: 0.1;
+$opacity-20: 0.2;
+$opacity-25: 0.25;
+$opacity-30: 0.3;
+$opacity-40: 0.4;
+$opacity-50: 0.5;
+$opacity-60: 0.6;
+$opacity-70: 0.7;
+$opacity-80: 0.8;
+$opacity-90: 0.9;
+$opacity-100: 1;
+
+// Opacidades específicas para estados
+$opacity-hover: 0.9;
+$opacity-disabled: 0.6;
+$opacity-overlay: 0.8;
+$opacity-ripple: 0.3;
+
+// ============================================
+// BORDERS
+// ============================================
+$border-width-0: 0;
+$border-width-1: 1px;
+$border-width-2: 2px;
+$border-width-4: 4px;
+$border-width-8: 8px;
+
+// ============================================
+// FILTERS & EFFECTS
+// ============================================
+$filter-brightness-hover: brightness(0.9);
+$filter-brightness-active: brightness(0.85);
+$backdrop-blur-sm: blur(8px);
+$backdrop-blur-md: blur(16px);
+$backdrop-blur-lg: blur(24px);
+$backdrop-saturate: saturate(180%);
+
+// ============================================
+// COMPONENT-SPECIFIC TOKENS
+// ============================================
+
+// Interactive components (Buttons, Chips, Tabs, etc.)
+$interactive-font-weight: 500;
+$interactive-transition: all $transition-base ease-in-out;
+$interactive-hover-shadow: $shadow-lg;
+$interactive-focus-ring-width: 3px;
+$interactive-focus-ring-opacity: 0.5;
+
+// Ripple effect
+$ripple-duration: 600ms;
+$ripple-color: rgba(255, 255, 255, $opacity-ripple);
+
+// Crystal/Glassmorphism effect
+$crystal-bg-base: rgba(255, 255, 255, 0.25);
+$crystal-bg-hover: rgba(255, 255, 255, 0.4);
+$crystal-backdrop-blur: $backdrop-blur-md;
+$crystal-backdrop-saturate: $backdrop-saturate;

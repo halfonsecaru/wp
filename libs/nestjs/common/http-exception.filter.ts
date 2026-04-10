@@ -31,11 +31,12 @@ export class AllExceptionFilter implements ExceptionFilter {
     const response: ResponseInterface = {
       statusCode: (msg as any).statusCode || status,
       message: (msg as any).message || 'Internal server error',
-      Timestamps: new Date().toISOString(),
+      timestamps: new Date().toISOString(),
       error: (msg as any).error || null,
       path: req.url,
       data: null,
     };
+
 
     res.status(status).send(response);
   }

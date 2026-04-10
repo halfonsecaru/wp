@@ -1,4 +1,4 @@
-import { Component, input, computed } from '@angular/core';
+import { Component, Input, signal, computed } from '@angular/core';
 import { 
   AlfColorEnum, 
   AlfSpinnerStrokeWidthEnum,
@@ -8,15 +8,16 @@ import {
 } from '../../enums';
 
 /**
- * Componente de spinner de carga reutilizable
- * Se adapta automáticamente al tamaño de su contenedor o escala según parámetros.
+ * @component AlfSpinner
+ * @description Componente de spinner de carga reutilizable.
+ * Versión Élite: Máxima compatibilidad JIT/Vitest y Rigor Técnico.
  */
 @Component({
   selector: 'alf-spinner',
   standalone: true,
   template: `
     @let s = sizeVal();
-    @let c = color();
+    @let c = colorVal();
     <svg class="alf-spinner-icon" 
          viewBox="0 0 24 24" 
          [style.width]="s" 
@@ -28,7 +29,7 @@ import {
               r="10" 
               fill="none" 
               [attr.stroke]="c || 'currentColor'"
-              [attr.stroke-width]="strokeWidth()" />
+              [attr.stroke-width]="strokeWidthVal()" />
     </svg>
   `,
   styles: [`
@@ -61,17 +62,40 @@ import {
   host: {
     '[style.width]': 'sizeVal()',
     '[style.height]': 'sizeVal()',
-    '[style.color]': 'color()',
+    '[style.color]': 'colorVal()',
   },
 })
 export class AlfSpinner {
-  public readonly size = input<AlfPxEnum | AlfRemEnum | AlfPercentageEnum | undefined>(undefined);
-  public readonly color = input<AlfColorEnum | undefined>(undefined);
-  public readonly strokeWidth = input<AlfSpinnerStrokeWidthEnum>(AlfSpinnerStrokeWidthEnum.Base);
+  /**
+   * Puente para compatibilidad con Vitest/JIT.
+   */
+  @Input()
+  public set size(value: AlfPxEnum | AlfRemEnum | AlfPercentageEnum | undefined) {
+    this._size.set(value);
+  }
 
-  protected readonly sizeVal = computed(() => {
-    const s = this.size();
-    if (s === undefined || s === null) return null;
-    return s.toString();
+  @Input()
+  public set color(value: AlfColorEnum | undefined) {
+    this._color.set(value);
+  }
+
+  @Input()
+  public set strokeWidth(value: AlfSpinnerStrokeWidthEnum) {
+    this._strokeWidth.set(value);
+  }
+
+  // Signals internos
+  private readonly _size = signal<AlfPxEnum | AlfRemEnum | AlfPercentageEnum | undefined>(undefined);
+  private readonly _color = signal<AlfColorEnum | undefined>(undefined);
+  private readonly _strokeWidth = signal<AlfSpinnerStrokeWidthEnum>(AlfSpinnerStrokeWidthEnum.Base);
+
+  // Exponemos signals para el componente y tests
+  public readonly sizeVal = computed(() => {
+    const s = this._size();
+    return (s === undefined || s === null) ? null : s.toString();
   });
+
+  public readonly colorVal = this._color.asReadonly();
+  public readonly strokeWidthVal = this._strokeWidth.asReadonly();
 }
+
