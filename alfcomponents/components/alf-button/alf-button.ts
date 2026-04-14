@@ -23,8 +23,23 @@ import {
   AlfFontWeightEnum,
   AlfRadiusEnum,
   AlfPxEnum,
+  AlfButtonTypeEnum,
+  AlfSizeEnum,
+  AlfLinkTargetEnum,
+  AlfIconsUnicodeIconEnum,
 } from '../../enums';
-import { AlfLoadingInterface } from '../../interfaces/alf-loading.interface';
+import { 
+  AlfLoadingInterface,
+  AlfTypographyInterface,
+  AlfPaddingInterface,
+  AlfMarginInterface,
+  AlfBorderInterface,
+  AlfShadowsInterface,
+  AlfBackgroundsInterface,
+  AlfTransformInterface,
+  AlfAriaInterface,
+  AlfRippleInterface,
+} from '../../interfaces';
 import { LOADING_DEFAULT_SIGNAL } from '../../directives/alf-loading/predefined/alf-loading.tokens';
 
 /**
@@ -36,7 +51,7 @@ import { LOADING_DEFAULT_SIGNAL } from '../../directives/alf-loading/predefined/
 @Component({
   selector: 'alf-button',
   standalone: true,
-  imports: [AlfSpinner],
+  imports: [],
   templateUrl: './alf-button.html',
   styleUrls: ['./alf-button.css'],
   encapsulation: ViewEncapsulation.None,
@@ -44,13 +59,61 @@ import { LOADING_DEFAULT_SIGNAL } from '../../directives/alf-loading/predefined/
 })
 export class AlfButton implements OnDestroy {
 
-  // a partir de aqui es codigo generado por mi
+  // --- Inputs de Configuración (Signals) ---
   protected readonly configInput = input<AlfButtonConfig>({});
-  protected readonly loadingInput = input<AlfLoadingInterface>();
+  
+  // Primitivos y Base
+  protected readonly labelInput = input<string>();
+  protected readonly variantInput = input<AlfColorVariantEnum>();
+  protected readonly sizeInput = input<AlfSizeEnum>();
+  protected readonly typeInput = input<AlfButtonTypeEnum>();
+  protected readonly disabledInput = input<boolean>();
+  protected readonly iconLeftInput = input<AlfIconsUnicodeIconEnum>();
+  protected readonly iconRightInput = input<AlfIconsUnicodeIconEnum>();
+  protected readonly idInput = input<string | number>();
+  protected readonly customClassInput = input<string | string[]>();
+  protected readonly customStyleInput = input<Record<string, string>>();
+  protected readonly linkInput = input<{ url: string; target?: AlfLinkTargetEnum }>();
 
-  protected loadingComputed: Signal<AlfLoadingInterface> = computed(() => {
+  // Interfaces Granulares
+  protected readonly loadingInput = input<AlfLoadingInterface>();
+  protected readonly typographyInput = input<AlfTypographyInterface>();
+  protected readonly paddingInput = input<AlfPaddingInterface>();
+  protected readonly marginInput = input<AlfMarginInterface>();
+  protected readonly borderInput = input<AlfBorderInterface>();
+  protected readonly shadowsInput = input<AlfShadowsInterface>();
+  protected readonly backgroundsInput = input<AlfBackgroundsInterface>();
+  protected readonly transformInput = input<AlfTransformInterface>();
+  protected readonly ariaInput = input<AlfAriaInterface>();
+  protected readonly rippleInput = input<boolean | AlfRippleInterface>();
+
+  // --- Signals Computados (Merge Config + Inputs Individuales) ---
+  
+  protected readonly labelComputed = computed(() => this.labelInput() ?? this.configInput()?.label);
+  protected readonly variantComputed = computed(() => this.variantInput() ?? this.configInput()?.variant);
+  protected readonly sizeComputed = computed(() => this.sizeInput() ?? this.configInput()?.size);
+  protected readonly typeComputed = computed(() => this.typeInput() ?? this.configInput()?.type);
+  protected readonly disabledComputed = computed(() => this.disabledInput() ?? this.configInput()?.disabled);
+  protected readonly iconLeftComputed = computed(() => this.iconLeftInput() ?? this.configInput()?.iconLeft);
+  protected readonly iconRightComputed = computed(() => this.iconRightInput() ?? this.configInput()?.iconRight);
+  protected readonly idComputed = computed(() => this.idInput() ?? this.configInput()?.id);
+  protected readonly customClassComputed = computed(() => this.customClassInput() ?? this.configInput()?.customClass);
+  protected readonly customStyleComputed = computed(() => this.customStyleInput() ?? this.configInput()?.customStyle);
+  protected readonly linkComputed = computed(() => this.linkInput() ?? this.configInput()?.link);
+
+  protected readonly loadingComputed: Signal<AlfLoadingInterface> = computed(() => {
     return this.loadingInput() ?? this.configInput()?.loading ?? LOADING_DEFAULT_SIGNAL();
   });
+
+  protected readonly typographyComputed = computed(() => this.typographyInput() ?? this.configInput()?.typography);
+  protected readonly paddingComputed = computed(() => this.paddingInput() ?? this.configInput()?.padding);
+  protected readonly marginComputed = computed(() => this.marginInput() ?? this.configInput()?.margin);
+  protected readonly borderComputed = computed(() => this.borderInput() ?? this.configInput()?.border);
+  protected readonly shadowsComputed = computed(() => this.shadowsInput() ?? this.configInput()?.shadows);
+  protected readonly backgroundsComputed = computed(() => this.backgroundsInput() ?? this.configInput()?.backgrounds);
+  protected readonly transformComputed = computed(() => this.transformInput() ?? this.configInput()?.transform);
+  protected readonly ariaComputed = computed(() => this.ariaInput() ?? this.configInput()?.aria);
+  protected readonly rippleComputed = computed(() => this.rippleInput() ?? this.configInput()?.ripple);
 
 
   // // a partir de aqui es codigo generado por la ia

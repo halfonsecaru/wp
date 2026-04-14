@@ -1,37 +1,16 @@
-import { 
-  AlfTypographyInterface, 
-  AlfPaddingInterface, 
-  AlfMarginInterface, 
-  AlfBorderInterface, 
-  AlfShadowsInterface, 
-  AlfBackgroundsInterface, 
-  AlfTransformInterface, 
-  AlfAriaInterface,
-  AlfRippleInterface,
-  AlfLoadingInterface
+import {
+  AlfBaseInterface
 } from '../../../interfaces';
-import { AlfButtonTypeEnum, AlfColorVariantEnum, AlfSizeEnum } from '../../../enums';
+import { AlfButtonTypeEnum, AlfColorVariantEnum, AlfIconsUnicodeIconEnum, AlfSizeEnum } from '../../../enums';
 import { AlfLinkTargetEnum } from '../../../enums/alf-link-target.enum';
 
 /**
- * Interface AlfButtonConfig
- * Define la configuración completa y altamente granular para el AlfButton Élite.
+ * Interface AlfButtonBaseInterface
+ * Define las propiedades básicas del AlfButton, extendiendo la base común.
  */
-export interface AlfButtonConfig {
-  /** Label/Texto del botón (soporta i18n dinámico si se integra) */
-  label?: string;
-
-  /** Variante semántica de color */
-  variant?: AlfColorVariantEnum;
-
-  /** Tamaño predefinido (Talle camiseta) */
-  size?: AlfSizeEnum;
-
+export interface AlfButtonInterface extends AlfBaseInterface {
   /** Tipo HTML del botón */
   type?: AlfButtonTypeEnum;
-
-  /** Si el botón está deshabilitado */
-  disabled?: boolean;
 
   /** Configuración de enlace (convierte el botón en <a>) */
   link?: {
@@ -39,50 +18,31 @@ export interface AlfButtonConfig {
     target?: AlfLinkTargetEnum;
   };
 
-  /** Icono a la izquierda */
-  iconLeft?: string;
-
-  /** Icono a la derecha */
-  iconRight?: string;
-
-  /** Estado de carga y configuración del spinner */
-  loading?: AlfLoadingInterface;
-
-  // --- Composiciones de Estilo Granular ---
-  
-  /** Tipografía (fontSize, fontWeight, colors, etc.) */
-  typography?: AlfTypographyInterface;
-
-  /** Espaciado interno */
-  padding?: AlfPaddingInterface;
-
-  /** Espaciado externo */
-  margin?: AlfMarginInterface;
-
-  /** Bordes y radios */
-  border?: AlfBorderInterface;
-
-  /** Sombras */
-  shadows?: AlfShadowsInterface;
-
-  /** Fondos y gradientes */
-  backgrounds?: AlfBackgroundsInterface;
-
-  /** Transformaciones (scale, rotate, etc.) */
-  transform?: AlfTransformInterface;
-
-  /** Accesibilidad ARIA */
-  aria?: AlfAriaInterface;
-
-  /** Configuración del efecto Ripple */
-  ripple?: boolean | AlfRippleInterface;
-
   /** Identificador único para tests y tracking */
   id?: string | number;
+
+  /** Label/Texto principal (soporta i18n) */
+  label?: string;
+
+  /** Variante semántica de color (Primary, Danger, Success, etc.) */
+  variant?: AlfColorVariantEnum;
+
+  /** Tamaño predefinido (talle camiseta) */
+  size?: AlfSizeEnum;
+
+  /** Estado de deshabilitado */
+  disabled?: boolean;
+
+  /** Icono izquierdo (Unicode) */
+  iconLeft?: AlfIconsUnicodeIconEnum;
+
+  /** Icono derecho (Unicode) */
+  iconRight?: AlfIconsUnicodeIconEnum;
 
   /** Clases CSS adicionales */
   customClass?: string | string[];
 
-  /** Estilos manuales de último recurso */
+  /** Estilos manuales de último recurso (inline styles) */
   customStyle?: Record<string, string>;
 }
+
