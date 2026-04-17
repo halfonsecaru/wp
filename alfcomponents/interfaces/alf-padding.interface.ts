@@ -1,7 +1,7 @@
-import { 
-  AlfPxEnum, 
-  AlfRemEnum, 
-  AlfPercentageEnum 
+import {
+  AlfPxEnum,
+  AlfRemEnum,
+  AlfPercentageEnum
 } from '../enums';
 
 /**
@@ -59,4 +59,9 @@ export interface AlfPaddingInterface {
    * Estilos aplicados cuando el componente se encuentra en estado deshabilitado.
    */
   disabled?: AlfPaddingBaseInterface;
+
+  /**
+   * Estilos aplicados cuando el componente está activo (en click).
+   */
+  active?: AlfPaddingBaseInterface;
 }

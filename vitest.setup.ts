@@ -29,4 +29,11 @@ testBed.initTestEnvironment(
   }
 );
 
+// Mock globales para JSDOM
+global.ResizeObserver = class ResizeObserver {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+};
+
 console.log('✅ Angular testing environment initialized successfully');

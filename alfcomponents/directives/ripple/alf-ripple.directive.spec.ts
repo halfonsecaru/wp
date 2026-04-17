@@ -10,10 +10,10 @@ import { AlfColorEnum } from '../../enums';
 // ========================================
 // WORKAROUND INICIALIZACIÓN TESTBED (Regla #439)
 // ========================================
-try { 
+try {
   const testBed = getTestBed();
   if (!testBed.platform) {
-    testBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting()); 
+    testBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
   }
 } catch (e) { }
 
@@ -57,7 +57,7 @@ class TestHostRippleComponent { }
     </div>
   `
 })
-class TestHostRippleConfigComponent { 
+class TestHostRippleConfigComponent {
   public readonly config = { color: AlfColorEnum.White, duration: 1000 };
 }
 
@@ -138,7 +138,7 @@ describe('AlfRippleDirective', () => {
       const span = container.nativeElement.querySelector('.alf-ripple-host span');
       // Usamos White (CSS válido) en vez de Red500 (Tailwind class, JSDOM lo rechaza)
       expect(span.style.backgroundColor).toBe(AlfColorEnum.White);
-      
+
       // Verificamos duración
       expect(animateSpy).toHaveBeenCalledWith(
         expect.anything(),
@@ -172,7 +172,7 @@ describe('AlfRippleDirective', () => {
       fixture.detectChanges();
 
       const container = fixture.debugElement.query(By.css('.ripple-container'));
-      
+
       Object.defineProperty(container.nativeElement, 'clientWidth', { value: 100, configurable: true });
       Object.defineProperty(container.nativeElement, 'clientHeight', { value: 100, configurable: true });
       vi.spyOn(container.nativeElement, 'getBoundingClientRect').mockReturnValue({

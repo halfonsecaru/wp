@@ -1,0 +1,50 @@
+// =============================================================
+// MIXIN: alf-padding
+// Mapea las CSS vars generadas por AlfBaseComponent (resolver)
+// a propiedades CSS reales para todos los estados.
+//
+// Uso: @include alf-padding();
+// =============================================================
+
+@mixin alf-padding() {
+
+  // --- DEFAULT ---
+  padding-top:    var(--alf-pad-padding-top);
+  padding-right:  var(--alf-pad-padding-right);
+  padding-bottom: var(--alf-pad-padding-bottom);
+  padding-left:   var(--alf-pad-padding-left);
+
+  // --- FOCUS ---
+  &:focus,
+  &:focus-visible {
+    padding-top:    var(--alf-pad-padding-top-focus,    var(--alf-pad-padding-top, 0));
+    padding-right:  var(--alf-pad-padding-right-focus,  var(--alf-pad-padding-right, 0));
+    padding-bottom: var(--alf-pad-padding-bottom-focus, var(--alf-pad-padding-bottom, 0));
+    padding-left:   var(--alf-pad-padding-left-focus,   var(--alf-pad-padding-left, 0));
+  }
+
+  // --- HOVER ---
+  &:hover {
+    padding-top:    var(--alf-pad-padding-top-hover,    var(--alf-pad-padding-top, 0));
+    padding-right:  var(--alf-pad-padding-right-hover,  var(--alf-pad-padding-right, 0));
+    padding-bottom: var(--alf-pad-padding-bottom-hover, var(--alf-pad-padding-bottom, 0));
+    padding-left:   var(--alf-pad-padding-left-hover,   var(--alf-pad-padding-left, 0));
+  }
+
+  // --- ACTIVE ---
+  &:active {
+    padding-top:    var(--alf-pad-padding-top-active,    var(--alf-pad-padding-top));
+    padding-right:  var(--alf-pad-padding-right-active,  var(--alf-pad-padding-right));
+    padding-bottom: var(--alf-pad-padding-bottom-active, var(--alf-pad-padding-bottom));
+    padding-left:   var(--alf-pad-padding-left-active,   var(--alf-pad-padding-left));
+  }
+
+  // --- DISABLED ---
+  &[disabled],
+  &:disabled {
+    padding-top:    var(--alf-pad-padding-top-disabled,    var(--alf-pad-padding-top));
+    padding-right:  var(--alf-pad-padding-right-disabled,  var(--alf-pad-padding-right));
+    padding-bottom: var(--alf-pad-padding-bottom-disabled, var(--alf-pad-padding-bottom));
+    padding-left:   var(--alf-pad-padding-left-disabled,   var(--alf-pad-padding-left));
+  }
+}

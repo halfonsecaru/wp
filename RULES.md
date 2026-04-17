@@ -43,8 +43,7 @@ Este documento es la **fuente de verdad absoluta** para el desarrollo en este pr
 - **Directivas Prohibidas (Deprecated/Legacy)**:
   - ❌ PROHIBIDO `CommonModule` (solo usar si se requieren Pipes como `DatePipe`).
   - ❌ PROHIBIDO `*ngTemplateOutlet` (Usar `@let` o duplicación explícita).
-  - ❌ PROHIBIDO `[ngClass]` → Usar `[class.nombre]="condicion()"`.
-  - ❌ PROHIBIDO `[ngStyle]` → Usar `@let` para generar el string y `[style]="string"`.
+    - ❌ PROHIBIDO `[ngStyle]` → Usar `@let` para generar el string y `[style]="string"`.
 - **Formularios**: 
   - ❌ PROHIBIDO `[(ngModel)]` → Usar `[value]="v()"` y `(input)="v.set($event)"` o `model()`.
 
@@ -65,3 +64,119 @@ Este documento es la **fuente de verdad absoluta** para el desarrollo en este pr
 ---
 
 **Nota para la IA**: Lee este archivo al inicio de cada tarea. Si el código generado viola alguna de estas reglas, se considera un error crítico.
+
+### REGLAS INMUTABLES ###
+- 1) REGLA #0: COMUNICACIÓN CONCISA
+    - **Sé breve y directo**. No me estreses con explicaciones largas.
+    - Confirma acciones con frases cortas. Evita listas de checkmarks y resúmenes extensos.
+    - Si algo sale mal, arréglalo y sigue adelante.
+- 2) SOLO ANGULAR 21 OFICIAL
+    - ✅ SOLO características OFICIALES de Angular 21 - CONSULTA la documentación si no sabes algo
+    - ❌ NO inventes sintaxis - ❌ NO uses características deprecated
+    - 🔍 VERIFICA en docs oficiales antes de implementar - Si tienes dudas, PREGUNTA
+- 3) REUTILIZAR componentes existentes
+    - ✅ REUTILIZAR componentes existentes - Antes de crear un nuevo componente, verifica si ya existe uno que cumpla la función requerida. Reutiliza componentes siempre que sea posible para mantener la coherencia y reducir la duplicación de código.   
+- 4) ❌ PROHIBIDO USAR:
+    - ❌ NO usar librerías externas (ej. Lodash, Moment.js, etc.)
+    - ❌ NO usar características experimentales o en desuso
+    - ❌ NO usar sintaxis personalizada o no estándar
+    - ❌ *ngIf="x" → @if (x) { }
+    - ❌ *ngFor="let i of items" → @for (i of items; track i.id) { }
+    - ❌ *ngSwitch="v" → @switch (v) { }
+    - ❌ [ngStyle]="css" → @let s = CSSUTILS.customCssToString(css); <div [style]="s">
+    - ❌ [(ngModel)]="v" → [value]="v()" (input)="v.set($event)"
+    - ❌ [ngStyle]="css" → @let s = CSSUTILS.customCssToString(css); <div [style]="s">
+    - ❌ Si existe una interface de entrada no poner nunca variable: interface | string | number, solo la interface es valida. No poner nunca: interface | string | number, solo la interface es valida.
+-  5) Usar siempre WAAPI para animaciones y no css.
+-  6) Usar `@use`** en lugar de `@import` (Sass moderno).
+-  7) Los arreglos de problemas visuales (overflow, tamaños, responsividad) SIEMPRE se hacen en el componente de la librería, NO se toca nada fuera del comopnente. Si un componente tiene un problema de overflow, tamaño o responsividad, se debe arreglar en los archivos `.scss` del componente mismo (ej: `alf-code.scss`, `alf-tabs.scss`).
+-  8) SINTAXIS ANGULAR 21 MODERNA - ELIMINAR DIRECTIVAS DEPRECATED
+   - **PROHIBIDO usar directivas deprecated de Angular**:
+     - ❌ `*ngTemplateOutlet` → Duplicar contenido explícitamente o usar @let
+     - ❌ `CommonModule` → Solo importar si se usan pipes (DatePipe, CurrencyPipe, etc.)
+   - **Regla de imports en componentes**:
+     - ✅ Solo importar lo que realmente se usa
+     - ✅ Si usas `@if`, `@for`, `@switch` → NO necesitas `CommonModule`
+   - **Refactorización de templates**:
+     - Priorizar claridad y sintaxis moderna sobre DRY en templates pequeños
+   - **Verificación obligatoria**: Al crear o modificar componentes, revisar que:
+     1. No se usen directivas deprecated
+     2. Solo se importen módulos/directivas realmente utilizados
+     3. Se use sintaxis de control flow moderna (@if, @for, @switch, @let)
+- 9) Prefijos y Nomenclatura
+    - **PREFIJO OBLIGATORIO**: Todos los componentes deben usar el prefijo `alf-`
+    - Ejemplo: `alf-button`, `alf-input`, `alf-card`, etc.
+    - Los selectores de componentes siempre deben comenzar con `alf-`
+- 10) Estilos
+    - **SCSS**: Usar SCSS como preprocesador de estilos (NO usar CSS ni LESS)
+    - Todos los archivos de estilos deben tener extensión `.scss`
+    - Configurar Angular CLI para usar SCSS por defecto
+- 11) Enums
+    - **Nombre de archivo**: Puede incluir `.enum` o `.interface` según sea necesario.
+    - **Contenido**: Usar `export enum NombreEnum`
+      ```typescript
+      // Archivo: color.ts
+      export enum ColorEnum {
+        Primary = 'primary',
+        Secondary = 'secondary',
+      }
+      ```
+- 12) Interfaces
+    - **Contenido**: Usar `export interface NombreInterface`
+- 13) Generación de Código
+    - **USO OBLIGATORIO DE CLI**: Todo código debe generarse usando Angular CLI
+    - Nunca crear archivos manualmente, siempre usar comandos `ng generate`
+    - Comandos principales:
+      - `ng generate component <nombre> --prefix=alf` - Para componentes
+      - `ng generate service <nombre>` - Para servicios
+      - `ng generate module <nombre>` - Para módulos
+      - `ng generate directive <nombre> --prefix=alf` - Para directivas
+      - `ng generate pipe <nombre>` - Para pipes
+- 14) Convenciones de Estructura de Componentes
+    - Cada componente debe respetar la siguiente estructura (basada en el estándar Élite):
+      - `[nombre].ts` - Componente principal
+      - `[nombre].html` - Vista del componente
+      - `[nombre].scss` - Estilos específicos
+      - `[nombre].spec.ts` - Tests unitarios
+      - `README.english.md` y `README.spanish.md` - Documentación para usuarios (sin emoticonos)
+      - `ia_usage.md` - Documentación técnica en inglés para IA
+      - **interfaces/** - Carpeta con definiciones de interfaces
+      - **enums/** - Carpeta con enumeraciones
+      - **utils/** o **i18n/** - Carpetas para utilidades o traducciones (si aplica)
+      - **predefined/** - Carpeta con configuraciones de diseño predeterminadas (Factory Pattern)
+- 15) Workflow de Desarrollo Élite
+    1. **Generación**: `ng generate component components/alf-[nombre] --project=alf-components --export --style=scss`
+    2. **Estructura**: Crear carpetas `interfaces/`, `enums/`, `predefined/` e `i18n/` (o `utils/`).
+    3. **Contratos**: Definir interfaces y enums (respetando reglas 11 y 12 de nomenclatura).
+    4. **Factory Pattern**: Crear la configuración base y variantes en `predefined/[nombre].predefined.ts`.
+    5. **Lógica Élite**: Heredar de `AlfBaseComponent`, usar @Input con setters hacia signals y @Output moderno.
+    6. **Estilos**: SCSS para estático, WAAPI (en TS) para dinámico/interactivo.
+    7. **Calidad**: Escribir suite de tests unitarios en `.spec.ts`.
+    8. **Documentación Dual**: Crear `README.english.md`, `README.spanish.md` (sin emojis) e `ia_usage.md` (inglés para IA).
+    9. **Integración**: Exportar en el `public-api.ts` correspondiente.
+    10. **Validación**: Ejecutar build y verificar integridad de los tests.
+- 16) y adapta esto tambien 
+    1. **SIEMPRE** verifica este archivo antes de crear componentes
+    2. **NUNCA** olvides el prefijo `alf-` en componentes y directivas
+    3. **SIEMPRE** usa Angular CLI para generar código
+    4. **NUNCA** crees archivos manualmente (excepto configuración)
+    5. Mantén este archivo actualizado con nuevas reglas o componentes
+- 17) MODIFICADORES DE ACCESO Y RIGOR TÉCNICO
+    1- **MODIFICADORES OBLIGATORIOS**: NUNCA dejar una variable o método sin modificador. 
+    2- Usar `public`, `private` o `protected` SIEMPRE.
+    3- **NO ANIDAR FUNCIONES**: 
+    4- PROHIBIDO meter funciones dentro de funciones (e.g. handlers dentro de effects). 
+    5- Extraer toda la lógica a métodos de clase (Arrow Functions) independientes.
+    6- **READONLY OBLIGATORIO**: 
+    7- Usar `readonly` en todos los **Signals** (`input`, `computed`, `model`, `signal`).
+    8- Usar `readonly` en todas las **Dpendencias Inyectadas** (`inject(ElementRef)`).
+    9- **Arrow Functions**: NUNCA usar la palabra reservada `function` ni métodos de clase tradicionales. SIEMPRE arrow functions para evitar problemas de contexto (`this`).
+    10- Templates - @let para Variables Locales e input signals
+    11- Abrir Simple Browser de VS Code
+#########################
+
+**🎯 Si tienes dudas: 1) Revisa esta memoria, 2) Busca ejemplos existentes, 3) Consulta Angular docs, 4) PREGUNTA**
+
+**⚠️ RECORDATORIO: Lee TODO antes de actuar. No inventes sintaxis. LO MAS IMPORTANTE ES NO USAR FUNCIONES DENTRO DE FUNCIONES, ASI EVITAMOS EL CALLBACK HELL.
+HAy que tener en cuenta que si se le indica, hay que agregar el form igual que se ha echo el el alf-checkbox
+**

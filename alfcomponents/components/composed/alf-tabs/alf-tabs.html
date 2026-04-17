@@ -1,0 +1,74 @@
+<div class="alf-tabs" [class.alf-tabs--vertical]="position() === 'left' || position() === 'right'">
+  
+  <!-- Header Area -->
+  <div class="alf-tabs__header-container">
+    
+    @if (showScrollArrowsComputed()) {
+      <div class="alf-tabs__arrow alf-tabs__arrow--left">
+        <alf-button 
+          [defineComponent]="{ iconLeft: icons.ChevronLeft }" 
+          visualType="text"
+          (onClick)="scrollLeft()"
+        ></alf-button>
+      </div>
+    }
+
+    <div class="alf-tabs__header-scroll" #headerScroll>
+      <div class="alf-tabs__nav" role="tablist">
+        <ng-content select="alf-tab"></ng-content>
+
+        <!-- Sliding Indicator (Master Design) -->
+        @if (configComputed()?.visualType === 'master') {
+          <div 
+            class="alf-tabs__indicator"
+            [ngStyle]="indicatorStyle()"
+            [style.background-color]="indicatorColorComputed()"
+          ></div>
+        }
+      </div>
+    </div>
+
+    @if (showScrollArrowsComputed()) {
+      <div class="alf-tabs__arrow alf-tabs__arrow--right">
+        <alf-button 
+          [defineComponent]="{ iconLeft: icons.ChevronRight }" 
+          visualType="text"
+          (onClick)="scrollRight()"
+        ></alf-button>
+      </div>
+    }
+  </div>
+
+  <!-- Content Panels Area -->
+  <div 
+    class="alf-tabs__content-container"
+    (touchstart)="onTouchStart($event)"
+    (touchend)="onTouchEnd($event)"
+  >
+    <!-- Forma 1: Proyección manual (AlfTabContent) -->
+    <ng-content select="alf-tab-content"></ng-content>
+
+    <!-- Forma 2: Proyección automática de contenido anidado (API estilo Material) -->
+    @if (isNestedModeComputed()) {
+      @for (tab of tabs(); track tab.effectiveIndex()) {
+        <div 
+          class="alf-tabs__panel"
+          [ngClass]="getPanelClasses(tab)"
+          role="tabpanel"
+          [attr.aria-hidden]="activeIndex() !== tab.effectiveIndex()"
+          [style.display]="(contentIndex() === tab.effectiveIndex() || exitingTabsSet().has(tab.effectiveIndex())) ? 'block' : 'none'"
+          [ngStyle]="getPanelStyles(tab)"
+          (animationend)="onTabAnimationEnd(tab)"
+        >
+          <ng-container [ngTemplateOutlet]="tab.contentTemplate() || null"></ng-container>
+        </div>
+      }
+    }
+  </div>
+  
+  <!-- Accessibility Region (Aria Live) -->
+  <div class="alf-tabs__aria-live" aria-live="polite" aria-atomic="true">
+    {{ liveMessageComputed() }}
+  </div>
+
+</div>

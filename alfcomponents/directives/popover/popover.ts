@@ -15,11 +15,13 @@ import {
   Input,
   signal
 } from '@angular/core';
-import { AlfPositionEnum } from '../../enums/alf-position.enum';
-import { AlfColorEnum } from '../../enums/alf-color.enum';
-import { AlfShadowEnum } from '../../enums/alf-shadow.enum';
-import { AlfZIndexEnum } from '../../enums/alf-z-index.enum';
-import { AlfRadiusEnum } from '../../enums/alf-radius.enum';
+import {
+  AlfColorEnum,
+  AlfPositionEnum,
+  AlfRadiusEnum,
+  AlfShadowEnum,
+  AlfZIndexEnum,
+} from '../../enums';
 
 export interface AlfPopoverConfig {
   text?: string;
@@ -166,14 +168,14 @@ export class AlfPopover implements OnDestroy {
     if (config.text) {
       const textNode = this.renderer.createText(config.text);
       const textContainer = this.renderer.createElement('div');
-      
+
       this.renderer.setStyle(textContainer, 'padding', '12px 16px');
       this.renderer.setStyle(textContainer, 'background-color', config.backgroundColor ?? this.defaultBgColor);
       this.renderer.setStyle(textContainer, 'color', config.color ?? this.defaultTextColor);
       this.renderer.setStyle(textContainer, 'border-radius', AlfRadiusEnum.Lg);
       this.renderer.setStyle(textContainer, 'border', `1px solid ${this.defaultBorderColor}`);
       this.renderer.setStyle(textContainer, 'white-space', 'pre-wrap');
-      
+
       this.renderer.appendChild(textContainer, textNode);
       this.renderer.appendChild(this.popoverElement, textContainer);
     } else if (config.template) {
@@ -268,7 +270,7 @@ export class AlfPopover implements OnDestroy {
     if (!this.popoverElement) return;
 
     this.renderer.setStyle(this.popoverElement, 'pointer-events', 'auto');
-    
+
     this.popoverElement.animate([
       { opacity: 0, transform: 'scale(0.95)' },
       { opacity: 1, transform: 'scale(1)' }

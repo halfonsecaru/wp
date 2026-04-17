@@ -1,0 +1,159 @@
+// =============================================================
+// AlfButton — Estilos
+// Las propiedades dinámicas (padding, border, color, etc.) se
+// gestionan 100% via CSS vars inyectadas por AlfBaseComponent
+// y consumidas por los mixins del barrel.
+// =============================================================
+
+@use '../../../styles/mixins' as *;
+
+.alf-btn {
+
+  // ===========================================================
+  // MIXINS — Propiedades dinámicas via CSS vars (todos los estados)
+  // ===========================================================
+  @include alf-padding();
+  @include alf-backgrounds();
+  @include alf-border();
+  @include alf-shadows();
+  @include alf-typography();
+  @include alf-transform();
+
+  // ===========================================================
+  // TOKENS PROPIOS DEL BOTÓN — Valores por defecto
+  // (Pueden ser sobreescritos en runtime por AlfBaseComponent)
+  // ===========================================================
+
+  // Background
+  --alf-bg-color:       transparent;
+  --alf-bg-color-hover: rgba(0, 0, 0, 0.05);
+
+  // Typography
+  --alf-txt-color:  inherit;
+  --alf-txt-size:   0.875rem;
+  --alf-txt-weight: 600;
+  --alf-txt-align:  center;
+
+  // Padding
+  --alf-pad-padding-top:    0.625rem;
+  --alf-pad-padding-right:  1.5rem;
+  --alf-pad-padding-bottom: 0.625rem;
+  --alf-pad-padding-left:   1.5rem;
+
+  // Border
+  --alf-brd-color:  transparent;
+  --alf-brd-width:  1px;
+  --alf-brd-style:  solid;
+  --alf-brd-radius: 0.375rem;
+
+  // Shadows
+  --alf-shd-val: none;
+
+  // ===========================================================
+  // LAYOUT FIJO (no dinámico — estructura del botón)
+  // ===========================================================
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.1s cubic-bezier(0, 0, 0.2, 1), 
+              box-shadow 0.1s cubic-bezier(0, 0, 0.2, 1),
+              background-color 0.2s ease,
+              border-color 0.2s ease,
+              opacity 0.2s ease;
+  transform-origin: center center;
+  outline: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+
+  // ===========================================================
+  // ESTADOS ESPECÍFICOS DEL BOTÓN
+  // ===========================================================
+
+
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    // Solo mostramos el focus ring si está configurado via --alf-shd-val-focus
+    box-shadow: var(--alf-shd-val-focus, none);
+    outline: 2px solid transparent;
+  }
+
+  &[disabled],
+  &:disabled {
+    cursor: not-allowed;
+    filter: grayscale(0.2);
+    pointer-events: none;
+    // opacity y box-shadow los gestiona el mixin via --alf-shd-val-disabled y --alf-txt-opacity-disabled
+    // Solo intervenimos si no hay var configurada:
+    opacity: var(--alf-txt-opacity-disabled, 0.6);
+    box-shadow: var(--alf-shd-val-disabled, none);
+  }
+
+  // ===========================================================
+  // ELEMENTOS INTERNOS
+  // ===========================================================
+
+  &__content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    font-family: inherit;
+    text-align: var(--alf-txt-align);
+  }
+
+  &__icon {
+    display: flex;
+    flex-shrink: 0;
+  }
+
+  &__text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__loader {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  // ===========================================================
+  // VARIANTE TEXT
+  // ===========================================================
+
+  &--text {
+    box-shadow: none !important;
+    border-color: transparent !important;
+  }
+
+  &--glossy {
+    &::before {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      right: 2px;
+      height: 35%; // Un poco más fino para elegancia
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 100%);
+      border-radius: inherit;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .alf-btn__content {
+      position: relative;
+      z-index: 2;
+    }
+  }
+}

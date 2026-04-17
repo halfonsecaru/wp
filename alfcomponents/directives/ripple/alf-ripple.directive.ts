@@ -1,14 +1,11 @@
 import { Directive, ElementRef, Renderer2, inject, Input, effect, computed, signal } from '@angular/core';
-import { AlfColorEnum } from '../../enums';
 import { AlfRippleInterface } from '../../interfaces/alf-ripple.interface';
 import { ALF_RIPPLE_MATERIAL } from '../../predefined/alf-ripple.predefined';
 
 /**
- * Directiva AlfRipple para efectos de pulsación (Material Design)
- * ✅ Standalone, Zoneless Ready & Signal Driven
- * 
- * Usa @Input() como puente JIT → signal() interno.
- * Motivo: input() signals no se resuelven en JIT (Vitest).
+ * Directiva AlfRipple "Pure Silk"
+ * ✅ Animación de 1000ms ultra suave.
+ * ✅ Escalado dinámico para cubrir toda la superficie.
  */
 @Directive({
   selector: '[alfRipple]',
@@ -18,18 +15,10 @@ export class AlfRippleDirective {
   private readonly el = inject(ElementRef);
   private readonly renderer = inject(Renderer2);
 
-  /**
-   * Signal interno que almacena la configuración reactiva.
-   */
   private readonly _config = signal<boolean | AlfRippleInterface>(true);
 
-  /**
-   * Input decorador como puente JIT → Signal.
-   * Compatible con compilación JIT (Vitest) y AOT (producción).
-   */
   @Input()
   public set alfRipple(value: boolean | AlfRippleInterface | '') {
-    // Si el valor es una cadena vacía (uso directo del atributo), tratar como true
     if (value === '') {
       this._config.set(true);
     } else {
@@ -37,45 +26,35 @@ export class AlfRippleDirective {
     }
   }
 
-  /** Normaliza la configuración dinámica aplicando el preset Material */
   private readonly cfg = computed<AlfRippleInterface>(() => {
     const val = this._config();
-    
     if (val === true) return ALF_RIPPLE_MATERIAL;
     if (val === false) return { enabled: false };
-    
-    // Si es un objeto, fusionamos con el preset por defecto
     return { ...ALF_RIPPLE_MATERIAL, ...val };
   });
 
-  /**
-   * Efecto reactivo para la escucha de eventos (Injection Context).
-   */
   private readonly clickEffect = effect((onCleanup) => {
     const element = this.el.nativeElement;
-    element.addEventListener('click', this.handleRippleClick);
-    onCleanup(() => element.removeEventListener('click', this.handleRippleClick));
+    element.addEventListener('mousedown', this.handleRippleClick);
+    onCleanup(() => element.removeEventListener('mousedown', this.handleRippleClick));
   });
 
-  /**
-   * Manejador del evento click (Independiente para evitar nesting)
-   */
   private handleRippleClick = (event: MouseEvent): void => {
     const config = this.cfg();
     if (!config.enabled) return;
     this.createRipple(event);
   };
 
-  /**
-   * Lógica de creación del ripple con WAAPI
-   */
   private createRipple = (event: MouseEvent): void => {
     const element = this.el.nativeElement;
     const config = this.cfg();
-    
     const rect = element.getBoundingClientRect();
-    const diameter = Math.max(element.clientWidth, element.clientHeight);
+    
+    // Diámetro basado en la diagonal para asegurar cobertura total
+    const diameter = Math.sqrt(rect.width ** 2 + rect.height ** 2) * 2;
     const radius = diameter / 2;
+
+    const color = config.color || 'rgba(0,0,0,0.1)';
 
     let rippleHost = element.querySelector('.alf-ripple-host');
     if (!rippleHost) {
@@ -87,9 +66,8 @@ export class AlfRippleDirective {
       this.renderer.setStyle(rippleHost, 'border-radius', 'inherit');
       this.renderer.setStyle(rippleHost, 'pointer-events', 'none');
       this.renderer.setStyle(rippleHost, 'z-index', '0');
-      
-      const currentPos = window.getComputedStyle(element).position;
-      if (currentPos === 'static') {
+
+      if (window.getComputedStyle(element).position === 'static') {
         this.renderer.setStyle(element, 'position', 'relative');
       }
       this.renderer.appendChild(element, rippleHost);
@@ -105,17 +83,17 @@ export class AlfRippleDirective {
     this.renderer.setStyle(circle, 'top', `${y}px`);
     this.renderer.setStyle(circle, 'position', 'absolute');
     this.renderer.setStyle(circle, 'border-radius', '50%');
+    this.renderer.setStyle(circle, 'background-color', color);
     this.renderer.setStyle(circle, 'pointer-events', 'none');
-    
-    this.renderer.setStyle(circle, 'background-color', config.color || AlfColorEnum.Black);
     this.renderer.appendChild(rippleHost, circle);
 
+    // Animación de 1000ms con curva de Seda Suprema (Ultra Suave)
     const anim = circle.animate([
       { transform: 'scale(0)', opacity: 0.35 },
-      { transform: `scale(${config.scale || 4})`, opacity: config.opacity ?? 0 }
+      { transform: 'scale(1)', opacity: 0 }
     ], {
-      duration: config.duration || 600,
-      easing: 'linear',
+      duration: config.duration || 1000,
+      easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)', // Curva balanceada de alta gama
       fill: 'forwards'
     });
 

@@ -1,0 +1,19 @@
+<!-- Cabecera de la pestaña (El botón) -->
+<alf-button
+  [defineComponent]="buttonConfigComputed()"
+  [predefined]="defineComponentInput()?.predefined"
+  [style.flex]="'1'"
+  (onClick)="selectTab()"
+>
+  <!-- Proyectamos prefix/suffix/label aquí si se redefine, 
+       pero por ahora se maneja vía inputs de AlfButton -->
+</alf-button>
+
+<!-- 
+  Capturador de contenido anidado (API estilo Material).
+  Se envuelve en ng-template para que no se renderice aquí, 
+  sino que sea el padre (AlfTabs) quien controle dónde y cuándo mostrarlo.
+-->
+<ng-template #contentTemplate>
+  <ng-content></ng-content>
+</ng-template>

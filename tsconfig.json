@@ -1,14 +1,16 @@
 {
   "compilerOptions": {
     "composite": true,
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "ES2021",
+    "target": "ES2022",
+    "useDefineForClassFields": false,
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
@@ -32,6 +34,9 @@
       "@libs/examples/*": [
         "libs/examples/*"
       ],
+      "@alfcomponents": [
+        "alfcomponents/index.ts"
+      ],
       "@alfcomponents/*": [
         "alfcomponents/*"
       ]
@@ -43,6 +48,12 @@
     },
     {
       "path": "./libs/nestjs"
+    },
+    {
+      "path": "apps/front/demo"
+    },
+    {
+      "path": "./alfcomponents"
     }
   ]
 }

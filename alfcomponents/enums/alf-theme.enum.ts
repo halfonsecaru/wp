@@ -5,5 +5,7 @@ export enum AlfThemeEnum {
   Light = 'light',
   Dark = 'dark',
   HighContrast = 'high-contrast',
+  MidnightGold = 'midnight-gold',
+  Cyberpunk = 'cyberpunk',
   Custom = 'custom'
 }

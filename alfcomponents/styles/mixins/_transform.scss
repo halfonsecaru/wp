@@ -1,0 +1,58 @@
+// =============================================================
+// MIXIN: alf-transform
+// Mapea las CSS vars generadas por AlfBaseComponent (resolver)
+// a propiedades CSS reales para todos los estados.
+// =============================================================
+
+@mixin alf-transform-internal($suffix: "") {
+  $tx: var(--alf-trf-translate-x#{$suffix}, var(--alf-trf-translate-x, 0));
+  $ty: var(--alf-trf-translate-y#{$suffix}, var(--alf-trf-translate-y, 0));
+  $tz: var(--alf-trf-translate-z#{$suffix}, var(--alf-trf-translate-z, 0));
+  
+  $sx: var(--alf-trf-scale-x#{$suffix}, var(--alf-trf-scale-x, 1));
+  $sy: var(--alf-trf-scale-y#{$suffix}, var(--alf-trf-scale-y, 1));
+  $sz: var(--alf-trf-scale-z#{$suffix}, var(--alf-trf-scale-z, 1));
+  $s:  var(--alf-trf-scale#{$suffix},   var(--alf-trf-scale,   1));
+  
+  $rx: var(--alf-trf-rotate-x#{$suffix}, var(--alf-trf-rotate-x, 0));
+  $ry: var(--alf-trf-rotate-y#{$suffix}, var(--alf-trf-rotate-y, 0));
+  $rz: var(--alf-trf-rotate-z#{$suffix}, var(--alf-trf-rotate-z, var(--alf-trf-rotate, 0)));
+  
+  $skx: var(--alf-trf-skew-x#{$suffix}, var(--alf-trf-skew-x, 0));
+  $sky: var(--alf-trf-skew-y#{$suffix}, var(--alf-trf-skew-y, 0));
+
+  transform: translate3d($tx, $ty, $tz)
+             scale3d(calc($sx * $s), calc($sy * $s), calc($sz * $s))
+             rotateX(calc($rx * 1deg)) rotateY(calc($ry * 1deg)) rotateZ(calc($rz * 1deg))
+             skew(calc($skx * 1deg), calc($sky * 1deg));
+             
+  transform-style: var(--alf-trf-transform-style#{$suffix}, var(--alf-trf-transform-style, flat));
+  backface-visibility: var(--alf-trf-backface-visibility#{$suffix}, var(--alf-trf-backface-visibility, visible));
+}
+
+@mixin alf-transform() {
+  // --- DEFAULT ---
+  @include alf-transform-internal("");
+
+  // --- FOCUS ---
+  &:focus,
+  &:focus-visible {
+    @include alf-transform-internal("-focus");
+  }
+
+  // --- HOVER ---
+  &:hover {
+    @include alf-transform-internal("-hover");
+  }
+
+  // --- ACTIVE ---
+  &:active {
+    @include alf-transform-internal("-active");
+  }
+
+  // --- DISABLED ---
+  &[disabled],
+  &:disabled {
+    @include alf-transform-internal("-disabled");
+  }
+}

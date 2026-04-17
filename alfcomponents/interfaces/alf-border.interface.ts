@@ -1,9 +1,9 @@
-import { 
-  AlfPxEnum, 
-  AlfRemEnum, 
-  AlfBorderStyleEnum, 
-  AlfColorEnum, 
-  AlfRadiusEnum 
+import {
+  AlfPxEnum,
+  AlfRemEnum,
+  AlfBorderStyleEnum,
+  AlfColorEnum,
+  AlfRadiusEnum
 } from '../enums';
 
 /**
@@ -145,4 +145,9 @@ export interface AlfBorderInterface {
    * Estilos aplicados cuando el componente se encuentra en estado deshabilitado.
    */
   disabled?: AlfBorderBaseInterface;
+
+  /**
+   * Estilos aplicados cuando el componente está activo (en click).
+   */
+  active?: AlfBorderBaseInterface;
 }

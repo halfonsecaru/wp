@@ -4,32 +4,32 @@ import { By } from '@angular/platform-browser';
 import { Component } from '@angular/core';
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 
-import { AlfTooltipTextDirective, AlfTooltipConfig} from './tooltip-text';
+import { AlfTooltipTextDirective, AlfTooltipConfig } from './tooltip-text';
 import { AlfPositionEnum, AlfZIndexEnum } from '../../enums';
 
 // ========================================
 // WORKAROUND INICIALIZACIÓN TESTBED
 // ========================================
-try { 
-    const testBed = getTestBed();
-    if (!testBed.platform) {
-      testBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting()); 
-    }
-  } catch (e) { }
+try {
+  const testBed = getTestBed();
+  if (!testBed.platform) {
+    testBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
+  }
+} catch (e) { }
 
 // ========================================
 // MOCK PARA WEB ANIMATIONS API (WAAPI)
 // ========================================
 if (typeof window !== 'undefined' && !HTMLElement.prototype.animate) {
-    HTMLElement.prototype.animate = vi.fn().mockImplementation(() => {
-      return {
-        onfinish: null as any,
-        finished: Promise.resolve(),
-        cancel: vi.fn(),
-        play: vi.fn()
-      };
-    }) as any;
-  }
+  HTMLElement.prototype.animate = vi.fn().mockImplementation(() => {
+    return {
+      onfinish: null as any,
+      finished: Promise.resolve(),
+      cancel: vi.fn(),
+      play: vi.fn()
+    };
+  }) as any;
+}
 
 // ========================================
 // TEST HOST COMPONENTS
@@ -108,7 +108,7 @@ describe('AlfTooltipTextDirective (Elite Suite)', () => {
       await TestBed.configureTestingModule({ imports: [TestHostStringComponent] }).compileComponents();
       const fixture = TestBed.createComponent(TestHostStringComponent);
       fixture.detectChanges();
-      
+
       fixture.debugElement.query(By.css('button')).triggerEventHandler('mouseenter', {});
       expect(document.querySelector('[role="tooltip"]')).toBeFalsy();
     });
@@ -117,26 +117,26 @@ describe('AlfTooltipTextDirective (Elite Suite)', () => {
       await TestBed.configureTestingModule({ imports: [TestHostStringComponent] }).compileComponents();
       const fixture = TestBed.createComponent(TestHostStringComponent);
       fixture.detectChanges();
-      
+
       fixture.debugElement.query(By.css('button')).triggerEventHandler('mouseenter', {});
       await vi.advanceTimersByTimeAsync(160);
-      
+
       expect(document.querySelector('[role="tooltip"]')).toBeTruthy();
     });
 
     it('should respect custom delay from config', async () => {
       await TestBed.configureTestingModule({ imports: [TestHostConfigComponent] }).compileComponents();
       const fixture = TestBed.createComponent(TestHostConfigComponent);
-      fixture.componentInstance.tooltipConfig = { 
-        ...fixture.componentInstance.tooltipConfig, 
-        delay: 500 
+      fixture.componentInstance.tooltipConfig = {
+        ...fixture.componentInstance.tooltipConfig,
+        delay: 500
       };
       fixture.detectChanges();
-      
+
       fixture.debugElement.query(By.css('button')).triggerEventHandler('mouseenter', {});
       await vi.advanceTimersByTimeAsync(200);
       expect(document.querySelector('[role="tooltip"]')).toBeFalsy();
-      
+
       await vi.advanceTimersByTimeAsync(310);
       expect(document.querySelector('[role="tooltip"]')).toBeTruthy();
     });
@@ -150,7 +150,7 @@ describe('AlfTooltipTextDirective (Elite Suite)', () => {
       await TestBed.configureTestingModule({ imports: [TestHostStringComponent] }).compileComponents();
       const fixture = TestBed.createComponent(TestHostStringComponent);
       fixture.detectChanges();
-      
+
       const button = fixture.debugElement.query(By.css('button'));
       button.triggerEventHandler('mouseenter', {});
       await vi.advanceTimersByTimeAsync(160);
@@ -170,7 +170,7 @@ describe('AlfTooltipTextDirective (Elite Suite)', () => {
       button.triggerEventHandler('mouseleave', {});
       if (onFinishCb) onFinishCb();
       fixture.detectChanges();
-      
+
       expect(document.querySelector('[role="tooltip"]')).toBeFalsy();
     });
 
@@ -178,7 +178,7 @@ describe('AlfTooltipTextDirective (Elite Suite)', () => {
       await TestBed.configureTestingModule({ imports: [TestHostStringComponent] }).compileComponents();
       const fixture = TestBed.createComponent(TestHostStringComponent);
       fixture.detectChanges();
-      
+
       fixture.debugElement.query(By.css('button')).triggerEventHandler('mouseenter', {});
       await vi.advanceTimersByTimeAsync(160);
       expect(document.querySelector('[role="tooltip"]')).toBeTruthy();
@@ -196,10 +196,10 @@ describe('AlfTooltipTextDirective (Elite Suite)', () => {
       await TestBed.configureTestingModule({ imports: [TestHostStringComponent] }).compileComponents();
       const fixture = TestBed.createComponent(TestHostStringComponent);
       fixture.detectChanges();
-      
+
       fixture.debugElement.query(By.css('button')).triggerEventHandler('mouseenter', {});
       await vi.advanceTimersByTimeAsync(160);
-      
+
       const tooltip = document.querySelector('[role="tooltip"]') as HTMLElement;
       expect(tooltip.style.zIndex).toBe(AlfZIndexEnum.Max);
     });
@@ -208,10 +208,10 @@ describe('AlfTooltipTextDirective (Elite Suite)', () => {
       await TestBed.configureTestingModule({ imports: [TestHostStringComponent] }).compileComponents();
       const fixture = TestBed.createComponent(TestHostStringComponent);
       fixture.detectChanges();
-      
+
       fixture.debugElement.query(By.css('button')).triggerEventHandler('mouseenter', {});
       await vi.advanceTimersByTimeAsync(160);
-      
+
       const tooltip = document.querySelector('[role="tooltip"]') as HTMLElement;
       expect(tooltip.style.position).toBe('fixed');
     });
@@ -220,11 +220,11 @@ describe('AlfTooltipTextDirective (Elite Suite)', () => {
       await TestBed.configureTestingModule({ imports: [TestHostStringComponent] }).compileComponents();
       const fixture = TestBed.createComponent(TestHostStringComponent);
       fixture.detectChanges();
-      
+
       const button = fixture.debugElement.query(By.css('button')).nativeElement;
       fixture.debugElement.query(By.css('button')).triggerEventHandler('mouseenter', {});
       await vi.advanceTimersByTimeAsync(160);
-      
+
       const tooltip = document.querySelector('[role="tooltip"]');
       const id = tooltip?.getAttribute('id');
       expect(button.getAttribute('aria-describedby')).toBe(id);

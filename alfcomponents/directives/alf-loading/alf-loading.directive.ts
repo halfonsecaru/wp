@@ -1,25 +1,14 @@
-import { 
-  Directive, 
-  ViewContainerRef, 
-  ComponentRef, 
-  ElementRef, 
-  Renderer2,
-  inject,
-  Input,
-  signal,
-  effect,
-  OnDestroy,
-  Type
-} from '@angular/core';
-import { AlfSpinner } from '../../components/alf-spinner/alf-spinner';
+
 import { AlfLoadingInterface } from '../../interfaces/alf-loading.interface';
-import { 
-  AlfLoadingModeEnum, 
-  AlfSpinnerStrokeWidthEnum, 
-  AlfZIndexEnum, 
+import {
+  AlfLoadingModeEnum,
+  AlfSpinnerStrokeWidthEnum,
+  AlfZIndexEnum,
   AlfColorEnum,
   AlfOpacityEnum
 } from '../../enums';
+import { ComponentRef, Directive, effect, ElementRef, inject, Input, OnDestroy, Renderer2, signal, ViewContainerRef } from '@angular/core';
+import { AlfSpinner } from '@alfcomponents/components/simple/alf-spinner/alf-spinner';
 
 /**
  * @directive AlfLoadingDirective
@@ -113,7 +102,7 @@ export class AlfLoadingDirective implements OnDestroy {
     // 5. Ensamblaje y Animación
     const targetContainer = this._overlayElement || this._el.nativeElement;
     this._renderer.appendChild(targetContainer, this._spinnerRef.location.nativeElement);
-    
+
     if (this._messageElement) {
       this._renderer.appendChild(targetContainer, this._messageElement);
     }
@@ -127,7 +116,7 @@ export class AlfLoadingDirective implements OnDestroy {
   private readonly createOverlay = (config: AlfLoadingInterface): void => {
     this._overlayElement = this._renderer.createElement('div');
     const opacity = config.overlayOpacity || AlfOpacityEnum.Opacity60;
-    
+
     const styles: Record<string, string> = {
       'position': config.mode === AlfLoadingModeEnum.Global ? 'fixed' : 'absolute',
       'top': '0',
@@ -155,7 +144,7 @@ export class AlfLoadingDirective implements OnDestroy {
     });
 
     this._renderer.appendChild(this._el.nativeElement, this._overlayElement);
-    
+
     // Aplicar opacidad real vía WAAPI
     this._overlayElement?.animate([
       { opacity: 0 },
@@ -169,7 +158,7 @@ export class AlfLoadingDirective implements OnDestroy {
   private readonly createMessage = (text: string): void => {
     this._messageElement = this._renderer.createElement('span');
     this._renderer.setProperty(this._messageElement, 'textContent', text);
-    
+
     const styles: Record<string, string> = {
       'color': AlfColorEnum.White,
       'font-size': '14px',
@@ -205,7 +194,7 @@ export class AlfLoadingDirective implements OnDestroy {
     this._renderer.removeStyle(this._el.nativeElement, 'pointer-events');
 
     const elementsToAnimate = [this._overlayElement, this._spinnerRef?.location.nativeElement].filter(Boolean) as HTMLElement[];
-    
+
     if (elementsToAnimate.length === 0) {
       this.cleanup();
       return;

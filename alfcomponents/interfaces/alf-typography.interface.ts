@@ -152,4 +152,9 @@ export interface AlfTypographyInterface {
    * Estilos aplicados cuando el componente se encuentra en estado deshabilitado.
    */
   disabled?: AlfTypographyBaseInterface;
+
+  /**
+   * Estilos aplicados cuando el componente está activo (en click).
+   */
+  active?: AlfTypographyBaseInterface;
 }

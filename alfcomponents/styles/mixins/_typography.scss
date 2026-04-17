@@ -1,0 +1,61 @@
+// =============================================================
+// MIXIN: alf-typography
+// Mapea las CSS vars generadas por AlfBaseComponent (resolver)
+// a propiedades CSS reales para todos los estados.
+//
+// Uso: @include alf-typography();
+// =============================================================
+
+@mixin alf-typography() {
+
+  // --- DEFAULT ---
+  color:           var(--alf-txt-color);
+  font-size:       var(--alf-txt-size);
+  font-weight:     var(--alf-txt-weight);
+  font-family:     var(--alf-txt-family);
+  font-style:      var(--alf-txt-style);
+  line-height:     var(--alf-txt-line-height);
+  letter-spacing:  var(--alf-txt-letter-spacing);
+  text-align:      var(--alf-txt-align);
+  text-decoration: var(--alf-txt-decoration);
+  text-transform:  var(--alf-txt-transform);
+  white-space:     var(--alf-txt-white-space);
+  word-break:      var(--alf-txt-word-break);
+  overflow-wrap:   var(--alf-txt-overflow-wrap);
+  vertical-align:  var(--alf-txt-vertical-align);
+  text-overflow:   var(--alf-txt-overflow);
+  text-shadow:     var(--alf-txt-shadow);
+  opacity:         var(--alf-txt-opacity);
+
+  // --- FOCUS ---
+  &:focus,
+  &:focus-visible {
+    color:           var(--alf-txt-color-focus,      var(--alf-txt-color));
+    text-decoration: var(--alf-txt-decoration-focus, var(--alf-txt-decoration));
+  }
+
+  // --- HOVER ---
+  &:hover {
+    color:           var(--alf-txt-color-hover,          var(--alf-txt-color));
+    font-size:       var(--alf-txt-size-hover,           var(--alf-txt-size));
+    font-weight:     var(--alf-txt-weight-hover,         var(--alf-txt-weight));
+    text-decoration: var(--alf-txt-decoration-hover,     var(--alf-txt-decoration));
+    text-shadow:     var(--alf-txt-shadow-hover,         var(--alf-txt-shadow));
+    opacity:         var(--alf-txt-opacity-hover,        var(--alf-txt-opacity));
+    letter-spacing:  var(--alf-txt-letter-spacing-hover, var(--alf-txt-letter-spacing));
+  }
+
+  // --- ACTIVE ---
+  &:active {
+    color:       var(--alf-txt-color-active,   var(--alf-txt-color));
+    font-weight: var(--alf-txt-weight-active,  var(--alf-txt-weight));
+    opacity:     var(--alf-txt-opacity-active, var(--alf-txt-opacity));
+  }
+
+  // --- DISABLED ---
+  &[disabled],
+  &:disabled {
+    color:   var(--alf-txt-color-disabled,   var(--alf-txt-color));
+    opacity: var(--alf-txt-opacity-disabled, var(--alf-txt-opacity));
+  }
+}

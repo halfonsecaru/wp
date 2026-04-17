@@ -46,7 +46,9 @@
               "apps/front/web/src/styles.scss"
             ],
             "stylePreprocessorOptions": {
-              "includePaths": ["libs/angular/styles"]
+              "includePaths": [
+                "libs/angular/styles"
+              ]
             }
           },
           "configurations": {
@@ -112,11 +114,142 @@
                 "output": "/"
               }
             ],
-            "styles": ["apps/front/web/src/styles.scss"],
+            "styles": [
+              "apps/front/web/src/styles.scss"
+            ],
             "stylePreprocessorOptions": {
-              "includePaths": ["libs/angular/styles"]
+              "includePaths": [
+                "libs/angular/styles"
+              ]
             }
           }
+        }
+      }
+    },
+    "demo": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "apps/front/demo",
+      "sourceRoot": "apps/front/demo/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "apps/front/demo/src/main.ts",
+            "tsConfig": "apps/front/demo/tsconfig.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "apps/front/demo/public",
+                "output": "/"
+              },
+              {
+                "glob": "**/*",
+                "input": "libs/angular/i18n",
+                "output": "/libs/angular/i18n/"
+              }
+            ],
+            "styles": [
+              "apps/front/demo/src/styles.css",
+              "apps/front/demo/src/styles.scss"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "libs/angular/environments/environment.ts",
+                  "with": "libs/angular/environments/environment.prod.ts"
+                }
+              ],
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "fileReplacements": [
+                {
+                  "replace": "libs/angular/environments/environment.ts",
+                  "with": "libs/angular/environments/environment.dev.ts"
+                }
+              ],
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "demo:build:production"
+            },
+            "development": {
+              "buildTarget": "demo:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular/build:extract-i18n"
+        },
+        "test": {
+          "builder": "@angular/build:karma",
+          "options": {
+            "tsConfig": "apps/front/demo/tsconfig.spec.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "apps/front/demo/public",
+                "output": "/"
+              }
+            ],
+            "styles": [
+              "apps/front/demo/src/styles.scss"
+            ]
+          }
+        }
+      }
+    },
+    "alf-components": {
+      "projectType": "library",
+      "root": "alfcomponents",
+      "sourceRoot": "alfcomponents",
+      "prefix": "alf",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "alfcomponents/package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "alfcomponents/tsconfig.json"
+            },
+            "development": {
+              "tsConfig": "alfcomponents/tsconfig.json"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }

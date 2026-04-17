@@ -1,0 +1,23 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist/spec",
+    "types": ["vitest/globals", "node"],
+    "composite": false,
+    "declaration": false,
+    "emitDeclarationOnly": false
+  },
+  "include": [
+    "alfcomponents/**/*.spec.ts",
+    "alfcomponents/**/*.ts",
+    "apps/**/*.spec.ts",
+    "apps/**/*.ts",
+    "libs/**/*.spec.ts",
+    "libs/**/*.ts",
+    "vitest.setup.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../dist/alfcomponents",
+    "rootDir": "./",
+    "composite": true,
+    "tsBuildInfoFile": "./.tsbuildinfo",
+    "emitDeclarationOnly": true,
+    "moduleResolution": "bundler"
+  },
+  "include": [
+    "**/*.ts"
+  ]
+}

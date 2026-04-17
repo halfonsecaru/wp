@@ -1,7 +1,7 @@
-import { 
-  AlfLoadingModeEnum, 
-  AlfSpinnerTypeEnum, 
-  AlfOpacityEnum, 
+import {
+  AlfLoadingModeEnum,
+  AlfSpinnerTypeEnum,
+  AlfOpacityEnum,
   AlfColorEnum,
   AlfSpinnerStrokeWidthEnum,
   AlfPxEnum,

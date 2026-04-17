@@ -1,7 +1,7 @@
-import { 
-  AlfShadowEnum, 
-  AlfColorEnum, 
-  AlfTextShadowEnum 
+import {
+  AlfShadowEnum,
+  AlfColorEnum,
+  AlfTextShadowEnum
 } from '../enums';
 
 /**
@@ -78,4 +78,9 @@ export interface AlfShadowsInterface {
    * Estilos aplicados cuando el componente se encuentra en estado deshabilitado.
    */
   disabled?: AlfShadowsBaseInterface;
+
+  /**
+   * Estilos aplicados cuando el componente está activo (en click).
+   */
+  active?: AlfShadowsBaseInterface;
 }

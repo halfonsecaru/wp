@@ -1,0 +1,14 @@
+@if (!lazy() || shouldBeVisible()) {
+  <div 
+    class="alf-tab-content__inner"
+    [ngClass]="animationClassesComputed()"
+    [class.alf-tab-content__inner--active]="isActive()"
+    [class.alf-tab-content__inner--exiting]="isExiting()"
+    [attr.tabindex]="tabIndex()"
+    [style.display]="shouldBeVisible() ? 'block' : 'none'"
+    [ngStyle]="animationStylesComputed()"
+    (animationend)="onAnimationEnd()"
+  >
+    <ng-content></ng-content>
+  </div>
+}

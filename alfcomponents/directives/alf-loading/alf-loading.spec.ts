@@ -12,33 +12,33 @@ import { AlfLoadingModeEnum, AlfColorEnum, AlfOpacityEnum, AlfSpinnerStrokeWidth
 // WAAPI MOCK (Para JSDOM)
 // ========================================
 if (typeof Element !== 'undefined' && !Element.prototype.animate) {
-    Element.prototype.animate = vi.fn().mockImplementation(function(this: HTMLElement) {
-        const anim = {
-            finished: Promise.resolve(),
-            onfinish: null as any,
-            play: vi.fn(),
-            pause: vi.fn(),
-            cancel: vi.fn(),
-            reverse: vi.fn(),
-        };
-        // Para que el test sea síncrono y fluya:
-        // El cleanup del directive depende de onfinish.
-        // Lo disparamos en un microtask.
-        Promise.resolve().then(() => {
-          if (typeof anim.onfinish === 'function') anim.onfinish();
-        });
-        return anim;
+  Element.prototype.animate = vi.fn().mockImplementation(function (this: HTMLElement) {
+    const anim = {
+      finished: Promise.resolve(),
+      onfinish: null as any,
+      play: vi.fn(),
+      pause: vi.fn(),
+      cancel: vi.fn(),
+      reverse: vi.fn(),
+    };
+    // Para que el test sea síncrono y fluya:
+    // El cleanup del directive depende de onfinish.
+    // Lo disparamos en un microtask.
+    Promise.resolve().then(() => {
+      if (typeof anim.onfinish === 'function') anim.onfinish();
     });
+    return anim;
+  });
 }
 
 // ========================================
 // WORKAROUND INICIALIZACIÓN TESTBED
 // ========================================
-try { 
-    const testBed = getTestBed();
-    if (!testBed.platform) {
-      testBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting()); 
-    }
+try {
+  const testBed = getTestBed();
+  if (!testBed.platform) {
+    testBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
+  }
 } catch (e) { }
 
 // ========================================
@@ -83,7 +83,7 @@ describe('AlfLoadingDirective (Elite Suite)', () => {
     await TestBed.configureTestingModule({
       imports: [
         AlfSpinner, // Necesario para que TestBed reconozca sus inputs al crearlo dinámicamente
-        TestSimpleHostComponent, 
+        TestSimpleHostComponent,
         TestConfigHostComponent
       ]
     }).compileComponents();
@@ -102,7 +102,7 @@ describe('AlfLoadingDirective (Elite Suite)', () => {
     const fixture = TestBed.createComponent(TestSimpleHostComponent);
     fixture.componentInstance.isLoading.set(true);
     fixture.detectChanges();
-    
+
     expect(fixture.debugElement.query(By.css('alf-spinner'))).toBeTruthy();
 
     fixture.componentInstance.isLoading.set(false);
@@ -118,9 +118,9 @@ describe('AlfLoadingDirective (Elite Suite)', () => {
 
   it('should create an overlay in Overlay mode', () => {
     const fixture = TestBed.createComponent(TestConfigHostComponent);
-    fixture.componentInstance.config.set({ 
-      isLoading: true, 
-      mode: AlfLoadingModeEnum.Overlay 
+    fixture.componentInstance.config.set({
+      isLoading: true,
+      mode: AlfLoadingModeEnum.Overlay
     });
     fixture.detectChanges();
 
@@ -133,10 +133,10 @@ describe('AlfLoadingDirective (Elite Suite)', () => {
 
   it('should apply blur when useBlur is true', () => {
     const fixture = TestBed.createComponent(TestConfigHostComponent);
-    fixture.componentInstance.config.set({ 
-      isLoading: true, 
+    fixture.componentInstance.config.set({
+      isLoading: true,
       mode: AlfLoadingModeEnum.Overlay,
-      useBlur: true 
+      useBlur: true
     });
     fixture.detectChanges();
 
@@ -148,9 +148,9 @@ describe('AlfLoadingDirective (Elite Suite)', () => {
   it('should display message when provided', () => {
     const fixture = TestBed.createComponent(TestConfigHostComponent);
     const message = 'Elite Loading...';
-    fixture.componentInstance.config.set({ 
-      isLoading: true, 
-      message: message 
+    fixture.componentInstance.config.set({
+      isLoading: true,
+      message: message
     });
     fixture.detectChanges();
 
@@ -160,8 +160,8 @@ describe('AlfLoadingDirective (Elite Suite)', () => {
 
   it('should apply custom spinner styles', () => {
     const fixture = TestBed.createComponent(TestConfigHostComponent);
-    fixture.componentInstance.config.set({ 
-      isLoading: true, 
+    fixture.componentInstance.config.set({
+      isLoading: true,
       spinnerColor: AlfColorEnum.Red600,
       spinnerStrokeWidth: AlfSpinnerStrokeWidthEnum.Thick
     });
@@ -176,7 +176,7 @@ describe('AlfLoadingDirective (Elite Suite)', () => {
     const fixture = TestBed.createComponent(TestSimpleHostComponent);
     fixture.componentInstance.isLoading.set(true);
     fixture.detectChanges();
-    
+
     expect(fixture.debugElement.query(By.css('alf-spinner'))).toBeTruthy();
 
     fixture.destroy();

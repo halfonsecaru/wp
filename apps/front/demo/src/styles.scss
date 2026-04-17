@@ -1,0 +1,60 @@
+@use '../../../../libs/angular/styles/root.scss';
+@use '../../../../libs/angular/styles/predefined.scss';
+@use '../../../../alfcomponents/styles/alf-tokens.scss' as *;
+@import "animate.css";
+
+/* AlfComponents - Omni-Reactive Design Tokens System (Complete Matrix) */
+
+
+/* 
+  =============================================================================
+  GUÍA MAESTRA DE TOKENS (Todas las combinaciones posibles)
+  Puedes sobreescribir cualquiera de estas variables en tus temas personalizados:
+  =============================================================================
+  
+  --alf-sys-primary, --alf-sys-primary-hover
+  --alf-sys-danger, --alf-sys-danger-hover
+  --alf-sys-success, --alf-sys-success-hover
+  --alf-sys-warning, --alf-sys-warning-hover
+  --alf-sys-info, --alf-sys-info-hover
+  --alf-sys-white, --alf-sys-black
+
+  --alf-sys-gray-(050 a 999)
+  --alf-sys-red-(100, 500, 700, 900)
+  --alf-sys-blue-(100, 500, 700, 900)
+  --alf-sys-green-(100, 500, 700, 900)
+  --alf-sys-emerald, --alf-sys-teal, --alf-sys-cyan, --alf-sys-sky
+  --alf-sys-indigo, --alf-sys-violet, --alf-sys-purple, --alf-sys-fuchsia, --alf-sys-pink, --alf-sys-rose
+*/
+
+/* 🌑 TEMA PERSONALIZADO 1: MIDNIGHT GOLD 🌑 */
+[data-alf-theme="midnight-gold"] {
+  --alf-sys-primary: #d4af37;
+  --alf-sys-primary-hover: #f0c420;
+  --alf-sys-white: #0a0a0c;
+  --alf-sys-black: #ffffff;
+  --alf-sys-gray-050: #0a0a0c;
+  --alf-sys-gray-100: #121215;
+  --alf-sys-gray-400: #d4af37;
+  --alf-sys-gray-900: #ffffff;
+}
+
+/* 💃 TEMA PERSONALIZADO 2: CYBERPUNK NEON 💃 */
+[data-alf-theme="cyberpunk"] {
+  --alf-sys-primary: #ff00ff;        /* Neon Pink */
+  --alf-sys-primary-hover: #ff77ff;
+  --alf-sys-info: #00ffff;           /* Neon Cyan */
+  --alf-sys-success: #39ff14;        /* Neon Green */
+  --alf-sys-white: #000033;          /* Dark Night Blue */
+  --alf-sys-black: #ffffff;
+  
+  /* Grises eléctricos */
+  --alf-sys-gray-050: #000022;
+  --alf-sys-gray-100: #000044;
+  --alf-sys-gray-400: #00ffff;
+  --alf-sys-gray-900: #ff00ff;
+  
+  /* Sobreescribimos una familia entera para este tema */
+  --alf-sys-blue-500: #00ffff; 
+  --alf-sys-red-500: #ff0055;
+}

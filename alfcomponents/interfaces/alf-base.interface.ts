@@ -20,7 +20,7 @@ import { AlfLoadingInterface } from './alf-loading.interface';
  * de estilo granular comunes para la arquitectura de componentes Alf.
  */
 export interface AlfBaseInterface {
- 
+
   /** Control de estados de carga y spinners */
   loading?: AlfLoadingInterface;
   

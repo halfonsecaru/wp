@@ -1,0 +1,238 @@
+@use '../../../styles/mixins' as *;
+
+/**
+ * AlfTabs Premium Styles
+ * Implementa un ecosistema visual de alta calidad con soporte para glassmorphism
+ * y gradientes de máscara para el scroll.
+ */
+
+.alf-tabs {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 12px;
+  
+  // Marco del Componente Premium
+  border: 1px solid var(--alf-color-gray-200, #e2e8f0);
+  border-radius: 12px;
+  background: var(--alf-color-white, #fff);
+  padding: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+  }
+  
+  &--vertical {
+    flex-direction: row;
+    height: 100%;
+    
+    .alf-tabs__header-container {
+      flex-direction: column;
+      border-right: 1px solid var(--alf-color-gray-200);
+      border-bottom: none;
+      width: clamp(200px, 20vw, 300px);
+    }
+    
+    .alf-tabs__nav {
+      flex-direction: column;
+      width: 100%;
+    }
+  }
+}
+
+.alf-tabs__header-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  background: transparent;
+  user-select: none;
+  
+  // Gradiente de máscara para suavizar los bordes del scroll
+  &::before, &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 24px;
+    z-index: 2;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  &::before {
+    left: 0;
+    background: linear-gradient(to right, var(--alf-color-white, #fff), transparent);
+  }
+
+  &::after {
+    right: 0;
+    background: linear-gradient(to left, var(--alf-color-white, #fff), transparent);
+  }
+}
+
+.alf-tabs__header-scroll {
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.alf-tabs__nav {
+  display: flex;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  gap: 4px;
+  padding: 4px;
+  position: relative; // Necesario para el indicador absoluto
+  
+  // Estilo Glass (Opcional según visualType)
+  .alf-tabs--glass & {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+}
+
+.alf-tabs__indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: var(--alf-color-primary, #6200ee);
+  border-radius: 3px 3px 0 0;
+  z-index: 10;
+  
+  // Transición Material Design: Suave y con "peso"
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, width;
+
+  // Filtro para oscurecer el color si es necesario (el 15% propuesto)
+  filter: brightness(0.85);
+}
+
+.alf-tabs__content-container {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+  position: relative;
+  overflow: hidden;
+  min-height: 100px;
+  
+  // Apilamos todos los hijos (manuales o anidados) en la misma celda de grid
+  // Esto permite que el que entra y el que sale ocupen el mismo lugar exacto.
+  alf-tab-content, 
+  .alf-tabs__panel {
+    grid-area: 1 / 1;
+    width: 100%;
+    // Evitamos que las transiciones manuales interfieran con Animate.css
+    transition: none; 
+  }
+}
+
+// --- Variantes Visuales ---
+
+/* Underline (Default) */
+.alf-tabs--underline {
+  .alf-tabs__nav {
+    border-bottom: 2px solid var(--alf-color-gray-100, #e2e8f0);
+    padding-bottom: 0;
+  }
+}
+
+/* Pill (Modern Capsule) */
+.alf-tabs--pill {
+  .alf-tabs__nav {
+    background: var(--alf-color-gray-100);
+    border-radius: 40px;
+    padding: 6px;
+  }
+}
+
+/* Glassmorphism */
+.alf-tabs--glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Master Design 3.0 (Pure - Exact Match) */
+.alf-tabs--master {
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  gap: 0;
+  background: transparent;
+
+  .alf-tabs__header-container {
+    border-bottom: 1px solid var(--alf-color-gray-150, #f0f0f0);
+    
+    // Eliminamos los gradientes de máscara para un look 100% plano
+    &::before, &::after { display: none !important; }
+  }
+
+  .alf-tabs__nav {
+    gap: 0;
+    padding: 0;
+    
+    alf-tab {
+      display: contents; // Hacemos que el host del tab no interfiera en el layout
+      
+      // Selectores ultra-agresivos para resetear AlfButton y sus tokens
+      alf-button, 
+      .alf-btn,
+      button {
+        // Reseteo total de las variables que viste en el inspector
+        --alf-bg-color: transparent !important;
+        --alf-bg-color-hover: rgba(0, 0, 0, 0.04) !important;
+        --alf-brd-radius: 0 !important;
+        --alf-brd-border-top-left-radius: 0 !important;
+        --alf-brd-border-top-right-radius: 0 !important;
+        --alf-brd-border-bottom-left-radius: 0 !important;
+        --alf-brd-border-bottom-right-radius: 0 !important;
+        --alf-shd-val: none !important;
+        --alf-shd-val-hover: none !important;
+        
+        // Refuerzo de propiedades nativas
+        background: transparent !important;
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+      }
+
+      // Estilos de fuente Master
+      color: var(--alf-color-gray-500, #94a3b8);
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: color 0.3s ease;
+
+      &.alf-tab--active {
+        color: var(--alf-tabs-indicator-color, var(--alf-color-primary));
+        
+        // Refuerzo para el botón activo
+        alf-button, .alf-btn, button {
+          color: inherit !important;
+          background: transparent !important;
+        }
+      }
+    }
+  }
+
+  .alf-tabs__indicator {
+    height: 2px;
+    border-radius: 0;
+    filter: none; // En Material puro el color es vibrante, no oscuro
+  }
+}

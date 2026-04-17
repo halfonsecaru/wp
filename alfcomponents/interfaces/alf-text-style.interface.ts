@@ -1,4 +1,4 @@
-import { 
+import {
     AlfColorEnum,
     AlfTextDecorationEnum,
     AlfTextShadowEnum,

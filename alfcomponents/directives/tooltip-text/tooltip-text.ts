@@ -38,7 +38,7 @@ export class AlfTooltipTextDirective implements OnDestroy {
   }
 
   private readonly _config = signal<AlfTooltipConfig | null>(null);
-  
+
   private _tooltipElement: HTMLElement | null = null;
   private _showTimeout: ReturnType<typeof setTimeout> | null = null;
 
@@ -96,7 +96,7 @@ export class AlfTooltipTextDirective implements OnDestroy {
     };
 
     const colorMap: Record<string, { bg: string; color: string }> = {
-      'primary': { bg: AlfColorEnum.Primary, color: AlfColorEnum.White },
+      'primary': { bg: AlfColorEnum.Red600, color: AlfColorEnum.White },
       'secondary': { bg: AlfColorEnum.Gray600, color: AlfColorEnum.White },
       'success': { bg: AlfColorEnum.Green600, color: AlfColorEnum.White },
       'danger': { bg: AlfColorEnum.Red600, color: AlfColorEnum.White },
@@ -128,7 +128,7 @@ export class AlfTooltipTextDirective implements OnDestroy {
     this._renderer.setAttribute(this._tooltipElement, 'id', this._UNIQUE_ID);
     this._renderer.setAttribute(this._tooltipElement, 'role', 'tooltip');
     this._renderer.setProperty(this._tooltipElement, 'textContent', config.text);
-    
+
     this._renderer.setAttribute(this._el.nativeElement, 'aria-describedby', this._UNIQUE_ID);
 
     this.applyTooltipStyles(config.variant);
@@ -178,7 +178,7 @@ export class AlfTooltipTextDirective implements OnDestroy {
 
     const hostRect = this._el.nativeElement.getBoundingClientRect();
     const tooltipRect = this._tooltipElement.getBoundingClientRect();
-    
+
     let top = 0;
     let left = 0;
 
@@ -211,7 +211,7 @@ export class AlfTooltipTextDirective implements OnDestroy {
 
   ngOnDestroy(): void {
     if (this._showTimeout) clearTimeout(this._showTimeout);
-    
+
     // Limpieza síncrona inmediata para evitar fugas en destrucción
     if (this._tooltipElement) {
       if (this._tooltipElement.parentNode) {

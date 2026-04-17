@@ -1,10 +1,10 @@
 import { AlfLoadingInterface } from '../../../interfaces/alf-loading.interface';
-import { 
-  AlfLoadingModeEnum, 
-  AlfSpinnerTypeEnum, 
-  AlfColorEnum, 
-  AlfPxEnum, 
-  AlfSpinnerStrokeWidthEnum 
+import {
+  AlfLoadingModeEnum,
+  AlfSpinnerTypeEnum,
+  AlfColorEnum,
+  AlfPxEnum,
+  AlfSpinnerStrokeWidthEnum
 } from '../../../enums';
 
 /**

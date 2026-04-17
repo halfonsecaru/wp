@@ -1,0 +1,49 @@
+:host {
+  display: inline-block;
+  position: relative;
+  transition: all 0.3s ease;
+
+  &.alf-tab--active {
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 8px;
+      right: 8px;
+      height: 2px;
+      background: var(--alf-color-primary, #3b82f6);
+      border-radius: 2px 2px 0 0;
+      opacity: 0;
+      transform: translateY(2px);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    &.alf-tab--active::after {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  &.alf-tab--disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+// Estilos específicos cuando estamos en modo Underline
+:host-context(.alf-tabs--underline) {
+  margin-bottom: -2px;
+  
+  &.alf-tab--active::after {
+    left: 0;
+    right: 0;
+  }
+}
+
+// Estilos específicos cuando estamos en modo Master (Sliding Indicator)
+// Desactivamos el subrayado estático heredado para no solapar con el deslizador
+:host-context(.alf-tabs--master) {
+  &::after { 
+    display: none !important; 
+  }
+}

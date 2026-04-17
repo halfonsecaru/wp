@@ -1,6 +1,6 @@
-import { 
-  AlfListStyleTypeEnum, 
-  AlfListStylePositionEnum 
+import {
+  AlfListStyleTypeEnum,
+  AlfListStylePositionEnum
 } from '../enums';
 
 /**

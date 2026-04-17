@@ -36,8 +36,9 @@ try {
 
   addScriptsToPackage(name, args[0]);
   addToTsConfig(baseDir, name, args[0]);
+  addToVitestConfig(name, args[0]);
 
-  execSync(`npx tsx ${scriptPath} ${name}`, { stdio: 'inherit' });
+  execSync(`npx tsx "${scriptPath}" ${name}`, { stdio: 'inherit' });
 } catch (error) {
   process.exit(1);
 }
@@ -218,3 +219,41 @@ export function addAliasToTsconfig(pathFile: any, name: string) {
     // console.error('❌ Error leyendo o modificando tsconfig.base.json:', err.message);
   }
 }
+
+function addToVitestConfig(projectName, folderType) {
+  try {
+    const vitestConfigPath = path.join(process.cwd(), 'vitest.config.ts');
+    if (!fs.existsSync(vitestConfigPath)) return;
+
+    let content = fs.readFileSync(vitestConfigPath, 'utf8');
+    
+    // Normalize folder type
+    const folder = folderType === 'nestjs' ? 'back' : 'front';
+    const aliasKey = `@${projectName}`;
+    const aliasPath = `path.resolve(__dirname, './apps/${folder}/${projectName}')`;
+
+    // Check if alias already exists
+    if (content.includes(`'${aliasKey}':`)) {
+      console.log(`ℹ️ Alias "${aliasKey}" already exists in vitest.config.ts`);
+      return;
+    }
+
+    // Insert alias into resolve.alias object
+    const aliasRegex = /alias: \{([\s\S]*?)\},/;
+    const match = content.match(aliasRegex);
+
+    if (match) {
+      const existingAliases = match[1];
+      const newAliasLine = `      '${aliasKey}': ${aliasPath},`;
+      const updatedAliases = existingAliases + (existingAliases.trim() ? '\n' : '') + newAliasLine;
+      content = content.replace(aliasRegex, `alias: {${updatedAliases}\n    },`);
+      
+      fs.writeFileSync(vitestConfigPath, content);
+      console.log(`✅ Alias "${aliasKey}" added to vitest.config.ts`);
+    }
+
+  } catch (error) {
+    console.log('Error adding to vitest config:', error);
+  }
+}
+

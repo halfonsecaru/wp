@@ -1,0 +1,49 @@
+<nav style="padding: 1rem; background: #fff; border-bottom: 1px solid #eee; display: flex; gap: 1rem; align-items: center;">
+  <small style="color: #999; text-transform: uppercase; font-weight: bold; margin-right: 1rem;">[ Temporal Nav ]</small>
+  
+  <alf-button 
+    label="Solid Buttons" 
+    [predefined]="buttonKeys.Info"
+    visualType="ghost"
+    size="sm"
+    (onClick)="navigateTo('buttons/solid')"
+  ></alf-button>
+
+  <alf-button 
+    label="AlfTabs (Elite)" 
+    [predefined]="buttonKeys.Accept"
+    visualType="solid"
+    size="sm"
+    (onClick)="navigateTo('composed/tabs')"
+  ></alf-button>
+
+  <div style="margin-left: auto; display: flex; gap: 0.5rem; align-items: center;">
+    <alf-button 
+      [label]="activeTheme() === themeEnum.Dark ? 'Light' : 'Dark'" 
+      [predefined]="activeTheme() === themeEnum.Dark ? buttonKeys.Info : buttonKeys.Cancel"
+      visualType="ghost"
+      size="xs"
+      (onClick)="setAppTheme(activeTheme() === themeEnum.Dark ? themeEnum.Light : themeEnum.Dark)"
+    ></alf-button>
+
+    <alf-button 
+      label="Midnight Gold" 
+      [predefined]="buttonKeys.Back"
+      visualType="solid"
+      size="xs"
+      (onClick)="setAppTheme(themeEnum.MidnightGold)"
+    ></alf-button>
+
+    <alf-button 
+      label="Cyberpunk" 
+      predefined="CYBER"
+      visualType="solid"
+      size="xs"
+      (onClick)="setAppTheme(themeEnum.Cyberpunk)"
+    ></alf-button>
+  </div>
+</nav>
+
+<main>
+  <router-outlet></router-outlet>
+</main>

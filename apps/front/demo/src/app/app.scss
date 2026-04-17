@@ -1,0 +1,15 @@
+:host {
+  display: block;
+  font-family: system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  background-color: var(--alf-sys-white, #f9fafb);
+  color: var(--alf-sys-black, #111827);
+  transition: all 0.3s ease;
+}
+
+h3 {
+  margin-top: 0;
+  color: #111827;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 0.5rem;
+}

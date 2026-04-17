@@ -1,6 +1,6 @@
-import { 
-  AlfAriaRoleEnum, 
-  AlfAriaHasPopupEnum 
+import {
+  AlfAriaRoleEnum,
+  AlfAriaHasPopupEnum
 } from '../enums';
 
 /**
@@ -60,5 +60,13 @@ export interface AlfAriaInterface {
   /**
    * Indica si el elemento es obligatorio.
    */
+  /**
+   * Indica si el elemento es obligatorio.
+   */
   ariaRequired?: boolean;
+
+  /**
+   * Indica si el elemento está seleccionado.
+   */
+  ariaSelected?: boolean;
 }

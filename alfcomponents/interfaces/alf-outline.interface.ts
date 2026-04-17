@@ -1,8 +1,8 @@
-import { 
-  AlfPxEnum, 
-  AlfRemEnum, 
-  AlfBorderStyleEnum, 
-  AlfColorEnum 
+import {
+  AlfPxEnum,
+  AlfRemEnum,
+  AlfBorderStyleEnum,
+  AlfColorEnum
 } from '../enums';
 
 /**

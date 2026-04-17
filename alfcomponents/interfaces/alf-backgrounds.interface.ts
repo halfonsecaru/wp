@@ -1,10 +1,10 @@
-import { 
-  AlfColorEnum, 
-  AlfBackgroundSizeEnum, 
-  AlfPositionEnum, 
-  AlfBackgroundRepeatEnum, 
-  AlfBackgroundAttachmentEnum, 
-  AlfBackgroundClipEnum 
+import {
+  AlfColorEnum,
+  AlfBackgroundSizeEnum,
+  AlfPositionEnum,
+  AlfBackgroundRepeatEnum,
+  AlfBackgroundAttachmentEnum,
+  AlfBackgroundClipEnum
 } from '../enums';
 
 /**
@@ -81,4 +81,9 @@ export interface AlfBackgroundsInterface {
    * Estilos aplicados cuando el componente se encuentra en estado deshabilitado.
    */
   disabled?: AlfBackgroundsBaseInterface;
+
+  /**
+   * Estilos aplicados cuando el componente está activo (en click).
+   */
+  active?: AlfBackgroundsBaseInterface;
 }

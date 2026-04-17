@@ -1,6 +1,6 @@
-import { 
-  AlfAnimationTypeEnum, 
-  AlfTimingFunctionEnum 
+import {
+  AlfAnimationTypeEnum,
+  AlfTimingFunctionEnum
 } from '../enums';
 
 /**
@@ -58,4 +58,22 @@ export interface AlfAnimationConfigInterface {
    * @example [{ 'animation-fill-mode': 'both' }] 
    */
   customCssStyle?: Record<string, string>[];
+}
+
+/**
+ * AlfAnimateCssInterface
+ * Configuración específica para animaciones de terceros (Animate.css).
+ */
+export interface AlfAnimateCssInterface {
+  /** Efecto de entrada (ej: AlfAnimationTypeEnum.FadeIn) */
+  enterStage?: AlfAnimationTypeEnum | string;
+  
+  /** Efecto de salida (ej: AlfAnimationTypeEnum.FadeOut) */
+  exitStage?: AlfAnimationTypeEnum | string;
+
+  /** Duración de la animación (ej: '0.5s', 'fast') */
+  duration?: string;
+
+  /** Retraso en el inicio */
+  delay?: string;
 }

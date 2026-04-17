@@ -1,0 +1,50 @@
+// =============================================================
+// MIXIN: alf-margin
+// Mapea las CSS vars generadas por AlfBaseComponent (resolver)
+// a propiedades CSS reales para todos los estados.
+//
+// Uso: @include alf-margin();
+// =============================================================
+
+@mixin alf-margin() {
+
+  // --- DEFAULT ---
+  margin-top:    var(--alf-mar-margin-top);
+  margin-right:  var(--alf-mar-margin-right);
+  margin-bottom: var(--alf-mar-margin-bottom);
+  margin-left:   var(--alf-mar-margin-left);
+
+  // --- FOCUS ---
+  &:focus,
+  &:focus-visible {
+    margin-top:    var(--alf-mar-margin-top-focus,    var(--alf-mar-margin-top));
+    margin-right:  var(--alf-mar-margin-right-focus,  var(--alf-mar-margin-right));
+    margin-bottom: var(--alf-mar-margin-bottom-focus, var(--alf-mar-margin-bottom));
+    margin-left:   var(--alf-mar-margin-left-focus,   var(--alf-mar-margin-left));
+  }
+
+  // --- HOVER ---
+  &:hover {
+    margin-top:    var(--alf-mar-margin-top-hover,    var(--alf-mar-margin-top));
+    margin-right:  var(--alf-mar-margin-right-hover,  var(--alf-mar-margin-right));
+    margin-bottom: var(--alf-mar-margin-bottom-hover, var(--alf-mar-margin-bottom));
+    margin-left:   var(--alf-mar-margin-left-hover,   var(--alf-mar-margin-left));
+  }
+
+  // --- ACTIVE ---
+  &:active {
+    margin-top:    var(--alf-mar-margin-top-active,    var(--alf-mar-margin-top));
+    margin-right:  var(--alf-mar-margin-right-active,  var(--alf-mar-margin-right));
+    margin-bottom: var(--alf-mar-margin-bottom-active, var(--alf-mar-margin-bottom));
+    margin-left:   var(--alf-mar-margin-left-active,   var(--alf-mar-margin-left));
+  }
+
+  // --- DISABLED ---
+  &[disabled],
+  &:disabled {
+    margin-top:    var(--alf-mar-margin-top-disabled,    var(--alf-mar-margin-top));
+    margin-right:  var(--alf-mar-margin-right-disabled,  var(--alf-mar-margin-right));
+    margin-bottom: var(--alf-mar-margin-bottom-disabled, var(--alf-mar-margin-bottom));
+    margin-left:   var(--alf-mar-margin-left-disabled,   var(--alf-mar-margin-left));
+  }
+}

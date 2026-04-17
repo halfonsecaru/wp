@@ -119,5 +119,8 @@
     "other": "off"
   },
   "angular.enable-strict-mode-prompt": false,
-  "vsicons.presets.angular": true
+  "vsicons.presets.angular": true,
+  "[markdown]": {
+    "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+  }
 }

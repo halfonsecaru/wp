@@ -1,0 +1,2531 @@
+{
+  "version": "6.0",
+  "nxVersion": "22.6.4",
+  "pathMappings": {
+    "@libs/shared/*": [
+      "libs/shared/*"
+    ],
+    "@libs/nestjs/*": [
+      "libs/nestjs/*"
+    ],
+    "@libs/angular/*": [
+      "libs/angular/*"
+    ],
+    "@libs/examples/*": [
+      "libs/examples/*"
+    ],
+    "@alfcomponents": [
+      "alfcomponents/index.ts"
+    ],
+    "@alfcomponents/*": [
+      "alfcomponents/*"
+    ]
+  },
+  "nxJsonPlugins": [],
+  "fileMap": {
+    "projectFileMap": {
+      "demo": [
+        {
+          "file": "apps/front/demo/.editorconfig",
+          "hash": "11641364645464013998"
+        },
+        {
+          "file": "apps/front/demo/README.md",
+          "hash": "11601966329819847988"
+        },
+        {
+          "file": "apps/front/demo/package.json",
+          "hash": "6446970658680492296"
+        },
+        {
+          "file": "apps/front/demo/src/app/app.config.ts",
+          "hash": "11844018484596543002",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/front/demo/src/app/app.html",
+          "hash": "17681715149392321156"
+        },
+        {
+          "file": "apps/front/demo/src/app/app.routes.ts",
+          "hash": "1086202131697989825",
+          "deps": [
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/front/demo/src/app/app.scss",
+          "hash": "17808387443609936413"
+        },
+        {
+          "file": "apps/front/demo/src/app/app.ts",
+          "hash": "4986710538668774980",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/front/demo/src/app/pages/solid-buttons.ts",
+          "hash": "17125093310093435243",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "apps/front/demo/src/index.html",
+          "hash": "11751066571783941634"
+        },
+        {
+          "file": "apps/front/demo/src/main.ts",
+          "hash": "15944248449879998907",
+          "deps": [
+            "npm:@angular/platform-browser"
+          ]
+        },
+        {
+          "file": "apps/front/demo/src/styles.css",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/front/demo/src/styles.scss",
+          "hash": "1965583850859094018"
+        },
+        {
+          "file": "apps/front/demo/tsconfig.json",
+          "hash": "3829814497089771670"
+        }
+      ]
+    },
+    "nonProjectFiles": [
+      {
+        "file": ".angular/cache/21.2.6/demo/vite/com.chrome.devtools.json",
+        "hash": "12436902978287702412"
+      },
+      {
+        "file": ".angular/cache/21.2.6/demo/vite/deps/@angular_core.js",
+        "hash": "14192413924076410701"
+      },
+      {
+        "file": ".angular/cache/21.2.6/demo/vite/deps/@angular_platform-browser.js",
+        "hash": "15394756251697655505"
+      },
+      {
+        "file": ".angular/cache/21.2.6/demo/vite/deps/@angular_router.js",
+        "hash": "3775275874092535221"
+      },
+      {
+        "file": ".angular/cache/21.2.6/demo/vite/deps/@angular_router.js.map",
+        "hash": "12862905868405568567"
+      },
+      {
+        "file": ".angular/cache/21.2.6/demo/vite/deps/_metadata.json",
+        "hash": "17584619954047134221"
+      },
+      {
+        "file": ".angular/cache/21.2.6/demo/vite/deps/core-lutpOAv_.js",
+        "hash": "5964397804880376375"
+      },
+      {
+        "file": ".angular/cache/21.2.6/demo/vite/deps/core-lutpOAv_.js.map",
+        "hash": "16845227525783281656"
+      },
+      {
+        "file": ".angular/cache/21.2.6/demo/vite/deps/package.json",
+        "hash": "8630294688235076505"
+      },
+      {
+        "file": ".angular/cache/21.2.6/demo/vite/deps/platform-browser-b-b1Pkve.js",
+        "hash": "8437933779746553903"
+      },
+      {
+        "file": ".angular/cache/21.2.6/demo/vite/deps/platform-browser-b-b1Pkve.js.map",
+        "hash": "17544546609590723311"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "4373292525606429364"
+      },
+      {
+        "file": ".prettierrc",
+        "hash": "1345354295904422289"
+      },
+      {
+        "file": ".vscode/extensions.json",
+        "hash": "16104632344483163402"
+      },
+      {
+        "file": ".vscode/launch.json",
+        "hash": "8626017545056590400"
+      },
+      {
+        "file": ".vscode/settings.json",
+        "hash": "8337926829318194480"
+      },
+      {
+        "file": ".vscode/tasks.json",
+        "hash": "18278738266989125600"
+      },
+      {
+        "file": "AI_INSTRUCTIONS.md",
+        "hash": "72728470170511635"
+      },
+      {
+        "file": "ALF_COMPONENT_TODO.md",
+        "hash": "8400106215406752393"
+      },
+      {
+        "file": "README.md",
+        "hash": "10479040451033120105"
+      },
+      {
+        "file": "READMESHORT.md",
+        "hash": "14373532092874067124"
+      },
+      {
+        "file": "RULES.md",
+        "hash": "14096566618843267538"
+      },
+      {
+        "file": "SESSION_HANDOVER.md",
+        "hash": "10626254421462873580"
+      },
+      {
+        "file": "alfcomponents/CATALOG.md",
+        "hash": "15311826282707200979"
+      },
+      {
+        "file": "alfcomponents/base/alf-base.component.ts",
+        "hash": "5767218961185202140"
+      },
+      {
+        "file": "alfcomponents/base/alf-base.style-resolver.ts",
+        "hash": "7459433806565093748"
+      },
+      {
+        "file": "alfcomponents/base/index.ts",
+        "hash": "3663313721800159860"
+      },
+      {
+        "file": "alfcomponents/components/composed/alf-tabs/TODO.md",
+        "hash": "18220666088781958690"
+      },
+      {
+        "file": "alfcomponents/components/index.ts",
+        "hash": "12793092615492076111"
+      },
+      {
+        "file": "alfcomponents/components/simple/alf-button/README.english.md",
+        "hash": "11883747749357176258"
+      },
+      {
+        "file": "alfcomponents/components/simple/alf-button/README.spanish.md",
+        "hash": "12538551362639125721"
+      },
+      {
+        "file": "alfcomponents/components/simple/alf-button/alf-button.html",
+        "hash": "3726005126695896737"
+      },
+      {
+        "file": "alfcomponents/components/simple/alf-button/alf-button.scss",
+        "hash": "16950613935966504714"
+      },
+      {
+        "file": "alfcomponents/components/simple/alf-button/alf-button.spec.ts",
+        "hash": "11322786947835405924"
+      },
+      {
+        "file": "alfcomponents/components/simple/alf-button/alf-button.ts",
+        "hash": "1809647536984625845"
+      },
+      {
+        "file": "alfcomponents/components/simple/alf-button/enums/defaultButtonKeys.interface.ts",
+        "hash": "13938516925444558175"
+      },
+      {
+        "file": "alfcomponents/components/simple/alf-button/i18n/alf-button.i18n.ts",
+        "hash": "13289579890195316521"
+      },
+      {
+        "file": "alfcomponents/components/simple/alf-button/ia_usage.md",
+        "hash": "11496835824923278643"
+      },
+      {
+        "file": "alfcomponents/components/simple/alf-button/interfaces/alf-button.interface.ts",
+        "hash": "1815538736053619872"
+      },
+      {
+        "file": "alfcomponents/components/simple/alf-button/predefined/alf-button.predefined.ts",
+        "hash": "18444915576530368450"
+      },
+      {
+        "file": "alfcomponents/components/simple/alf-button/predefined/index.ts",
+        "hash": "16964223151180525773"
+      },
+      {
+        "file": "alfcomponents/components/simple/alf-spinner/README.md",
+        "hash": "7602059353670845472"
+      },
+      {
+        "file": "alfcomponents/components/simple/alf-spinner/alf-spinner.html",
+        "hash": "7024861006033004273"
+      },
+      {
+        "file": "alfcomponents/components/simple/alf-spinner/alf-spinner.scss",
+        "hash": "9297506857624881771"
+      },
+      {
+        "file": "alfcomponents/components/simple/alf-spinner/alf-spinner.spec.ts",
+        "hash": "4846460594090781513"
+      },
+      {
+        "file": "alfcomponents/components/simple/alf-spinner/alf-spinner.ts",
+        "hash": "14953248587181123871"
+      },
+      {
+        "file": "alfcomponents/directives/alf-loading/alf-loading.directive.ts",
+        "hash": "14676299399416859291"
+      },
+      {
+        "file": "alfcomponents/directives/alf-loading/alf-loading.spec.ts",
+        "hash": "14047502096656656847"
+      },
+      {
+        "file": "alfcomponents/directives/alf-loading/predefined/alf-loading.predefined.ts",
+        "hash": "14215378105589109477"
+      },
+      {
+        "file": "alfcomponents/directives/alf-loading/predefined/alf-loading.tokens.ts",
+        "hash": "6927073807591865849"
+      },
+      {
+        "file": "alfcomponents/directives/alf-tab-content/README.md",
+        "hash": "1814793203920567479"
+      },
+      {
+        "file": "alfcomponents/directives/alf-tab-content/alf-tab-content.spec.ts",
+        "hash": "9066542632423605787"
+      },
+      {
+        "file": "alfcomponents/directives/alf-tab-content/alf-tab-content.ts",
+        "hash": "6764626047067497321"
+      },
+      {
+        "file": "alfcomponents/directives/index.ts",
+        "hash": "16053958199678091646"
+      },
+      {
+        "file": "alfcomponents/directives/popover/README.md",
+        "hash": "6006382972170625695"
+      },
+      {
+        "file": "alfcomponents/directives/popover/popover.spec.ts",
+        "hash": "9125245776132583791"
+      },
+      {
+        "file": "alfcomponents/directives/popover/popover.ts",
+        "hash": "11232313016097757628"
+      },
+      {
+        "file": "alfcomponents/directives/ripple/alf-ripple.directive.spec.ts",
+        "hash": "10813586395758167281"
+      },
+      {
+        "file": "alfcomponents/directives/ripple/alf-ripple.directive.ts",
+        "hash": "10893840966414541515"
+      },
+      {
+        "file": "alfcomponents/directives/ripple/ripple.spec.ts",
+        "hash": "10813586395758167281"
+      },
+      {
+        "file": "alfcomponents/directives/tooltip-text/README.md",
+        "hash": "18163614867469813032"
+      },
+      {
+        "file": "alfcomponents/directives/tooltip-text/tooltip-text.scss",
+        "hash": "9617981487831536063"
+      },
+      {
+        "file": "alfcomponents/directives/tooltip-text/tooltip-text.spec.ts",
+        "hash": "3806270973573254657"
+      },
+      {
+        "file": "alfcomponents/directives/tooltip-text/tooltip-text.ts",
+        "hash": "1320854935242216717"
+      },
+      {
+        "file": "alfcomponents/enums/README.enums.md",
+        "hash": "16620198060168370006"
+      },
+      {
+        "file": "alfcomponents/enums/alf-animation-type.enum.ts",
+        "hash": "15176102948697493077"
+      },
+      {
+        "file": "alfcomponents/enums/alf-aria.enum.ts",
+        "hash": "1544091932696251978"
+      },
+      {
+        "file": "alfcomponents/enums/alf-background-attachment.enum.ts",
+        "hash": "18111901680841093525"
+      },
+      {
+        "file": "alfcomponents/enums/alf-background-clip.enum.ts",
+        "hash": "15147606901919916699"
+      },
+      {
+        "file": "alfcomponents/enums/alf-background-repeat.enum.ts",
+        "hash": "1342749772158385887"
+      },
+      {
+        "file": "alfcomponents/enums/alf-background-size.enum.ts",
+        "hash": "5844322027369092755"
+      },
+      {
+        "file": "alfcomponents/enums/alf-border-style.enum.ts",
+        "hash": "9380227700602743719"
+      },
+      {
+        "file": "alfcomponents/enums/alf-button-type.enum.ts",
+        "hash": "16361621196128652845"
+      },
+      {
+        "file": "alfcomponents/enums/alf-button-visual-type.enum.ts",
+        "hash": "8068371473061230681"
+      },
+      {
+        "file": "alfcomponents/enums/alf-checkbox-variant.enum.ts",
+        "hash": "5503605442653716078"
+      },
+      {
+        "file": "alfcomponents/enums/alf-clothing-icon-type.enum.ts",
+        "hash": "1388270643407506153"
+      },
+      {
+        "file": "alfcomponents/enums/alf-color-variant.enum.ts",
+        "hash": "18368405972420154155"
+      },
+      {
+        "file": "alfcomponents/enums/alf-color.enum.ts",
+        "hash": "11233307906149476902"
+      },
+      {
+        "file": "alfcomponents/enums/alf-css-position.enum.ts",
+        "hash": "14027314448822367221"
+      },
+      {
+        "file": "alfcomponents/enums/alf-cursor.enum.ts",
+        "hash": "7901677509995611775"
+      },
+      {
+        "file": "alfcomponents/enums/alf-display.enum.ts",
+        "hash": "17942778937455498955"
+      },
+      {
+        "file": "alfcomponents/enums/alf-flex-direction.enum.ts",
+        "hash": "17844025614931322684"
+      },
+      {
+        "file": "alfcomponents/enums/alf-flex-layout.enum.ts",
+        "hash": "5925142641287680103"
+      },
+      {
+        "file": "alfcomponents/enums/alf-font-family.enum.ts",
+        "hash": "7835757788660266695"
+      },
+      {
+        "file": "alfcomponents/enums/alf-font-size.enum.ts",
+        "hash": "15855397934420754187"
+      },
+      {
+        "file": "alfcomponents/enums/alf-font-style.enum.ts",
+        "hash": "9396495600403211142"
+      },
+      {
+        "file": "alfcomponents/enums/alf-font-weight.enum.ts",
+        "hash": "1283691145584942966"
+      },
+      {
+        "file": "alfcomponents/enums/alf-icon-size.enum.ts",
+        "hash": "13504866117322282465"
+      },
+      {
+        "file": "alfcomponents/enums/alf-icon-source.enum.ts",
+        "hash": "430415679624586624"
+      },
+      {
+        "file": "alfcomponents/enums/alf-icon-style.enum.ts",
+        "hash": "7149387476405351847"
+      },
+      {
+        "file": "alfcomponents/enums/alf-icons-unicode-icon.enum.ts",
+        "hash": "8205343625230615185"
+      },
+      {
+        "file": "alfcomponents/enums/alf-input-adornment.enum.ts",
+        "hash": "7424244768945204819"
+      },
+      {
+        "file": "alfcomponents/enums/alf-input-predefined.enum.ts",
+        "hash": "705235567731215767"
+      },
+      {
+        "file": "alfcomponents/enums/alf-input-type.enum.ts",
+        "hash": "9779973282344994039"
+      },
+      {
+        "file": "alfcomponents/enums/alf-input-variant.enum.ts",
+        "hash": "4911273918561810083"
+      },
+      {
+        "file": "alfcomponents/enums/alf-labels-position.enum.ts",
+        "hash": "7250717553192552767"
+      },
+      {
+        "file": "alfcomponents/enums/alf-letter-spacing.enum.ts",
+        "hash": "14746364085009469414"
+      },
+      {
+        "file": "alfcomponents/enums/alf-line-height.enum.ts",
+        "hash": "15726234104501589850"
+      },
+      {
+        "file": "alfcomponents/enums/alf-link-target.enum.ts",
+        "hash": "7474106029248760655"
+      },
+      {
+        "file": "alfcomponents/enums/alf-list-styles.enum.ts",
+        "hash": "4158715164662798558"
+      },
+      {
+        "file": "alfcomponents/enums/alf-loading-styles.enum.ts",
+        "hash": "3757683267753168740"
+      },
+      {
+        "file": "alfcomponents/enums/alf-mix-blend-mode.enum.ts",
+        "hash": "10653690073823574199"
+      },
+      {
+        "file": "alfcomponents/enums/alf-object-fit.enum.ts",
+        "hash": "3085362372056675046"
+      },
+      {
+        "file": "alfcomponents/enums/alf-opacity.enum.ts",
+        "hash": "5741431181676087912"
+      },
+      {
+        "file": "alfcomponents/enums/alf-overflow-wrap.enum.ts",
+        "hash": "17593875462440337331"
+      },
+      {
+        "file": "alfcomponents/enums/alf-overflow.enum.ts",
+        "hash": "2722018910515295610"
+      },
+      {
+        "file": "alfcomponents/enums/alf-pattern-type.enum.ts",
+        "hash": "1826337677909923175"
+      },
+      {
+        "file": "alfcomponents/enums/alf-percentage.enum.ts",
+        "hash": "16037815127156982650"
+      },
+      {
+        "file": "alfcomponents/enums/alf-pointer-events.enum.ts",
+        "hash": "4078998202016713066"
+      },
+      {
+        "file": "alfcomponents/enums/alf-position.enum.ts",
+        "hash": "10983311098667836277"
+      },
+      {
+        "file": "alfcomponents/enums/alf-px.enum.ts",
+        "hash": "1924629314854122247"
+      },
+      {
+        "file": "alfcomponents/enums/alf-radius.enum.ts",
+        "hash": "9222857502216765692"
+      },
+      {
+        "file": "alfcomponents/enums/alf-rem.enum.ts",
+        "hash": "15109457836988668226"
+      },
+      {
+        "file": "alfcomponents/enums/alf-resize.enum.ts",
+        "hash": "846547611173722670"
+      },
+      {
+        "file": "alfcomponents/enums/alf-scroll-behavior.enum.ts",
+        "hash": "13350117966572058055"
+      },
+      {
+        "file": "alfcomponents/enums/alf-shadow.enum.ts",
+        "hash": "16944167590339632496"
+      },
+      {
+        "file": "alfcomponents/enums/alf-size.enum.ts",
+        "hash": "13786342908548128876"
+      },
+      {
+        "file": "alfcomponents/enums/alf-spinner-stroke.enum.ts",
+        "hash": "187820992390525562"
+      },
+      {
+        "file": "alfcomponents/enums/alf-status.enum.ts",
+        "hash": "17588310930979568109"
+      },
+      {
+        "file": "alfcomponents/enums/alf-text-align.enum.ts",
+        "hash": "3303194797959742150"
+      },
+      {
+        "file": "alfcomponents/enums/alf-text-decoration.enum.ts",
+        "hash": "10036320254560148993"
+      },
+      {
+        "file": "alfcomponents/enums/alf-text-overflow.enum.ts",
+        "hash": "14730520959337198335"
+      },
+      {
+        "file": "alfcomponents/enums/alf-text-shadow.enum.ts",
+        "hash": "3549550470374281419"
+      },
+      {
+        "file": "alfcomponents/enums/alf-text-transform.enum.ts",
+        "hash": "14196422872177343725"
+      },
+      {
+        "file": "alfcomponents/enums/alf-theme.enum.ts",
+        "hash": "17327310623084492988"
+      },
+      {
+        "file": "alfcomponents/enums/alf-timing-function.enum.ts",
+        "hash": "9785225099817510224"
+      },
+      {
+        "file": "alfcomponents/enums/alf-variant.enum.ts",
+        "hash": "10526881498819306213"
+      },
+      {
+        "file": "alfcomponents/enums/alf-vertical-align.enum.ts",
+        "hash": "17780664906738468998"
+      },
+      {
+        "file": "alfcomponents/enums/alf-visibility.enum.ts",
+        "hash": "16300075109516354810"
+      },
+      {
+        "file": "alfcomponents/enums/alf-white-space.enum.ts",
+        "hash": "4747231116058785066"
+      },
+      {
+        "file": "alfcomponents/enums/alf-word-break.enum.ts",
+        "hash": "10221665235777749834"
+      },
+      {
+        "file": "alfcomponents/enums/alf-z-index.enum.ts",
+        "hash": "16799272033173234307"
+      },
+      {
+        "file": "alfcomponents/enums/index.ts",
+        "hash": "12864822166235982326"
+      },
+      {
+        "file": "alfcomponents/i18n/README.md",
+        "hash": "8696898196022502398"
+      },
+      {
+        "file": "alfcomponents/i18n/i18n-utils.ts",
+        "hash": "8994729095276171458"
+      },
+      {
+        "file": "alfcomponents/index.ts",
+        "hash": "8758885439218857370"
+      },
+      {
+        "file": "alfcomponents/interfaces/alf-animations.interface.ts",
+        "hash": "7041593150531043598"
+      },
+      {
+        "file": "alfcomponents/interfaces/alf-aria.interface.ts",
+        "hash": "14575251916647096322"
+      },
+      {
+        "file": "alfcomponents/interfaces/alf-backgrounds.interface.ts",
+        "hash": "3415342462067219851"
+      },
+      {
+        "file": "alfcomponents/interfaces/alf-base.interface.ts",
+        "hash": "466700271765121303"
+      },
+      {
+        "file": "alfcomponents/interfaces/alf-border.interface.ts",
+        "hash": "8482167994557201484"
+      },
+      {
+        "file": "alfcomponents/interfaces/alf-display-and-layout.interface.ts",
+        "hash": "3550620702812592340"
+      },
+      {
+        "file": "alfcomponents/interfaces/alf-layout.interface.ts",
+        "hash": "4988788356042522458"
+      },
+      {
+        "file": "alfcomponents/interfaces/alf-list.interface.ts",
+        "hash": "3718001372095336468"
+      },
+      {
+        "file": "alfcomponents/interfaces/alf-loading.interface.ts",
+        "hash": "2444419883155813300"
+      },
+      {
+        "file": "alfcomponents/interfaces/alf-margin.interface.ts",
+        "hash": "5635809766300652446"
+      },
+      {
+        "file": "alfcomponents/interfaces/alf-outline.interface.ts",
+        "hash": "1924138816614613724"
+      },
+      {
+        "file": "alfcomponents/interfaces/alf-padding.interface.ts",
+        "hash": "12383903978700125430"
+      },
+      {
+        "file": "alfcomponents/interfaces/alf-ripple.interface.ts",
+        "hash": "1541564924422766470"
+      },
+      {
+        "file": "alfcomponents/interfaces/alf-shadows.interface.ts",
+        "hash": "17883152928290740279"
+      },
+      {
+        "file": "alfcomponents/interfaces/alf-text-style.interface.ts",
+        "hash": "4735629848777599931"
+      },
+      {
+        "file": "alfcomponents/interfaces/alf-transform.interface.ts",
+        "hash": "2382149541078259536"
+      },
+      {
+        "file": "alfcomponents/interfaces/alf-typography.interface.ts",
+        "hash": "12413672200506107946"
+      },
+      {
+        "file": "alfcomponents/interfaces/alf-validation.interface.ts",
+        "hash": "11574342983579794136"
+      },
+      {
+        "file": "alfcomponents/interfaces/index.ts",
+        "hash": "9820955000541450385"
+      },
+      {
+        "file": "alfcomponents/predefined/alf-patterns.predefined.ts",
+        "hash": "3925023351951748031"
+      },
+      {
+        "file": "alfcomponents/predefined/alf-ripple.predefined.ts",
+        "hash": "8847629682762842678"
+      },
+      {
+        "file": "alfcomponents/predefined/index.ts",
+        "hash": "13511529484261455216"
+      },
+      {
+        "file": "alfcomponents/styles/_variables.scss",
+        "hash": "17826799622216171185"
+      },
+      {
+        "file": "alfcomponents/styles/alf-tokens.scss",
+        "hash": "15534454099638248377"
+      },
+      {
+        "file": "alfcomponents/styles/mixins/_backgrounds.scss",
+        "hash": "14408065906539728340"
+      },
+      {
+        "file": "alfcomponents/styles/mixins/_border.scss",
+        "hash": "10232349841853834606"
+      },
+      {
+        "file": "alfcomponents/styles/mixins/_index.scss",
+        "hash": "13538853071093252440"
+      },
+      {
+        "file": "alfcomponents/styles/mixins/_margin.scss",
+        "hash": "18212587875607495169"
+      },
+      {
+        "file": "alfcomponents/styles/mixins/_padding.scss",
+        "hash": "11809139415424946714"
+      },
+      {
+        "file": "alfcomponents/styles/mixins/_shadows.scss",
+        "hash": "16125017819243974865"
+      },
+      {
+        "file": "alfcomponents/styles/mixins/_transform.scss",
+        "hash": "13432281581019462383"
+      },
+      {
+        "file": "alfcomponents/styles/mixins/_typography.scss",
+        "hash": "4499973588618427902"
+      },
+      {
+        "file": "alfcomponents/styles/tailwind-safelist.ts",
+        "hash": "8545874276771149815"
+      },
+      {
+        "file": "alfcomponents/themes/alf-theme.manager.ts",
+        "hash": "13057818329613146788"
+      },
+      {
+        "file": "alfcomponents/themes/alf-theme.tokens.ts",
+        "hash": "3639487930175455796"
+      },
+      {
+        "file": "alfcomponents/tsconfig.json",
+        "hash": "2400438431649939688"
+      },
+      {
+        "file": "angular.json",
+        "hash": "13732970283077084866"
+      },
+      {
+        "file": "config/angular/tsconfig.angular.base.json",
+        "hash": "9891481951728200455"
+      },
+      {
+        "file": "config/libs/tsconfig.libs.base.json",
+        "hash": "8216280202264272669"
+      },
+      {
+        "file": "config/tsconfig.json",
+        "hash": "17371819734440481493"
+      },
+      {
+        "file": "dumps/README.md",
+        "hash": "5598585629551196125"
+      },
+      {
+        "file": "eslint.config.mjs",
+        "hash": "6439418044436295996"
+      },
+      {
+        "file": "filtered.md",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "libs/angular/components/company/milenium/main/tipos.interface.ts",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "libs/angular/components/html/combobox/comboBox.html",
+        "hash": "5526660536381034697"
+      },
+      {
+        "file": "libs/angular/components/html/combobox/comboBox.scss",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "libs/angular/components/html/combobox/comboBox.ts",
+        "hash": "7779028764234283694"
+      },
+      {
+        "file": "libs/angular/components/html/combobox/interfaces/combobox.interface.ts",
+        "hash": "10000409345689076031"
+      },
+      {
+        "file": "libs/angular/components/index.ts",
+        "hash": "16904055952271800850"
+      },
+      {
+        "file": "libs/angular/components/nav-bars/footer/README.md",
+        "hash": "77312266991704325"
+      },
+      {
+        "file": "libs/angular/components/nav-bars/footer/footer.html",
+        "hash": "74587081354583453"
+      },
+      {
+        "file": "libs/angular/components/nav-bars/footer/footer.scss",
+        "hash": "2260568511244128833"
+      },
+      {
+        "file": "libs/angular/components/nav-bars/footer/footer.ts",
+        "hash": "4578171828095436761"
+      },
+      {
+        "file": "libs/angular/components/nav-bars/footer/index.ts",
+        "hash": "8231323011969110937"
+      },
+      {
+        "file": "libs/angular/components/nav-bars/header/README.md",
+        "hash": "6322008172861458490"
+      },
+      {
+        "file": "libs/angular/components/nav-bars/header/header.html",
+        "hash": "17420958687619128016"
+      },
+      {
+        "file": "libs/angular/components/nav-bars/header/header.scss",
+        "hash": "17005981432137688989"
+      },
+      {
+        "file": "libs/angular/components/nav-bars/header/header.ts",
+        "hash": "17421735734313286476"
+      },
+      {
+        "file": "libs/angular/components/nav-bars/header/index.ts",
+        "hash": "16475506410355975494"
+      },
+      {
+        "file": "libs/angular/components/nav-bars/sidebar/README.md",
+        "hash": "573422777516701435"
+      },
+      {
+        "file": "libs/angular/components/nav-bars/sidebar/index.ts",
+        "hash": "2783777948398288716"
+      },
+      {
+        "file": "libs/angular/components/nav-bars/sidebar/sidebar.html",
+        "hash": "12742043231607818957"
+      },
+      {
+        "file": "libs/angular/components/nav-bars/sidebar/sidebar.scss",
+        "hash": "15005579315335224215"
+      },
+      {
+        "file": "libs/angular/components/nav-bars/sidebar/sidebar.ts",
+        "hash": "5351852584017202750"
+      },
+      {
+        "file": "libs/angular/components/nav-bars/sidenav-menu/index.ts",
+        "hash": "14958885527160422186"
+      },
+      {
+        "file": "libs/angular/components/nav-bars/sidenav-menu/sidenav-menu.html",
+        "hash": "14905783649383814162"
+      },
+      {
+        "file": "libs/angular/components/nav-bars/sidenav-menu/sidenav-menu.scss",
+        "hash": "8587049251057880631"
+      },
+      {
+        "file": "libs/angular/components/nav-bars/sidenav-menu/sidenav-menu.ts",
+        "hash": "12822271960037515946"
+      },
+      {
+        "file": "libs/angular/components/nav-bars/top-nav-bar-mobile/README.md",
+        "hash": "7430653090976558551"
+      },
+      {
+        "file": "libs/angular/components/nav-bars/top-nav-bar-mobile/index.ts",
+        "hash": "11001171753349277323"
+      },
+      {
+        "file": "libs/angular/components/nav-bars/top-nav-bar-mobile/top-nav-bar-mobile.html",
+        "hash": "804038960354639849"
+      },
+      {
+        "file": "libs/angular/components/nav-bars/top-nav-bar-mobile/top-nav-bar-mobile.scss",
+        "hash": "9964917016891601681"
+      },
+      {
+        "file": "libs/angular/components/nav-bars/top-nav-bar-mobile/top-nav-bar-mobile.ts",
+        "hash": "13376324009813168593"
+      },
+      {
+        "file": "libs/angular/components/ui/README.md",
+        "hash": "16016854788512393132"
+      },
+      {
+        "file": "libs/angular/components/ui/continue-browsing/README.md",
+        "hash": "15213545517636580293"
+      },
+      {
+        "file": "libs/angular/components/ui/continue-browsing/container-objects.component.html",
+        "hash": "1207154885088502007"
+      },
+      {
+        "file": "libs/angular/components/ui/continue-browsing/container-objects.component.scss",
+        "hash": "10425759538420222579"
+      },
+      {
+        "file": "libs/angular/components/ui/continue-browsing/container-objects.component.ts",
+        "hash": "3807170292977514601"
+      },
+      {
+        "file": "libs/angular/components/ui/continue-browsing/continue-browsing.service.ts",
+        "hash": "12913703056993782928"
+      },
+      {
+        "file": "libs/angular/components/ui/ui-state.service.ts",
+        "hash": "4688656693550653674"
+      },
+      {
+        "file": "libs/angular/enums/backgrounColor.enum.ts",
+        "hash": "5243420554163327005"
+      },
+      {
+        "file": "libs/angular/enums/border.enum.ts",
+        "hash": "5619468338094282182"
+      },
+      {
+        "file": "libs/angular/enums/boxShadow.enum.ts",
+        "hash": "11178473968444867571"
+      },
+      {
+        "file": "libs/angular/enums/colors.enum.ts",
+        "hash": "13396436436199148916"
+      },
+      {
+        "file": "libs/angular/enums/float.enum.ts",
+        "hash": "7415869892828274014"
+      },
+      {
+        "file": "libs/angular/enums/font-Size.enum.ts",
+        "hash": "12351451624966276744"
+      },
+      {
+        "file": "libs/angular/enums/fontFamili.enum.ts",
+        "hash": "5299661487284606181"
+      },
+      {
+        "file": "libs/angular/enums/form-component.enum.ts",
+        "hash": "1223698971701437521"
+      },
+      {
+        "file": "libs/angular/enums/heightOptions.enum.ts",
+        "hash": "16865427723565816256"
+      },
+      {
+        "file": "libs/angular/enums/iconType.enum.ts",
+        "hash": "10226064418463278991"
+      },
+      {
+        "file": "libs/angular/enums/letter-spacing.enum.ts",
+        "hash": "5381191544193437754"
+      },
+      {
+        "file": "libs/angular/enums/link.enum.ts",
+        "hash": "8323620628465634525"
+      },
+      {
+        "file": "libs/angular/enums/paddingOptions.enum.ts",
+        "hash": "1972443269920258300"
+      },
+      {
+        "file": "libs/angular/enums/rounded.enum.ts",
+        "hash": "16403110939583681686"
+      },
+      {
+        "file": "libs/angular/enums/title.enum.ts",
+        "hash": "18102915087171155131"
+      },
+      {
+        "file": "libs/angular/enums/widthOptions.enum.ts",
+        "hash": "773987584188604202"
+      },
+      {
+        "file": "libs/angular/environments/environment.dev.ts",
+        "hash": "2678212609186894594"
+      },
+      {
+        "file": "libs/angular/environments/environment.prod.ts",
+        "hash": "2918571935085628144"
+      },
+      {
+        "file": "libs/angular/environments/environment.ts",
+        "hash": "2918571935085628144"
+      },
+      {
+        "file": "libs/angular/forms/validators/email.validator.ts",
+        "hash": "13646295345233019572"
+      },
+      {
+        "file": "libs/angular/i18n/en.json",
+        "hash": "10645789210119369862"
+      },
+      {
+        "file": "libs/angular/i18n/es.json",
+        "hash": "17838089867827541424"
+      },
+      {
+        "file": "libs/angular/icons/find-icon-by-enum.ts",
+        "hash": "11359831945728555216"
+      },
+      {
+        "file": "libs/angular/icons/font-size.enum.ts",
+        "hash": "6639447827616579001"
+      },
+      {
+        "file": "libs/angular/icons/icon-types.ts",
+        "hash": "15299639020228754002"
+      },
+      {
+        "file": "libs/angular/icons/icon.interface.ts",
+        "hash": "16971324233962607748"
+      },
+      {
+        "file": "libs/angular/icons/icons-svg.ts",
+        "hash": "4354712976007374109"
+      },
+      {
+        "file": "libs/angular/icons/icons-unicode.ts",
+        "hash": "11225057169200574458"
+      },
+      {
+        "file": "libs/angular/icons/svg/addOne.svg",
+        "hash": "14736643956449758442"
+      },
+      {
+        "file": "libs/angular/icons/svg/articulo.svg",
+        "hash": "16952849968079436607"
+      },
+      {
+        "file": "libs/angular/icons/svg/cancel.svg",
+        "hash": "8839781246491784919"
+      },
+      {
+        "file": "libs/angular/icons/svg/check.svg",
+        "hash": "5454354339255796239"
+      },
+      {
+        "file": "libs/angular/icons/svg/delete.svg",
+        "hash": "14631155203764724972"
+      },
+      {
+        "file": "libs/angular/icons/svg/discount.svg",
+        "hash": "8812442285482596024"
+      },
+      {
+        "file": "libs/angular/icons/svg/email.svg",
+        "hash": "2323712050938966694"
+      },
+      {
+        "file": "libs/angular/icons/svg/girlFace.svg",
+        "hash": "191192178653258699"
+      },
+      {
+        "file": "libs/angular/icons/svg/inventory.svg",
+        "hash": "16043079099221212501"
+      },
+      {
+        "file": "libs/angular/icons/svg/letter.svg",
+        "hash": "1854897812878655847"
+      },
+      {
+        "file": "libs/angular/icons/svg/matLock.svg",
+        "hash": "4695137502316403130"
+      },
+      {
+        "file": "libs/angular/icons/svg/matNotificationsOutline.svg",
+        "hash": "9129963874976632362"
+      },
+      {
+        "file": "libs/angular/icons/svg/megaphone.svg",
+        "hash": "13614067830513063746"
+      },
+      {
+        "file": "libs/angular/icons/svg/modify.svg",
+        "hash": "6916423587451482592"
+      },
+      {
+        "file": "libs/angular/icons/svg/name.svg",
+        "hash": "3455123951743299871"
+      },
+      {
+        "file": "libs/angular/icons/svg/phone.svg",
+        "hash": "8754278007198561150"
+      },
+      {
+        "file": "libs/angular/icons/svg/promotions.svg",
+        "hash": "11299808073640828122"
+      },
+      {
+        "file": "libs/angular/icons/svg/register.svg",
+        "hash": "16043079099221212501"
+      },
+      {
+        "file": "libs/angular/icons/svg/search.svg",
+        "hash": "9513876600847162334"
+      },
+      {
+        "file": "libs/angular/icons/svg/sendMessage.svg",
+        "hash": "13669312884263602631"
+      },
+      {
+        "file": "libs/angular/icons/svg/shop.svg",
+        "hash": "18250892855638965704"
+      },
+      {
+        "file": "libs/angular/icons/svg/shoppingBag.svg",
+        "hash": "15801920089469240196"
+      },
+      {
+        "file": "libs/angular/icons/svg/shoppingCart.svg",
+        "hash": "14010405830305154716"
+      },
+      {
+        "file": "libs/angular/icons/svg/start.svg",
+        "hash": "1590883870069782443"
+      },
+      {
+        "file": "libs/angular/icons/svg/truck.svg",
+        "hash": "8885863411369571936"
+      },
+      {
+        "file": "libs/angular/icons/svg/user.svg",
+        "hash": "16944515917948583786"
+      },
+      {
+        "file": "libs/angular/icons/svg/whatsapp.svg",
+        "hash": "8754278007198561150"
+      },
+      {
+        "file": "libs/angular/icons/unicode.enum.ts",
+        "hash": "6660983144562542232"
+      },
+      {
+        "file": "libs/angular/images/index.ts",
+        "hash": "18164486227812464591"
+      },
+      {
+        "file": "libs/angular/interfaces/index.ts",
+        "hash": "13680602616626541696"
+      },
+      {
+        "file": "libs/angular/interfaces/main-menu.interface.ts",
+        "hash": "11519835513400155418"
+      },
+      {
+        "file": "libs/angular/manuals/icons.md",
+        "hash": "17938118936583705568"
+      },
+      {
+        "file": "libs/angular/screenSizes.enum.ts",
+        "hash": "12276248499971441012"
+      },
+      {
+        "file": "libs/angular/styles/breakpoints.scss",
+        "hash": "16023046391311769802"
+      },
+      {
+        "file": "libs/angular/styles/index.ts",
+        "hash": "18164486227812464591"
+      },
+      {
+        "file": "libs/angular/styles/predefined.scss",
+        "hash": "12470274468523090984"
+      },
+      {
+        "file": "libs/angular/styles/root.scss",
+        "hash": "12176926081082579422"
+      },
+      {
+        "file": "libs/examples/angular/basic-father-son-input-fn.md",
+        "hash": "14103681452288541434"
+      },
+      {
+        "file": "libs/nestjs/common/corrs.ts",
+        "hash": "2541175235177984928"
+      },
+      {
+        "file": "libs/nestjs/common/enums.ts",
+        "hash": "5013825548044002295"
+      },
+      {
+        "file": "libs/nestjs/common/global.ts",
+        "hash": "13366874570562786522"
+      },
+      {
+        "file": "libs/nestjs/common/globalPipes.ts",
+        "hash": "7047808976958207340"
+      },
+      {
+        "file": "libs/nestjs/common/http-exception.filter.ts",
+        "hash": "5204388454316633129"
+      },
+      {
+        "file": "libs/nestjs/common/index.ts",
+        "hash": "16706280341356336855"
+      },
+      {
+        "file": "libs/nestjs/common/postgressEnsure.ts",
+        "hash": "11088689796711334203"
+      },
+      {
+        "file": "libs/nestjs/common/swaggerConfig.ts",
+        "hash": "1764859414296403308"
+      },
+      {
+        "file": "libs/nestjs/configurations/customEnv.ts",
+        "hash": "12327902306801359687"
+      },
+      {
+        "file": "libs/nestjs/configurations/env/.env.dev",
+        "hash": "2568903791008717005"
+      },
+      {
+        "file": "libs/nestjs/configurations/env/.env.prod",
+        "hash": "965334103368583797"
+      },
+      {
+        "file": "libs/nestjs/configurations/environments/environment.dev.ts",
+        "hash": "2918571935085628144"
+      },
+      {
+        "file": "libs/nestjs/configurations/environments/environment.prod.ts",
+        "hash": "2918571935085628144"
+      },
+      {
+        "file": "libs/nestjs/configurations/environments/environment.ts",
+        "hash": "18155392932068646531"
+      },
+      {
+        "file": "libs/nestjs/configurations/index.ts",
+        "hash": "1966830909816850129"
+      },
+      {
+        "file": "libs/nestjs/defaults/createDefault.ts",
+        "hash": "3952391845086815016"
+      },
+      {
+        "file": "libs/nestjs/defaults/index.ts",
+        "hash": "7614639242624560989"
+      },
+      {
+        "file": "libs/nestjs/index.ts",
+        "hash": "874221172094822205"
+      },
+      {
+        "file": "libs/nestjs/swagger/index.ts",
+        "hash": "11245101271920883547"
+      },
+      {
+        "file": "libs/nestjs/swagger/swagger-decorator.ts",
+        "hash": "8020252945465856941"
+      },
+      {
+        "file": "libs/nestjs/tsconfig.json",
+        "hash": "11892193836417118749"
+      },
+      {
+        "file": "libs/shared/enums/alf-label.enum.ts",
+        "hash": "10611293707568989507"
+      },
+      {
+        "file": "libs/shared/enums/app-roles.enum.ts",
+        "hash": "1385632662138561657"
+      },
+      {
+        "file": "libs/shared/enums/env.enum.ts",
+        "hash": "4653545076166984407"
+      },
+      {
+        "file": "libs/shared/enums/index.ts",
+        "hash": "10213998317202171041"
+      },
+      {
+        "file": "libs/shared/enums/paymentTypes.enum.ts",
+        "hash": "3434357448887342970"
+      },
+      {
+        "file": "libs/shared/helpers/i18n.helper.ts",
+        "hash": "725907292125732090"
+      },
+      {
+        "file": "libs/shared/img/auth/login.png",
+        "hash": "2221559216309715031"
+      },
+      {
+        "file": "libs/shared/img/banderas/abw.svg",
+        "hash": "11007436291171616173"
+      },
+      {
+        "file": "libs/shared/img/banderas/afg.svg",
+        "hash": "12251092011396037871"
+      },
+      {
+        "file": "libs/shared/img/banderas/ago.svg",
+        "hash": "14521621437213913029"
+      },
+      {
+        "file": "libs/shared/img/banderas/aia.svg",
+        "hash": "10581384298960282675"
+      },
+      {
+        "file": "libs/shared/img/banderas/ala.svg",
+        "hash": "11435586385040181850"
+      },
+      {
+        "file": "libs/shared/img/banderas/alb.svg",
+        "hash": "5414046009425793491"
+      },
+      {
+        "file": "libs/shared/img/banderas/and.svg",
+        "hash": "6319840390465550356"
+      },
+      {
+        "file": "libs/shared/img/banderas/are.svg",
+        "hash": "6492072973951152853"
+      },
+      {
+        "file": "libs/shared/img/banderas/arg.svg",
+        "hash": "6734494140006169140"
+      },
+      {
+        "file": "libs/shared/img/banderas/arm.svg",
+        "hash": "2148052925686745067"
+      },
+      {
+        "file": "libs/shared/img/banderas/asm.svg",
+        "hash": "6149891341037302966"
+      },
+      {
+        "file": "libs/shared/img/banderas/ata.svg",
+        "hash": "217407474826872370"
+      },
+      {
+        "file": "libs/shared/img/banderas/atf.svg",
+        "hash": "5809097217264444750"
+      },
+      {
+        "file": "libs/shared/img/banderas/atg.svg",
+        "hash": "18281984393132493121"
+      },
+      {
+        "file": "libs/shared/img/banderas/aus.svg",
+        "hash": "5475251994321841098"
+      },
+      {
+        "file": "libs/shared/img/banderas/aut.svg",
+        "hash": "16677816685175293032"
+      },
+      {
+        "file": "libs/shared/img/banderas/aze.svg",
+        "hash": "17505260267166824131"
+      },
+      {
+        "file": "libs/shared/img/banderas/bdi.svg",
+        "hash": "14730147874044715127"
+      },
+      {
+        "file": "libs/shared/img/banderas/bel.svg",
+        "hash": "9087029026463003227"
+      },
+      {
+        "file": "libs/shared/img/banderas/ben.svg",
+        "hash": "16987523297660801244"
+      },
+      {
+        "file": "libs/shared/img/banderas/bes.svg",
+        "hash": "5244482282446212366"
+      },
+      {
+        "file": "libs/shared/img/banderas/bfa.svg",
+        "hash": "16237378290117874672"
+      },
+      {
+        "file": "libs/shared/img/banderas/bgd.svg",
+        "hash": "4793201667932684291"
+      },
+      {
+        "file": "libs/shared/img/banderas/bgr.svg",
+        "hash": "8867069521139787589"
+      },
+      {
+        "file": "libs/shared/img/banderas/bhr.svg",
+        "hash": "5843998933346853045"
+      },
+      {
+        "file": "libs/shared/img/banderas/bhs.svg",
+        "hash": "8849782183361440527"
+      },
+      {
+        "file": "libs/shared/img/banderas/bih.svg",
+        "hash": "1039367079301753104"
+      },
+      {
+        "file": "libs/shared/img/banderas/blm.svg",
+        "hash": "9623211258400872475"
+      },
+      {
+        "file": "libs/shared/img/banderas/blr.svg",
+        "hash": "4527344175685812712"
+      },
+      {
+        "file": "libs/shared/img/banderas/blz.svg",
+        "hash": "15442008001009788951"
+      },
+      {
+        "file": "libs/shared/img/banderas/bmu.svg",
+        "hash": "839425974023836792"
+      },
+      {
+        "file": "libs/shared/img/banderas/bol.svg",
+        "hash": "5109911115799046256"
+      },
+      {
+        "file": "libs/shared/img/banderas/bra.svg",
+        "hash": "13933605225583525762"
+      },
+      {
+        "file": "libs/shared/img/banderas/brb.svg",
+        "hash": "12039672984758393931"
+      },
+      {
+        "file": "libs/shared/img/banderas/brn.svg",
+        "hash": "10664592994919751727"
+      },
+      {
+        "file": "libs/shared/img/banderas/btn.svg",
+        "hash": "11000078265811979845"
+      },
+      {
+        "file": "libs/shared/img/banderas/bvt.svg",
+        "hash": "17991356525789872429"
+      },
+      {
+        "file": "libs/shared/img/banderas/bwa.svg",
+        "hash": "14680193835657973170"
+      },
+      {
+        "file": "libs/shared/img/banderas/caf.svg",
+        "hash": "9645878891263499258"
+      },
+      {
+        "file": "libs/shared/img/banderas/can.svg",
+        "hash": "12657582216389441322"
+      },
+      {
+        "file": "libs/shared/img/banderas/cck.svg",
+        "hash": "13501539620091302812"
+      },
+      {
+        "file": "libs/shared/img/banderas/che.svg",
+        "hash": "537162464089543640"
+      },
+      {
+        "file": "libs/shared/img/banderas/chl.svg",
+        "hash": "4062857346469714021"
+      },
+      {
+        "file": "libs/shared/img/banderas/chn.svg",
+        "hash": "14124195649485880695"
+      },
+      {
+        "file": "libs/shared/img/banderas/civ.svg",
+        "hash": "10834471511564151409"
+      },
+      {
+        "file": "libs/shared/img/banderas/cmr.svg",
+        "hash": "2724412349008907659"
+      },
+      {
+        "file": "libs/shared/img/banderas/cod.svg",
+        "hash": "1419217488997158542"
+      },
+      {
+        "file": "libs/shared/img/banderas/cog.svg",
+        "hash": "8973608878217264453"
+      },
+      {
+        "file": "libs/shared/img/banderas/cok.svg",
+        "hash": "15894260975357122243"
+      },
+      {
+        "file": "libs/shared/img/banderas/col.svg",
+        "hash": "5141848374887682141"
+      },
+      {
+        "file": "libs/shared/img/banderas/com.svg",
+        "hash": "5448177002469844858"
+      },
+      {
+        "file": "libs/shared/img/banderas/cpv.svg",
+        "hash": "1200510858225579200"
+      },
+      {
+        "file": "libs/shared/img/banderas/cri.svg",
+        "hash": "1699777752290395463"
+      },
+      {
+        "file": "libs/shared/img/banderas/cub.svg",
+        "hash": "12327610848517307652"
+      },
+      {
+        "file": "libs/shared/img/banderas/cuw.svg",
+        "hash": "8877635777195911110"
+      },
+      {
+        "file": "libs/shared/img/banderas/cxr.svg",
+        "hash": "4045839228603329972"
+      },
+      {
+        "file": "libs/shared/img/banderas/cym.svg",
+        "hash": "13819001838662353820"
+      },
+      {
+        "file": "libs/shared/img/banderas/cyp.svg",
+        "hash": "18003046210172617348"
+      },
+      {
+        "file": "libs/shared/img/banderas/cze.svg",
+        "hash": "10207284231575249008"
+      },
+      {
+        "file": "libs/shared/img/banderas/deu.svg",
+        "hash": "18099547386500686383"
+      },
+      {
+        "file": "libs/shared/img/banderas/dji.svg",
+        "hash": "7382790268505763582"
+      },
+      {
+        "file": "libs/shared/img/banderas/dma.svg",
+        "hash": "5545558961071377826"
+      },
+      {
+        "file": "libs/shared/img/banderas/dnk.svg",
+        "hash": "10509974139511609026"
+      },
+      {
+        "file": "libs/shared/img/banderas/dom.svg",
+        "hash": "1048313589975266847"
+      },
+      {
+        "file": "libs/shared/img/banderas/dza.svg",
+        "hash": "5457448725930991261"
+      },
+      {
+        "file": "libs/shared/img/banderas/ecu.svg",
+        "hash": "1221186841503707310"
+      },
+      {
+        "file": "libs/shared/img/banderas/egy.svg",
+        "hash": "1939591945255743271"
+      },
+      {
+        "file": "libs/shared/img/banderas/eri.svg",
+        "hash": "979090833305375964"
+      },
+      {
+        "file": "libs/shared/img/banderas/esh.svg",
+        "hash": "15970835129591775494"
+      },
+      {
+        "file": "libs/shared/img/banderas/esp.svg",
+        "hash": "18283405984811582049"
+      },
+      {
+        "file": "libs/shared/img/banderas/est.svg",
+        "hash": "3164131028138512034"
+      },
+      {
+        "file": "libs/shared/img/banderas/eth.svg",
+        "hash": "1416547329056139582"
+      },
+      {
+        "file": "libs/shared/img/banderas/fin.svg",
+        "hash": "16423160478314619561"
+      },
+      {
+        "file": "libs/shared/img/banderas/fji.svg",
+        "hash": "15239910194503311688"
+      },
+      {
+        "file": "libs/shared/img/banderas/flk.svg",
+        "hash": "16702103668448232750"
+      },
+      {
+        "file": "libs/shared/img/banderas/fra.svg",
+        "hash": "10381834702098903338"
+      },
+      {
+        "file": "libs/shared/img/banderas/fro.svg",
+        "hash": "11075756738374439897"
+      },
+      {
+        "file": "libs/shared/img/banderas/fsm.svg",
+        "hash": "12873971710440793865"
+      },
+      {
+        "file": "libs/shared/img/banderas/gab.svg",
+        "hash": "6731068168769420256"
+      },
+      {
+        "file": "libs/shared/img/banderas/gbr.svg",
+        "hash": "2814062593977043017"
+      },
+      {
+        "file": "libs/shared/img/banderas/geo.svg",
+        "hash": "6632236247515472489"
+      },
+      {
+        "file": "libs/shared/img/banderas/ggy.svg",
+        "hash": "7894751865653963772"
+      },
+      {
+        "file": "libs/shared/img/banderas/gha.svg",
+        "hash": "13051361853907106496"
+      },
+      {
+        "file": "libs/shared/img/banderas/gib.svg",
+        "hash": "5201293014482546752"
+      },
+      {
+        "file": "libs/shared/img/banderas/gin.svg",
+        "hash": "5437597732053088622"
+      },
+      {
+        "file": "libs/shared/img/banderas/glp.svg",
+        "hash": "16016051903052357585"
+      },
+      {
+        "file": "libs/shared/img/banderas/gmb.svg",
+        "hash": "12306833123486579413"
+      },
+      {
+        "file": "libs/shared/img/banderas/gnb.svg",
+        "hash": "10688610512700621431"
+      },
+      {
+        "file": "libs/shared/img/banderas/gnq.svg",
+        "hash": "11764468654913504204"
+      },
+      {
+        "file": "libs/shared/img/banderas/grc.svg",
+        "hash": "16319684998543701704"
+      },
+      {
+        "file": "libs/shared/img/banderas/grd.svg",
+        "hash": "2979745904858066423"
+      },
+      {
+        "file": "libs/shared/img/banderas/grl.svg",
+        "hash": "1853698445010410485"
+      },
+      {
+        "file": "libs/shared/img/banderas/gtm.svg",
+        "hash": "3748005405716260637"
+      },
+      {
+        "file": "libs/shared/img/banderas/guf.svg",
+        "hash": "9493730384887562370"
+      },
+      {
+        "file": "libs/shared/img/banderas/gum.svg",
+        "hash": "796117112532883472"
+      },
+      {
+        "file": "libs/shared/img/banderas/guy.svg",
+        "hash": "3632373614353560833"
+      },
+      {
+        "file": "libs/shared/img/banderas/hkg.svg",
+        "hash": "6707278934554305928"
+      },
+      {
+        "file": "libs/shared/img/banderas/hmd.svg",
+        "hash": "5475251994321841098"
+      },
+      {
+        "file": "libs/shared/img/banderas/hnd.svg",
+        "hash": "1685851843039963156"
+      },
+      {
+        "file": "libs/shared/img/banderas/hrv.svg",
+        "hash": "11538509042956653438"
+      },
+      {
+        "file": "libs/shared/img/banderas/hti.svg",
+        "hash": "8525455566565345736"
+      },
+      {
+        "file": "libs/shared/img/banderas/hun.svg",
+        "hash": "13725461397899019667"
+      },
+      {
+        "file": "libs/shared/img/banderas/idn.svg",
+        "hash": "13784912750579033823"
+      },
+      {
+        "file": "libs/shared/img/banderas/imn.svg",
+        "hash": "7686920072530735812"
+      },
+      {
+        "file": "libs/shared/img/banderas/ind.svg",
+        "hash": "13129440153161032358"
+      },
+      {
+        "file": "libs/shared/img/banderas/iot.svg",
+        "hash": "14450533989455836248"
+      },
+      {
+        "file": "libs/shared/img/banderas/irl.svg",
+        "hash": "412071076099271086"
+      },
+      {
+        "file": "libs/shared/img/banderas/irn.svg",
+        "hash": "9694379199637305164"
+      },
+      {
+        "file": "libs/shared/img/banderas/irq.svg",
+        "hash": "6574660976636913986"
+      },
+      {
+        "file": "libs/shared/img/banderas/isl.svg",
+        "hash": "13508671759977611704"
+      },
+      {
+        "file": "libs/shared/img/banderas/isr.svg",
+        "hash": "10381467293067465957"
+      },
+      {
+        "file": "libs/shared/img/banderas/ita.svg",
+        "hash": "9818445223371184223"
+      },
+      {
+        "file": "libs/shared/img/banderas/jam.svg",
+        "hash": "2457827746575064411"
+      },
+      {
+        "file": "libs/shared/img/banderas/jey.svg",
+        "hash": "14584785003744689443"
+      },
+      {
+        "file": "libs/shared/img/banderas/jor.svg",
+        "hash": "9122634168416987330"
+      },
+      {
+        "file": "libs/shared/img/banderas/jpn.svg",
+        "hash": "12183562763361569040"
+      },
+      {
+        "file": "libs/shared/img/banderas/kaz.svg",
+        "hash": "2294761532716784157"
+      },
+      {
+        "file": "libs/shared/img/banderas/ken.svg",
+        "hash": "11959586139111634112"
+      },
+      {
+        "file": "libs/shared/img/banderas/kgz.svg",
+        "hash": "16819096501160628645"
+      },
+      {
+        "file": "libs/shared/img/banderas/khm.svg",
+        "hash": "1694986601587415003"
+      },
+      {
+        "file": "libs/shared/img/banderas/kir.svg",
+        "hash": "11915133066479809674"
+      },
+      {
+        "file": "libs/shared/img/banderas/kna.svg",
+        "hash": "13093452390234663385"
+      },
+      {
+        "file": "libs/shared/img/banderas/kor.svg",
+        "hash": "6350507330130285329"
+      },
+      {
+        "file": "libs/shared/img/banderas/kwt.svg",
+        "hash": "13149990466492608940"
+      },
+      {
+        "file": "libs/shared/img/banderas/lao.svg",
+        "hash": "15411043807682037076"
+      },
+      {
+        "file": "libs/shared/img/banderas/lbn.svg",
+        "hash": "16795101167658352447"
+      },
+      {
+        "file": "libs/shared/img/banderas/lbr.svg",
+        "hash": "16482642559612274019"
+      },
+      {
+        "file": "libs/shared/img/banderas/lby.svg",
+        "hash": "17638568406840052676"
+      },
+      {
+        "file": "libs/shared/img/banderas/lca.svg",
+        "hash": "1759751078206091457"
+      },
+      {
+        "file": "libs/shared/img/banderas/lie.svg",
+        "hash": "4500351982974949379"
+      },
+      {
+        "file": "libs/shared/img/banderas/lka.svg",
+        "hash": "8201224725677148803"
+      },
+      {
+        "file": "libs/shared/img/banderas/lso.svg",
+        "hash": "11985651705768946291"
+      },
+      {
+        "file": "libs/shared/img/banderas/ltu.svg",
+        "hash": "16198275010021691383"
+      },
+      {
+        "file": "libs/shared/img/banderas/lux.svg",
+        "hash": "17360025828570842997"
+      },
+      {
+        "file": "libs/shared/img/banderas/lva.svg",
+        "hash": "7934962151759319638"
+      },
+      {
+        "file": "libs/shared/img/banderas/mac.svg",
+        "hash": "3444243181080240244"
+      },
+      {
+        "file": "libs/shared/img/banderas/maf.svg",
+        "hash": "10381834702098903338"
+      },
+      {
+        "file": "libs/shared/img/banderas/mar.svg",
+        "hash": "12568769248366644819"
+      },
+      {
+        "file": "libs/shared/img/banderas/mco.svg",
+        "hash": "12361025615755247977"
+      },
+      {
+        "file": "libs/shared/img/banderas/mda.svg",
+        "hash": "16452368760007839783"
+      },
+      {
+        "file": "libs/shared/img/banderas/mdg.svg",
+        "hash": "15777714768450933260"
+      },
+      {
+        "file": "libs/shared/img/banderas/mdv.svg",
+        "hash": "17100212898747475218"
+      },
+      {
+        "file": "libs/shared/img/banderas/mex.svg",
+        "hash": "3025292093130186395"
+      },
+      {
+        "file": "libs/shared/img/banderas/mhl.svg",
+        "hash": "12282898066653725882"
+      },
+      {
+        "file": "libs/shared/img/banderas/mkd.svg",
+        "hash": "18117068393454777570"
+      },
+      {
+        "file": "libs/shared/img/banderas/mli.svg",
+        "hash": "11189526025006734381"
+      },
+      {
+        "file": "libs/shared/img/banderas/mlt.svg",
+        "hash": "11824215119888658056"
+      },
+      {
+        "file": "libs/shared/img/banderas/mmr.svg",
+        "hash": "18177761566538444792"
+      },
+      {
+        "file": "libs/shared/img/banderas/mne.svg",
+        "hash": "3582085844832694150"
+      },
+      {
+        "file": "libs/shared/img/banderas/mng.svg",
+        "hash": "12554174297749778117"
+      },
+      {
+        "file": "libs/shared/img/banderas/mnp.svg",
+        "hash": "881216001424759112"
+      },
+      {
+        "file": "libs/shared/img/banderas/moz.svg",
+        "hash": "17257230805630237515"
+      },
+      {
+        "file": "libs/shared/img/banderas/mrt.svg",
+        "hash": "17322716474137423650"
+      },
+      {
+        "file": "libs/shared/img/banderas/msr.svg",
+        "hash": "13377884318041808005"
+      },
+      {
+        "file": "libs/shared/img/banderas/mtq.svg",
+        "hash": "3347329058363110275"
+      },
+      {
+        "file": "libs/shared/img/banderas/mus.svg",
+        "hash": "12598146117924884657"
+      },
+      {
+        "file": "libs/shared/img/banderas/mwi.svg",
+        "hash": "3619843111216628819"
+      },
+      {
+        "file": "libs/shared/img/banderas/mys.svg",
+        "hash": "15054749255634909144"
+      },
+      {
+        "file": "libs/shared/img/banderas/myt.svg",
+        "hash": "3719999636994796501"
+      },
+      {
+        "file": "libs/shared/img/banderas/nam.svg",
+        "hash": "13438294403791135874"
+      },
+      {
+        "file": "libs/shared/img/banderas/ncl.svg",
+        "hash": "501282723001003954"
+      },
+      {
+        "file": "libs/shared/img/banderas/ner.svg",
+        "hash": "11264158576849469694"
+      },
+      {
+        "file": "libs/shared/img/banderas/nfk.svg",
+        "hash": "15377196422730745000"
+      },
+      {
+        "file": "libs/shared/img/banderas/nga.svg",
+        "hash": "17024662248257346254"
+      },
+      {
+        "file": "libs/shared/img/banderas/nic.svg",
+        "hash": "5899627376687031324"
+      },
+      {
+        "file": "libs/shared/img/banderas/niu.svg",
+        "hash": "14380774860669773380"
+      },
+      {
+        "file": "libs/shared/img/banderas/nld.svg",
+        "hash": "12819509004929463222"
+      },
+      {
+        "file": "libs/shared/img/banderas/nor.svg",
+        "hash": "17991356525789872429"
+      },
+      {
+        "file": "libs/shared/img/banderas/npl.svg",
+        "hash": "5446676191618954573"
+      },
+      {
+        "file": "libs/shared/img/banderas/nru.svg",
+        "hash": "5544948842036280883"
+      },
+      {
+        "file": "libs/shared/img/banderas/nzl.svg",
+        "hash": "15374134372470138273"
+      },
+      {
+        "file": "libs/shared/img/banderas/omn.svg",
+        "hash": "12269743675355466538"
+      },
+      {
+        "file": "libs/shared/img/banderas/pak.svg",
+        "hash": "8827962930763727937"
+      },
+      {
+        "file": "libs/shared/img/banderas/pan.svg",
+        "hash": "7227940931579651598"
+      },
+      {
+        "file": "libs/shared/img/banderas/pcn.svg",
+        "hash": "11991914356148802598"
+      },
+      {
+        "file": "libs/shared/img/banderas/per.svg",
+        "hash": "6009876776404052403"
+      },
+      {
+        "file": "libs/shared/img/banderas/phl.svg",
+        "hash": "17272225685456251057"
+      },
+      {
+        "file": "libs/shared/img/banderas/plw.svg",
+        "hash": "3504006469204014984"
+      },
+      {
+        "file": "libs/shared/img/banderas/png.svg",
+        "hash": "11533807161164256047"
+      },
+      {
+        "file": "libs/shared/img/banderas/pol.svg",
+        "hash": "9880441492026728439"
+      },
+      {
+        "file": "libs/shared/img/banderas/pri.svg",
+        "hash": "6596921880459168714"
+      },
+      {
+        "file": "libs/shared/img/banderas/prk.svg",
+        "hash": "17566702180332236770"
+      },
+      {
+        "file": "libs/shared/img/banderas/prt.svg",
+        "hash": "8692040803913418304"
+      },
+      {
+        "file": "libs/shared/img/banderas/pry.svg",
+        "hash": "5679788962065321794"
+      },
+      {
+        "file": "libs/shared/img/banderas/pse.svg",
+        "hash": "3138286893392376241"
+      },
+      {
+        "file": "libs/shared/img/banderas/pyf.svg",
+        "hash": "16929496396102951748"
+      },
+      {
+        "file": "libs/shared/img/banderas/qat.svg",
+        "hash": "17181313275272634681"
+      },
+      {
+        "file": "libs/shared/img/banderas/reu.svg",
+        "hash": "6578888728955595772"
+      },
+      {
+        "file": "libs/shared/img/banderas/rou.svg",
+        "hash": "9264946856079763689"
+      },
+      {
+        "file": "libs/shared/img/banderas/rus.svg",
+        "hash": "11253592235250991215"
+      },
+      {
+        "file": "libs/shared/img/banderas/rwa.svg",
+        "hash": "16704023827545168358"
+      },
+      {
+        "file": "libs/shared/img/banderas/sau.svg",
+        "hash": "16498665830230700292"
+      },
+      {
+        "file": "libs/shared/img/banderas/sdn.svg",
+        "hash": "7118965883571443455"
+      },
+      {
+        "file": "libs/shared/img/banderas/sen.svg",
+        "hash": "15483688423404010658"
+      },
+      {
+        "file": "libs/shared/img/banderas/sgp.svg",
+        "hash": "16803895791550671208"
+      },
+      {
+        "file": "libs/shared/img/banderas/sgs.svg",
+        "hash": "2652874768332126079"
+      },
+      {
+        "file": "libs/shared/img/banderas/shn.svg",
+        "hash": "17821239898911658994"
+      },
+      {
+        "file": "libs/shared/img/banderas/sjm.svg",
+        "hash": "17991356525789872429"
+      },
+      {
+        "file": "libs/shared/img/banderas/slb.svg",
+        "hash": "17405711569726967151"
+      },
+      {
+        "file": "libs/shared/img/banderas/sle.svg",
+        "hash": "15045053291847282336"
+      },
+      {
+        "file": "libs/shared/img/banderas/slv.svg",
+        "hash": "13772293064538615305"
+      },
+      {
+        "file": "libs/shared/img/banderas/smr.svg",
+        "hash": "11998602212319770528"
+      },
+      {
+        "file": "libs/shared/img/banderas/som.svg",
+        "hash": "5031847473924921062"
+      },
+      {
+        "file": "libs/shared/img/banderas/spm.svg",
+        "hash": "16835908521397387014"
+      },
+      {
+        "file": "libs/shared/img/banderas/srb.svg",
+        "hash": "2731544465880933991"
+      },
+      {
+        "file": "libs/shared/img/banderas/ssd.svg",
+        "hash": "1335775909043399630"
+      },
+      {
+        "file": "libs/shared/img/banderas/stp.svg",
+        "hash": "13220622334910974295"
+      },
+      {
+        "file": "libs/shared/img/banderas/sur.svg",
+        "hash": "18015247497870732435"
+      },
+      {
+        "file": "libs/shared/img/banderas/svk.svg",
+        "hash": "12388182818170355286"
+      },
+      {
+        "file": "libs/shared/img/banderas/svn.svg",
+        "hash": "125977934211043042"
+      },
+      {
+        "file": "libs/shared/img/banderas/swe.svg",
+        "hash": "14386600890406221022"
+      },
+      {
+        "file": "libs/shared/img/banderas/swz.svg",
+        "hash": "16695544037343746033"
+      },
+      {
+        "file": "libs/shared/img/banderas/sxm.svg",
+        "hash": "10333563334603877586"
+      },
+      {
+        "file": "libs/shared/img/banderas/syc.svg",
+        "hash": "2025324430242864609"
+      },
+      {
+        "file": "libs/shared/img/banderas/syr.svg",
+        "hash": "7335292198285151451"
+      },
+      {
+        "file": "libs/shared/img/banderas/tca.svg",
+        "hash": "9453366377212533657"
+      },
+      {
+        "file": "libs/shared/img/banderas/tcd.svg",
+        "hash": "10606284243623201566"
+      },
+      {
+        "file": "libs/shared/img/banderas/tgo.svg",
+        "hash": "3265654955286838988"
+      },
+      {
+        "file": "libs/shared/img/banderas/tha.svg",
+        "hash": "11240172944606935021"
+      },
+      {
+        "file": "libs/shared/img/banderas/tjk.svg",
+        "hash": "365364326366363248"
+      },
+      {
+        "file": "libs/shared/img/banderas/tkl.svg",
+        "hash": "10094442622580269749"
+      },
+      {
+        "file": "libs/shared/img/banderas/tkm.svg",
+        "hash": "3949815784530400562"
+      },
+      {
+        "file": "libs/shared/img/banderas/tls.svg",
+        "hash": "1134648900254729510"
+      },
+      {
+        "file": "libs/shared/img/banderas/ton.svg",
+        "hash": "15760638864518951527"
+      },
+      {
+        "file": "libs/shared/img/banderas/tto.svg",
+        "hash": "11296635751786151709"
+      },
+      {
+        "file": "libs/shared/img/banderas/tun.svg",
+        "hash": "15381804740416646295"
+      },
+      {
+        "file": "libs/shared/img/banderas/tur.svg",
+        "hash": "3406298841925411607"
+      },
+      {
+        "file": "libs/shared/img/banderas/tuv.svg",
+        "hash": "1728832064300472335"
+      },
+      {
+        "file": "libs/shared/img/banderas/twn.svg",
+        "hash": "18342190434576276695"
+      },
+      {
+        "file": "libs/shared/img/banderas/tza.svg",
+        "hash": "7643794784892083774"
+      },
+      {
+        "file": "libs/shared/img/banderas/uga.svg",
+        "hash": "6664549301131888641"
+      },
+      {
+        "file": "libs/shared/img/banderas/ukr.svg",
+        "hash": "3164474299546457291"
+      },
+      {
+        "file": "libs/shared/img/banderas/umi.svg",
+        "hash": "986808642834399770"
+      },
+      {
+        "file": "libs/shared/img/banderas/undefined.svg",
+        "hash": "6084388299281735265"
+      },
+      {
+        "file": "libs/shared/img/banderas/ury.svg",
+        "hash": "2104336543239733622"
+      },
+      {
+        "file": "libs/shared/img/banderas/usa.svg",
+        "hash": "986808642834399770"
+      },
+      {
+        "file": "libs/shared/img/banderas/uzb.svg",
+        "hash": "7778732689012474463"
+      },
+      {
+        "file": "libs/shared/img/banderas/vat.svg",
+        "hash": "16238039127868739952"
+      },
+      {
+        "file": "libs/shared/img/banderas/vct.svg",
+        "hash": "15437594503992336992"
+      },
+      {
+        "file": "libs/shared/img/banderas/ven.svg",
+        "hash": "3103830095333795947"
+      },
+      {
+        "file": "libs/shared/img/banderas/vgb.svg",
+        "hash": "6707160216112713025"
+      },
+      {
+        "file": "libs/shared/img/banderas/vir.svg",
+        "hash": "5153300678221963648"
+      },
+      {
+        "file": "libs/shared/img/banderas/vnm.svg",
+        "hash": "2038081208838676704"
+      },
+      {
+        "file": "libs/shared/img/banderas/vut.svg",
+        "hash": "13117866722820134680"
+      },
+      {
+        "file": "libs/shared/img/banderas/wlf.svg",
+        "hash": "484650191101049563"
+      },
+      {
+        "file": "libs/shared/img/banderas/wsm.svg",
+        "hash": "12617891163429959691"
+      },
+      {
+        "file": "libs/shared/img/banderas/xkx.svg",
+        "hash": "8942431527854248944"
+      },
+      {
+        "file": "libs/shared/img/banderas/yem.svg",
+        "hash": "9633775121440586687"
+      },
+      {
+        "file": "libs/shared/img/banderas/zaf.svg",
+        "hash": "4195016650875363909"
+      },
+      {
+        "file": "libs/shared/img/banderas/zmb.svg",
+        "hash": "16295297479553812647"
+      },
+      {
+        "file": "libs/shared/img/banderas/zwe.svg",
+        "hash": "12684606408228255915"
+      },
+      {
+        "file": "libs/shared/img/config.json",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "libs/shared/img/favicon.ico",
+        "hash": "12164483715061598228"
+      },
+      {
+        "file": "libs/shared/img/icons/angular.svg",
+        "hash": "12636543904317232329"
+      },
+      {
+        "file": "libs/shared/img/icons/nestjs.svg",
+        "hash": "13421664290180573554"
+      },
+      {
+        "file": "libs/shared/img/tipografias/typographpro/TYPOGRAPH PRO Extra Bold.ttf",
+        "hash": "4345210238064091883"
+      },
+      {
+        "file": "libs/shared/img/tipografias/typographpro/TYPOGRAPH PRO Light Italic.ttf",
+        "hash": "8361264992286477852"
+      },
+      {
+        "file": "libs/shared/img/tipografias/typographpro/TYPOGRAPH PRO Light.ttf",
+        "hash": "2821906140744698240"
+      },
+      {
+        "file": "libs/shared/img/tipografias/typographpro/TYPOGRAPH PRO Semi Bold Italic.ttf",
+        "hash": "1820567923590972967"
+      },
+      {
+        "file": "libs/shared/img/tipografias/typographpro/TYPOGRAPH PRO Semi Bold.ttf",
+        "hash": "2221917699084300519"
+      },
+      {
+        "file": "libs/shared/img/tipografias/typographpro/TYPOGRAPH PRO Ultra Light Italic.ttf",
+        "hash": "11839908655343392874"
+      },
+      {
+        "file": "libs/shared/img/tipografias/typographpro/TYPOGRAPH PRO Ultra Light.ttf",
+        "hash": "7380596761520147352"
+      },
+      {
+        "file": "libs/shared/index.ts",
+        "hash": "17671362908116222344"
+      },
+      {
+        "file": "libs/shared/interfaces/city.interface.ts",
+        "hash": "9816783732491245881"
+      },
+      {
+        "file": "libs/shared/interfaces/country.interface.ts",
+        "hash": "12897969679611573947"
+      },
+      {
+        "file": "libs/shared/interfaces/index.ts",
+        "hash": "12394719711096538776"
+      },
+      {
+        "file": "libs/shared/interfaces/province.interface.ts",
+        "hash": "9206566789712096275"
+      },
+      {
+        "file": "libs/shared/interfaces/response.interface.ts",
+        "hash": "2994332878522440342"
+      },
+      {
+        "file": "libs/shared/tsconfig.json",
+        "hash": "2341990835398967577"
+      },
+      {
+        "file": "mapas/alf-button/AI_USAGE.md",
+        "hash": "12997856324111057385"
+      },
+      {
+        "file": "mapas/alf-button/README.md",
+        "hash": "378716138317869649"
+      },
+      {
+        "file": "mapas/alf-button/README_EN.md",
+        "hash": "6707803692483500407"
+      },
+      {
+        "file": "mapas/alf-button/alf-button-content.ts",
+        "hash": "17279910889094871279"
+      },
+      {
+        "file": "mapas/alf-button/alf-button.html",
+        "hash": "7951131180694778501"
+      },
+      {
+        "file": "mapas/alf-button/alf-button.scss",
+        "hash": "10973415962286449839"
+      },
+      {
+        "file": "mapas/alf-button/i18n/button-i18n.ts",
+        "hash": "2320136984260760007"
+      },
+      {
+        "file": "mapas/alf-button/interfaces/alfButton.ts",
+        "hash": "869919659141847092"
+      },
+      {
+        "file": "nest-cli.json",
+        "hash": "3790419444998965455"
+      },
+      {
+        "file": "package-lock.json",
+        "hash": "8606247043639340193"
+      },
+      {
+        "file": "package.json",
+        "hash": "16272814254391163399"
+      },
+      {
+        "file": "scripts/angular/eliminateExist.ts",
+        "hash": "5754403634520715087"
+      },
+      {
+        "file": "scripts/angular/generate.angular.ts",
+        "hash": "8456097728726819198"
+      },
+      {
+        "file": "scripts/build-libs.js",
+        "hash": "831961902923649171"
+      },
+      {
+        "file": "scripts/install-node-modules.ts",
+        "hash": "18131525551245927319"
+      },
+      {
+        "file": "scripts/logger.ts",
+        "hash": "15668171616426682198"
+      },
+      {
+        "file": "scripts/nestjs/export-nest-project.ts",
+        "hash": "9047861362196472504"
+      },
+      {
+        "file": "scripts/nestjs/nestjs-generator.ts",
+        "hash": "2969618404226078889"
+      },
+      {
+        "file": "scripts/nestjs/nestjs-project-manager.ts",
+        "hash": "9319789620002106217"
+      },
+      {
+        "file": "scripts/project-creator.ts",
+        "hash": "9632758803734321891"
+      },
+      {
+        "file": "scripts/reload.ts",
+        "hash": "7644705237354276791"
+      },
+      {
+        "file": "scripts/setup-libs.js",
+        "hash": "18437606262407282808"
+      },
+      {
+        "file": "tsconfig.json",
+        "hash": "5686413365938108596"
+      },
+      {
+        "file": "tsconfig.spec.json",
+        "hash": "15258511810925429730"
+      },
+      {
+        "file": "vitest.config.ts",
+        "hash": "14100883566940769467"
+      },
+      {
+        "file": "vitest.setup.ts",
+        "hash": "2157953351249982101"
+      },
+      {
+        "file": "webpack.config.js",
+        "hash": "11040829589492477353"
+      }
+    ]
+  },
+  "externalNodesHash": "505817148783333392"
+}

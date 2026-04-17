@@ -1,5 +1,5 @@
 import { signal, WritableSignal } from '@angular/core';
-import { AlfThemeEnum } from '../enums/alf-theme.enum';
+import { AlfThemeEnum } from '../enums';
 
 /**
  * Token Global del Tema Activo.

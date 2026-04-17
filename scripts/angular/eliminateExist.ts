@@ -72,7 +72,8 @@ export async function createStructure(baseDir, name) {
     console.log(`📁 Folder created: ${folder}`);
   }
 
-  return await createTsConfig(baseDir, name);
+  await createTsConfig(baseDir, name);
+  return await createTsConfigSpec(baseDir, name);
 }
 
 async function createTsConfig(basePath, name) {
@@ -88,21 +89,46 @@ async function createTsConfig(basePath, name) {
           composite: true,
           outDir: './dist/' + name,
           module: 'esnext',
-          moduleResolution: 'node',
-          paths: {
-            '@alfcomponents/*': ['../../../alfcomponents/*'],
-          },
+          moduleResolution: 'node'
         },
         include: ['src/**/*.ts'],
+        references: [
+          {
+            path: '../../../alfcomponents'
+          }
+        ]
       },
       null,
       2,
     ),
   );
 
-  console.log(`✅ tsconfig.json created (con alias @alfcomponents)`);
+  console.log(`✅ tsconfig.json created (con reference a alfcomponents)`);
+}
+
+async function createTsConfigSpec(basePath, name) {
+  const tsconfigSpecPath = join(basePath, 'tsconfig.spec.json');
+  ensureFileSync(tsconfigSpecPath);
+  writeFileSync(
+    tsconfigSpecPath,
+    JSON.stringify(
+      {
+        extends: './tsconfig.json',
+        compilerOptions: {
+          outDir: '../../../dist/spec/' + name,
+          types: ['vitest/globals', 'node']
+        },
+        include: ['src/**/*.spec.ts', 'src/**/*.ts']
+      },
+      null,
+      2,
+    ),
+  );
+
+  console.log(`✅ tsconfig.spec.json created`);
   createReadme(basePath, name);
 }
+
 
 async function createReadme(basePath, name) {
   // Crear tsconfig.json si no existe
@@ -280,7 +306,7 @@ async function createScss(basePath, name) {
   ensureFileSync(tsconfigPath);
   writeFileSync(
     tsconfigPath,
-    `@import '../../../libs/angular/styles/root.scss';\n@import '../../../libs/angular/styles/predefined.scss';\n`,
+    `@use '../../../../libs/angular/styles/root.scss';\n@use '../../../../libs/angular/styles/predefined.scss';\n`,
   );
   const tsconfigPath2 = join(app, 'styles.css');
   ensureFileSync(tsconfigPath);
@@ -338,9 +364,8 @@ async function createAppTs(basePath, name) {
   ensureFileSync(tsconfigPath);
   writeFileSync(
     tsconfigPath,
-    `import { Component, ChangeDetectionStrategy, AfterRenderPhase, afterNextRender } from '@angular/core';
+    `import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { initFlowbite } from 'flowbite';
 
 @Component({
   selector: 'app-root',
@@ -351,11 +376,7 @@ import { initFlowbite } from 'flowbite';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App {
-  constructor() {
-    afterNextRender(() => {
-      initFlowbite();
-    }, { phase: AfterRenderPhase.Write });
-  }
+  constructor() {}
 }
 `,
   );
@@ -390,7 +411,7 @@ async function createAppHtml(basePath, name) {
   writeFileSync(
     tsconfigPath,
     `
-<button type="button" class="text-gray-900 bg-gradient-to-r from-red-200 via-red-300 to-yellow-200 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Red to Yellow</button>
+<h1>Welcome to ${name}</h1>
 <router-outlet></router-outlet>
 `,
   );
@@ -604,47 +625,6 @@ export const appConfig: ApplicationConfig = {
 //   }
 // }
 
-export async function addTailwind(name, baseDir) {
-  const usarTailwind =
-    readlineSync
-      .question('¿Quieres instalar Tailwind CSS? (S/n): ')
-      .toLowerCase() !== 'n';
-  if (usarTailwind) {
-    console.log('🎨 Installing Tailwind CSS...');
-    fs.writeFileSync(
-      path.join(baseDir, '.postcssrc.json'),
-      JSON.stringify({ plugins: { '@tailwindcss/postcss': {} } }, null, 2),
-    );
-
-    fs.writeFileSync(
-      path.join(baseDir, 'src', 'styles.css'),
-      `@import "tailwindcss";
-@plugin "flyonui";
-@plugin "flowbite/plugin";
-@source "../node_modules/flowbite";
-`
-    );
-    console.log('all instaled type npm run dev:front:o;');
-
-    // const angularJsonPath = path.join(baseDir, 'angular.json');
-    // if (fs.existsSync(angularJsonPath)) {
-    //   const angularJson = JSON.parse(fs.readFileSync(angularJsonPath, 'utf-8'));
-    //   const projectName = Object.keys(angularJson.projects)[0];
-    //   const styles = angularJson.projects[projectName].architect.build.options.styles;
-    //   const cssEntry = `src/styles.css`;
-    //   const hasCss = styles?.some(
-    //     (s) => typeof s === 'string' && s.includes('styles.css'),
-    //   );
-    //   if (!hasCss) {
-    //     angularJson.projects[
-    //       projectName
-    //     ].architect.build.options.styles.unshift(cssEntry);
-    //     fs.writeFileSync(angularJsonPath, JSON.stringify(angularJson, null, 2));
-    //     console.log('🧩 styles.css added in angular.json');
-    //   }
-    // }
-  }
-}
 
 export function addAliasToTsconfig(name: string) {
   const tsconfigPath = path.resolve('tsconfig.base.json');
