@@ -1,12 +1,17 @@
-@if (!lazy() || shouldBeVisible()) {
+@let visible = shouldBeVisible();
+
+@if (!lazy() || visible) {
   <div 
     class="alf-tab-content__inner"
-    [ngClass]="animationClassesComputed()"
+    role="tabpanel"
+    [id]="panelId()"
+    [attr.aria-labelledby]="labeledBy()"
+    [class]="animationClassesComputed()"
     [class.alf-tab-content__inner--active]="isActive()"
     [class.alf-tab-content__inner--exiting]="isExiting()"
     [attr.tabindex]="tabIndex()"
-    [style.display]="shouldBeVisible() ? 'block' : 'none'"
-    [ngStyle]="animationStylesComputed()"
+    [style.display]="visible ? 'block' : 'none'"
+    [style]="animationStylesComputed()"
     (animationend)="onAnimationEnd()"
   >
     <ng-content></ng-content>

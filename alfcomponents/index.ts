@@ -11,7 +11,6 @@ export * from './directives';
 export * from './components';
 export * from './base';
 export * from './themes/alf-theme.tokens';
-export * from './themes/alf-theme.manager';
 
 // Simple UI Components
 // export * from './ui/simple/button/button.component';

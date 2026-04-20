@@ -1,0 +1,49 @@
+/**
+ * AlfReactiveStyle Mixin
+ * Centraliza la lógica de estados visuales reactivos de la librería.
+ * Vincula las variables CSS inyectadas por el AlfBaseComponent con los estados nativos.
+ */
+@mixin alf-reactive-style {
+  
+  // --- HELPERS INTERNOS PARA FALLBACKS ---
+  // Estos fallbacks aseguran que si un estado no está definido en el tema, 
+  // se mantenga el estilo base sin romperse.
+
+  // 1. BASE / DEFAULT
+  background: var(--alf-bg-color);
+  border-color: var(--alf-brd-color);
+  box-shadow: var(--alf-shd-val);
+  color: var(--alf-txt-color);
+
+  // 2. HOVER (Si no existe var de hover, usa la base)
+  &:hover:not(:disabled):not(.disabled) {
+    background: var(--alf-bg-color-hover, var(--alf-bg-color));
+    border-color: var(--alf-brd-color-hover, var(--alf-brd-color));
+    box-shadow: var(--alf-shd-val-hover, var(--alf-shd-val));
+    color: var(--alf-txt-color-hover, var(--alf-txt-color));
+  }
+
+  // 3. ACTIVE (Si no existe, busca en hover y luego en base)
+  &:active:not(:disabled):not(.disabled) {
+    background: var(--alf-bg-color-active, var(--alf-bg-color-hover, var(--alf-bg-color)));
+    border-color: var(--alf-brd-color-active, var(--alf-brd-color-hover, var(--alf-brd-color)));
+    box-shadow: var(--alf-shd-val-active, var(--alf-shd-val-hover, var(--alf-shd-val)));
+    color: var(--alf-txt-color-active, var(--alf-txt-color-hover, var(--alf-txt-color)));
+  }
+
+  // 4. FOCUS
+  &:focus-visible {
+    outline: 2px solid var(--alf-brd-color-active, var(--alf-brd-color, currentColor));
+    outline-offset: 2px;
+  }
+
+  // 5. DISABLED
+  &:disabled,
+  &.disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    background: var(--alf-bg-color-disabled, var(--alf-bg-color));
+    border-color: var(--alf-brd-color-disabled, var(--alf-brd-color));
+    color: var(--alf-txt-color-disabled, var(--alf-txt-color));
+  }
+}

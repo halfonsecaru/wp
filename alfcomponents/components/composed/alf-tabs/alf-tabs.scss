@@ -1,45 +1,58 @@
 @use '../../../styles/mixins' as *;
 
 /**
- * AlfTabs Premium Styles
- * Implementa un ecosistema visual de alta calidad con soporte para glassmorphism
- * y gradientes de máscara para el scroll.
+ * AlfTabs Impeccable Architecture
+ * - Emulated Encapsulation: Evita fugas de estilo.
+ * - CSS Variable Contract: Permite personalización externa limpia.
+ * - Hardware Acceleration: Optimizado para fluidez máxima.
  */
 
+:host {
+  display: block;
+  width: 100%;
+
+  // Design Tokens (Consumidos desde el Contrato Dinámico en TS)
+  --alf-tabs-gap: 0px;
+  --alf-tabs-header-weight: 500;
+  --alf-tabs-header-weight-active: 600;
+  --alf-tabs-indicator-height: 2px;
+}
+
 .alf-tabs {
+  @include alf-backgrounds;
+  @include alf-border;
+  @include alf-shadows;
+
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 12px;
-  
-  // Marco del Componente Premium
-  border: 1px solid var(--alf-color-gray-200, #e2e8f0);
-  border-radius: 12px;
-  background: var(--alf-color-white, #fff);
-  padding: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-  transition: box-shadow 0.3s ease;
+  gap: var(--alf-tabs-gap);
+  overflow: hidden;
+  transition: all 0.3s ease;
 
-  &:hover {
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
-  }
-  
   &--vertical {
     flex-direction: row;
     height: 100%;
-    
-    .alf-tabs__header-container {
+
+    .alf-tabs__superior {
       flex-direction: column;
-      border-right: 1px solid var(--alf-color-gray-200);
+      border-right: 1px solid var(--alf-brd-color, var(--alf-sys-gray-200));
       border-bottom: none;
       width: clamp(200px, 20vw, 300px);
     }
-    
+
     .alf-tabs__nav {
       flex-direction: column;
       width: 100%;
     }
   }
+}
+
+.alf-tabs__superior,
+.alf-tabs__inferior {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .alf-tabs__header-container {
@@ -48,9 +61,10 @@
   position: relative;
   background: transparent;
   user-select: none;
-  
-  // Gradiente de máscara para suavizar los bordes del scroll
-  &::before, &::after {
+
+  // Gradientes de máscara (Zonas de scroll)
+  &::before,
+  &::after {
     content: '';
     position: absolute;
     top: 0;
@@ -63,12 +77,12 @@
 
   &::before {
     left: 0;
-    background: linear-gradient(to right, var(--alf-color-white, #fff), transparent);
+    background: linear-gradient(to right, var(--alf-bg-color, white), transparent);
   }
 
   &::after {
     right: 0;
-    background: linear-gradient(to left, var(--alf-color-white, #fff), transparent);
+    background: linear-gradient(to left, var(--alf-bg-color, white), transparent);
   }
 }
 
@@ -78,9 +92,71 @@
   overflow-y: hidden;
   scrollbar-width: none;
   scroll-behavior: smooth;
-  
+
   &::-webkit-scrollbar {
     display: none;
+  }
+}
+
+.alf-tabs__arrow {
+  all: unset;
+  position: absolute;
+  top: 0;
+  bottom: 0px;
+  width: var(--alf-tabs-arrow-size);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: transparent;
+  color: inherit;
+  opacity: 0.9;
+  background-color: var(--alf-tabs-header-color-active);
+  font-weight: bold;
+  font-size: 1.8rem;
+  font-family: serif;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(50px);
+  -webkit-backdrop-filter: blur(50px);
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 0px !important;
+
+  // --- Stealth Look for Dark Mode ---
+  [data-alf-theme='dark'] & {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    opacity: 0.7;
+    background-color: color-mix(in srgb, var(--alf-tabs-header-color-active) 80%, black);
+
+    &:hover:not(:disabled) {
+      opacity: 1;
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+    }
+  }
+
+  &--left {
+    left: 0;
+    background: linear-gradient(to right, var(--alf-bg-color, white) 60%, transparent);
+    border-radius: 0 12px 12px 0;
+  }
+
+  &--right {
+    right: 0;
+    background: linear-gradient(to left, var(--alf-bg-color, white) 60%, transparent);
+    border-radius: 12px 0 0 12px;
+  }
+
+  &:hover:not(:disabled) {
+    opacity: 1;
+    color: var(--alf-tabs-header-color-active);
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.9);
   }
 }
 
@@ -88,35 +164,23 @@
   display: flex;
   flex-wrap: nowrap;
   white-space: nowrap;
-  gap: 4px;
-  padding: 4px;
-  position: relative; // Necesario para el indicador absoluto
-  
-  // Estilo Glass (Opcional según visualType)
-  .alf-tabs--glass & {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-  }
+  position: relative;
 }
 
 .alf-tabs__indicator {
   position: absolute;
   bottom: 0;
   left: 0;
-  height: 3px;
-  background: var(--alf-color-primary, #6200ee);
+  height: var(--alf-tabs-indicator-height);
+  background: var(--alf-tabs-indicator-color);
   border-radius: 3px 3px 0 0;
   z-index: 10;
-  
-  // Transición Material Design: Suave y con "peso"
-  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform, width;
-
-  // Filtro para oscurecer el color si es necesario (el 15% propuesto)
-  filter: brightness(0.85);
 }
+
+// --- Soporte para AlfTab (Componente Hijo) ---
+// Estilos delegados al componente hijo para mejor encapsulación (RULES.md)
 
 .alf-tabs__content-container {
   flex: 1;
@@ -126,113 +190,81 @@
   position: relative;
   overflow: hidden;
   min-height: 100px;
-  
-  // Apilamos todos los hijos (manuales o anidados) en la misma celda de grid
-  // Esto permite que el que entra y el que sale ocupen el mismo lugar exacto.
-  alf-tab-content, 
+
+  alf-tab-content,
   .alf-tabs__panel {
     grid-area: 1 / 1;
     width: 100%;
-    // Evitamos que las transiciones manuales interfieran con Animate.css
-    transition: none; 
+    transition: none;
   }
 }
 
-// --- Variantes Visuales ---
-
-/* Underline (Default) */
-.alf-tabs--underline {
-  .alf-tabs__nav {
-    border-bottom: 2px solid var(--alf-color-gray-100, #e2e8f0);
-    padding-bottom: 0;
-  }
-}
-
-/* Pill (Modern Capsule) */
-.alf-tabs--pill {
-  .alf-tabs__nav {
-    background: var(--alf-color-gray-100);
-    border-radius: 40px;
-    padding: 6px;
-  }
-}
-
-/* Glassmorphism */
+// --- Master & Glass Design (Identidades Premium / Crystal Logic) ---
+.alf-tabs--master,
 .alf-tabs--glass {
-  background: rgba(255, 255, 255, 0.05);
+  --alf-tabs-gap: 0;
+  --alf-tabs-indicator-height: 2px;
+  --alf-tabs-header-weight: 600;
+  --alf-tabs-header-color: var(--alf-sys-gray-600, #475569);
+
   backdrop-filter: blur(12px);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--alf-brd-color, var(--alf-sys-gray-200));
+  background: var(--alf-bg-color, white);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  // --- Dark Mode Refinements (Elite Structural Sync) ---
+  [data-alf-theme='dark'] & {
+    --alf-tabs-header-color: var(--alf-sys-gray-400, #94a3b8);
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  .alf-tabs__header-container {
+    border-bottom: 1px solid var(--alf-brd-color, var(--alf-sys-gray-200));
+    background: transparent;
+    transition: border-color 0.4s ease;
+  }
 }
 
-/* Master Design 3.0 (Pure - Exact Match) */
-.alf-tabs--master {
-  border: none;
-  box-shadow: none;
-  padding: 0;
-  gap: 0;
+// --- Pill Design (Cápsulas) ---
+.alf-tabs--pill {
   background: transparent;
 
   .alf-tabs__header-container {
-    border-bottom: 1px solid var(--alf-color-gray-150, #f0f0f0);
-    
-    // Eliminamos los gradientes de máscara para un look 100% plano
-    &::before, &::after { display: none !important; }
-  }
+    background: var(--alf-sys-gray-100, #f1f5f9);
+    padding: 4px;
+    border-radius: 99px;
+    width: fit-content;
+    margin: 0 auto;
 
-  .alf-tabs__nav {
-    gap: 0;
-    padding: 0;
-    
-    alf-tab {
-      display: contents; // Hacemos que el host del tab no interfiera en el layout
-      
-      // Selectores ultra-agresivos para resetear AlfButton y sus tokens
-      alf-button, 
-      .alf-btn,
-      button {
-        // Reseteo total de las variables que viste en el inspector
-        --alf-bg-color: transparent !important;
-        --alf-bg-color-hover: rgba(0, 0, 0, 0.04) !important;
-        --alf-brd-radius: 0 !important;
-        --alf-brd-border-top-left-radius: 0 !important;
-        --alf-brd-border-top-right-radius: 0 !important;
-        --alf-brd-border-bottom-left-radius: 0 !important;
-        --alf-brd-border-bottom-right-radius: 0 !important;
-        --alf-shd-val: none !important;
-        --alf-shd-val-hover: none !important;
-        
-        // Refuerzo de propiedades nativas
-        background: transparent !important;
-        background-color: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
-        border-radius: 0 !important;
-      }
-
-      // Estilos de fuente Master
-      color: var(--alf-color-gray-500, #94a3b8);
-      font-weight: 600;
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      transition: color 0.3s ease;
-
-      &.alf-tab--active {
-        color: var(--alf-tabs-indicator-color, var(--alf-color-primary));
-        
-        // Refuerzo para el botón activo
-        alf-button, .alf-btn, button {
-          color: inherit !important;
-          background: transparent !important;
-        }
-      }
+    [data-alf-theme='dark'] & {
+      background: var(--alf-sys-gray-200);
     }
   }
+}
 
-  .alf-tabs__indicator {
-    height: 2px;
-    border-radius: 0;
-    filter: none; // En Material puro el color es vibrante, no oscuro
+// --- Modern Design (Minimalista) ---
+.alf-tabs--modern {
+  background: transparent;
+  --alf-tabs-indicator-height: 4px;
+
+  .alf-tabs__header-container {
+    border-bottom: 2px solid var(--alf-sys-gray-150, #f8fafc);
+
+    [data-alf-theme='dark'] & {
+      border-bottom-color: var(--alf-sys-gray-200);
+    }
   }
+}
+
+.alf-tabs__aria-live {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }

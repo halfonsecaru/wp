@@ -50,4 +50,8 @@ export interface AlfBaseInterface {
 
   /** Efecto de pulsación táctil/visual */
   ripple?: boolean | AlfRippleInterface;
+
+  /** Estilos y clases personalizadas inyectables */
+  customStyle?: Record<string, string>;
+  customClass?: string | string[];
 }

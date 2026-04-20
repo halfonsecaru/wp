@@ -16,6 +16,9 @@ export interface AlfTabInterface extends AlfBaseInterface {
   /** Jerarquía visual del botón (Solid, Ghost, Text, etc.) */
   visualType?: AlfButtonVisualTypeEnum;
   
+  /** Habilitar efecto ripple (por defecto true) */
+  ripple?: boolean;
+  
   /** Estilos y clases personalizadas para el botón */
   customStyle?: Record<string, string>;
   customClass?: string | string[];

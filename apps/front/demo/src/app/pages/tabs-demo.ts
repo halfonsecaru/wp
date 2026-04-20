@@ -17,7 +17,7 @@ import {
   standalone: true,
   imports: [AlfTabsComponent, AlfTabComponent],
   template: `
-    <div style="padding: 2rem; display: flex; flex-direction: column; gap: 3rem; min-height: 100vh;">
+    <div style="padding: 2rem; display: flex; flex-direction: column; gap: 3rem; min-height: 100%;">
       
       <header style="display: flex; flex-direction: column; gap: 0.5rem; border-bottom: 2px solid var(--alf-sys-gray-100); padding-bottom: 1.5rem;">
         <h1 style="margin: 0; font-size: 2.5rem; letter-spacing: -0.025em; font-weight: 800; background: linear-gradient(to right, #3b82f6, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
@@ -116,7 +116,7 @@ import {
 
       <!-- 5. MASTER IDENTITY (Material + Sliding Indicator + Directional Slides) -->
       <section class="demo-card master-demo">
-        <h3 class="demo-title" style="color: #6200ee;">5. Identidad: Master (Material + Sliding Indicator)</h3>
+        <h3 class="demo-title" style="color: #6200ee;">5. Identidad: Master (Sliding Indicator)</h3>
         <p class="demo-desc">La joya de la corona. Indicador deslizante reactivo y animaciones con coherencia espacial.</p>
         
         <alf-tabs [predefined]="tabsKeys.Master">
@@ -137,6 +137,33 @@ import {
               <h4>Protección Total</h4>
               <p>Todo el motor está basado en señales de Angular, sin un solo milisegundo de desperdicio.</p>
             </div>
+          </alf-tab>
+          <alf-tab [defineComponent]="{ label: 'Analíticas', prefix: icons.ChartIncreasing }">
+            <div class="panel-content"><h4>Métricas</h4><p>Visualización de datos avanzados.</p></div>
+          </alf-tab>
+          <alf-tab [defineComponent]="{ label: 'Usuarios', prefix: icons.User }">
+            <div class="panel-content"><h4>Gestión de Usuarios</h4><p>Control de acceso y perfiles.</p></div>
+          </alf-tab>
+          <alf-tab [defineComponent]="{ label: 'Mensajes', prefix: icons.Bell }">
+            <div class="panel-content"><h4>Notificaciones</h4><p>Centro de mensajes en tiempo real.</p></div>
+          </alf-tab>
+          <alf-tab [defineComponent]="{ label: 'Proyectos', prefix: icons.Ledger }">
+            <div class="panel-content"><h4>Mis Proyectos</h4><p>Organización de tareas y objetivos.</p></div>
+          </alf-tab>
+          <alf-tab [defineComponent]="{ label: 'Archivos', prefix: icons.Plus }">
+            <div class="panel-content"><h4>Almacenamiento</h4><p>Gestor de documentos en la nube.</p></div>
+          </alf-tab>
+          <alf-tab [defineComponent]="{ label: 'Configuración', prefix: icons.Settings }">
+            <div class="panel-content"><h4>Ajustes</h4><p>Configuración global del sistema.</p></div>
+          </alf-tab>
+          <alf-tab [defineComponent]="{ label: 'Ayuda', prefix: icons.ClockwiseArrowsButton }">
+            <div class="panel-content"><h4>Soporte</h4><p>Centro de ayuda y documentación.</p></div>
+          </alf-tab>
+          <alf-tab [defineComponent]="{ label: 'Comunidad', prefix: icons.User }">
+            <div class="panel-content"><h4>Foros</h4><p>Conéctate con otros usuarios.</p></div>
+          </alf-tab>
+          <alf-tab [defineComponent]="{ label: 'Tienda', prefix: icons.Sparkle }">
+            <div class="panel-content"><h4>Marketplace</h4><p>Extensiones y temas premium.</p></div>
           </alf-tab>
         </alf-tabs>
       </section>

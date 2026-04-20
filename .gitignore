@@ -109,3 +109,6 @@ coverage/
 
 # DynamoDB Local files
 .dynamodb/
+
+# Angular cache
+.angular/

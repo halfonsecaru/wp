@@ -7,59 +7,58 @@
 // =============================================================
 
 @mixin alf-backgrounds() {
-
   // --- DEFAULT ---
-  background-color:      var(--alf-bg-color);
-  background-image:      var(--alf-bg-custom-background-image);
-  background-size:       var(--alf-bg-size);
-  background-position:   var(--alf-bg-pos);
-  background-repeat:     var(--alf-bg-repeat);
+  background-color: var(--alf-bg-color);
+  background-image: var(--alf-bg-img, var(--alf-bg-custom-background-image));
+  background-size: var(--alf-bg-size);
+  background-position: var(--alf-bg-pos);
+  background-repeat: var(--alf-bg-repeat);
   background-attachment: var(--alf-bg-attachment);
-  background-clip:       var(--alf-bg-clip);
+  background-clip: var(--alf-bg-clip);
 
   // --- FOCUS ---
   &:focus,
   &:focus-visible {
-    background-color:      var(--alf-bg-color-focus,      var(--alf-bg-color));
-    background-image:      var(--alf-bg-custom-background-image-focus, var(--alf-bg-custom-background-image));
-    background-size:       var(--alf-bg-size-focus,       var(--alf-bg-size));
-    background-position:   var(--alf-bg-pos-focus,        var(--alf-bg-pos));
-    background-repeat:     var(--alf-bg-repeat-focus,     var(--alf-bg-repeat));
+    background-color: var(--alf-bg-color-focus, var(--alf-bg-color));
+    background-image: var(--alf-bg-img-focus, var(--alf-bg-img, var(--alf-bg-custom-background-image)));
+    background-size: var(--alf-bg-size-focus, var(--alf-bg-size));
+    background-position: var(--alf-bg-pos-focus, var(--alf-bg-pos));
+    background-repeat: var(--alf-bg-repeat-focus, var(--alf-bg-repeat));
     background-attachment: var(--alf-bg-attachment-focus, var(--alf-bg-attachment));
-    background-clip:       var(--alf-bg-clip-focus,       var(--alf-bg-clip));
+    background-clip: var(--alf-bg-clip-focus, var(--alf-bg-clip));
   }
 
   // --- HOVER ---
   &:hover {
-    background-color:      var(--alf-bg-color-hover,      var(--alf-bg-color));
-    background-image:      var(--alf-bg-custom-background-image-hover, var(--alf-bg-custom-background-image));
-    background-size:       var(--alf-bg-size-hover,       var(--alf-bg-size));
-    background-position:   var(--alf-bg-pos-hover,        var(--alf-bg-pos));
-    background-repeat:     var(--alf-bg-repeat-hover,     var(--alf-bg-repeat));
+    background-color: var(--alf-bg-color-hover, var(--alf-bg-color));
+    background-image: var(--alf-bg-img-hover, var(--alf-bg-img, var(--alf-bg-custom-background-image)));
+    background-size: var(--alf-bg-size-hover, var(--alf-bg-size));
+    background-position: var(--alf-bg-pos-hover, var(--alf-bg-pos));
+    background-repeat: var(--alf-bg-repeat-hover, var(--alf-bg-repeat));
     background-attachment: var(--alf-bg-attachment-hover, var(--alf-bg-attachment));
-    background-clip:       var(--alf-bg-clip-hover,       var(--alf-bg-clip));
+    background-clip: var(--alf-bg-clip-hover, var(--alf-bg-clip));
   }
 
   // --- ACTIVE ---
   &:active {
-    background-color:      var(--alf-bg-color-active,      var(--alf-bg-color));
-    background-image:      var(--alf-bg-custom-background-image-active, var(--alf-bg-custom-background-image));
-    background-size:       var(--alf-bg-size-active,       var(--alf-bg-size));
-    background-position:   var(--alf-bg-pos-active,        var(--alf-bg-pos));
-    background-repeat:     var(--alf-bg-repeat-active,     var(--alf-bg-repeat));
+    background-color: var(--alf-bg-color-active, var(--alf-bg-color));
+    background-image: var(--alf-bg-img-active, var(--alf-bg-img, var(--alf-bg-custom-background-image)));
+    background-size: var(--alf-bg-size-active, var(--alf-bg-size));
+    background-position: var(--alf-bg-pos-active, var(--alf-bg-pos));
+    background-repeat: var(--alf-bg-repeat-active, var(--alf-bg-repeat));
     background-attachment: var(--alf-bg-attachment-active, var(--alf-bg-attachment));
-    background-clip:       var(--alf-bg-clip-active,       var(--alf-bg-clip));
+    background-clip: var(--alf-bg-clip-active, var(--alf-bg-clip));
   }
 
   // --- DISABLED ---
   &[disabled],
   &:disabled {
-    background-color:      var(--alf-bg-color-disabled,      var(--alf-bg-color));
-    background-image:      var(--alf-bg-custom-background-image-disabled, var(--alf-bg-custom-background-image));
-    background-size:       var(--alf-bg-size-disabled,       var(--alf-bg-size));
-    background-position:   var(--alf-bg-pos-disabled,        var(--alf-bg-pos));
-    background-repeat:     var(--alf-bg-repeat-disabled,     var(--alf-bg-repeat));
+    background-color: var(--alf-bg-color-disabled, var(--alf-bg-color));
+    background-image: var(--alf-bg-img-disabled, var(--alf-bg-img, var(--alf-bg-custom-background-image)));
+    background-size: var(--alf-bg-size-disabled, var(--alf-bg-size));
+    background-position: var(--alf-bg-pos-disabled, var(--alf-bg-pos));
+    background-repeat: var(--alf-bg-repeat-disabled, var(--alf-bg-repeat));
     background-attachment: var(--alf-bg-attachment-disabled, var(--alf-bg-attachment));
-    background-clip:       var(--alf-bg-clip-disabled,       var(--alf-bg-clip));
+    background-clip: var(--alf-bg-clip-disabled, var(--alf-bg-clip));
   }
 }

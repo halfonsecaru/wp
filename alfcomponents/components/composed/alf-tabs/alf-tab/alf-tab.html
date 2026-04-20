@@ -1,13 +1,34 @@
-<!-- Cabecera de la pestaña (El botón) -->
-<alf-button
-  [defineComponent]="buttonConfigComputed()"
-  [predefined]="defineComponentInput()?.predefined"
-  [style.flex]="'1'"
-  (onClick)="selectTab()"
+@let s = styleVariablesComputed();
+@let visualType = visualTypeComputed();
+
+<button 
+  type="button"
+  class="alf-tab__header"
+  [class]="'alf-tab__header--' + visualType"
+  [class.alf-tab__header--active]="isActive()"
+  [class.alf-tab__header--disabled]="configComputed()?.disabled"
+  [alfRipple]="rippleEnabled()"
+  [attr.role]="'tab'"
+  [attr.aria-selected]="isActive()"
+  [attr.id]="tabId()"
+  [attr.aria-controls]="panelId()"
+  [style]="s"
+  (click)="selectTab()"
 >
-  <!-- Proyectamos prefix/suffix/label aquí si se redefine, 
-       pero por ahora se maneja vía inputs de AlfButton -->
-</alf-button>
+  @if (configComputed()?.prefix) {
+    <span class="alf-tab__icon alf-tab__icon--prefix">{{ configComputed()?.prefix }}</span>
+  }
+
+  <span class="alf-tab__label">{{ configComputed()?.label }}</span>
+
+  @if (configComputed()?.badge !== undefined) {
+    <span class="alf-tab__badge">{{ configComputed()?.badge }}</span>
+  }
+
+  @if (configComputed()?.suffix) {
+    <span class="alf-tab__icon alf-tab__icon--suffix">{{ configComputed()?.suffix }}</span>
+  }
+</button>
 
 <!-- 
   Capturador de contenido anidado (API estilo Material).

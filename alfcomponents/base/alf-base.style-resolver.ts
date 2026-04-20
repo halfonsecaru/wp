@@ -195,6 +195,7 @@ export const resolveBackgroundsVars = (data: AlfBackgroundsBaseInterface, stateS
   writeVar(vars, `--alf-bg-repeat${s}`,      data.backgroundRepeat);
   writeVar(vars, `--alf-bg-attachment${s}`,  data.backgroundAttachment);
   writeVar(vars, `--alf-bg-clip${s}`,        data.backgroundClip);
+  writeVar(vars, `--alf-bg-img${s}`,         data.backgroundImage);
 
   // Soporte para estilos custom inyectados como variables (ej. background-image para degradados)
   if (data.customCssStyle) {

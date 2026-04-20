@@ -1,6 +1,6 @@
 <nav style="padding: 1rem; background: #fff; border-bottom: 1px solid #eee; display: flex; gap: 1rem; align-items: center;">
   <small style="color: #999; text-transform: uppercase; font-weight: bold; margin-right: 1rem;">[ Temporal Nav ]</small>
-  
+
   <alf-button 
     label="Solid Buttons" 
     [predefined]="buttonKeys.Info"
@@ -19,11 +19,10 @@
 
   <div style="margin-left: auto; display: flex; gap: 0.5rem; align-items: center;">
     <alf-button 
-      [label]="activeTheme() === themeEnum.Dark ? 'Light' : 'Dark'" 
-      [predefined]="activeTheme() === themeEnum.Dark ? buttonKeys.Info : buttonKeys.Cancel"
+      [label]="activeTheme === themeEnum.Dark ? 'Light' : 'Dark'" 
       visualType="ghost"
       size="xs"
-      (onClick)="setAppTheme(activeTheme() === themeEnum.Dark ? themeEnum.Light : themeEnum.Dark)"
+      (onClick)="setAppTheme(activeTheme === themeEnum.Dark ? themeEnum.Light : themeEnum.Dark)"
     ></alf-button>
 
     <alf-button 
@@ -43,7 +42,7 @@
     ></alf-button>
   </div>
 </nav>
-
+  - {{themeSignal() | json }} -
 <main>
   <router-outlet></router-outlet>
 </main>

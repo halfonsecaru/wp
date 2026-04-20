@@ -1,12 +1,12 @@
-import { 
-  ChangeDetectionStrategy, 
-  Component, 
-  computed, 
-  ElementRef, 
-  HostListener, 
-  input, 
-  model, 
-  viewChild, 
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  ElementRef,
+  HostListener,
+  input,
+  model,
+  viewChild,
   ViewEncapsulation,
   signal,
   AfterViewInit,
@@ -15,19 +15,23 @@ import {
   contentChildren,
   effect,
   untracked,
-  output
+  output,
+  ViewContainerRef,
+  TemplateRef,
+  Signal,
+  InjectionToken
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { AlfBaseComponent } from '@alfcomponents/base';
 import { AlfTabsInterface } from './interfaces/alf-tabs.interface';
 import { AlfAnimateCssInterface } from '@alfcomponents/interfaces';
 import { AlfTabsPositionEnum } from './enums/alf-tabs-visual-type.enum';
-import { AlfButton } from '@alfcomponents/components';
 import { AlfIconsUnicodeIconEnum, AlfColorEnum } from '@alfcomponents/enums';
 import { getAlfPredefinedTabs } from './predefined/alf-tabs.predefined';
 import { DefaultTabsKeys } from './enums/default-tabs-keys.enum';
 import { AlfTabComponent } from './alf-tab/alf-tab';
 import { AlfTabContentComponent } from './alf-tab-content/alf-tab-content';
+import { AlfPortalDirective } from './directives/alf-portal';
+import { ALF_TABS_TOKEN } from './tokens';
 
 /**
  * AlfTabsComponent
@@ -36,64 +40,87 @@ import { AlfTabContentComponent } from './alf-tab-content/alf-tab-content';
 @Component({
   selector: 'alf-tabs',
   standalone: true,
-  imports: [CommonModule, AlfButton],
+  imports: [AlfPortalDirective],
   templateUrl: './alf-tabs.html',
   styleUrl: './alf-tabs.scss',
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  encapsulation: ViewEncapsulation.Emulated,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [{ provide: ALF_TABS_TOKEN, useExisting: AlfTabsComponent }],
 })
 export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> implements AfterViewInit, OnDestroy {
-  
-  // --- Configuración e Identidades ---
-  @Input('predefined') set predefined(v: AlfTabsInterface | string | undefined) { 
-    this.predefinedInput.set(v || DefaultTabsKeys.Base); 
+
+  @Input('predefined') public set predefined(v: AlfTabsInterface | string | undefined) {
+    this.predefinedInput.set(v || DefaultTabsKeys.Base);
   }
   protected readonly predefinedInput = signal<AlfTabsInterface | string>(DefaultTabsKeys.Base);
 
-  protected override readonly resolvedPredefined = computed(() => {
+  /** 
+   * Source of Truth: Identidad Predefinida vinculada al ADN reactivo.
+   * Esto hace que el componente sea 100% reactivo a cambios de tema 
+   * a través de los tokens inyectados en el Factory.
+   */
+  protected override readonly resolvedPredefined: Signal<AlfTabsInterface | undefined> = computed(() => {
     const p = this.predefinedInput();
     return typeof p === 'string' ? getAlfPredefinedTabs(p) : p;
   });
 
-  // --- Máquina de Estados de Transición ---
-  readonly activeIndex = model<number>(0);
-  readonly contentIndex = signal<number>(0);
+  // --- Identidad y Configuración ---
+  private readonly baseId = `alf-tabs-${Math.random().toString(36).substring(2, 9)}`;
+
+  // --- Máquina de Estados ---
+  public readonly activeIndex = model<number>(0);
+  public readonly contentIndex = signal<number>(0);
   protected readonly targetIndexPending = signal<number | null>(null);
   protected readonly navigationDirection = signal<'forward' | 'backward'>('forward');
-
-  /** Estilos dinámicos para el Sliding Indicator (Master mode) */
-  protected readonly indicatorStyle = signal({ transform: 'translateX(0)', width: '0', opacity: 0 });
   protected readonly isTransitioning = signal(false);
   protected readonly exitingTabsSet = signal<Set<number>>(new Set());
 
+  // --- Métricas de Alto Rendimiento (Ahorro de recursos) ---
+  protected readonly headerMetrics = signal({ scrollWidth: 0, clientWidth: 0, scrollLeft: 0, canLeft: false, canRight: false });
+  protected readonly activeTabMetrics = signal({ left: 0, width: 0, opacity: 0 });
+
+  /** 
+   * Flujo Reactivo Puro: El estilo del indicador es un `computed` 
+   * basado en las métricas de la pestaña activa. Sin efectos colaterales.
+   */
+  protected readonly indicatorStyle = computed(() => {
+    const m = this.activeTabMetrics();
+    return {
+      transform: `translateX(${m.left}px)`,
+      width: `${m.width}px`,
+      opacity: m.opacity
+    };
+  });
+
   // --- UI & Proyección ---
-  readonly position = input<AlfTabsPositionEnum>(AlfTabsPositionEnum.Top);
-  readonly configComputed = this.resolvedConfigComputed;
-  readonly tabChange = output<number>();
-  
+  public readonly position = input<AlfTabsPositionEnum>(AlfTabsPositionEnum.Top);
+  public readonly configComputed = this.resolvedConfigComputed;
+  public readonly tabChange = output<number>();
+
   protected readonly liveMessageComputed = signal<string>('');
   protected readonly icons = AlfIconsUnicodeIconEnum;
   protected readonly tabs = contentChildren(AlfTabComponent);
   protected readonly manualContents = contentChildren(AlfTabContentComponent);
-  
+
   private readonly headerScroll = viewChild<ElementRef<HTMLDivElement>>('headerScroll');
   protected readonly showScrollArrowsComputed = signal<boolean>(false);
-  
-  readonly isNestedModeComputed = computed(() => this.manualContents().length === 0 && this.tabs().length > 0);
+  protected readonly canScrollLeft = signal(false);
+  protected readonly canScrollRight = signal(false);
+
+  public readonly isNestedModeComputed = computed(() => this.manualContents().length === 0 && this.tabs().length > 0);
 
   // --- Lógica Interna ---
   private touchStartX = 0;
   private readonly swipeThreshold = 50;
   private resizeObserver?: ResizeObserver;
+  private rafId?: number;
 
   constructor() {
     super();
-    this.initAutoIndexingEffect();
-    this.initAccessibilityEffect();
-    this.initIndicatorEffect();
   }
 
-  public selectTabByIndex(targetIndex: number): void {
+  /** Lógica de Transiciones Élite */
+  public readonly selectTabByIndex = (targetIndex: number): void => {
     const currentIndex = this.contentIndex();
     if (targetIndex === currentIndex || this.isTransitioning()) return;
 
@@ -113,9 +140,9 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     } else {
       this.completeTransition(targetIndex);
     }
-  }
+  };
 
-  protected completeTransition(targetIndex: number): void {
+  protected readonly completeTransition = (targetIndex: number): void => {
     const allTabs = this.tabs();
     this.exitingTabsSet().forEach(idx => {
       const tab = allTabs[idx];
@@ -126,133 +153,142 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     this.contentIndex.set(targetIndex);
     this.targetIndexPending.set(null);
     this.isTransitioning.set(false);
-  }
+  };
 
-  public onTabAnimationEnd(tab: AlfTabComponent): void {
+  public readonly onTabAnimationEnd = (tab: AlfTabComponent): void => {
     const index = tab.effectiveIndex();
     if (this.exitingTabsSet().has(index)) {
       const pending = this.targetIndexPending();
       if (pending !== null) this.completeTransition(pending);
     }
-  }
+  };
 
-  protected getTabAnimations(tab: AlfTabComponent): AlfAnimateCssInterface | undefined {
+  protected readonly getTabAnimations = (tab: AlfTabComponent): AlfAnimateCssInterface | undefined => {
     const local = tab.configComputed()?.animations;
     const globalByParent = this.resolvedConfigComputed()?.behavior?.defaultAnimations;
     return local ?? globalByParent;
-  }
+  };
 
-  protected getPanelClasses(tab: AlfTabComponent): string {
-    const index = tab.effectiveIndex();
-    const isExiting = this.exitingTabsSet().has(index);
-    const isActive = this.contentIndex() === index;
-    
-    if (!isActive && !isExiting) return '';
-
-    const anim = this.getTabAnimations(tab);
-    let stage = isExiting ? anim?.exitStage : anim?.enterStage;
-    if (!stage) return '';
-
-    const isSlide = stage.toLowerCase().includes('slide');
-    const isFadeDirectional = stage.toLowerCase().includes('fade') && (stage.includes('Up') || stage.includes('Down') || stage.includes('Left') || stage.includes('Right'));
-
-    if (isSlide || isFadeDirectional) {
-      const direction = this.navigationDirection();
-      const isVertical = stage.includes('Up') || stage.includes('Down');
-
-      if (isVertical) {
-        if (isExiting) {
-          stage = direction === 'forward' ? 'animate__fadeOutUp' : 'animate__fadeOutDown';
-        } else {
-          stage = direction === 'forward' ? 'animate__fadeInUp' : 'animate__fadeInDown';
-        }
-      } else {
-        if (isExiting) {
-          stage = direction === 'forward' ? 'animate__slideOutLeft' : 'animate__slideOutRight';
-        } else {
-          stage = direction === 'forward' ? 'animate__slideInRight' : 'animate__slideInLeft';
-        }
-      }
-    }
-
-    return `animate__animated ${stage}`;
-  }
-
-  protected getPanelStyles(tab: AlfTabComponent): Record<string, string> {
-    const anim = this.getTabAnimations(tab);
-    const styles: Record<string, string> = {};
-    if (anim?.duration) styles['--animate-duration'] = anim.duration;
-    if (anim?.delay) styles['--animate-delay'] = anim.delay;
-    return styles;
-  }
-
-  ngAfterViewInit(): void {
+  /** Gestión de Recursos e Interacción con el DOM */
+  public readonly ngAfterViewInit = (): void => {
     const scrollEl = this.headerScroll()?.nativeElement;
     if (scrollEl) {
-      this.resizeObserver = new ResizeObserver(() => this.checkScrollArrows());
+      this.resizeObserver = new ResizeObserver(() => this.requestMetricsUpdate());
       this.resizeObserver.observe(scrollEl);
-      this.checkScrollArrows();
+      this.requestMetricsUpdate();
     }
-  }
+  };
 
-  ngOnDestroy(): void {
+  public readonly ngOnDestroy = (): void => {
     this.resizeObserver?.disconnect();
-  }
+    if (this.rafId) cancelAnimationFrame(this.rafId);
+  };
 
-  private checkScrollArrows(): void {
+  /**
+   * Actualización Gradual (Ahorro de CPU): 
+   * Agrupamos lecturas del DOM en un único frame de animación.
+   */
+  protected readonly requestMetricsUpdate = (): void => {
+    if (this.rafId) cancelAnimationFrame(this.rafId);
+    this.rafId = requestAnimationFrame(() => this.updateAllMetrics());
+  };
+
+  private readonly updateAllMetrics = (): void => {
     const el = this.headerScroll()?.nativeElement;
-    if (el) this.showScrollArrowsComputed.set(el.scrollWidth > el.clientWidth);
-  }
+    if (!el) return;
 
-  scrollLeft(): void { this.headerScroll()?.nativeElement.scrollBy({ left: -150, behavior: 'smooth' }); }
-  scrollRight(): void { this.headerScroll()?.nativeElement.scrollBy({ left: 150, behavior: 'smooth' }); }
+    // 1. Métricas de Scroll
+    const isOverflowing = el.scrollWidth > el.clientWidth;
+    this.headerMetrics.set({
+      scrollWidth: el.scrollWidth,
+      clientWidth: el.clientWidth,
+      scrollLeft: el.scrollLeft,
+      canLeft: isOverflowing && el.scrollLeft > 2,
+      canRight: isOverflowing && (el.scrollLeft + el.clientWidth < el.scrollWidth - 2)
+    });
 
-  public onTouchStart(event: TouchEvent): void { 
-    this.touchStartX = event.touches[0].clientX; 
-  }
+    // 2. Métricas de la pestaña activa (para el indicador) con doble RAF 
+    // para garantizar que los cambios de layout (font-weight) se han aplicado.
+    requestAnimationFrame(() => this.measureActiveTabParams());
+  };
 
-  public onTouchEnd(event: TouchEvent): void {
+  private readonly measureActiveTabParams = (): void => {
+    const currentTab = this.tabs()[this.activeIndex()];
+    const navEl = this.headerScroll()?.nativeElement.querySelector('.alf-tabs__nav') as HTMLElement;
+
+    if (!currentTab || !navEl || this.configComputed()?.visualType !== 'master') {
+      this.activeTabMetrics.set({ left: 0, width: 0, opacity: 0 });
+      return;
+    }
+
+    const host = currentTab.hostElement.nativeElement as HTMLElement;
+    const measurable = host.querySelector('.alf-tab__header') as HTMLElement || host;
+
+    if (measurable && measurable.offsetWidth > 0) {
+      const navRect = navEl.getBoundingClientRect();
+      const tabRect = measurable.getBoundingClientRect();
+
+      this.activeTabMetrics.set({
+        left: tabRect.left - navRect.left,
+        width: tabRect.width,
+        opacity: 1
+      });
+    }
+  };
+
+  public readonly scrollLeft = (): void => { this.headerScroll()?.nativeElement.scrollBy({ left: -150, behavior: 'smooth' }); };
+  public readonly scrollRight = (): void => { this.headerScroll()?.nativeElement.scrollBy({ left: 150, behavior: 'smooth' }); };
+
+  /** Accesibilidad e IDs Dinámicos */
+  public readonly getPanelId = (index: number): string => `${this.baseId}-panel-${index}`;
+  public readonly getTabId = (index: number): string => `${this.baseId}-tab-${index}`;
+
+  /** Touch & Teclado */
+  public readonly onTouchStart = (event: TouchEvent): void => {
+    this.touchStartX = event.touches[0].clientX;
+  };
+
+  public readonly onTouchEnd = (event: TouchEvent): void => {
     const deltaX = event.changedTouches[0].clientX - this.touchStartX;
     if (Math.abs(deltaX) > this.swipeThreshold) {
-      if (deltaX > 0) {
-        this.navigateBack();
-      } else {
-        this.navigateForward();
-      }
+      deltaX > 0 ? this.navigateBack() : this.navigateForward();
     }
-  }
+  };
 
-  private navigateForward(): void {
+  private readonly navigateForward = (): void => {
     const max = this.tabs().length;
     const circular = this.resolvedConfigComputed()?.behavior?.circularNavigation;
     let target = this.activeIndex() < max - 1 ? this.activeIndex() + 1 : (circular ? 0 : this.activeIndex());
     this.selectTabByIndex(target);
-  }
+  };
 
-  private navigateBack(): void {
+  private readonly navigateBack = (): void => {
     const max = this.tabs().length;
     const circular = this.resolvedConfigComputed()?.behavior?.circularNavigation;
     let target = this.activeIndex() > 0 ? this.activeIndex() - 1 : (circular ? max - 1 : this.activeIndex());
     this.selectTabByIndex(target);
-  }
+  };
 
   @HostListener('keydown', ['$event'])
-  protected onKeyDown(event: KeyboardEvent): void {
+  protected readonly onKeyDown = (event: KeyboardEvent): void => {
     switch (event.key) {
       case 'ArrowRight': event.preventDefault(); this.navigateForward(); break;
       case 'ArrowLeft': event.preventDefault(); this.navigateBack(); break;
       case 'Home': event.preventDefault(); this.selectTabByIndex(0); break;
       case 'End': event.preventDefault(); this.selectTabByIndex(Math.max(0, this.tabs().length - 1)); break;
     }
-  }
+  };
 
-  private initAutoIndexingEffect(): void {
+  /** Reactividad Pura y Coordinación */
+  protected readonly initEffects = (() => {
     effect(() => {
-      this.tabs().forEach((tab, index) => tab.setAutoIndex(index));
+      this.tabs().forEach((tab, index) => {
+        tab.setAutoIndex(index);
+        tab.panelId.set(this.getPanelId(index));
+        tab.tabId.set(this.getTabId(index));
+      });
     });
-  }
 
-  private initAccessibilityEffect(): void {
     effect(() => {
       const currentTab = this.tabs()[this.activeIndex()];
       if (!currentTab) return;
@@ -260,36 +296,51 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
       untracked(() => {
         this.liveMessageComputed.set(`Pestaña ${label} seleccionada`);
         this.tabChange.emit(this.activeIndex());
+        this.requestMetricsUpdate();
       });
     });
-  }
+  })();
 
-  private initIndicatorEffect(): void {
-    effect(() => {
-      const index = this.activeIndex();
-      const allTabs = this.tabs();
-      const currentTab = allTabs[index];
-
-      if (!currentTab || this.configComputed()?.visualType !== 'master') {
-        untracked(() => this.indicatorStyle.set({ transform: 'translateX(0)', width: '0', opacity: 0 }));
-        return;
-      }
-
-      const el = currentTab.hostElement.nativeElement as HTMLElement;
-      untracked(() => {
-        const width = el.offsetWidth;
-        const left = el.offsetLeft;
-        this.indicatorStyle.set({
-          transform: `translateX(${left}px)`,
-          width: `${width}px`,
-          opacity: 1
-        });
-      });
-    }, { allowSignalWrites: true });
-  }
-
-  protected readonly indicatorColorComputed = computed(() => {
-    const config = this.resolvedConfigComputed();
-    return config?.brandColor || AlfColorEnum.Primary;
+  /** 
+   * Cálculos Dinámicos para el Contrato de Variables CSS
+   * Esto permite que el SCSS sea 100% reactivo a la configuración.
+   */
+  protected readonly indicatorColorVarComputed = computed(() => {
+    return this.resolvedConfigComputed()?.brandColor || AlfColorEnum.Primary;
   });
+
+  /** Helpers de Template */
+  public readonly getPanelClassesStr = (tab: AlfTabComponent): string => {
+    const isActive = this.contentIndex() === tab.effectiveIndex();
+    const isExiting = this.exitingTabsSet().has(tab.effectiveIndex());
+    if (!isActive && !isExiting) return '';
+
+    const anim = this.getTabAnimations(tab);
+    let stage = isExiting ? anim?.exitStage : anim?.enterStage;
+    if (!stage) return '';
+
+    const direction = this.navigationDirection();
+    const isSlide = stage.toLowerCase().includes('slide');
+
+    if (isSlide) {
+      if (isExiting) stage = direction === 'forward' ? 'animate__slideOutLeft' : 'animate__slideOutRight';
+      else stage = direction === 'forward' ? 'animate__slideInRight' : 'animate__slideInLeft';
+    }
+
+    return `animate__animated ${stage}`;
+  };
+
+  public readonly getPanelStylesStr = (tab: AlfTabComponent): string => {
+    const anim = this.getTabAnimations(tab);
+    let str = (this.contentIndex() === tab.effectiveIndex() || this.exitingTabsSet().has(tab.effectiveIndex())) ? 'display:block;' : 'display:none;';
+    if (anim?.duration) str += `--animate-duration:${anim.duration};`;
+    if (anim?.delay) str += `--animate-delay:${anim.delay};`;
+    return str;
+  };
+
+  public readonly attachPortal = (vContainerRef: ViewContainerRef, template: TemplateRef<any> | null): void => {
+    if (!vContainerRef || !template) return;
+    vContainerRef.clear();
+    vContainerRef.createEmbeddedView(template);
+  };
 }

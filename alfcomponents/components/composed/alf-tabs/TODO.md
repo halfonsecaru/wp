@@ -51,22 +51,23 @@ Este documento es el TODO específico para el componente `AlfTabs`, adaptando el
 - [x] Definir variables CSS específicas para las flechas de scroll (`--alf-tabs-arrow-color`).
 - [x] Implementar estados CSS para las variantes de posición (flex-direction dinámico).
 - [x] **Elite Polish**: Añadir gradientes de scroll y variaciones visuales (Underline, Pill, Glass).
+
 ---
 
 ## 🧪 PASO 6: QUALITY (Testing)
-- [ ] Test de cambio de pestaña (Output `tabChange`).
-- [ ] Test de accesibilidad: ¿Se actualizan los roles ARIA al navegar con teclado?
-- [ ] Test de scroll: ¿Aparecen las flechas cuando el contenido desborda?
+- [x] Test de cambio de pestaña (Output `tabChange`).
+- [x] Test de accesibilidad: ¿Se actualizan los roles ARIA al navegar con teclado?
+- [x] Test de scroll: ¿Aparecen las flechas cuando el contenido desborda? (Verificado por métricas de señales).
 
 ---
 
 ## 📖 PASO 7: DOCS
-- [ ] `README.spanish.md` / `README.english.md`.
-- [ ] `ia_usage.md`: Explicar cómo usar las dos vías (Configuración v.s. Proyección de contenido).
+- [x] `README.spanish.md` / `README.english.md`.
+- [x] `ia_usage.md`: Explicar cómo usar las dos vías (Configuración v.s. Proyección de contenido).
 
 ---
 
 ## 🎯 NOTAS DE REFACTORIZACIÓN (LEGACY REF)
-- [ ] Eliminar el uso de `generateStyleString` heredado; usar el motor de `AlfBaseComponent`.
-- [ ] Asegurar que el `activeIndex` sea un `model()` para soportar Two-Way binding.
-- [ ] Migrar el `liveMessage` (ARIA live) a una señal reactiva.
+- [x] Eliminar el uso de `generateStyleString` heredado; usar el motor de `AlfBaseComponent`.
+- [x] Asegurar que el `activeIndex` sea un `model()` para soportar Two-Way binding.
+- [x] Migrar el `liveMessage` (ARIA live) a una señal reactiva.

@@ -6,7 +6,7 @@ import { AlfButton, DefaultButtonKeys } from '@alfcomponents';
   standalone: true,
   imports: [AlfButton],
   template: `
-    <div style="padding: 2rem; display: flex; flex-direction: column; gap: 2rem; min-height: 100vh;">
+    <div style="padding: 2rem; display: flex; flex-direction: column; gap: 2rem; min-height: 100%;">
       
       <div style="display: flex; justify-content: space-between; align-items: center;">
         <h3>Bootstrap 5 Solid Buttons (Full Set)</h3>

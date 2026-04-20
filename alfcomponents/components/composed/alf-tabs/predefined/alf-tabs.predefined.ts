@@ -2,11 +2,9 @@ import { AlfTabsInterface, AlfTabContentInterface } from '../interfaces/alf-tabs
 import { DefaultTabsKeys } from '../enums/default-tabs-keys.enum';
 import { AlfTabsPositionEnum, AlfTabsVisualTypeEnum } from '../enums/alf-tabs-visual-type.enum';
 import { AlfColorEnum, AlfRadiusEnum, AlfPxEnum, AlfAnimationTypeEnum } from '@alfcomponents/enums';
-import { AlfAnimateCssInterface } from '@alfcomponents/interfaces';
 
 /**
- * Interface para la Identidad Pura de AlfTabs.
- * Define el ADN visual y de comportamiento base.
+ * Interface para el ADN puro (Identidad) de AlfTabs.
  */
 interface AlfTabsIdentity {
   brandColor: AlfColorEnum;
@@ -17,7 +15,7 @@ interface AlfTabsIdentity {
 }
 
 /**
- * 1. MAPA DE IDENTIDADES (ADN)
+ * 1. MAPA DE IDENTIDADES (ADN Estructural)
  */
 const TABS_IDENTITIES: Record<string, AlfTabsIdentity> = {
   [DefaultTabsKeys.Base]: {
@@ -32,8 +30,9 @@ const TABS_IDENTITIES: Record<string, AlfTabsIdentity> = {
     position: AlfTabsPositionEnum.Left,
     visualType: AlfTabsVisualTypeEnum.Pill,
     enterAnimation: AlfAnimationTypeEnum.SlideInLeft,
-    exitAnimation: AlfAnimationTypeEnum.SlideOutLeft
+    exitAnimation: AlfAnimationTypeEnum.SlideOutRight
   },
+
   [DefaultTabsKeys.Settings]: {
     brandColor: AlfColorEnum.Info,
     position: AlfTabsPositionEnum.Top,
@@ -48,7 +47,7 @@ const TABS_IDENTITIES: Record<string, AlfTabsIdentity> = {
     enterAnimation: AlfAnimationTypeEnum.ZoomIn,
     exitAnimation: AlfAnimationTypeEnum.ZoomOut
   },
-  ['master']: {
+  [DefaultTabsKeys.Master]: {
     brandColor: AlfColorEnum.Primary,
     position: AlfTabsPositionEnum.Top,
     visualType: AlfTabsVisualTypeEnum.Master,
@@ -58,64 +57,103 @@ const TABS_IDENTITIES: Record<string, AlfTabsIdentity> = {
 };
 
 /**
- * 2. CONSTRUCTOR MAESTRO
- * Transforma una Identidad en una configuración completa de AlfTabs.
+ * 2. CONFIGURACIÓN BASE (El Esqueleto Común)
+ */
+const TABS_BASE_CONFIG: Partial<AlfTabsInterface> = {
+  behavior: {
+    showScrollArrows: true,
+    circularNavigation: true,
+    animationDuration: 400
+  },
+  padding: {
+    default: {
+      padding: AlfPxEnum.Px16
+    }
+  },
+  border: {
+    default: {
+      borderRadius: AlfRadiusEnum.Md,
+      borderWidth: AlfPxEnum.Px1
+    }, hover: {
+      borderWidth: AlfPxEnum.None,
+      borderRadius: AlfRadiusEnum.None,
+    }, active: {
+      borderWidth: AlfPxEnum.None,
+      borderRadius: AlfRadiusEnum.None,
+    }
+  },
+
+};
+
+/**
+ * 3. CONSTRUCTOR MAESTRO (Factory Pattern)
+ * Aplica lógica de transformación ESTRUCTURAL. 
+ * Los colores y la "piel" dinámica son resueltos automáticamente por el AlfBaseComponent
+ * basándose en el visualType y el themeSignal global.
  */
 export function getAlfPredefinedTabs(
   key: string,
   overrides?: Partial<AlfTabsInterface>
 ): AlfTabsInterface {
-  const identity = TABS_IDENTITIES[key] ?? TABS_IDENTITIES[DefaultTabsKeys.Base];
+  const identity = TABS_IDENTITIES[key.toLowerCase()] ?? TABS_IDENTITIES[DefaultTabsKeys.Base];
   const { brandColor, position, visualType, enterAnimation, exitAnimation } = identity;
 
-  const animDurationStr = `${overrides?.behavior?.animationDuration ?? 400}ms`;
+  // 1. Empezamos con la base
+  let config: AlfTabsInterface = {
+    ...TABS_BASE_CONFIG,
+    position,
+    visualType,
+    brandColor,
+    ...overrides
+  } as AlfTabsInterface;
 
-  // Configuración de Contenido por defecto
+  // 2. Aplicación de ADN Estructural Élite
+  switch (visualType) {
+    case AlfTabsVisualTypeEnum.Glass:
+    case AlfTabsVisualTypeEnum.Master:
+      // No definimos backgrounds aquí. AlfBaseComponent lo inyectará desde theme.premium.glassBackground
+      config.border = {
+        default: {
+          ...config.border?.default,
+        }
+      };
+      break;
+
+    case AlfTabsVisualTypeEnum.Pill:
+      config.backgrounds = { default: { backgroundColor: AlfColorEnum.Transparent } };
+      config.border = { default: { borderRadius: AlfRadiusEnum.Xl3, borderWidth: AlfPxEnum.None } };
+      break;
+
+    case AlfTabsVisualTypeEnum.Modern:
+      config.backgrounds = { default: { backgroundColor: AlfColorEnum.Transparent } };
+      break;
+
+    default: // Underline
+      config.backgrounds = { default: { backgroundColor: AlfColorEnum.Transparent } };
+      config.border = { default: { borderWidth: AlfPxEnum.None } };
+      break;
+  }
+
+  // 3. Fusionamos animaciones y contenido final
+  const animDurationStr = `${config.behavior?.animationDuration ?? 400}ms`;
   const defaultContent: AlfTabContentInterface = {
-    padding: {
-      default: {
-        padding: AlfPxEnum.Px20
-      }
-    },
-    animations: (enterAnimation || exitAnimation) ? { 
+    padding: { default: { padding: AlfPxEnum.Px20 } },
+    animations: (enterAnimation || exitAnimation) ? {
       enterStage: enterAnimation,
       exitStage: exitAnimation,
       duration: animDurationStr
     } : undefined
   };
 
-  const baseConfig: AlfTabsInterface = {
-    position,
-    visualType,
-    behavior: {
-      showScrollArrows: true,
-      circularNavigation: true,
-      animationDuration: 400,
-      defaultAnimations: (enterAnimation || exitAnimation) ? { 
-        enterStage: enterAnimation,
-        exitStage: exitAnimation,
-        duration: animDurationStr
-      } : undefined
-    },
-    defaultContentConfig: defaultContent,
-    // Estilos del contenedor principal
-    padding: {
-      default: {
-        padding: AlfPxEnum.Px16
-      }
-    },
-    border: {
-      default: {
-        borderRadius: AlfRadiusEnum.Md
-      }
-    },
-    backgrounds: {
-      default: {
-        backgroundColor: AlfColorEnum.White
-      }
-    }
+  config.defaultContentConfig = defaultContent;
+  config.behavior = {
+    ...config.behavior,
+    defaultAnimations: (enterAnimation || exitAnimation) ? {
+      enterStage: enterAnimation,
+      exitStage: exitAnimation,
+      duration: animDurationStr
+    } : undefined
   };
 
-  // Fusión con overrides del usuario
-  return { ...baseConfig, ...overrides };
+  return config;
 }

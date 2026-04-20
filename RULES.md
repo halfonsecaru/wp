@@ -7,6 +7,9 @@ Este documento es la **fuente de verdad absoluta** para el desarrollo en este pr
 ## 🏗️ 1. Arquitectura y Tecnologías
 - **Core**: Angular 21 (Oficial).
 - **Paradigma**: Standalone Components, Zoneless Ready.
+- **Iniciativa Prohibida (REGLA DE ORO)**: 
+  - ❌ **PROHIBIDO** hacer absolutamente nada que el USER no pida explícitamente. 
+  - ❌ **PROHIBIDO** añadir propiedades, objetos (ej. `premium`) o lógica "por cuenta propia" que no haya sido solicitada.
 - **Estilos**: Estrategia Dual.
   - **SCSS**: Para estilos estáticos y layout base.
   - **WAAPI (Web Animations API)**: Prioridad absoluta para animaciones dinámicas e interactivas (Ripple, Inyecciones, etc.) para mantener los componentes "Auto-Contenidos" (Self-Contained).
@@ -33,6 +36,10 @@ Este documento es la **fuente de verdad absoluta** para el desarrollo en este pr
 - **No Anidación (Zero Callback Hell)**: 
   - ✅ PROHIBIDO meter funciones dentro de funciones (e.g. handlers dentro de effects).
   - ✅ Extraer toda la lógica y manejadores a métodos de clase independientes.
+- **Legibilidad (Human Readable)**:
+  - ✅ PROHIBIDO escribir código ininteligible o excesivamente complejo sin necesidad.
+  - ✅ El código DEBE ser completamente legible y auto-explicativo para un humano. Priorizar la claridad sobre trucos de sintaxis oscuros.
+  - ❌ PROHIBIDO "Hacks" o "Guarrerías técnicas". Priorizar cimientos sólidos y excelencia técnica sobre soluciones rápidas o "mágicas".
 
 ## 📄 5. Templates y HTML (Angular 21 Purista)
 - **Control Flow Moderno**: 
@@ -110,7 +117,7 @@ Este documento es la **fuente de verdad absoluta** para el desarrollo en este pr
 - 10) Estilos
     - **SCSS**: Usar SCSS como preprocesador de estilos (NO usar CSS ni LESS)
     - Todos los archivos de estilos deben tener extensión `.scss`
-    - Configurar Angular CLI para usar SCSS por defecto
+    - **Unidades**: Priorizar siempre el uso de `%` sobre `vh` o `vw` para dimensiones y layouts siempre que sea posible.
 - 11) Enums
     - **Nombre de archivo**: Puede incluir `.enum` o `.interface` según sea necesario.
     - **Contenido**: Usar `export enum NombreEnum`

@@ -20,6 +20,8 @@ import {
   AlfSizeEnum,
 } from '../enums';
 import { LOADING_DEFAULT_SIGNAL } from '../directives/alf-loading/predefined/alf-loading.tokens';
+import { themeSignal } from '../themes/alf-theme.tokens';
+import { AlfThemeInterface } from '../interfaces/alf-theme.interface';
 
 /**
  * @directive AlfBaseComponent
@@ -35,6 +37,10 @@ export abstract class AlfBaseComponent<T> {
    * Contiene la configuración predefinida ya resuelta a T.
    */
   protected abstract readonly resolvedPredefined: Signal<T | undefined>;
+
+  // --- Theme Engine ---
+  /** Signal reactivo al tema global estructurado */
+  protected readonly globalTheme: Signal<AlfThemeInterface> = themeSignal;
 
   // --- Bridge Inputs (@Input Setters for JIT/Vitest compatibility) ---
 
@@ -97,11 +103,49 @@ export abstract class AlfBaseComponent<T> {
 
   // --- Signals Computados (A-Z - Merging Config + Inputs) ---
   protected readonly ariaComputed = computed(() => this.ariaInput() ?? (this.defineComponentInput() as any)?.aria ?? (this.resolvedPredefined() as any)?.aria);
-  protected readonly backgroundsComputed = computed(() => this.backgroundsInput() ?? (this.defineComponentInput() as any)?.backgrounds ?? (this.resolvedPredefined() as any)?.backgrounds);
-  protected readonly borderComputed = computed(() => this.borderInput() ?? (this.defineComponentInput() as any)?.border ?? (this.resolvedPredefined() as any)?.border);
+  
+  /**
+   * Fusión Reactiva de Fondos (DNA Cascade)
+   * { ...Theme, ...Predefined, ...Manual }
+   */
+  protected readonly backgroundsComputed = computed(() => {
+    const theme = this.globalTheme();
+    const themeBg = theme.backgrounds;
+
+    // Capa Identidad + Manual Overrides
+    const componentBg = this.backgroundsInput() ?? (this.defineComponentInput() as any)?.backgrounds ?? (this.resolvedPredefined() as any)?.backgrounds;
+
+    if (!componentBg) return themeBg;
+    
+    // Destructuración Élite: Capa a capa (Default, Hover, etc.) con seguridad ante nulos
+    return {
+      ...themeBg,
+      ...componentBg,
+      default: { ...themeBg?.default, ...componentBg?.default },
+      ...(themeBg?.hover || componentBg?.hover ? { hover: { ...themeBg?.hover, ...componentBg?.hover } } : {}),
+      ...(themeBg?.active || componentBg?.active ? { active: { ...themeBg?.active, ...componentBg?.active } } : {}),
+    };
+  });
+
+  protected readonly borderComputed = computed(() => {
+    const theme = this.globalTheme();
+    const componentBorder = this.borderInput() ?? (this.defineComponentInput() as any)?.border ?? (this.resolvedPredefined() as any)?.border;
+    
+    if (!componentBorder) return theme.border;
+    return { 
+      ...theme.border, 
+      ...componentBorder,
+      default: { ...theme.border?.default, ...componentBorder?.default }
+    };
+  });
+
   protected readonly cursorComputed = computed(() => this.cursorInput() ?? (this.defineComponentInput() as any)?.cursor ?? (this.resolvedPredefined() as any)?.cursor);
   protected readonly customClassComputed = computed(() => this.customClassInput() ?? (this.defineComponentInput() as any)?.customClass ?? (this.resolvedPredefined() as any)?.customClass);
-  protected readonly customStyleComputed = computed(() => this.customStyleInput() ?? (this.defineComponentInput() as any)?.customStyle ?? (this.resolvedPredefined() as any)?.customStyle);
+  protected readonly customStyleComputed = computed(() => {
+    const componentStyle = this.customStyleInput() ?? (this.defineComponentInput() as any)?.customStyle ?? (this.resolvedPredefined() as any)?.customStyle;
+    return componentStyle || {};
+  });
+
   protected readonly disabledComputed = computed(() => this.disabledInput() ?? (this.defineComponentInput() as any)?.disabled ?? (this.resolvedPredefined() as any)?.disabled);
   protected readonly iconLeftComputed = computed(() => this.iconLeftInput() ?? (this.defineComponentInput() as any)?.iconLeft ?? (this.resolvedPredefined() as any)?.iconLeft);
   protected readonly iconRightComputed = computed(() => this.iconRightInput() ?? (this.defineComponentInput() as any)?.iconRight ?? (this.resolvedPredefined() as any)?.iconRight);
@@ -113,26 +157,39 @@ export abstract class AlfBaseComponent<T> {
   protected readonly marginComputed = computed(() => this.marginInput() ?? (this.defineComponentInput() as any)?.margin ?? (this.resolvedPredefined() as any)?.margin);
   protected readonly paddingComputed = computed(() => this.paddingInput() ?? (this.defineComponentInput() as any)?.padding ?? (this.resolvedPredefined() as any)?.padding);
   protected readonly rippleComputed = computed(() => this.rippleInput() ?? (this.defineComponentInput() as any)?.ripple ?? (this.resolvedPredefined() as any)?.ripple);
-  protected readonly shadowsComputed = computed(() => this.shadowsInput() ?? (this.defineComponentInput() as any)?.shadows ?? (this.resolvedPredefined() as any)?.shadows);
+  
+  protected readonly shadowsComputed = computed(() => {
+    const theme = this.globalTheme();
+    const componentShadows = this.shadowsInput() ?? (this.defineComponentInput() as any)?.shadows ?? (this.resolvedPredefined() as any)?.shadows;
+    if (!componentShadows) return theme.shadows;
+    return { ...theme.shadows, ...componentShadows };
+  });
+
   protected readonly sizeComputed = computed(() => this.sizeInput() ?? (this.defineComponentInput() as any)?.size ?? (this.resolvedPredefined() as any)?.size);
   protected readonly transformComputed = computed(() => this.transformInput() ?? (this.defineComponentInput() as any)?.transform ?? (this.resolvedPredefined() as any)?.transform);
-  protected readonly typographyComputed = computed(() => this.typographyInput() ?? (this.defineComponentInput() as any)?.typography ?? (this.resolvedPredefined() as any)?.typography);
+  
+  protected readonly typographyComputed = computed(() => {
+    const theme = this.globalTheme();
+    const componentTypography = this.typographyInput() ?? (this.defineComponentInput() as any)?.typography ?? (this.resolvedPredefined() as any)?.typography;
+    if (!componentTypography) return theme.typography;
+    return { ...theme.typography, ...componentTypography };
+  });
+
   protected readonly variantComputed = computed(() => this.variantInput() ?? (this.defineComponentInput() as any)?.variant ?? (this.resolvedPredefined() as any)?.variant);
 
   // --- Elite CSS Variable Engine ---
   /**
    * Genera el mapa de variables CSS inyectables en el HTML.
-   * Usa resolvers específicos por categoría que gestionan
-   * automáticamente la expansión de shorthands (padding, margin, border...).
+   * Ahora devuelve un STRING concatenado para ser consumido directamente por [style] vía @let.
    */
   protected readonly styleVariablesComputed = computed(() => {
     const vars: Record<string, string> = {};
 
-    // 1. Estilos custom manuales (menor prioridad — se pueden pisar por lo de abajo)
+    // 1. Estilos custom manuales
     const customStyles = this.customStyleComputed();
     if (customStyles) Object.assign(vars, customStyles);
 
-    // 2. Mapa de categorías → signal correspondiente
+    // 2. Mapa de categorías
     const configMap = [
       { key: 'backgrounds' as const, sign: this.backgroundsComputed },
       { key: 'border'      as const, sign: this.borderComputed },
@@ -152,14 +209,15 @@ export abstract class AlfBaseComponent<T> {
       states.forEach(state => {
         const stateData = (config as any)[state];
         if (!stateData) return;
-
-        // El resolver correcto por categoría maneja shorthands + individuales
         const resolved = resolveStyleVarsForCategory(cat.key, stateData, state);
         Object.assign(vars, resolved);
       });
     });
 
-    return vars;
+    // 3. Conversión a String Directo (Optimización Élite)
+    return Object.entries(vars)
+      .map(([k, v]) => `${k}:${v}`)
+      .join(';');
   });
 
   // --- Elite Animation Engine (Animate.css) ---

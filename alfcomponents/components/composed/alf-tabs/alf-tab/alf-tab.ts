@@ -12,11 +12,12 @@ import {
   viewChild,
   ElementRef
 } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { AlfBaseComponent } from '@alfcomponents/base';
 import { AlfTabInterface } from '../interfaces/alf-tabs.interface';
-import { AlfTabsComponent } from '../alf-tabs';
-import { AlfButton, AlfButtonInterface } from '@alfcomponents/components';
-import { AlfAriaRoleEnum, AlfButtonVisualTypeEnum } from '@alfcomponents/enums';
+import { AlfRippleDirective } from '@alfcomponents/directives';
+import { AlfAriaRoleEnum, AlfButtonVisualTypeEnum, AlfIconsUnicodeIconEnum } from '@alfcomponents/enums';
+import { ALF_TABS_TOKEN } from '../tokens';
 
 /**
  * AlfTabComponent
@@ -26,10 +27,10 @@ import { AlfAriaRoleEnum, AlfButtonVisualTypeEnum } from '@alfcomponents/enums';
 @Component({
   selector: 'alf-tab',
   standalone: true,
-  imports: [AlfButton],
+  imports: [AlfRippleDirective],
   templateUrl: './alf-tab.html',
   styleUrl: './alf-tab.scss',
-  encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.Emulated,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class.alf-tab--active]': 'isActive()',
@@ -37,91 +38,76 @@ import { AlfAriaRoleEnum, AlfButtonVisualTypeEnum } from '@alfcomponents/enums';
   }
 })
 export class AlfTabComponent extends AlfBaseComponent<AlfTabInterface> {
-  /** Referencia al coordinador padre */
-  private readonly parent = inject(AlfTabsComponent);
+  /** Referencia al coordinador padre (Broken circle via Token) */
+  private readonly parent = inject(ALF_TABS_TOKEN);
   public readonly hostElement = inject(ElementRef);
+
+  /** IDs para accesibilidad (gestionados por el padre) */
+  public readonly tabId = signal<string | null>(null);
+  public readonly panelId = signal<string | null>(null);
 
   /** 
    * Índice de esta pestaña. 
    * Si no se provee, el padre lo asignará automáticamente (Auto-indexing).
    */
-  readonly indexInput = input<number | undefined>(undefined, { alias: 'index' });
+  public readonly indexInput = input<number | undefined>(undefined, { alias: 'index' });
   
   /** Señal interna para el índice (manejada por el padre si es necesario) */
   protected readonly internalIndex = signal<number>(0);
   
   /** El índice efectivo prioriza el input manual */
-  readonly effectiveIndex = computed(() => this.indexInput() ?? this.internalIndex());
+  public readonly effectiveIndex = computed(() => this.indexInput() ?? this.internalIndex());
 
   /** Captura el contenido anidado si el usuario lo pone dentro de la etiqueta alf-tab */
-  readonly contentTemplate = viewChild<TemplateRef<any>>('contentTemplate');
+  public readonly contentTemplate = viewChild<TemplateRef<any>>('contentTemplate');
 
   /** Miembro abstracto obligatorio de AlfBaseComponent */
   protected override readonly resolvedPredefined: Signal<AlfTabInterface | undefined> = signal(undefined).asReadonly();
 
   /** Determina si esta pestaña es la activa */
-  readonly isActive = computed(() => this.parent.activeIndex() === this.effectiveIndex());
+  public readonly isActive = computed(() => this.parent.activeIndex() === this.effectiveIndex());
 
   /** Exponemos la configuración de forma pública para el coordinador padre */
-  readonly configComputed = this.resolvedConfigComputed;
+  public readonly configComputed = this.resolvedConfigComputed;
+
+  /** Determina el tipo visual heredado del padre para aplicar clases de identidad */
+  public readonly visualTypeComputed = computed(() => this.parent.configComputed()?.visualType || 'underline');
 
   /** 
-   * Transforma la configuración de AlfTab en la configuración de AlfButton.
+   * Determina si el ripple está habilitado para esta pestaña.
+   * Prioriza el config local sobre cualquier otro valor.
    */
+  public readonly rippleEnabled = computed(() => this.resolvedConfigComputed()?.ripple ?? true);
+
   /** 
-   * Transforma la configuración de AlfTab en la configuración de AlfButton.
-   * En modo Master, forzamos un look "Ghost" explícito para evitar rastro de grises.
+   * Configuración refinada para el Header nativo.
    */
-  readonly buttonConfigComputed = computed<AlfButtonInterface>(() => {
+  public readonly headerConfigComputed = computed(() => {
     const config = this.resolvedConfigComputed() || { label: 'Tab' };
-    const isMaster = this.parent.configComputed()?.visualType === 'master';
-
-    // Si es Master, forzamos el modo Ghost y reseteamos variables críticas de fondo y radio
-    if (isMaster) {
-      return {
-        ...config,
-        visualType: AlfButtonVisualTypeEnum.Ghost,
-        customStyle: {
-          ...config.customStyle,
-          '--alf-bg-color': 'transparent',
-          '--alf-bg-color-hover': 'rgba(0, 0, 0, 0.04)',
-          '--alf-brd-radius': '0',
-          '--alf-shd-val': 'none',
-          '--alf-shd-val-hover': 'none'
-        },
-        aria: {
-          role: AlfAriaRoleEnum.Tab,
-          ariaSelected: this.isActive()
-        }
-      };
-    }
-
-    // Configuración normal para el resto de variantes
+    
     return {
       ...config,
-      aria: {
-        role: AlfAriaRoleEnum.Tab,
-        ariaSelected: this.isActive()
-      }
+      role: AlfAriaRoleEnum.Tab,
+      ariaSelected: this.isActive()
     };
   });
 
   /** Selecciona esta pestaña a través del coordinador padre */
-  selectTab(): void {
+  public readonly selectTab = (): void => {
     if (!this.resolvedConfigComputed()?.disabled) {
       this.parent.selectTabByIndex(this.effectiveIndex());
     }
-  }
+  };
 
   /** Método público para que el padre asigne el índice automático */
-  setAutoIndex(idx: number): void {
+  public readonly setAutoIndex = (idx: number): void => {
     if (this.indexInput() === undefined) {
       this.internalIndex.set(idx);
     }
-  }
+  };
 
   /** Determina si el panel asociado debe estar visible hoy */
-  readonly shouldPanelBeVisible = computed(() => this.isActive() || this.isExiting());
+  public readonly shouldPanelBeVisible = computed(() => this.isActive() || this.isExiting());
 
   constructor() {
     super();

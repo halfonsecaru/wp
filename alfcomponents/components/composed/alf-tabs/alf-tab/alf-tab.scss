@@ -1,49 +1,139 @@
+@use '../../../../styles/mixins' as *;
+
 :host {
   display: inline-block;
   position: relative;
   transition: all 0.3s ease;
+  width: 100%;
 
-  &.alf-tab--active {
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 8px;
-      right: 8px;
-      height: 2px;
-      background: var(--alf-color-primary, #3b82f6);
-      border-radius: 2px 2px 0 0;
-      opacity: 0;
-      transform: translateY(2px);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    &.alf-tab--active::after {
-      opacity: 1;
-      transform: translateY(0);
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--alf-tabs-indicator-color, var(--alf-sys-primary));
+    border-radius: 2px 2px 0 0;
+    opacity: 0;
+    transform: translateY(2px);
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease;
+  }
+
+  &.alf-tab--active::after {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.alf-tab__header {
+  all: unset;
+  @include alf-backgrounds;
+  @include alf-border;
+
+  border-width: 0 !important;
+  border-radius: 0 !important;
+  border-color: transparent !important;
+  background-image: none !important;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  font-weight: var(--alf-tabs-header-weight, 500);
+  user-select: none;
+  width: 100%;
+  box-sizing: border-box;
+
+  // --- Identidad: Underline (Base) ---
+  &--underline {
+    background-color: transparent;
+    border-color: transparent;
+  }
+
+  // --- Identidad: Pill (Cápsulas) ---
+  &--pill {
+    @include alf-border; // Re-aplicar para forzar radio si es necesario
+
+    background-color: transparent;
+
+    &.alf-tab__header--active {
+      background-color: var(--alf-tabs-indicator-color, var(--alf-sys-primary)) !important;
+      color: white !important;
+      border-color: transparent !important;
     }
   }
 
-  &.alf-tab--disabled {
+  // --- Identidad: Modern (Minimalista) ---
+  &--modern {
+    background-color: transparent;
+    border-color: transparent;
+    &.alf-tab__header--active {
+      color: var(--alf-tabs-indicator-color, var(--alf-sys-primary));
+    }
+  }
+
+  // --- Identidad: Master / Glass ---
+  &--master,
+  &--glass {
+    background-color: transparent;
+    border-color: transparent;
+    font-weight: 600;
+    color: var(--alf-sys-gray-600);
+
+    [data-alf-theme='dark'] & {
+      color: var(--alf-sys-gray-400);
+    }
+
+    &.alf-tab__header--active {
+      color: var(--alf-tabs-indicator-color, var(--alf-sys-primary));
+    }
+  }
+
+  &--active {
+    font-weight: var(--alf-tabs-header-weight-active, 600);
+  }
+
+  &--disabled {
     opacity: 0.5;
-    pointer-events: none;
+    cursor: not-allowed;
+  }
+
+  .alf-tab__badge {
+    background: var(--alf-tabs-indicator-color, var(--alf-sys-primary));
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 10px;
+    min-width: 14px;
+    text-align: center;
   }
 }
 
 // Estilos específicos cuando estamos en modo Underline
 :host-context(.alf-tabs--underline) {
-  margin-bottom: -2px;
-  
   &.alf-tab--active::after {
+    display: block;
     left: 0;
     right: 0;
+    bottom: 0;
+    z-index: 5;
   }
 }
 
-// Estilos específicos cuando estamos en modo Master (Sliding Indicator)
-// Desactivamos el subrayado estático heredado para no solapar con el deslizador
-:host-context(.alf-tabs--master) {
-  &::after { 
-    display: none !important; 
+// Desactivamos el subrayado estático heredado para variantes con su propia lógica (Master, Pill, Glass)
+:host-context(.alf-tabs--master),
+:host-context(.alf-tabs--pill),
+:host-context(.alf-tabs--glass) {
+  &::after {
+    display: none !important;
   }
 }

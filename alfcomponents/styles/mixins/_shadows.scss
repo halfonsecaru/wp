@@ -1,40 +1,54 @@
-// =============================================================
-// MIXIN: alf-shadows
-// Mapea las CSS vars generadas por AlfBaseComponent (resolver)
-// a propiedades CSS reales para todos los estados.
-//
-// Uso: @include alf-shadows();
-// =============================================================
-
-@mixin alf-shadows() {
-
-  // --- DEFAULT ---
-  box-shadow:  var(--alf-shd-val);
-  text-shadow: var(--alf-shd-text);
-
-  // --- FOCUS ---
+/**
+ * AlfShadows Mixin
+ * Mapeo 1:1 con la interface AlfShadowsInterface.
+ */
+@mixin alf-shadows {
+  // 1. BASE PROPERTIES
+  box-shadow: var(--alf-shd-val);
+  
+  // 2. REACTIVE STATES
   &:focus,
   &:focus-visible {
-    box-shadow:  var(--alf-shd-val-focus,  var(--alf-shd-val));
+    box-shadow: var(--alf-shd-val-focus, var(--alf-shd-val));
+  }
+
+  &:hover {
+    box-shadow: var(--alf-shd-val-hover, var(--alf-shd-val));
+  }
+
+  &:active {
+    box-shadow: var(--alf-shd-val-active, var(--alf-shd-val-hover, var(--alf-shd-val)));
+  }
+
+  &[disabled],
+  &:disabled,
+  &.disabled {
+    box-shadow: var(--alf-shd-val-disabled, var(--alf-shd-val));
+  }
+}
+
+/**
+ * AlfTextShadow Mixin
+ */
+@mixin alf-text-shadow {
+  text-shadow: var(--alf-shd-text);
+
+  &:focus,
+  &:focus-visible {
     text-shadow: var(--alf-shd-text-focus, var(--alf-shd-text));
   }
 
-  // --- HOVER ---
   &:hover {
-    box-shadow:  var(--alf-shd-val-hover,  var(--alf-shd-val));
     text-shadow: var(--alf-shd-text-hover, var(--alf-shd-text));
   }
 
-  // --- ACTIVE ---
   &:active {
-    box-shadow:  var(--alf-shd-val-active,  var(--alf-shd-val));
-    text-shadow: var(--alf-shd-text-active, var(--alf-shd-text));
+    text-shadow: var(--alf-shd-text-active, var(--alf-shd-text-hover, var(--alf-shd-text)));
   }
 
-  // --- DISABLED ---
   &[disabled],
-  &:disabled {
-    box-shadow:  var(--alf-shd-val-disabled,  var(--alf-shd-val));
+  &:disabled,
+  &.disabled {
     text-shadow: var(--alf-shd-text-disabled, var(--alf-shd-text));
   }
 }

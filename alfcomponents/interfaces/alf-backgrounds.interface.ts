@@ -47,6 +47,12 @@ export interface AlfBackgroundsBaseInterface {
    */
   backgroundClip?: AlfBackgroundClipEnum;
 
+  /**
+   * Imagen de fondo o Degradado (Nativo)
+   * @example 'linear-gradient(135deg, #474f5a 0%, #334155 100%)'
+   */
+  backgroundImage?: string;
+
   /** Clase CSS personalizada delegada al elemento */
   customCssClass?: string | string[];
 
