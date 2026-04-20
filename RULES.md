@@ -176,14 +176,21 @@ Este documento es la **fuente de verdad absoluta** para el desarrollo en este pr
     5- Extraer toda la lógica a métodos de clase (Arrow Functions) independientes.
     6- **READONLY OBLIGATORIO**: 
     7- Usar `readonly` en todos los **Signals** (`input`, `computed`, `model`, `signal`).
-    8- Usar `readonly` en todas las **Dpendencias Inyectadas** (`inject(ElementRef)`).
+    8- Usar `readonly` en todas las **Dependencias Inyectadas** (`inject(ElementRef)`).
     9- **Arrow Functions**: NUNCA usar la palabra reservada `function` ni métodos de clase tradicionales. SIEMPRE arrow functions para evitar problemas de contexto (`this`).
     10- Templates - @let para Variables Locales e input signals
     11- Abrir Simple Browser de VS Code
+
+#########################
+# 💎 PRINCIPIOS ULTRA-IMPORTANTES (FILOSOFÍA ÉLITE)
+- **DRY ABSOLUTO (Don't Repeat Yourself)**: Si lo vas a usar dos veces, extráelo. Si está en CSS y puede estar en una variable inyectada, muévelo a la lógica de señales.
+- **ESTÉTICA MINIMALISTA**: Menos es más. Diseños limpios, sin ruido visual, pero que se sientan "premium" mediante micro-interacciones (Ripple, WAAPI).
+- **LEGIBILIDAD HUMANA**: El código debe ser leíble por un humano como si fuera un libro. Priorizar claridad sobre "scripts inteligentes" pero oscuros.
+
 #########################
 
 **🎯 Si tienes dudas: 1) Revisa esta memoria, 2) Busca ejemplos existentes, 3) Consulta Angular docs, 4) PREGUNTA**
 
 **⚠️ RECORDATORIO: Lee TODO antes de actuar. No inventes sintaxis. LO MAS IMPORTANTE ES NO USAR FUNCIONES DENTRO DE FUNCIONES, ASI EVITAMOS EL CALLBACK HELL.
-HAy que tener en cuenta que si se le indica, hay que agregar el form igual que se ha echo el el alf-checkbox
+Hay que tener en cuenta que si se le indica, hay que agregar el form igual que se ha hecho en el alf-checkbox.
 **

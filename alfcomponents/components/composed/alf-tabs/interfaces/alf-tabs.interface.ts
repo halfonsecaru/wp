@@ -1,6 +1,7 @@
 import { AlfBaseInterface, AlfAnimateCssInterface } from '@alfcomponents/interfaces';
 import { AlfTabsPositionEnum, AlfTabsVisualTypeEnum } from '../enums/alf-tabs-visual-type.enum';
-import { AlfAnimationTypeEnum, AlfColorEnum, AlfButtonVisualTypeEnum } from '@alfcomponents/enums';
+import { AlfAnimationTypeEnum, AlfColorEnum, AlfButtonVisualTypeEnum, AlfColorVariantEnum } from '@alfcomponents/enums';
+import { AlfButtonInterface } from '../../../simple/alf-button/interfaces/alf-button.interface';
 
 /**
  * AlfTabInterface
@@ -23,8 +24,14 @@ export interface AlfTabInterface extends AlfBaseInterface {
   customStyle?: Record<string, string>;
   customClass?: string | string[];
 
-  /** Configuración predefinida de botón si aplica */
-  predefined?: string;
+  /** Configuración predefinida de variante si aplica */
+  predefined?: AlfColorVariantEnum;
+
+  /** Configuración de identidad de botón específica para esta pestaña (Override local) */
+  tabsConfiguration?: AlfButtonInterface;
+
+  /** Color personalizado para el efecto ripple */
+  rippleColor?: AlfColorEnum;
   
   /** Icono o texto a mostrar antes del label */
   prefix?: string;
@@ -82,6 +89,9 @@ export interface AlfTabsInterface extends AlfBaseInterface {
   
   /** Estilo visual de las pestañas */
   visualType?: AlfTabsVisualTypeEnum;
+
+  /** Configuración visual de botón global para todas las cabeceras (Source of Truth) */
+  tabsConfiguration?: AlfButtonInterface;
   
   /** Configuración de comportamiento y animaciones globales */
   behavior?: {

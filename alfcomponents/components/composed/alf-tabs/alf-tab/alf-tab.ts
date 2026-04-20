@@ -1,23 +1,25 @@
-import { 
-  ChangeDetectionStrategy, 
-  Component, 
-  computed, 
-  inject, 
-  input, 
-  ViewEncapsulation, 
-  Signal, 
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  input,
+  ViewEncapsulation,
+  Signal,
   signal,
   contentChild,
   TemplateRef,
   viewChild,
-  ElementRef
+  ElementRef,
+  Input
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AlfBaseComponent } from '@alfcomponents/base';
 import { AlfTabInterface } from '../interfaces/alf-tabs.interface';
 import { AlfRippleDirective } from '@alfcomponents/directives';
-import { AlfAriaRoleEnum, AlfButtonVisualTypeEnum, AlfIconsUnicodeIconEnum } from '@alfcomponents/enums';
+import { AlfAriaRoleEnum, AlfButtonVisualTypeEnum, AlfIconsUnicodeIconEnum, AlfThemeEnum, AlfColorVariantEnum, AlfColorEnum } from '@alfcomponents/enums';
 import { ALF_TABS_TOKEN } from '../tokens';
+import { BASIC_IDENTITIES } from '../../../../predefined/intefaces-basic/basic-colors';
 
 /**
  * AlfTabComponent
@@ -51,18 +53,57 @@ export class AlfTabComponent extends AlfBaseComponent<AlfTabInterface> {
    * Si no se provee, el padre lo asignará automáticamente (Auto-indexing).
    */
   public readonly indexInput = input<number | undefined>(undefined, { alias: 'index' });
-  
+
   /** Señal interna para el índice (manejada por el padre si es necesario) */
   protected readonly internalIndex = signal<number>(0);
-  
+
   /** El índice efectivo prioriza el input manual */
   public readonly effectiveIndex = computed(() => this.indexInput() ?? this.internalIndex());
 
   /** Captura el contenido anidado si el usuario lo pone dentro de la etiqueta alf-tab */
   public readonly contentTemplate = viewChild<TemplateRef<any>>('contentTemplate');
 
-  /** Miembro abstracto obligatorio de AlfBaseComponent */
-  protected override readonly resolvedPredefined: Signal<AlfTabInterface | undefined> = signal(undefined).asReadonly();
+  /** 
+   * Miembro abstracto obligatorio de AlfBaseComponent.
+   * Resolución de la Identidad Cromática Basal (Factory Pattern).
+   */
+  protected override readonly resolvedPredefined: Signal<AlfTabInterface | undefined> = computed(() => {
+    const theme = this.globalTheme().theme;
+    const parentConfig = this.parent.configComputed();
+
+    // Herencia de variante: Prioridad local -> Variante del padre -> Primary (Fallback)
+    const variant = this.variantInput()
+      || (this.parent as any).variantInput()
+      || AlfColorVariantEnum.Primary;
+
+    // 1. Obtener ADN desde BASIC_IDENTITIES (Source of Truth)
+    const adn = BASIC_IDENTITIES[theme][variant] || BASIC_IDENTITIES[theme][AlfColorVariantEnum.Primary];
+
+    // 2. Construir la base estética de "Pestaña Élite"
+    const baseIdentiy: AlfTabInterface = {
+      label: 'Tab',
+      predefined: variant, // Vital para el color del slider
+      backgrounds: {
+        default: { backgroundColor: AlfColorEnum.Transparent }, // Fondo limpio por defecto
+        hover: { backgroundColor: `color-mix(in srgb, ${adn.brand} 10%, transparent)` as AlfColorEnum } // Hover sutil
+      },
+      typography: {
+        default: { color: 'currentColor' as AlfColorEnum }, // Hereda color del flujo
+        hover: { color: adn.brand } // Cambia al color de marca en hover
+      },
+      ripple: true,
+      // Ripple más lento y elegante (color-mix con mucha transparencia)
+      rippleColor: `color-mix(in srgb, ${adn.ripple} 20%, transparent)` as AlfColorEnum,
+      prefix: adn.icon
+    };
+
+    // 3. Cascada de Mezcla (ADN -> Config Global Padre -> Config Local)
+    return {
+      ...baseIdentiy,
+      ...parentConfig?.tabsConfiguration,
+      ...(this.defineComponentInput() as any)?.tabsConfiguration
+    };
+  });
 
   /** Determina si esta pestaña es la activa */
   public readonly isActive = computed(() => this.parent.activeIndex() === this.effectiveIndex());
@@ -74,17 +115,28 @@ export class AlfTabComponent extends AlfBaseComponent<AlfTabInterface> {
   public readonly visualTypeComputed = computed(() => this.parent.configComputed()?.visualType || 'underline');
 
   /** 
-   * Determina si el ripple está habilitado para esta pestaña.
-   * Prioriza el config local sobre cualquier otro valor.
+   * Configuración completa del Ripple.
+   * Empaqueta el estado y el color para el directivo alfRipple.
    */
-  public readonly rippleEnabled = computed(() => this.resolvedConfigComputed()?.ripple ?? true);
+  public readonly rippleConfig = computed(() => {
+    const config = this.resolvedConfigComputed();
+    const enabled = config?.ripple ?? true;
+
+    if (!enabled) return false;
+
+    return {
+      enabled: true,
+      color: config?.rippleColor,
+      duration: 1500
+    };
+  });
 
   /** 
    * Configuración refinada para el Header nativo.
    */
   public readonly headerConfigComputed = computed(() => {
     const config = this.resolvedConfigComputed() || { label: 'Tab' };
-    
+
     return {
       ...config,
       role: AlfAriaRoleEnum.Tab,

@@ -25,13 +25,15 @@ import { AlfBaseComponent } from '@alfcomponents/base';
 import { AlfTabsInterface } from './interfaces/alf-tabs.interface';
 import { AlfAnimateCssInterface } from '@alfcomponents/interfaces';
 import { AlfTabsPositionEnum } from './enums/alf-tabs-visual-type.enum';
-import { AlfIconsUnicodeIconEnum, AlfColorEnum } from '@alfcomponents/enums';
+import { AlfIconsUnicodeIconEnum, AlfColorEnum, AlfColorVariantEnum, AlfThemeEnum } from '@alfcomponents/enums';
+import { BASIC_IDENTITIES } from '../../../predefined/intefaces-basic/basic-colors';
 import { getAlfPredefinedTabs } from './predefined/alf-tabs.predefined';
 import { DefaultTabsKeys } from './enums/default-tabs-keys.enum';
 import { AlfTabComponent } from './alf-tab/alf-tab';
 import { AlfTabContentComponent } from './alf-tab-content/alf-tab-content';
 import { AlfPortalDirective } from './directives/alf-portal';
 import { ALF_TABS_TOKEN } from './tokens';
+import { AlfButtonInterface } from '../../simple/alf-button/interfaces/alf-button.interface';
 
 /**
  * AlfTabsComponent
@@ -55,13 +57,26 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
   protected readonly predefinedInput = signal<AlfTabsInterface | string>(DefaultTabsKeys.Base);
 
   /** 
+   * Entrada global para la estética de las cabeceras (DRY).
+   * Si se define aquí, todos los AlfTab hijos heredarán esta configuración.
+   */
+  @Input('tabsConfiguration') public set tabsConfiguration(v: AlfButtonInterface | undefined) {
+    this.tabsConfigurationInput.set(v);
+  }
+  protected readonly tabsConfigurationInput = signal<AlfButtonInterface | undefined>(undefined);
+
+  /** 
    * Source of Truth: Identidad Predefinida vinculada al ADN reactivo.
-   * Esto hace que el componente sea 100% reactivo a cambios de tema 
-   * a través de los tokens inyectados en el Factory.
    */
   protected override readonly resolvedPredefined: Signal<AlfTabsInterface | undefined> = computed(() => {
     const p = this.predefinedInput();
-    return typeof p === 'string' ? getAlfPredefinedTabs(p) : p;
+    const config = typeof p === 'string' ? getAlfPredefinedTabs(p) : p;
+
+    // Inyectamos la configuración de cabeceras en el objeto global del componente
+    return {
+      ...config,
+      tabsConfiguration: this.tabsConfigurationInput() || config?.tabsConfiguration
+    };
   });
 
   // --- Identidad y Configuración ---
@@ -302,11 +317,23 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
   })();
 
   /** 
-   * Cálculos Dinámicos para el Contrato de Variables CSS
-   * Esto permite que el SCSS sea 100% reactivo a la configuración.
+   * Color dinámico del indicador deslizante.
+   * Se sincroniza con el color de marca de la pestaña activa interpretando su variante al 100%.
    */
-  protected readonly indicatorColorVarComputed = computed(() => {
-    return this.resolvedConfigComputed()?.brandColor || AlfColorEnum.Primary;
+  public readonly indicatorColorVarComputed = computed(() => {
+    const activeIdx = this.activeIndex();
+    const activeTab = this.tabs().find(t => t.effectiveIndex() === activeIdx);
+    const theme = this.globalTheme().theme;
+    
+    // Interpretamos la variante de la pestaña activa
+    const variant = activeTab?.configComputed()?.predefined 
+                 || (this.defineComponentInput() as any)?.variant
+                 || AlfColorVariantEnum.Primary;
+    
+    // Obtenemos el ADN puro (100% intensidad)
+    const adn = BASIC_IDENTITIES[theme][variant] || BASIC_IDENTITIES[theme][AlfColorVariantEnum.Primary];
+                    
+    return adn.brand || 'var(--alf-sys-primary)';
   });
 
   /** Helpers de Template */

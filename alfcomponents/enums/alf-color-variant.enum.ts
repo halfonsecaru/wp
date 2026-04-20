@@ -82,4 +82,16 @@ export enum AlfColorVariantEnum {
   GradientSuccess = 'gradient-success',
   GradientWarning = 'gradient-warning',
   GradientInfo = 'gradient-info',
+
+  // Variantes Especiales / Geek Mode (Ciudadanos de primera clase)
+  Accept = 'accept',
+  Cancel = 'cancel',
+  Matrix = 'matrix',
+  Cyber = 'cyber',
+  Jedi = 'jedi',
+  Sith = 'sith',
+  Fire = 'fire',
+  Frost = 'frost',
+  Lava = 'lava',
+  Zen = 'zen'
 }

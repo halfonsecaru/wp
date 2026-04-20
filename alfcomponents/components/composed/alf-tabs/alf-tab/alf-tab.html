@@ -1,19 +1,21 @@
 @let s = styleVariablesComputed();
 @let visualType = visualTypeComputed();
 
-<button 
-  type="button"
+<div 
   class="alf-tab__header"
   [class]="'alf-tab__header--' + visualType"
   [class.alf-tab__header--active]="isActive()"
   [class.alf-tab__header--disabled]="configComputed()?.disabled"
-  [alfRipple]="rippleEnabled()"
+  [alfRipple]="rippleConfig()"
   [attr.role]="'tab'"
   [attr.aria-selected]="isActive()"
   [attr.id]="tabId()"
   [attr.aria-controls]="panelId()"
+  [attr.tabindex]="configComputed()?.disabled ? -1 : 0"
   [style]="s"
   (click)="selectTab()"
+  (keydown.enter)="selectTab()"
+  (keydown.space)="selectTab()"
 >
   @if (configComputed()?.prefix) {
     <span class="alf-tab__icon alf-tab__icon--prefix">{{ configComputed()?.prefix }}</span>
@@ -28,7 +30,7 @@
   @if (configComputed()?.suffix) {
     <span class="alf-tab__icon alf-tab__icon--suffix">{{ configComputed()?.suffix }}</span>
   }
-</button>
+</div>
 
 <!-- 
   Capturador de contenido anidado (API estilo Material).

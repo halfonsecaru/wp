@@ -4,7 +4,8 @@ import {
   AlfTabComponent,
   AlfIconsUnicodeIconEnum,
   DefaultTabsKeys,
-  AlfAnimationTypeEnum
+  AlfAnimationTypeEnum,
+  AlfColorVariantEnum
 } from '@alfcomponents';
 
 /**
@@ -49,122 +50,65 @@ import {
         </alf-tabs>
       </section>
 
-      <!-- 2. SIDEBAR IDENTITY (Pill + SlideInLeft + Position Left) -->
+      <!-- 2. GEEK & SOLID IDENTITIES (Matrix, Cyber, Jedi) -->
       <section class="demo-card">
-        <h3 class="demo-title">2. Identidad: Sidebar (Pill + SlideIn + Left)</h3>
-        <p class="demo-desc">Configuración vertical ideal para menús laterales con navegación por píldoras.</p>
+        <h3 class="demo-title" style="color: #4ade80;">2. Identidades Geek & Solid (Puras)</h3>
+        <p class="demo-desc">Uso directo del ADN cromático en las pestañas. Sin configuración extra, solo inyectando la variante.</p>
         
-        <alf-tabs [predefined]="tabsKeys.Sidebar">
-          <alf-tab [defineComponent]="{ label: 'Proyectos', prefix: icons.Settings }">
-            <div class="panel-content">
-              <h4>Gestión de Proyectos</h4>
-              <p>Identidad diseñada para paneles laterales. Observa la animación <code>SlideInLeft</code>.</p>
-            </div>
-          </alf-tab>
-          <alf-tab [defineComponent]="{ label: 'Equipo', prefix: icons.User }">
-            <div class="panel-content">
-              <h4>Colaboradores</h4>
-              <p>Lista de miembros del equipo activo.</p>
-            </div>
-          </alf-tab>
-        </alf-tabs>
-      </section>
+        <div style="display: flex; flex-direction: column; gap: 2rem;">
+          <div>
+            <span class="label-badge">Variante: Matrix</span>
+            <alf-tabs [variant]="variants.Matrix">
+              <alf-tab label="System Log"></alf-tab>
+              <alf-tab label="Intrusion Alert"></alf-tab>
+              <alf-tab label="Mainframe"></alf-tab>
+            </alf-tabs>
+          </div>
 
-      <!-- 3. MODERN IDENTITY (Modern + FadeInDown) -->
-      <section class="demo-card">
-        <h3 class="demo-title">3. Identidad: Modern (Boxed + FadeInDown)</h3>
-        <p class="demo-desc">Estética contemporánea con bordes definidos y entrada desde arriba.</p>
-        
-        <alf-tabs [predefined]="tabsKeys.Settings">
-          <alf-tab [defineComponent]="{ label: 'Configuración', prefix: icons.Settings }">
-            <div class="panel-content">
-              <h4>Preferencias del Sistema</h4>
-              <p>Estética moderna con fondo sólido y animación descendente.</p>
-            </div>
-          </alf-tab>
-          <alf-tab [defineComponent]="{ label: 'Privacidad', prefix: icons.CheckMark }">
-            <div class="panel-content">
-              <h4>Seguridad de Datos</h4>
-              <p>Ajustes de visibilidad y encriptación.</p>
-            </div>
-          </alf-tab>
-        </alf-tabs>
-      </section>
+          <div>
+            <span class="label-badge">Variante: Cyberpunk</span>
+            <alf-tabs [variant]="variants.Cyber">
+              <alf-tab label="Night City"></alf-tab>
+              <alf-tab label="Netrunner"></alf-tab>
+              <alf-tab label="Cyberware"></alf-tab>
+            </alf-tabs>
+          </div>
 
-      <!-- 4. GLASS IDENTITY (Glassmorphism + ZoomIn) -->
-      <section class="demo-card">
-        <h3 class="demo-title">4. Identidad: Profile (Glass + ZoomIn)</h3>
-        <p class="demo-desc">Efecto translúcido premium con animación de escala orgánica.</p>
-        
-        <div style="background: linear-gradient(135deg, #1e293b 0%, #334155 100%); padding: 1rem; border-radius: 12px;">
-          <alf-tabs [predefined]="tabsKeys.Profile">
-            <alf-tab [defineComponent]="{ label: 'Mi Cuenta', prefix: icons.User }">
-              <div class="panel-content glass-effect">
-                <h4>Información de Usuario</h4>
-                <p>Efecto Glassmorphism real. La animación <code>ZoomIn</code> aporta un toque cinético Élite.</p>
-              </div>
-            </alf-tab>
-            <alf-tab [defineComponent]="{ label: 'Suscripción', prefix: icons.Sparkle }">
-              <div class="panel-content glass-effect">
-                <h4>Plan Actual: Élite PRO</h4>
-                <p>Gestiona tus pagos y facturación.</p>
-              </div>
-            </alf-tab>
-          </alf-tabs>
+          <div>
+            <span class="label-badge">Variante: Jedi</span>
+            <alf-tabs [variant]="variants.Jedi">
+              <alf-tab label="Force Meditation"></alf-tab>
+              <alf-tab label="Lightsaber Skills"></alf-tab>
+            </alf-tabs>
+          </div>
         </div>
       </section>
 
-      <!-- 5. MASTER IDENTITY (Material + Sliding Indicator + Directional Slides) -->
+      <!-- 3. SIDEBAR IDENTITY -->
+      <section class="demo-card">
+        <h3 class="demo-title">3. Identidad: Sidebar (Pill + Left)</h3>
+        <p class="demo-desc">Configuración vertical ideal para menús laterales.</p>
+        
+        <alf-tabs [predefined]="tabsKeys.Sidebar" position="left">
+          <alf-tab [defineComponent]="{ label: 'Proyectos', prefix: icons.Settings }">
+            <div class="panel-content"><h4>Proyectos</h4><p>Gestión de proyectos.</p></div>
+          </alf-tab>
+          <alf-tab [defineComponent]="{ label: 'Equipo', prefix: icons.User }">
+            <div class="panel-content"><h4>Equipo</h4><p>Miembros colaboradores.</p></div>
+          </alf-tab>
+        </alf-tabs>
+      </section>
+
+      <!-- 4. MASTER IDENTITY (Sliding Indicator) -->
       <section class="demo-card master-demo">
-        <h3 class="demo-title" style="color: #6200ee;">5. Identidad: Master (Sliding Indicator)</h3>
-        <p class="demo-desc">La joya de la corona. Indicador deslizante reactivo y animaciones con coherencia espacial.</p>
+        <h3 class="demo-title" style="color: #6200ee;">4. Identidad: Master (Sliding Indicator)</h3>
+        <p class="demo-desc">La joya de la corona con indicador deslizante y animaciones direccionales.</p>
         
         <alf-tabs [predefined]="tabsKeys.Master">
-          <alf-tab [defineComponent]="{ label: 'Diseño', prefix: icons.Settings }">
-            <div class="panel-content">
-              <h4>Material Design 3.0</h4>
-              <p>Observa cómo la barra de abajo se desliza suavemente ajustándose al ancho del texto.</p>
-            </div>
-          </alf-tab>
-          <alf-tab [defineComponent]="{ label: 'Rendimiento', prefix: icons.Zap }">
-            <div class="panel-content">
-              <h4>Velocidad Atómica</h4>
-              <p>Animaciones direccionales: si avanzas hacia aquí, el contenido entra por la derecha.</p>
-            </div>
-          </alf-tab>
-          <alf-tab [defineComponent]="{ label: 'Seguridad', prefix: icons.CheckMark }">
-            <div class="panel-content">
-              <h4>Protección Total</h4>
-              <p>Todo el motor está basado en señales de Angular, sin un solo milisegundo de desperdicio.</p>
-            </div>
-          </alf-tab>
-          <alf-tab [defineComponent]="{ label: 'Analíticas', prefix: icons.ChartIncreasing }">
-            <div class="panel-content"><h4>Métricas</h4><p>Visualización de datos avanzados.</p></div>
-          </alf-tab>
-          <alf-tab [defineComponent]="{ label: 'Usuarios', prefix: icons.User }">
-            <div class="panel-content"><h4>Gestión de Usuarios</h4><p>Control de acceso y perfiles.</p></div>
-          </alf-tab>
-          <alf-tab [defineComponent]="{ label: 'Mensajes', prefix: icons.Bell }">
-            <div class="panel-content"><h4>Notificaciones</h4><p>Centro de mensajes en tiempo real.</p></div>
-          </alf-tab>
-          <alf-tab [defineComponent]="{ label: 'Proyectos', prefix: icons.Ledger }">
-            <div class="panel-content"><h4>Mis Proyectos</h4><p>Organización de tareas y objetivos.</p></div>
-          </alf-tab>
-          <alf-tab [defineComponent]="{ label: 'Archivos', prefix: icons.Plus }">
-            <div class="panel-content"><h4>Almacenamiento</h4><p>Gestor de documentos en la nube.</p></div>
-          </alf-tab>
-          <alf-tab [defineComponent]="{ label: 'Configuración', prefix: icons.Settings }">
-            <div class="panel-content"><h4>Ajustes</h4><p>Configuración global del sistema.</p></div>
-          </alf-tab>
-          <alf-tab [defineComponent]="{ label: 'Ayuda', prefix: icons.ClockwiseArrowsButton }">
-            <div class="panel-content"><h4>Soporte</h4><p>Centro de ayuda y documentación.</p></div>
-          </alf-tab>
-          <alf-tab [defineComponent]="{ label: 'Comunidad', prefix: icons.User }">
-            <div class="panel-content"><h4>Foros</h4><p>Conéctate con otros usuarios.</p></div>
-          </alf-tab>
-          <alf-tab [defineComponent]="{ label: 'Tienda', prefix: icons.Sparkle }">
-            <div class="panel-content"><h4>Marketplace</h4><p>Extensiones y temas premium.</p></div>
-          </alf-tab>
+          <alf-tab label="Diseño"></alf-tab>
+          <alf-tab label="Rendimiento"></alf-tab>
+          <alf-tab label="Seguridad"></alf-tab>
+          <alf-tab label="Analíticas"></alf-tab>
         </alf-tabs>
       </section>
 
@@ -199,11 +143,16 @@ import {
       h4 { margin-top: 0; color: var(--alf-sys-gray-900, #212529); }
       p { color: var(--alf-sys-gray-400, #868e96); margin-bottom: 0; }
     }
-    .glass-effect {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+    .label-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      background: var(--alf-sys-gray-100);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      color: var(--alf-sys-gray-600);
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -212,6 +161,7 @@ export class TabsDemoPage {
   protected readonly tabsKeys = DefaultTabsKeys;
   protected readonly icons = AlfIconsUnicodeIconEnum;
   protected readonly animations = AlfAnimationTypeEnum;
+  protected readonly variants = AlfColorVariantEnum;
 
   constructor() { }
 }
