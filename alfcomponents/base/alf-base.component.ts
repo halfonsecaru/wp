@@ -255,9 +255,7 @@ export abstract class AlfBaseComponent<T> {
       'opacity',
       'transform',
       'outline-color',
-      'outline-offset',
-      'width',
-      'height'
+      'outline-offset'
     ];
 
     return safeProps

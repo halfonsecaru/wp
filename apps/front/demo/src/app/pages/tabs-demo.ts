@@ -43,19 +43,19 @@ import {
                   <div class="example-canvas">
                     <alf-tabs [defineComponent]="{ visualType: tabsVisualType.Underline }">
                       <alf-tab [defineComponent]="{ label: 'Visión General' }">
-                        <div class="demo-content">
+                        <div>
                           <h3>Resumen del Proyecto</h3>
                           <p>Bienvenido al panel de control principal. Aquí puedes visualizar el estado general de la aplicación, el rendimiento de los módulos y las alertas recientes generadas por el sistema.</p>
                         </div>
                       </alf-tab>
                       <alf-tab [defineComponent]="{ label: 'Estadísticas' }">
-                        <div class="demo-content">
+                        <div>
                           <h3>Datos en Tiempo Real</h3>
                           <p>Gráficos volumétricos de tráfico, distribución de ancho de banda y picos de latencia global del clúster.</p>
                         </div>
                       </alf-tab>
                       <alf-tab [defineComponent]="{ label: 'Configuración' }">
-                        <div class="demo-content">
+                        <div>
                           <h3>Preferencias Restringidas</h3>
                           <p>Ajustes de notificaciones, rotación de tokens criptográficos y políticas de control de acceso basado en roles (RBAC).</p>
                         </div>
@@ -96,25 +96,25 @@ import {
                     <!-- Demo de Pestañas tipo Master -->
                     <alf-tabs [predefined]="tabsKeys.Master">
                       <alf-tab [defineComponent]="{ label: 'Diseño' }">
-                        <div class="demo-content">
+                        <div>
                           <h3>Arquitectura Visual Élite</h3>
                           <p>El diseño UI/UX se enfoca en la usabilidad pura mediante el uso intensivo de micro-animaciones (Signals + WAAPI), paletas de color con cálculos armónicos, y un sistema de espaciado matemático que respeta las leyes de proximidad de la Gestalt.</p>
                         </div>
                       </alf-tab>
                       <alf-tab [defineComponent]="{ label: 'Rendimiento' }">
-                        <div class="demo-content">
+                        <div>
                           <h3>Zoneless & Signals (Full Hardware Acceleration)</h3>
                           <p>Las métricas de rendimiento marcan 100/100 en Lighthouse de forma consistente. No hay reflows forzados en CSS y Angular actualiza las vistas locales quirúrgicamente a través de reacciones atómicas, sin usar zone.js.</p>
                         </div>
                       </alf-tab>
                       <alf-tab [defineComponent]="{ label: 'Seguridad' }">
-                        <div class="demo-content">
+                        <div>
                           <h3>Defensa en Profundidad (DiD)</h3>
                           <p>Autenticación hiper segura mediante tokens anti-CSRF inyectados en runtime. Cada Input del usuario es auditado y sanitizado nativamente por el compilador AOT y el motor de render DOM antes de aterrizar en la pantalla.</p>
                         </div>
                       </alf-tab>
                       <alf-tab [defineComponent]="{ label: 'Analíticas' }">
-                        <div class="demo-content">
+                        <div>
                           <h3>Telemetría Inteligente</h3>
                           <p>Nuestra malla de microservicios procesa 10,000 eventos distribuidos por segundo, autoescalando los nodos edge de forma dinámica para absorber picos de demanda sin el más mínimo temblor de latencia.</p>
                         </div>
@@ -163,13 +163,13 @@ import {
                       <span class="solid-label">{{ variant.label }}</span>
                       <alf-tabs predefined="underline" [variant]="variant.key" [tabsConfiguration]="{ tabConfiguration: { visualType: buttonsVisualType.Solid } }">
                         <alf-tab [defineComponent]="{ label: 'Uno' }">
-                          <div class="demo-content">Contenido {{ variant.label }} 1</div>
+                          <div>Contenido {{ variant.label }} 1</div>
                         </alf-tab>
                         <alf-tab [defineComponent]="{ label: 'Dos' }">
-                          <div class="demo-content">Contenido {{ variant.label }} 2</div>
+                          <div>Contenido {{ variant.label }} 2</div>
                         </alf-tab>
                         <alf-tab [defineComponent]="{ label: 'Tres' }">
-                          <div class="demo-content">Contenido {{ variant.label }} 3</div>
+                          <div>Contenido {{ variant.label }} 3</div>
                         </alf-tab>
                       </alf-tabs>
                     </div>
@@ -232,15 +232,6 @@ import {
       font-family: 'Fira Code', monospace;
       font-size: 0.85rem;
       overflow-x: auto;
-    }
-    .demo-content {
-      padding: 2.5rem;
-      background: transparent;
-      border-radius: 8px;
-      border: 1px solid #e2e8f0;
-      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
-      h3 { margin: 0 0 0.5rem 0; color: #0f172a; font-size: 1.15rem; }
-      p { margin: 0; color: #475569; font-size: 0.95rem; line-height: 1.6; }
     }
     .solid-grid {
       display: grid;

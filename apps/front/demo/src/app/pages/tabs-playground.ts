@@ -154,16 +154,16 @@ import {
           <div class="preview-canvas">
             <alf-tabs [defineComponent]="config()">
               <alf-tab [defineComponent]="{ label: 'una', prefix: '1' }">
-                <div class="demo-content"><h2>Sección una</h2><p>Contenido reactivo nativo.</p></div>
+                <div><h2>Sección una</h2><p>Contenido reactivo nativo.</p></div>
               </alf-tab>
               <alf-tab [defineComponent]="{ label: 'dos', prefix: '2' }">
-                <div class="demo-content"><h2>Sección dos</h2><p>Contenido reactivo nativo.</p></div>
+                <div><h2>Sección dos</h2><p>Contenido reactivo nativo.</p></div>
               </alf-tab>
               <alf-tab [defineComponent]="{ label: 'tres', prefix: '3' }">
-                <div class="demo-content"><h2>Sección tres</h2><p>Contenido reactivo nativo.</p></div>
+                <div><h2>Sección tres</h2><p>Contenido reactivo nativo.</p></div>
               </alf-tab>
               <alf-tab [defineComponent]="{ label: 'cuatro', prefix: '4' }">
-                <div class="demo-content"><h2>Sección cuatro</h2><p>Contenido reactivo nativo.</p></div>
+                <div><h2>Sección cuatro</h2><p>Contenido reactivo nativo.</p></div>
               </alf-tab>
             </alf-tabs>
           </div>
@@ -204,7 +204,6 @@ import {
 
     .preview-section { flex: 1; display: flex; flex-direction: column; .section-label { font-size: 0.7rem; font-weight: 800; color: #64748b; margin-bottom: 0.5rem; padding-left: 0.5rem; border-left: 3px solid #3b82f6; } }
     .preview-canvas { flex: 1; background: white; border-radius: 12px; padding: 2rem; border: 1px solid #e2e8f0; display: flex; justify-content: center; align-items: flex-start; }
-    .demo-content { padding: 1rem 2rem; h2 { color: #0f172a; margin: 0 0 0.5rem; font-size: 1.2rem; } p { color: #64748b; font-size: 0.9rem; } }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

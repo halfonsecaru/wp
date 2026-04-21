@@ -183,6 +183,10 @@ Este documento es la **fuente de verdad absoluta** para el desarrollo en este pr
     10- Templates - @let para Variables Locales e input signals
     11- Abrir Simple Browser de VS Code
 
+- 18) PROHIBICIÓN ABSOLUTA DE TIMERS IMPERATIVOS
+    - ❌ **EVITAR A TODA COSTA** el uso de `setTimeout` o `setInterval`.
+    - Toda la reactividad y sincronización del DOM debe manejarse mediante Signals (`effect()`, `computed()`), eventos nativos (`animationend`, `transitionend`), promesas nativas (WAAPI `.onfinish`) o los ciclos de vida y directivas modernas de Angular. El uso de retardos artificiales con `setTimeout` es síntoma de mala arquitectura o de un hack inestable.
+
 #########################
 # 💎 PRINCIPIOS ULTRA-IMPORTANTES (FILOSOFÍA ÉLITE)
 - **DRY ABSOLUTO (Don't Repeat Yourself)**: Si lo vas a usar dos veces, extráelo. Si está en CSS y puede estar en una variable inyectada, muévelo a la lógica de señales.

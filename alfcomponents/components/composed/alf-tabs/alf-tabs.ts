@@ -136,7 +136,7 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     super();
   }
 
-  /** Lógica de Transiciones Élite */
+  /** Lógica de Transiciones Natural y Cálculo Estructural */
   public readonly selectTabByIndex = (targetIndex: number): void => {
     const currentIndex = this.contentIndex();
     if (targetIndex === currentIndex || this.isTransitioning()) return;
@@ -148,96 +148,110 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     this.activeIndex.set(targetIndex);
     this.targetIndexPending.set(targetIndex);
 
+    const container = this.contentContainer()?.nativeElement;
+    
+    // 1. Extraemos la altura EXACTA del panel viejo (no del contenedor, para no sumar paddings 2 veces)
     const currentTab = this.tabs()[currentIndex];
+    let oldHeight = 0;
+    
+    if (currentTab) {
+      const oldPanelEl = document.getElementById(currentTab.panelId()!);
+      if (oldPanelEl) {
+        oldHeight = oldPanelEl.offsetHeight;
+        this['_oldHeightMemory'] = oldHeight;
+      }
+    }
+
     const anim = this.getTabAnimations(currentTab);
 
     if (currentTab && anim?.exitStage) {
       this.exitingTabsSet.update(set => new Set(set).add(currentIndex));
-      currentTab.isExiting.set(true);
     } else {
       this.completeTransition(targetIndex);
     }
   };
 
   protected readonly completeTransition = (targetIndex: number): void => {
-    // ⚠️ Referenciamos directamente el DOM mediante viewChild
     const container = this.contentContainer()?.nativeElement;
-    let oldHeight = 0;
+    const oldHeight = this['_oldHeightMemory'] || 0;
 
-    // 1. Fijar altura antigua EXACTAMENTE antes de que Angular mutile el DOM
-    if (container) {
-      oldHeight = container.getBoundingClientRect().height;
-      container.style.height = `${oldHeight}px`;
-    }
-
-    const allTabs = this.tabs();
-    this.exitingTabsSet().forEach(idx => {
-      const tab = allTabs[idx];
-      if (tab) tab.isExiting.set(false);
-    });
-
-    this.exitingTabsSet.set(new Set());
+    // 2. Transición Lógica (Desmonta el texto viejo, monta el texto nuevo de golpe)
     this.contentIndex.set(targetIndex);
     this.targetIndexPending.set(null);
     this.isTransitioning.set(false);
 
-    // 2. Transición robusta con Web Animations API
+    // 3. ¡Animamos al Hijo Directamente! (Tu intuición)
     if (container) {
-      setTimeout(() => {
-        // MUY IMPORTANTE: Exterminar las animaciones previas de la Web API (el 'fill: forwards' es permanente si no se mata)
-        container.getAnimations().forEach(anim => anim.cancel());
+      requestAnimationFrame(() => {
+        const allTabs = this.tabs();
+        const targetTab = allTabs[targetIndex];
+        const targetPanelEl = targetTab ? document.getElementById(targetTab.panelId()!) : null;
 
-        // 1. Limpiamos estilos residuales
-        container.style.transition = 'none';
-        container.style.height = 'auto';
-        container.style.maxHeight = 'none';
-        container.style.flex = 'none'; // CRUCIAL: Previene que Flexbox devore el encogimiento
+        if (targetPanelEl) {
+          // Extraemos la sangre pura: lo que de verdad mide el Panel Nuevo en sus entrañas
+          const originalPanelHeight = targetPanelEl.style.height;
+          targetPanelEl.style.height = 'max-content'; // Vital: evita que el Grid estire la medida
+          const newHeight = targetPanelEl.offsetHeight;
+          targetPanelEl.style.height = originalPanelHeight;
 
-        // 2. Medimos exactamente a cuánto DEBE llegar
-        const newHeight = container.getBoundingClientRect().height;
+          if (Math.abs(newHeight - oldHeight) < 2) return;
 
-        if (newHeight === oldHeight) {
-          container.style.flex = '';
-          container.style.height = '';
-          return;
+          const compStyle = getComputedStyle(container);
+          const rawDur = parseFloat(compStyle.transitionDuration) || 0;
+          const cssDuration = rawDur > 0 ? (rawDur * 1000) : 300;
+
+          // Bifurcación Inteligente (Basada en tu intuición):
+          let animFrames: Keyframe[] = [];
+          const originalOverflow = targetPanelEl.style.overflow;
+          targetPanelEl.style.overflow = 'hidden'; // Clip estricto durante animación
+
+          console.log("antiguo: ", oldHeight)
+          console.log("Nuevo: ", newHeight)
+          console.log("Diferencia: ", Math.abs(newHeight - oldHeight));
+          console.log("-------------------------------------")
+          if (oldHeight > newHeight) {
+            // EMPEQUEÑECER: Forzamos la altura por abajo (minHeight) y dejamos que el suelo caiga.
+            // Así el contenido nuevo se queda pegado arriba intacto mientras la caja reduce su vacío.
+            animFrames = [
+              { minHeight: `${oldHeight}px` },
+              { minHeight: `${newHeight}px` }
+            ];
+          } else if (oldHeight < newHeight) {
+            // AGRANDAR: Aplastamos la caja por arriba (maxHeight) y dejamos que el techo suba.
+            // Así el contenido va revelándose progresivamente mientras crece.
+            animFrames = [
+              { maxHeight: `${oldHeight}px` },
+              { maxHeight: `${newHeight}px` }
+            ];
+          }
+
+          // Magia WAAPI Dinámica
+          const resizeAnim = targetPanelEl.animate(animFrames, {
+            duration: cssDuration,
+            easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+          });
+
+          resizeAnim.onfinish = () => {
+            targetPanelEl.style.overflow = originalOverflow;
+          };
         }
-
-        // 3. Volvemos a fijar todo en el estado antiguo
-        container.style.height = `${oldHeight}px`;
-
-        // Lee el var() de SCSS si está (ej. `--transition-duration`) o fallbackea
-        const rawDur = parseFloat(getComputedStyle(container).transitionDuration) || 0;
-        const cssDuration = rawDur > 0 ? (rawDur * 1000) : 300;
-
-        // 4. Interpolación Nativa (WAAPI) que ignora los bugs del motor de CSS
-        const animation = container.animate([
-          { height: `${oldHeight}px`, flex: 'none' },
-          { height: `${newHeight}px`, flex: 'none' }
-        ], {
-          duration: cssDuration,
-          easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
-          fill: 'forwards' // Mantiene la posición final
-        });
-
-        // 5. Limpieza pura al concluir
-        animation.onfinish = () => {
-          animation.cancel(); // Retiramos la capa sobreescrita de WAAPI
-          container.style.transition = 'none';
-          container.style.height = '';
-          container.style.flex = '';
-          void container.offsetHeight; // Forzamos relayout
-          container.style.transition = '';
-        };
-
-      }, 0);
+      });
     }
   };
 
   public readonly onTabAnimationEnd = (tab: AlfTabComponent): void => {
     const index = tab.effectiveIndex();
     if (this.exitingTabsSet().has(index)) {
+      this.exitingTabsSet.update(set => {
+        const newSet = new Set(set);
+        newSet.delete(index);
+        return newSet;
+      });
+
       const pending = this.targetIndexPending();
-      if (pending !== null) this.completeTransition(pending);
+      if (pending !== null) {
+        this.completeTransition(pending);
+      }
     }
   };
 
@@ -294,7 +308,7 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     const currentTab = this.tabs()[this.activeIndex()];
     const navEl = this.headerScroll()?.nativeElement.querySelector('.alf-tabs__nav') as HTMLElement;
 
-    if (!currentTab || !navEl || this.configComputed()?.visualType !== AlfTabsVisualTypeEnum.Master) {
+    if (!currentTab || !navEl) {
       this.activeTabMetrics.set({ left: 0, width: 0, opacity: 0 });
       return;
     }
@@ -388,15 +402,17 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     const activeTab = this.tabs().find(t => t.effectiveIndex() === activeIdx);
     const theme = this.globalTheme().theme;
 
-    // Interpretamos la variante de la pestaña activa
+    // Interpretamos la variante de la pestaña activa (ej: Primary, Success...)
     const variant = activeTab?.configComputed()?.predefined
       || (this.defineComponentInput() as any)?.variant
       || AlfColorVariantEnum.Primary;
 
-    // Obtenemos el ADN puro (100% intensidad)
+    // Obtenemos el ADN puro de la variante
     const adn = BASIC_IDENTITIES[theme][variant] || BASIC_IDENTITIES[theme][AlfColorVariantEnum.Primary];
+    const baseBrand = adn.brand || AlfColorEnum.Primary;
 
-    return adn.brand || AlfColorEnum.Primary;
+    // Mismo color base, pero "más fuerte" (oscurecido un 20%)
+    return `color-mix(in srgb, ${baseBrand} 80%, black 20%)`;
   });
 
   /** 
@@ -417,15 +433,17 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
   });
 
   /** 
-   * Color de borde para el contenedor de contenido en modo Solid.
-   * Un tono más oscuro (20%) que el fondo.
+   * Color de borde dinámico o por defecto (Gray200).
+   * Si hay una variante (Primary, Success), el borde toma ese color.
    */
-  public readonly solidBorderColorVarComputed = computed(() => {
-    if (!this.isSolidComputed()) return 'transparent';
-    const theme = this.globalTheme().theme;
-    const variant = this.variantInput() || (this.defineComponentInput() as any)?.variant || AlfColorVariantEnum.Primary;
-    const adn = BASIC_IDENTITIES[theme][variant] || BASIC_IDENTITIES[theme][AlfColorVariantEnum.Primary];
-    return `color-mix(in srgb, ${adn.brand} 20%, transparent)`;
+  public readonly reactiveBorderColorVarComputed = computed(() => {
+    const variantStr = this.variantInput() || (this.defineComponentInput() as any)?.variant;
+    if (variantStr) {
+      const theme = this.globalTheme().theme;
+      const adn = BASIC_IDENTITIES[theme][variantStr as AlfColorVariantEnum];
+      if (adn && adn.brand) return adn.brand;
+    }
+    return 'var(--alf-brd-color)';
   });
 
   /** Determina si el diseño global es de tipo Solid */
@@ -435,13 +453,14 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
 
   /** Helpers de Template */
   public readonly getPanelClassesStr = (tab: AlfTabComponent): string => {
+    const baseClass = 'alf-tabs__panel';
     const isActive = this.contentIndex() === tab.effectiveIndex();
     const isExiting = this.exitingTabsSet().has(tab.effectiveIndex());
-    if (!isActive && !isExiting) return '';
+    if (!isActive && !isExiting) return baseClass;
 
     const anim = this.getTabAnimations(tab);
     let stage = isExiting ? anim?.exitStage : anim?.enterStage;
-    if (!stage) return '';
+    if (!stage) return baseClass;
 
     const direction = this.navigationDirection();
     const isSlide = stage.toLowerCase().includes('slide');
@@ -451,7 +470,7 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
       else stage = direction === 'forward' ? 'animate__slideInRight' : 'animate__slideInLeft';
     }
 
-    return `animate__animated ${stage}`;
+    return `${baseClass} animate__animated ${stage}`;
   };
 
   public readonly getPanelStylesStr = (tab: AlfTabComponent): string => {

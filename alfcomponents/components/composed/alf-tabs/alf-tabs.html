@@ -1,6 +1,6 @@
 @let config = configComputed(); @let metrics = headerMetrics(); @let isVertical = position() === 'left' || position() === 'right'; 
 @let positionClass = 'alf-tabs--' + position().toLowerCase(); @let visualClass = 'alf-tabs--' + (config?.visualType || 'underline'); @let s = styleVariablesComputed();
-@let local = '--alf-tabs-indicator-color: ' + indicatorColorVarComputed() + '; --alf-tabs-solid-bg: ' + solidContentBgVarComputed() + '; --alf-tabs-solid-bd: ' + solidBorderColorVarComputed();
+@let local = '--alf-tabs-reactive-bd: ' + reactiveBorderColorVarComputed() + '; --alf-tabs-indicator-color: ' + indicatorColorVarComputed() + '; --alf-tabs-solid-bg: ' + solidContentBgVarComputed() + ';';
 
 <div
   class="alf-tabs"
@@ -22,15 +22,13 @@
           <!-- Proyección de Cabeceras (AlfTab) -->
           <ng-content select="alf-tab"></ng-content>
 
-          <!-- Sliding Indicator (Master mode) -->
-          @if (config?.visualType === 'master') {
+          <!-- Sliding Indicator (Para todos los predefinidos) -->
           <div
             class="alf-tabs__indicator"
             [style.transform]="indicatorStyle().transform"
             [style.width]="indicatorStyle().width"
             [style.opacity]="indicatorStyle().opacity"
           ></div>
-          }
         </nav>
       </div>
 
@@ -45,21 +43,24 @@
 
   <div #contentContainer class="alf-tabs__content-container">
     <!-- Renderizado de Paneles Coordinados (Élite) -->
-    @for (tab of tabs(); track $index) { @let isActive = contentIndex() === $index; @let isExiting = exitingTabsSet().has($index); @if (isActive ||
-    isExiting) {
-    <div
-      class="alf-tabs__panel"
-      role="tabpanel"
-      [id]="getPanelId($index)"
-      [attr.aria-labelledby]="getTabId($index)"
-      [class]="getPanelClassesStr(tab)"
-      [style]="getPanelStylesStr(tab)"
-      (animationend)="onTabAnimationEnd(tab)"
-    >
-      <!-- Portal Directiva (Cumpliendo RULES.md sin hacks) -->
-      <ng-container [alfPortal]="tab.contentTemplate() || null"></ng-container>
-    </div>
-    } }
+    @for (tab of tabs(); track $index) { 
+      @let isActive = contentIndex() === $index; 
+      @let isExiting = exitingTabsSet().has($index); 
+      
+      <div
+        class="alf-tabs__panel"
+        role="tabpanel"
+        [hidden]="!isActive && !isExiting"
+        [id]="getPanelId($index)"
+        [attr.aria-labelledby]="getTabId($index)"
+        [class]="getPanelClassesStr(tab)"
+        [style]="getPanelStylesStr(tab)"
+        (animationend)="onTabAnimationEnd(tab)"
+      >
+        <!-- Portal Directiva (Cumpliendo RULES.md sin hacks) -->
+        <ng-container [alfPortal]="tab.contentTemplate() || null"></ng-container>
+      </div>
+    }
 
     <!-- Fallback para Proyección Manual -->
     <ng-content select="alf-tab-content"></ng-content>

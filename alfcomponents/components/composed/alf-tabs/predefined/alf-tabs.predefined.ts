@@ -27,7 +27,7 @@ const TABS_BASE_CONFIG: Partial<AlfTabsInterface> = {
   },
   backgrounds: {
     default: {
-      backgroundColor: AlfColorEnum.Transparent,
+      backgroundColor: AlfColorEnum.White,
     }
   },
   border: {
@@ -39,7 +39,7 @@ const TABS_BASE_CONFIG: Partial<AlfTabsInterface> = {
   },
   padding: {
     default: {
-      padding: AlfPxEnum.None,
+      padding: AlfPxEnum.Px12,
     }
   }
 };
