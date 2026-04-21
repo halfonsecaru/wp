@@ -24,8 +24,8 @@ import {
 import { AlfBaseComponent } from '@alfcomponents/base';
 import { AlfTabsInterface } from './interfaces/alf-tabs.interface';
 import { AlfAnimateCssInterface } from '@alfcomponents/interfaces';
-import { AlfTabsPositionEnum } from './enums/alf-tabs-visual-type.enum';
-import { AlfIconsUnicodeIconEnum, AlfColorEnum, AlfColorVariantEnum, AlfThemeEnum } from '@alfcomponents/enums';
+import { AlfTabsPositionEnum, AlfTabsVisualTypeEnum } from './enums/alf-tabs-visual-type.enum';
+import { AlfIconsUnicodeIconEnum, AlfColorEnum, AlfColorVariantEnum, AlfThemeEnum, AlfButtonVisualTypeEnum } from '@alfcomponents/enums';
 import { BASIC_IDENTITIES } from '../../../predefined/intefaces-basic/basic-colors';
 import { getAlfPredefinedTabs } from './predefined/alf-tabs.predefined';
 import { DefaultTabsKeys } from './enums/default-tabs-keys.enum';
@@ -52,9 +52,9 @@ import { AlfButtonInterface } from '../../simple/alf-button/interfaces/alf-butto
 export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> implements AfterViewInit, OnDestroy {
 
   @Input('predefined') public set predefined(v: AlfTabsInterface | string | undefined) {
-    this.predefinedInput.set(v || DefaultTabsKeys.Base);
+    this.predefinedInput.set(v || DefaultTabsKeys.Underline);
   }
-  protected readonly predefinedInput = signal<AlfTabsInterface | string>(DefaultTabsKeys.Base);
+  protected readonly predefinedInput = signal<AlfTabsInterface | string>(DefaultTabsKeys.Underline);
 
   /** 
    * Entrada global para la estética de las cabeceras (DRY).
@@ -119,6 +119,7 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
   protected readonly manualContents = contentChildren(AlfTabContentComponent);
 
   private readonly headerScroll = viewChild<ElementRef<HTMLDivElement>>('headerScroll');
+  protected readonly contentContainer = viewChild<ElementRef<HTMLDivElement>>('contentContainer');
   protected readonly showScrollArrowsComputed = signal<boolean>(false);
   protected readonly canScrollLeft = signal(false);
   protected readonly canScrollRight = signal(false);
@@ -159,6 +160,16 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
   };
 
   protected readonly completeTransition = (targetIndex: number): void => {
+    // ⚠️ Referenciamos directamente el DOM mediante viewChild
+    const container = this.contentContainer()?.nativeElement;
+    let oldHeight = 0;
+
+    // 1. Fijar altura antigua EXACTAMENTE antes de que Angular mutile el DOM
+    if (container) {
+      oldHeight = container.getBoundingClientRect().height;
+      container.style.height = `${oldHeight}px`;
+    }
+
     const allTabs = this.tabs();
     this.exitingTabsSet().forEach(idx => {
       const tab = allTabs[idx];
@@ -169,6 +180,57 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     this.contentIndex.set(targetIndex);
     this.targetIndexPending.set(null);
     this.isTransitioning.set(false);
+
+    // 2. Transición robusta con Web Animations API
+    if (container) {
+      setTimeout(() => {
+        // MUY IMPORTANTE: Exterminar las animaciones previas de la Web API (el 'fill: forwards' es permanente si no se mata)
+        container.getAnimations().forEach(anim => anim.cancel());
+
+        // 1. Limpiamos estilos residuales
+        container.style.transition = 'none';
+        container.style.height = 'auto';
+        container.style.maxHeight = 'none';
+        container.style.flex = 'none'; // CRUCIAL: Previene que Flexbox devore el encogimiento
+
+        // 2. Medimos exactamente a cuánto DEBE llegar
+        const newHeight = container.getBoundingClientRect().height;
+
+        if (newHeight === oldHeight) {
+          container.style.flex = '';
+          container.style.height = '';
+          return;
+        }
+
+        // 3. Volvemos a fijar todo en el estado antiguo
+        container.style.height = `${oldHeight}px`;
+
+        // Lee el var() de SCSS si está (ej. `--transition-duration`) o fallbackea
+        const rawDur = parseFloat(getComputedStyle(container).transitionDuration) || 0;
+        const cssDuration = rawDur > 0 ? (rawDur * 1000) : 300;
+
+        // 4. Interpolación Nativa (WAAPI) que ignora los bugs del motor de CSS
+        const animation = container.animate([
+          { height: `${oldHeight}px`, flex: 'none' },
+          { height: `${newHeight}px`, flex: 'none' }
+        ], {
+          duration: cssDuration,
+          easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+          fill: 'forwards' // Mantiene la posición final
+        });
+
+        // 5. Limpieza pura al concluir
+        animation.onfinish = () => {
+          animation.cancel(); // Retiramos la capa sobreescrita de WAAPI
+          container.style.transition = 'none';
+          container.style.height = '';
+          container.style.flex = '';
+          void container.offsetHeight; // Forzamos relayout
+          container.style.transition = '';
+        };
+
+      }, 0);
+    }
   };
 
   public readonly onTabAnimationEnd = (tab: AlfTabComponent): void => {
@@ -232,7 +294,7 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     const currentTab = this.tabs()[this.activeIndex()];
     const navEl = this.headerScroll()?.nativeElement.querySelector('.alf-tabs__nav') as HTMLElement;
 
-    if (!currentTab || !navEl || this.configComputed()?.visualType !== 'master') {
+    if (!currentTab || !navEl || this.configComputed()?.visualType !== AlfTabsVisualTypeEnum.Master) {
       this.activeTabMetrics.set({ left: 0, width: 0, opacity: 0 });
       return;
     }
@@ -335,6 +397,40 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     const adn = BASIC_IDENTITIES[theme][variant] || BASIC_IDENTITIES[theme][AlfColorVariantEnum.Primary];
 
     return adn.brand || AlfColorEnum.Primary;
+  });
+
+  /** 
+   * Color de fondo para el contenedor de contenido en modo Solid.
+   * Coincide con el tono más claro (10%) de los botones.
+   */
+  public readonly solidContentBgVarComputed = computed(() => {
+    if (!this.isSolidComputed()) return 'transparent';
+    const theme = this.globalTheme().theme;
+
+    // Prioridad a la variante del componente (usada en la galería)
+    const variant = this.variantInput()
+      || (this.defineComponentInput() as any)?.variant
+      || AlfColorVariantEnum.Primary;
+
+    const adn = BASIC_IDENTITIES[theme][variant] || BASIC_IDENTITIES[theme][AlfColorVariantEnum.Primary];
+    return `color-mix(in srgb, ${adn.brand} 10%, transparent)`;
+  });
+
+  /** 
+   * Color de borde para el contenedor de contenido en modo Solid.
+   * Un tono más oscuro (20%) que el fondo.
+   */
+  public readonly solidBorderColorVarComputed = computed(() => {
+    if (!this.isSolidComputed()) return 'transparent';
+    const theme = this.globalTheme().theme;
+    const variant = this.variantInput() || (this.defineComponentInput() as any)?.variant || AlfColorVariantEnum.Primary;
+    const adn = BASIC_IDENTITIES[theme][variant] || BASIC_IDENTITIES[theme][AlfColorVariantEnum.Primary];
+    return `color-mix(in srgb, ${adn.brand} 20%, transparent)`;
+  });
+
+  /** Determina si el diseño global es de tipo Solid */
+  public readonly isSolidComputed = computed(() => {
+    return this.resolvedConfigComputed()?.tabsConfiguration?.tabConfiguration?.visualType === AlfButtonVisualTypeEnum.Solid;
   });
 
   /** Helpers de Template */

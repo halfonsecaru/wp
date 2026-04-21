@@ -15,9 +15,5 @@ export enum AlfTabsPositionEnum {
  */
 export enum AlfTabsVisualTypeEnum {
   Underline = 'underline',
-  Pill = 'pill',
-  Faded = 'faded',
-  Glass = 'glass',
-  Modern = 'modern',
   Master = 'master'
 }

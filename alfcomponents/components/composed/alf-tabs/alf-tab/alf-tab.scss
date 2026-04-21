@@ -51,37 +51,8 @@
   width: 100%;
   box-sizing: border-box;
 
-  // --- Identidad: Underline (Base) ---
-  &--underline {
-    background-color: transparent;
-    border-color: transparent;
-  }
-
-  // --- Identidad: Pill (Cápsulas) ---
-  &--pill {
-    @include alf-border; // Re-aplicar para forzar radio si es necesario
-
-    background-color: transparent;
-
-    &.alf-tab__header--active {
-      background-color: var(--alf-tabs-indicator-color) !important;
-      color: var(--alf-bg-color) !important; // Contraste automático
-      border-color: transparent !important;
-    }
-  }
-
-  // --- Identidad: Modern (Minimalista) ---
-  &--modern {
-    background-color: transparent;
-    border-color: transparent;
-    &.alf-tab__header--active {
-      color: var(--alf-tabs-indicator-color);
-    }
-  }
-
-  // --- Identidad: Master / Glass ---
-  &--master,
-  &--glass {
+  // --- Identidad: Master ---
+  &--master {
     background-color: transparent;
     border-color: transparent;
     font-weight: 600;
@@ -92,9 +63,18 @@
     }
   }
 
+  // --- Identidad: Solid ---
+  &--solid {
+    border-radius: 0 !important;
+    margin: 0 !important;
+    transition: all 0.2s ease-in-out;
+    border: none !important;
+  }
+
   &--active {
     font-weight: var(--alf-tabs-header-weight-active, 600);
     background-color: var(--alf-bg-color-active, var(--alf-bg-color)) !important;
+    color: var(--alf-typography-color-active) !important;
   }
 
   &--disabled {
@@ -104,7 +84,7 @@
 
   .alf-tab__badge {
     background: var(--alf-tabs-indicator-color);
-    color: var(--alf-bg-color); // Contrastado con el fondo del badge que es el color de marca
+    color: var(--alf-bg-color); 
     font-size: 0.7rem;
     padding: 2px 6px;
     border-radius: 10px;
@@ -124,10 +104,9 @@
   }
 }
 
-// Desactivamos el subrayado estático heredado para variantes con su propia lógica (Master, Pill, Glass)
+// Desactivamos el subrayado estático heredado para variantes con su propia lógica (Master, Solid)
 :host-context(.alf-tabs--master),
-:host-context(.alf-tabs--pill),
-:host-context(.alf-tabs--glass) {
+:host-context(.alf-tabs--solid) {
   &::after {
     display: none !important;
   }

@@ -39,13 +39,13 @@ import {
 
         <!-- NIVEL 1: PESTAÑAS MAESTRAS -->
         <section class="editor-section">
-          <alf-tabs [defineComponent]="{ visualType: tabsVisualType.Modern }">
+          <alf-tabs [defineComponent]="{ visualType: tabsVisualType.Master }">
             
             <!-- TABA: DEFINE -->
             <alf-tab [defineComponent]="{ label: 'DEFINE', prefix: icons.Sparkle }">
               <div class="nested-editor">
                 
-                <alf-tabs [position]="positionEnum.Left" [defineComponent]="{ visualType: tabsVisualType.Modern }">
+                <alf-tabs [position]="positionEnum.Left" [defineComponent]="{ visualType: tabsVisualType.Master }">
                   
                   <!-- FONDO (Con soporte nativo para Graident/Image) -->
                   <alf-tab [defineComponent]="{ label: 'Fondo' }">

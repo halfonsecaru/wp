@@ -5,7 +5,9 @@ import {
   AlfTabComponent,
   AlfTabsInterface,
   AlfTabsVisualTypeEnum,
-  DefaultTabsKeys
+  DefaultTabsKeys,
+  AlfColorVariantEnum,
+  AlfButtonVisualTypeEnum
 } from '@alfcomponents';
 
 /**
@@ -25,7 +27,7 @@ import {
 
       <div class="docs-content">
         <!-- ROOT TABS (Variantes Visuales) -->
-        <alf-tabs [defineComponent]="{ visualType: tabsVisualType.Modern }">
+        <alf-tabs predefined="master">
           
           <!-- ============================ -->
           <!-- VARIANT 1: UNDERLINE -->
@@ -34,7 +36,7 @@ import {
             <div class="variant-panel">
               
               <!-- SECONDARY TABS (Example vs Code) -->
-              <alf-tabs [defineComponent]="{ visualType: tabsVisualType.Modern }">
+              <alf-tabs predefined="master">
                 
                 <!-- EXAMPLE -->
                 <alf-tab [defineComponent]="{ label: 'Example' }">
@@ -86,7 +88,7 @@ import {
             <div class="variant-panel">
               
               <!-- SECONDARY TABS (Example vs Code) -->
-              <alf-tabs [defineComponent]="{ visualType: tabsVisualType.Modern }">
+              <alf-tabs predefined="master">
                 
                 <!-- EXAMPLE -->
                 <alf-tab [defineComponent]="{ label: 'Example' }">
@@ -138,7 +140,45 @@ import {
             </div>
           </alf-tab>
 
+          <!-- ============================ -->
+          <!-- VARIANT 3: SOLID COLLECTION -->
+          <!-- ============================ -->
+          <alf-tab [defineComponent]="{ label: 'Solid Collection' }">
+             <div class="variant-panel">
+                <p>Esta sección está reservada para la galería de estilos sólidos que se encuentra debajo.</p>
+             </div>
+          </alf-tab>
+
         </alf-tabs>
+
+        <!-- SEPARATE TABS COMPONENT FOR SOLID COLLECTION -->
+        <div class="separate-section">
+          <h2>Solid Collection Gallery</h2>
+          <alf-tabs predefined="master">
+            <alf-tab [defineComponent]="{ label: 'Gallery Overview' }">
+              <div class="variant-panel">
+                <div class="solid-grid">
+                  @for (variant of solidVariants; track variant.key) {
+                    <div class="solid-item">
+                      <span class="solid-label">{{ variant.label }}</span>
+                      <alf-tabs predefined="underline" [variant]="variant.key" [tabsConfiguration]="{ tabConfiguration: { visualType: buttonsVisualType.Solid } }">
+                        <alf-tab [defineComponent]="{ label: 'Uno' }">
+                          <div class="demo-content">Contenido {{ variant.label }} 1</div>
+                        </alf-tab>
+                        <alf-tab [defineComponent]="{ label: 'Dos' }">
+                          <div class="demo-content">Contenido {{ variant.label }} 2</div>
+                        </alf-tab>
+                        <alf-tab [defineComponent]="{ label: 'Tres' }">
+                          <div class="demo-content">Contenido {{ variant.label }} 3</div>
+                        </alf-tab>
+                      </alf-tabs>
+                    </div>
+                  }
+                </div>
+              </div>
+            </alf-tab>
+          </alf-tabs>
+        </div>
       </div>
     </div>
   `,
@@ -195,12 +235,43 @@ import {
     }
     .demo-content {
       padding: 2.5rem;
-      background: white;
+      background: transparent;
       border-radius: 8px;
       border: 1px solid #e2e8f0;
       box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
       h3 { margin: 0 0 0.5rem 0; color: #0f172a; font-size: 1.15rem; }
       p { margin: 0; color: #475569; font-size: 0.95rem; line-height: 1.6; }
+    }
+    .solid-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 2rem;
+      padding: 1rem;
+    }
+    .solid-item {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .solid-label {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #64748b;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 0.5rem;
+    }
+    .separate-section {
+      margin-top: 4rem;
+      h2 { 
+        font-size: 1.25rem; 
+        color: #0f172a; 
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #3b82f6;
+        display: inline-block;
+      }
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -208,4 +279,14 @@ import {
 export class TabsDemoPage {
   protected readonly tabsVisualType = AlfTabsVisualTypeEnum;
   protected readonly tabsKeys = DefaultTabsKeys;
+  protected readonly colorVariants = AlfColorVariantEnum;
+  protected readonly buttonsVisualType = AlfButtonVisualTypeEnum;
+
+  protected readonly solidVariants = [
+    { key: AlfColorVariantEnum.Primary, label: 'Primary' },
+    { key: AlfColorVariantEnum.Success, label: 'Success' },
+    { key: AlfColorVariantEnum.Danger, label: 'Danger' },
+    { key: AlfColorVariantEnum.Warning, label: 'Warning' },
+    { key: AlfColorVariantEnum.Info, label: 'Info' },
+  ];
 }

@@ -131,7 +131,7 @@
   },
   "scripts": {
     "reload": "tsx scripts/reload.ts",
-    "installSafe": "node scripts/install-package.js",
+    "installSafe": "npx tsx scripts/install-node-modules.ts",
     "create": "npx tsx scripts/project-creator.ts",
     "installnode": "npx tsx ./scripts/install-node-modules.ts",
     "lint": "eslint src apps libs test --ext .ts --fix",

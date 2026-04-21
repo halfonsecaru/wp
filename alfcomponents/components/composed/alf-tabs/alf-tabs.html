@@ -1,11 +1,12 @@
-@let config = configComputed(); @let metrics = headerMetrics(); @let isVertical = position() === 'left' || position() === 'right'; @let positionClass
-= 'alf-tabs--' + position().toLowerCase(); @let visualClass = 'alf-tabs--' + (config?.visualType || 'underline'); @let s = styleVariablesComputed();
-@let local = '--alf-tabs-indicator-color: ' + indicatorColorVarComputed();
+@let config = configComputed(); @let metrics = headerMetrics(); @let isVertical = position() === 'left' || position() === 'right'; 
+@let positionClass = 'alf-tabs--' + position().toLowerCase(); @let visualClass = 'alf-tabs--' + (config?.visualType || 'underline'); @let s = styleVariablesComputed();
+@let local = '--alf-tabs-indicator-color: ' + indicatorColorVarComputed() + '; --alf-tabs-solid-bg: ' + solidContentBgVarComputed() + '; --alf-tabs-solid-bd: ' + solidBorderColorVarComputed();
 
 <div
   class="alf-tabs"
   [class]="positionClass + ' ' + visualClass"
   [class.alf-tabs--vertical]="isVertical"
+  [class.alf-tabs--solid]="isSolidComputed()"
   [style]="s + (s ? ';' : '') + local"
   (touchstart)="onTouchStart($event)"
   (touchend)="onTouchEnd($event)"
@@ -16,7 +17,6 @@
       @if (metrics.canLeft) {
       <button type="button" class="alf-tabs__arrow alf-tabs__arrow--left" (click)="scrollLeft()" aria-label="Deslizar izquierda">‹</button>
       }
-
       <div class="alf-tabs__header-scroll" #headerScroll (scroll)="requestMetricsUpdate()">
         <nav class="alf-tabs__nav" role="tablist">
           <!-- Proyección de Cabeceras (AlfTab) -->
@@ -43,7 +43,7 @@
     <div class="alf-tabs__aria-live" aria-live="polite">{{ liveMessageComputed() }}</div>
   </div>
 
-  <div class="alf-tabs__content-container">
+  <div #contentContainer class="alf-tabs__content-container">
     <!-- Renderizado de Paneles Coordinados (Élite) -->
     @for (tab of tabs(); track $index) { @let isActive = contentIndex() === $index; @let isExiting = exitingTabsSet().has($index); @if (isActive ||
     isExiting) {

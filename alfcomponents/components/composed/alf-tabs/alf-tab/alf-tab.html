@@ -5,6 +5,7 @@
   class="alf-tab__header"
   [class]="'alf-tab__header--' + visualType"
   [class.alf-tab__header--active]="isActive()"
+  [class.alf-tab__header--solid]="isSolidComputed()"
   [class.alf-tab__header--disabled]="configComputed()?.disabled"
   [alfRipple]="rippleConfig()"
   [attr.role]="'tab'"

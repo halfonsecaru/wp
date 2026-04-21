@@ -17,7 +17,8 @@ import { CommonModule } from '@angular/common';
 import { AlfBaseComponent } from '@alfcomponents/base';
 import { AlfTabInterface } from '../interfaces/alf-tabs.interface';
 import { AlfRippleDirective } from '@alfcomponents/directives';
-import { AlfAriaRoleEnum, AlfButtonVisualTypeEnum, AlfIconsUnicodeIconEnum, AlfThemeEnum, AlfColorVariantEnum, AlfColorEnum } from '@alfcomponents/enums';
+import { AlfAriaRoleEnum, AlfButtonVisualTypeEnum, AlfIconsUnicodeIconEnum, AlfThemeEnum, AlfColorVariantEnum, AlfColorEnum, AlfShadowEnum, AlfBorderStyleEnum, AlfPxEnum } from '@alfcomponents/enums';
+import { AlfTabsVisualTypeEnum } from '../enums/alf-tabs-visual-type.enum';
 import { ALF_TABS_TOKEN } from '../tokens';
 import { BASIC_IDENTITIES } from '../../../../predefined/intefaces-basic/basic-colors';
 
@@ -36,6 +37,7 @@ import { BASIC_IDENTITIES } from '../../../../predefined/intefaces-basic/basic-c
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class.alf-tab--active]': 'isActive()',
+    '[class.alf-tab--solid]': 'isSolidComputed()',
     '[class.alf-tab--disabled]': 'resolvedConfigComputed()?.disabled'
   }
 })
@@ -71,9 +73,12 @@ export class AlfTabComponent extends AlfBaseComponent<AlfTabInterface> {
     const theme = this.globalTheme().theme;
     const parentConfig = this.parent.configComputed();
 
-    // Herencia de variante: Prioridad local -> Variante del padre -> Primary (Fallback)
+    // Herencia de variante: Prioridad local -> Variante en tabsConfiguration (padre/local) -> Variante del padre -> Primary (Fallback)
     const variant = this.variantInput()
+      || (this.defineComponentInput() as any)?.tabsConfiguration?.variant
+      || (parentConfig?.tabsConfiguration as any)?.variant
       || (this.parent as any).variantInput()
+      || parentConfig?.predefined
       || AlfColorVariantEnum.Primary;
 
     // 1. Obtener ADN desde BASIC_IDENTITIES (Source of Truth)
@@ -82,18 +87,33 @@ export class AlfTabComponent extends AlfBaseComponent<AlfTabInterface> {
     const isDark = theme === AlfThemeEnum.Dark;
     const defaultTextColor = isDark ? AlfColorEnum.Gray400 : AlfColorEnum.Gray600;
 
+    const isSolid = parentConfig?.tabsConfiguration?.tabConfiguration?.visualType === AlfButtonVisualTypeEnum.Solid;
+
     // 2. Construir la base estética de "Pestaña Élite"
     const baseIdentiy: AlfTabInterface = {
       label: 'Tab',
       predefined: variant, // Vital para el color del slider
       backgrounds: {
-        default: { backgroundColor: AlfColorEnum.Transparent }, // Fondo limpio por defecto
-        hover: { backgroundColor: `color-mix(in srgb, ${adn.brand} 10%, transparent)` as AlfColorEnum }, // Hover sutil
-        active: { backgroundColor: `color-mix(in srgb, ${adn.brand} 10%, transparent)` as AlfColorEnum } // Activo (Persistente)
+        default: { backgroundColor: isSolid ? `color-mix(in srgb, ${adn.brand} 10%, transparent)` as AlfColorEnum : AlfColorEnum.Transparent }, 
+        hover: { backgroundColor: `color-mix(in srgb, ${adn.brand} ${isSolid ? '20%' : '10%'}, transparent)` as AlfColorEnum }, // Hover: 20% si es solid
+        active: { backgroundColor: `color-mix(in srgb, ${adn.brand} ${isSolid ? '30%' : '10%'}, transparent)` as AlfColorEnum } // Activo: 30% si es solid
       },
       typography: {
-        default: { color: defaultTextColor }, // Reactivo al tema global
-        hover: { color: adn.brand } // Cambia al color de marca en hover
+        default: { color: isSolid ? adn.contrast : defaultTextColor }, // Reactivo al tema global
+        active: { color: isSolid ? adn.brand : undefined }, // En solid activo (30% bg), usamos el brand color para el texto
+        hover: { color: isSolid ? adn.contrast : adn.brand } // Cambia al color de marca en hover
+      },
+      shadows: {
+        default: { boxShadow: AlfShadowEnum.None },
+        hover: { boxShadow: AlfShadowEnum.None },
+        active: { boxShadow: AlfShadowEnum.None }
+      },
+      border: {
+        default: {
+          borderWidth: isSolid ? AlfPxEnum.Px1 : AlfPxEnum.None,
+          borderColor: isSolid ? `color-mix(in srgb, ${adn.brand} 20%, transparent)` as AlfColorEnum : AlfColorEnum.Transparent,
+          borderStyle: isSolid ? AlfBorderStyleEnum.Solid : undefined
+        }
       },
       ripple: true,
       // Ripple más lento y elegante (color-mix con mucha transparencia)
@@ -104,8 +124,8 @@ export class AlfTabComponent extends AlfBaseComponent<AlfTabInterface> {
     // 3. Cascada de Mezcla (ADN -> Config Global Padre -> Config Local)
     return {
       ...baseIdentiy,
-      ...parentConfig?.tabsConfiguration,
-      ...(this.defineComponentInput() as any)?.tabsConfiguration
+      ...parentConfig?.tabsConfiguration?.tabConfiguration,
+      ...this.defineComponentInput()?.tabConfiguration
     };
   });
 
@@ -115,8 +135,14 @@ export class AlfTabComponent extends AlfBaseComponent<AlfTabInterface> {
   /** Exponemos la configuración de forma pública para el coordinador padre */
   public readonly configComputed = this.resolvedConfigComputed;
 
+  /** Determina si es una variante sólida para aplicar lógica de mezcla de colores */
+  public readonly isSolidComputed = computed(() => {
+    const parentConfig = this.parent.configComputed();
+    return parentConfig?.tabsConfiguration?.tabConfiguration?.visualType === AlfButtonVisualTypeEnum.Solid;
+  });
+
   /** Determina el tipo visual heredado del padre para aplicar clases de identidad */
-  public readonly visualTypeComputed = computed(() => this.parent.configComputed()?.visualType || 'underline');
+  public readonly visualTypeComputed = computed(() => this.parent.configComputed()?.visualType || AlfTabsVisualTypeEnum.Underline);
 
   /** 
    * Configuración completa del Ripple.

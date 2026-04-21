@@ -28,7 +28,7 @@ export interface AlfTabInterface extends AlfBaseInterface {
   predefined?: AlfColorVariantEnum;
 
   /** Configuración de identidad de botón específica para esta pestaña (Override local) */
-  tabsConfiguration?: AlfButtonInterface;
+  tabConfiguration?: AlfButtonInterface;
 
   /** Color personalizado para el efecto ripple */
   rippleColor?: AlfColorEnum;
@@ -90,8 +90,11 @@ export interface AlfTabsInterface extends AlfBaseInterface {
   /** Estilo visual de las pestañas */
   visualType?: AlfTabsVisualTypeEnum;
 
-  /** Configuración visual de botón global para todas las cabeceras (Source of Truth) */
-  tabsConfiguration?: AlfButtonInterface;
+  /** Configuración visual de los elementos del header */
+  tabsConfiguration?: {
+    /** Configuración específica para los botones/tabs (Source of Truth) */
+    tabConfiguration?: AlfButtonInterface;
+  };
   
   /** Configuración de comportamiento y animaciones globales */
   behavior?: {

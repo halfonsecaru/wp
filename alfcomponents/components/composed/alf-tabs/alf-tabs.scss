@@ -173,6 +173,8 @@
 // Estilos delegados al componente hijo para mejor encapsulación (RULES.md)
 
 .alf-tabs__content-container {
+  background: var(--alf-tabs-solid-bg);
+  border-radius: 0;
   flex: 1;
   display: grid;
   grid-template-columns: 1fr;
@@ -181,7 +183,8 @@
   overflow: hidden;
   min-height: 100px;
   interpolate-size: allow-keywords;
-  transition: height var(--alf-transition-duration, 700ms) var(--alf-transition-timing, ease);
+  transition: height var(--alf-transition-duration, 700ms) cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: height;
 
   alf-tab-content,
   .alf-tabs__panel {
@@ -191,9 +194,8 @@
   }
 }
 
-// --- Master & Glass Design (Identidades Premium / Crystal Logic) ---
-.alf-tabs--master,
-.alf-tabs--glass {
+// --- Master Design (Identidad Premium) ---
+.alf-tabs--master {
   --alf-tabs-gap: 0;
   --alf-tabs-indicator-height: 2px;
   --alf-tabs-header-weight: 600;
@@ -207,36 +209,9 @@
   box-shadow: var(--alf-shadow-dynamic, 0 12px 40px 0 rgba(0, 0, 0, 0.1));
 
   .alf-tabs__header-container {
-    box-shadow: inset 0 -1px 0 var(--alf-brd-color); /* Ajuste Élite pixel-perfect superpuesto */
+    box-shadow: inset 0 -1px 0 var(--alf-brd-color);
     background: transparent;
     @include alf-transition;
-  }
-}
-
-// --- Pill Design (Cápsulas) ---
-.alf-tabs--pill {
-  background: transparent;
-
-  .alf-tabs__header-container {
-    background: var(--alf-brd-color); // Fondo sutil para el contenedor pill
-    padding: 4px;
-    border-radius: 99px;
-    width: fit-content;
-    margin: 0 auto;
-  }
-}
-
-// --- Modern Design (Minimalista) ---
-.alf-tabs--modern {
-  background: transparent;
-  --alf-tabs-indicator-height: 4px;
-
-  .alf-tabs__header-container {
-    box-shadow: inset 0 -2px 0 var(--alf-brd-color);
-  }
-
-  .alf-tabs__indicator {
-    bottom: 0; /* Al estar el borde como inset, el indicator de bottom 0 se superpone naturalmente por z-index */
   }
 }
 
