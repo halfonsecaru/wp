@@ -1,7 +1,7 @@
 import { AlfTabsInterface, AlfTabContentInterface } from '../interfaces/alf-tabs.interface';
 import { DefaultTabsKeys } from '../enums/default-tabs-keys.enum';
 import { AlfTabsPositionEnum, AlfTabsVisualTypeEnum } from '../enums/alf-tabs-visual-type.enum';
-import { AlfColorEnum, AlfRadiusEnum, AlfPxEnum, AlfAnimationTypeEnum } from '@alfcomponents/enums';
+import { AlfColorEnum, AlfRadiusEnum, AlfPxEnum, AlfAnimationTypeEnum, AlfShadowEnum } from '@alfcomponents/enums';
 
 /**
  * Interface para el ADN puro (Identidad) de AlfTabs.
@@ -21,9 +21,9 @@ const TABS_IDENTITIES: Record<string, AlfTabsIdentity> = {
   [DefaultTabsKeys.Base]: {
     brandColor: AlfColorEnum.Primary,
     position: AlfTabsPositionEnum.Top,
-    visualType: AlfTabsVisualTypeEnum.Underline,
-    enterAnimation: AlfAnimationTypeEnum.FadeIn,
-    exitAnimation: AlfAnimationTypeEnum.FadeOut
+    visualType: AlfTabsVisualTypeEnum.Master,
+    enterAnimation: AlfAnimationTypeEnum.SlideInRight,
+    exitAnimation: AlfAnimationTypeEnum.SlideOutLeft
   },
   [DefaultTabsKeys.Sidebar]: {
     brandColor: AlfColorEnum.Secondary,
@@ -65,6 +65,13 @@ const TABS_BASE_CONFIG: Partial<AlfTabsInterface> = {
     circularNavigation: true,
     animationDuration: 400
   },
+  backgrounds: {
+    default: {
+      backgroundColor: AlfColorEnum.White,
+    },
+    hover: {
+    }
+  },
   padding: {
     default: {
       padding: AlfPxEnum.Px16
@@ -73,16 +80,15 @@ const TABS_BASE_CONFIG: Partial<AlfTabsInterface> = {
   border: {
     default: {
       borderRadius: AlfRadiusEnum.Md,
-      borderWidth: AlfPxEnum.Px1
-    }, hover: {
-      borderWidth: AlfPxEnum.None,
-      borderRadius: AlfRadiusEnum.None,
-    }, active: {
-      borderWidth: AlfPxEnum.None,
-      borderRadius: AlfRadiusEnum.None,
+      borderWidth: AlfPxEnum.Px1,
+      borderColor: AlfColorEnum.Gray200,
     }
   },
-
+  shadows: {
+    default: {
+      boxShadow: AlfShadowEnum.Md
+    }
+  }
 };
 
 /**
@@ -120,17 +126,25 @@ export function getAlfPredefinedTabs(
       break;
 
     case AlfTabsVisualTypeEnum.Pill:
-      config.backgrounds = { default: { backgroundColor: AlfColorEnum.Transparent } };
-      config.border = { default: { borderRadius: AlfRadiusEnum.Xl3, borderWidth: AlfPxEnum.None } };
+      config.backgrounds = { 
+        ...config.backgrounds,
+        default: { ...config.backgrounds?.default, backgroundColor: AlfColorEnum.Transparent } 
+      };
+      config.border = { 
+        ...config.border,
+        default: { ...config.border?.default, borderRadius: AlfRadiusEnum.Xl3, borderWidth: AlfPxEnum.None } 
+      };
       break;
 
     case AlfTabsVisualTypeEnum.Modern:
-      config.backgrounds = { default: { backgroundColor: AlfColorEnum.Transparent } };
+      config.backgrounds = { 
+        ...config.backgrounds,
+        default: { ...config.backgrounds?.default, backgroundColor: AlfColorEnum.Transparent } 
+      };
       break;
 
     default: // Underline
-      config.backgrounds = { default: { backgroundColor: AlfColorEnum.Transparent } };
-      config.border = { default: { borderWidth: AlfPxEnum.None } };
+      // No reseteamos el borderWidth para que respete TABS_BASE_CONFIG si se desea
       break;
   }
 

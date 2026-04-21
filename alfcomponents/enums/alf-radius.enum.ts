@@ -15,6 +15,7 @@ export enum AlfRadiusEnum {
   Md = '0.375rem',     // 6px
   Lg = '0.5rem',       // 8px
   Xl = '0.75rem',      // 12px
+  Xl15 = '0.9375rem',  // 15px
   Xl2 = '1rem',        // 16px
   Xl3 = '1.5rem',      // 24px
   Full = '9999px',     // Círculo perfecto

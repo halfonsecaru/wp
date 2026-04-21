@@ -1,10 +1,10 @@
 import { Component, ChangeDetectionStrategy, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { 
-  AlfTabsComponent, 
-  AlfTabComponent, 
-  AlfTabsInterface, 
-  AlfTabsPositionEnum, 
+import {
+  AlfTabsComponent,
+  AlfTabComponent,
+  AlfTabsInterface,
+  AlfTabsPositionEnum,
   AlfTabsVisualTypeEnum,
   AlfIconsUnicodeIconEnum,
   AlfColorEnum,
@@ -212,7 +212,7 @@ export class TabsPlaygroundPage {
   protected readonly icons = AlfIconsUnicodeIconEnum;
   protected readonly positionEnum = AlfTabsPositionEnum;
   protected readonly tabsVisualType = AlfTabsVisualTypeEnum;
-  
+
   protected readonly colorList = Object.entries(AlfColorEnum).map(([key, value]) => ({ key, value }));
   protected readonly radiusList = Object.entries(AlfRadiusEnum).map(([key, value]) => ({ key, value }));
   protected readonly pxList = Object.entries(AlfPxEnum).map(([key, value]) => ({ key, value }));
@@ -243,7 +243,7 @@ export class TabsPlaygroundPage {
     return `public readonly tabsConfig = signal<AlfTabsInterface>(${json});`;
   });
 
-  constructor() {}
+  constructor() { }
 
   public updateProp(category: keyof AlfTabsInterface, state: string, prop: string, event: Event): void {
     const value = (event.target as HTMLSelectElement).value;

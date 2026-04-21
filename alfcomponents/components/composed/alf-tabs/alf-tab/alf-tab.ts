@@ -79,16 +79,20 @@ export class AlfTabComponent extends AlfBaseComponent<AlfTabInterface> {
     // 1. Obtener ADN desde BASIC_IDENTITIES (Source of Truth)
     const adn = BASIC_IDENTITIES[theme][variant] || BASIC_IDENTITIES[theme][AlfColorVariantEnum.Primary];
 
+    const isDark = theme === AlfThemeEnum.Dark;
+    const defaultTextColor = isDark ? AlfColorEnum.Gray400 : AlfColorEnum.Gray600;
+
     // 2. Construir la base estética de "Pestaña Élite"
     const baseIdentiy: AlfTabInterface = {
       label: 'Tab',
       predefined: variant, // Vital para el color del slider
       backgrounds: {
         default: { backgroundColor: AlfColorEnum.Transparent }, // Fondo limpio por defecto
-        hover: { backgroundColor: `color-mix(in srgb, ${adn.brand} 10%, transparent)` as AlfColorEnum } // Hover sutil
+        hover: { backgroundColor: `color-mix(in srgb, ${adn.brand} 10%, transparent)` as AlfColorEnum }, // Hover sutil
+        active: { backgroundColor: `color-mix(in srgb, ${adn.brand} 10%, transparent)` as AlfColorEnum } // Activo (Persistente)
       },
       typography: {
-        default: { color: 'currentColor' as AlfColorEnum }, // Hereda color del flujo
+        default: { color: defaultTextColor }, // Reactivo al tema global
         hover: { color: adn.brand } // Cambia al color de marca en hover
       },
       ripple: true,

@@ -13,6 +13,7 @@ import { AlfTransformInterface } from './alf-transform.interface';
 import { AlfAriaInterface } from './alf-aria.interface';
 import { AlfRippleInterface } from './alf-ripple.interface';
 import { AlfLoadingInterface } from './alf-loading.interface';
+import { AlfTransitionsInterface } from './alf-transitions.interface';
 
 /**
  * Interface AlfBaseInterface
@@ -24,6 +25,9 @@ export interface AlfBaseInterface {
   /** Control de estados de carga y spinners */
   loading?: AlfLoadingInterface;
   
+  /** Motor reactivo de fluidez (tiempos y curvas de animación) */
+  transitions?: AlfTransitionsInterface;
+
   /** Tipografía (fontSize, fontWeight, colors, alignment, etc.) */
   typography?: AlfTypographyInterface;
 

@@ -10,6 +10,18 @@
 //   etc.
 // =============================================================
 
+// =============================================================
+// AlfComponents Mixins — Barrel
+// Importa este archivo para tener acceso a todos los mixins.
+//
+// Uso:
+//   @use 'ruta/a/styles/mixins' as *;
+//   // y luego en tu clase:
+//   @include alf-padding();
+//   @include alf-margin();
+//   etc.
+// =============================================================
+
 @forward 'backgrounds';
 @forward 'border';
 @forward 'margin';
@@ -18,3 +30,4 @@
 @forward 'typography';
 @forward 'transform';
 @forward 'reactive';
+@forward 'transitions';

@@ -179,7 +179,7 @@ export const resolveBorderVars = (data: AlfBorderBaseInterface, stateSuffix: str
   writeVar(vars, `--alf-brd-box-sizing${s}`, data.boxSizing);
 
   return vars;
-};
+}
 
 /**
  * Resuelve las CSS vars de Backgrounds.

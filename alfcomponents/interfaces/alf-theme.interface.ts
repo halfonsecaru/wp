@@ -1,5 +1,5 @@
 import { AlfThemeEnum } from '../enums/alf-theme.enum';
-import { AlfBackgroundsInterface, AlfBorderInterface, AlfShadowsInterface, AlfTypographyInterface } from './index';
+import { AlfBackgroundsInterface, AlfBorderInterface, AlfShadowsInterface, AlfTypographyInterface, AlfTransitionsInterface } from './index';
 
 /**
  * @interface AlfThemeInterface
@@ -11,6 +11,9 @@ export interface AlfThemeInterface {
   
   /** Paleta de fondos globales reactivos */
   backgrounds: AlfBackgroundsInterface;
+
+  /** Orquestador maestro de transiciones y tiempos de movimiento */
+  transitions?: AlfTransitionsInterface;
 
   /** Configuración de bordes globales (Opcional) */
   border?: AlfBorderInterface;

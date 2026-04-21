@@ -3,7 +3,7 @@
 :host {
   display: inline-block;
   position: relative;
-  transition: all 0.3s ease;
+  @include alf-transition;
   width: 100%;
 
   &::after {
@@ -13,13 +13,11 @@
     left: 0;
     right: 0;
     height: 2px;
-    background: var(--alf-tabs-indicator-color, var(--alf-sys-primary));
+    background: var(--alf-tabs-indicator-color);
     border-radius: 2px 2px 0 0;
     opacity: 0;
     transform: translateY(2px);
-    transition:
-      opacity 0.3s ease,
-      transform 0.3s ease;
+    @include alf-transition;
   }
 
   &.alf-tab--active::after {
@@ -46,7 +44,7 @@
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  transition: all 0.2s ease;
+  @include alf-transition;
   font-family: inherit;
   font-weight: var(--alf-tabs-header-weight, 500);
   user-select: none;
@@ -66,8 +64,8 @@
     background-color: transparent;
 
     &.alf-tab__header--active {
-      background-color: var(--alf-tabs-indicator-color, var(--alf-sys-primary)) !important;
-      color: white !important;
+      background-color: var(--alf-tabs-indicator-color) !important;
+      color: var(--alf-bg-color) !important; // Contraste automático
       border-color: transparent !important;
     }
   }
@@ -77,7 +75,7 @@
     background-color: transparent;
     border-color: transparent;
     &.alf-tab__header--active {
-      color: var(--alf-tabs-indicator-color, var(--alf-sys-primary));
+      color: var(--alf-tabs-indicator-color);
     }
   }
 
@@ -87,19 +85,16 @@
     background-color: transparent;
     border-color: transparent;
     font-weight: 600;
-    color: var(--alf-sys-gray-600);
-
-    [data-alf-theme='dark'] & {
-      color: var(--alf-sys-gray-400);
-    }
+    color: var(--alf-typography-color);
 
     &.alf-tab__header--active {
-      color: var(--alf-tabs-indicator-color, var(--alf-sys-primary));
+      color: var(--alf-tabs-indicator-color);
     }
   }
 
   &--active {
     font-weight: var(--alf-tabs-header-weight-active, 600);
+    background-color: var(--alf-bg-color-active, var(--alf-bg-color)) !important;
   }
 
   &--disabled {
@@ -108,8 +103,8 @@
   }
 
   .alf-tab__badge {
-    background: var(--alf-tabs-indicator-color, var(--alf-sys-primary));
-    color: white;
+    background: var(--alf-tabs-indicator-color);
+    color: var(--alf-bg-color); // Contrastado con el fondo del badge que es el color de marca
     font-size: 0.7rem;
     padding: 2px 6px;
     border-radius: 10px;

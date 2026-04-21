@@ -103,7 +103,8 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     return {
       transform: `translateX(${m.left}px)`,
       width: `${m.width}px`,
-      opacity: m.opacity
+      opacity: m.opacity,
+      backgroundColor: this.indicatorColorVarComputed()
     };
   });
 
@@ -324,16 +325,16 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     const activeIdx = this.activeIndex();
     const activeTab = this.tabs().find(t => t.effectiveIndex() === activeIdx);
     const theme = this.globalTheme().theme;
-    
+
     // Interpretamos la variante de la pestaña activa
-    const variant = activeTab?.configComputed()?.predefined 
-                 || (this.defineComponentInput() as any)?.variant
-                 || AlfColorVariantEnum.Primary;
-    
+    const variant = activeTab?.configComputed()?.predefined
+      || (this.defineComponentInput() as any)?.variant
+      || AlfColorVariantEnum.Primary;
+
     // Obtenemos el ADN puro (100% intensidad)
     const adn = BASIC_IDENTITIES[theme][variant] || BASIC_IDENTITIES[theme][AlfColorVariantEnum.Primary];
-                    
-    return adn.brand || 'var(--alf-sys-primary)';
+
+    return adn.brand || AlfColorEnum.Primary;
   });
 
   /** Helpers de Template */

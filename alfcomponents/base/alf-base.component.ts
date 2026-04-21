@@ -12,6 +12,7 @@ import {
   AlfShadowsInterface,
   AlfTransformInterface,
   AlfTypographyInterface,
+  AlfTransitionsInterface,
 } from '../interfaces';
 import {
   AlfColorVariantEnum,
@@ -62,6 +63,7 @@ export abstract class AlfBaseComponent<T> {
   @Input('ripple') set ripple(v: boolean | AlfRippleInterface | undefined) { this.rippleInput.set(v); }
   @Input('shadows') set shadows(v: AlfShadowsInterface | undefined) { this.shadowsInput.set(v); }
   @Input('size') set size(v: AlfSizeEnum | undefined) { this.sizeInput.set(v); }
+  @Input('transitions') set transitions(v: AlfTransitionsInterface | undefined) { this.transitionsInput.set(v); }
   @Input('transform') set transform(v: AlfTransformInterface | undefined) { this.transformInput.set(v); }
   @Input('typography') set typography(v: AlfTypographyInterface | undefined) { this.typographyInput.set(v); }
   @Input('variant') set variant(v: AlfColorVariantEnum | undefined) { this.variantInput.set(v); }
@@ -85,6 +87,7 @@ export abstract class AlfBaseComponent<T> {
   protected readonly rippleInput = signal<boolean | AlfRippleInterface | undefined>(undefined);
   protected readonly shadowsInput = signal<AlfShadowsInterface | undefined>(undefined);
   protected readonly sizeInput = signal<AlfSizeEnum | undefined>(undefined);
+  protected readonly transitionsInput = signal<AlfTransitionsInterface | undefined>(undefined);
   protected readonly transformInput = signal<AlfTransformInterface | undefined>(undefined);
   protected readonly typographyInput = signal<AlfTypographyInterface | undefined>(undefined);
   protected readonly variantInput = signal<AlfColorVariantEnum | undefined>(undefined);
@@ -106,36 +109,39 @@ export abstract class AlfBaseComponent<T> {
   
   /**
    * Fusión Reactiva de Fondos (DNA Cascade)
-   * { ...Theme, ...Predefined, ...Manual }
    */
   protected readonly backgroundsComputed = computed(() => {
-    const theme = this.globalTheme();
-    const themeBg = theme.backgrounds;
+    const theme = this.globalTheme().backgrounds;
+    const comp = this.backgroundsInput() ?? (this.defineComponentInput() as any)?.backgrounds ?? (this.resolvedPredefined() as any)?.backgrounds;
 
-    // Capa Identidad + Manual Overrides
-    const componentBg = this.backgroundsInput() ?? (this.defineComponentInput() as any)?.backgrounds ?? (this.resolvedPredefined() as any)?.backgrounds;
-
-    if (!componentBg) return themeBg;
-    
-    // Destructuración Élite: Capa a capa (Default, Hover, etc.) con seguridad ante nulos
+    if (!comp) return theme;
     return {
-      ...themeBg,
-      ...componentBg,
-      default: { ...themeBg?.default, ...componentBg?.default },
-      ...(themeBg?.hover || componentBg?.hover ? { hover: { ...themeBg?.hover, ...componentBg?.hover } } : {}),
-      ...(themeBg?.active || componentBg?.active ? { active: { ...themeBg?.active, ...componentBg?.active } } : {}),
+      ...theme,
+      ...comp,
+      default:  { ...theme?.default,  ...comp?.default },
+      hover:    { ...theme?.hover,    ...comp?.hover },
+      active:   { ...theme?.active,   ...comp?.active },
+      focus:    { ...theme?.focus,    ...comp?.focus },
+      disabled: { ...theme?.disabled, ...comp?.disabled },
     };
   });
 
+  /**
+   * Fusión Reactiva de Bordes (DNA Cascade)
+   */
   protected readonly borderComputed = computed(() => {
-    const theme = this.globalTheme();
-    const componentBorder = this.borderInput() ?? (this.defineComponentInput() as any)?.border ?? (this.resolvedPredefined() as any)?.border;
+    const theme = this.globalTheme().border;
+    const comp = this.borderInput() ?? (this.defineComponentInput() as any)?.border ?? (this.resolvedPredefined() as any)?.border;
     
-    if (!componentBorder) return theme.border;
+    if (!comp) return theme;
     return { 
-      ...theme.border, 
-      ...componentBorder,
-      default: { ...theme.border?.default, ...componentBorder?.default }
+      ...theme, 
+      ...comp,
+      default:  { ...theme?.default,  ...comp?.default },
+      hover:    { ...theme?.hover,    ...comp?.hover },
+      active:   { ...theme?.active,   ...comp?.active },
+      focus:    { ...theme?.focus,    ...comp?.focus },
+      disabled: { ...theme?.disabled, ...comp?.disabled },
     };
   });
 
@@ -154,28 +160,110 @@ export abstract class AlfBaseComponent<T> {
   protected readonly loadingComputed: Signal<AlfLoadingInterface> = computed(() => {
     return this.loadingInput() ?? (this.defineComponentInput() as any)?.loading ?? (this.resolvedPredefined() as any)?.loading ?? LOADING_DEFAULT_SIGNAL();
   });
-  protected readonly marginComputed = computed(() => this.marginInput() ?? (this.defineComponentInput() as any)?.margin ?? (this.resolvedPredefined() as any)?.margin);
-  protected readonly paddingComputed = computed(() => this.paddingInput() ?? (this.defineComponentInput() as any)?.padding ?? (this.resolvedPredefined() as any)?.padding);
+
+  /**
+   * Fusión Reactiva de Márgenes (DNA Cascade)
+   */
+  protected readonly marginComputed = computed(() => {
+    return this.marginInput() ?? (this.defineComponentInput() as any)?.margin ?? (this.resolvedPredefined() as any)?.margin;
+  });
+
+  /**
+   * Fusión Reactiva de Rellenos (DNA Cascade)
+   */
+  protected readonly paddingComputed = computed(() => {
+    return this.paddingInput() ?? (this.defineComponentInput() as any)?.padding ?? (this.resolvedPredefined() as any)?.padding;
+  });
+
   protected readonly rippleComputed = computed(() => this.rippleInput() ?? (this.defineComponentInput() as any)?.ripple ?? (this.resolvedPredefined() as any)?.ripple);
   
   protected readonly shadowsComputed = computed(() => {
-    const theme = this.globalTheme();
-    const componentShadows = this.shadowsInput() ?? (this.defineComponentInput() as any)?.shadows ?? (this.resolvedPredefined() as any)?.shadows;
-    if (!componentShadows) return theme.shadows;
-    return { ...theme.shadows, ...componentShadows };
+    const theme = this.globalTheme().shadows;
+    const comp = this.shadowsInput() ?? (this.defineComponentInput() as any)?.shadows ?? (this.resolvedPredefined() as any)?.shadows;
+
+    if (!comp) return theme;
+    return {
+      ...theme,
+      ...comp,
+      default:  { ...theme?.default,  ...comp?.default },
+      hover:    { ...theme?.hover,    ...comp?.hover },
+      active:   { ...theme?.active,   ...comp?.active },
+      focus:    { ...theme?.focus,    ...comp?.focus },
+      disabled: { ...theme?.disabled, ...comp?.disabled },
+    };
   });
 
   protected readonly sizeComputed = computed(() => this.sizeInput() ?? (this.defineComponentInput() as any)?.size ?? (this.resolvedPredefined() as any)?.size);
   protected readonly transformComputed = computed(() => this.transformInput() ?? (this.defineComponentInput() as any)?.transform ?? (this.resolvedPredefined() as any)?.transform);
   
   protected readonly typographyComputed = computed(() => {
-    const theme = this.globalTheme();
-    const componentTypography = this.typographyInput() ?? (this.defineComponentInput() as any)?.typography ?? (this.resolvedPredefined() as any)?.typography;
-    if (!componentTypography) return theme.typography;
-    return { ...theme.typography, ...componentTypography };
+    const theme = this.globalTheme().typography;
+    const comp = this.typographyInput() ?? (this.defineComponentInput() as any)?.typography ?? (this.resolvedPredefined() as any)?.typography;
+
+    if (!comp) return theme;
+    return {
+      ...theme,
+      ...comp,
+      default:  { ...theme?.default,  ...comp?.default },
+      hover:    { ...theme?.hover,    ...comp?.hover },
+      active:   { ...theme?.active,   ...comp?.active },
+      focus:    { ...theme?.focus,    ...comp?.focus },
+      disabled: { ...theme?.disabled, ...comp?.disabled },
+    };
   });
 
   protected readonly variantComputed = computed(() => this.variantInput() ?? (this.defineComponentInput() as any)?.variant ?? (this.resolvedPredefined() as any)?.variant);
+
+  /**
+   * Fusión Reactiva de Transiciones (Theme -> Predefined -> Manual)
+   */
+  protected readonly transitionsComputed = computed(() => {
+    const theme = this.globalTheme().transitions;
+    const comp = this.transitionsInput() ?? (this.defineComponentInput() as any)?.transitions ?? (this.resolvedPredefined() as any)?.transitions;
+
+    if (!comp) return theme;
+    return {
+      ...theme,
+      ...comp,
+      default:  { ...theme?.default,  ...comp?.default },
+      hover:    { ...theme?.hover,    ...comp?.hover },
+      active:   { ...theme?.active,   ...comp?.active },
+      focus:    { ...theme?.focus,    ...comp?.focus },
+      disabled: { ...theme?.disabled, ...comp?.disabled },
+    };
+  });
+
+  /**
+   * Orquestador Central de Transiciones (Master Orchestrator)
+   * Construye una única declaración de 'transition' para el elemento.
+   */
+  protected readonly masterTransitionComputed = computed(() => {
+    const transitions = this.transitionsComputed()?.default;
+    const duration = transitions?.transitionDuration ?? '700ms';
+    const timing = transitions?.transitionTiming ?? 'cubic-bezier(0.4, 0, 0.2, 1)';
+
+
+    // Lista de propiedades seguras para transicionar en la librería
+    const safeProps = [
+      'background-color',
+      'background-image',
+      'background-position',
+      'border-color',
+      'border-radius',
+      'border-width',
+      'box-shadow',
+      'opacity',
+      'transform',
+      'outline-color',
+      'outline-offset',
+      'width',
+      'height'
+    ];
+
+    return safeProps
+      .map(prop => `${prop} ${duration} ${timing}`)
+      .join(', ');
+  });
 
   // --- Elite CSS Variable Engine ---
   /**
@@ -184,6 +272,14 @@ export abstract class AlfBaseComponent<T> {
    */
   protected readonly styleVariablesComputed = computed(() => {
     const vars: Record<string, string> = {};
+
+    // 0. Transición Maestra (Unificada)
+    vars['transition'] = this.masterTransitionComputed();
+    
+    // Inyectamos las variables locales para sincronizar los pseudo-elementos o hijos SCSS automáticos
+    const tr = this.transitionsComputed()?.default;
+    vars['--alf-transition-duration'] = tr?.transitionDuration ?? '700ms';
+    vars['--alf-transition-timing'] = tr?.transitionTiming ?? 'cubic-bezier(0.4, 0, 0.2, 1)';
 
     // 1. Estilos custom manuales
     const customStyles = this.customStyleComputed();

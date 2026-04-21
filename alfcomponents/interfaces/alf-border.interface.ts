@@ -105,7 +105,6 @@ export interface AlfBorderBaseInterface {
    */
   outlineOffset?: AlfPxEnum | AlfRemEnum;
 
-  // ===== BOX SIZING =====
   /** 
    * Define cómo se calcula el tamaño del elemento (incluyendo bordes o no) 
    * @example 'border-box' 

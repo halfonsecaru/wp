@@ -1,167 +1,211 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, computed } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import {
   AlfTabsComponent,
   AlfTabComponent,
-  AlfIconsUnicodeIconEnum,
-  DefaultTabsKeys,
-  AlfAnimationTypeEnum,
-  AlfColorVariantEnum
+  AlfTabsInterface,
+  AlfTabsVisualTypeEnum,
+  DefaultTabsKeys
 } from '@alfcomponents';
 
 /**
  * TabsDemoPage
- * Página de demostración oficial para AlfTabs Élite.
- * Visualización exclusiva de las variantes predefinidas (Predefined Identities).
+ * Demostrador de componentes moderno, anidando Pestañas -> Ejemplo / Código.
  */
 @Component({
   selector: 'app-tabs-demo',
   standalone: true,
-  imports: [AlfTabsComponent, AlfTabComponent],
+  imports: [CommonModule, AlfTabsComponent, AlfTabComponent],
   template: `
-    <div style="padding: 2rem; display: flex; flex-direction: column; gap: 3rem; min-height: 100%;">
-      
-      <header style="display: flex; flex-direction: column; gap: 0.5rem; border-bottom: 2px solid var(--alf-sys-gray-100); padding-bottom: 1.5rem;">
-        <h1 style="margin: 0; font-size: 2.5rem; letter-spacing: -0.025em; font-weight: 800; background: linear-gradient(to right, #3b82f6, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-          AlfTabs Élite
-        </h1>
-        <p style="margin: 0; opacity: 0.7; font-size: 1.1rem;">
-          Explorando las identidades visuales predefinidas y el motor de animaciones Animate.css.
-        </p>
+    <div class="docs-container">
+      <header class="docs-header">
+        <h1>AlfTabs <span class="accent">Documentation</span></h1>
+        <p>Demostración de capacidades de anidamiento y visuales Élite.</p>
       </header>
 
-      <!-- 1. BASE IDENTITY (Underline + FadeIn) -->
-      <section class="demo-card">
-        <h3 class="demo-title">1. Identidad: Base (Underline + FadeIn)</h3>
-        <p class="demo-desc">La variante estándar para interfaces limpias con animación suave de entrada.</p>
-        
-        <alf-tabs [predefined]="tabsKeys.Base">
-          <alf-tab [defineComponent]="{ label: 'Visión General', prefix: icons.Sparkle }">
-            <div class="panel-content">
-              <h4>Dashboard Principal</h4>
-              <p>Esta es la configuración base. Usa una animación <code>FadeIn</code> y un estilo visual de subrayado.</p>
+      <div class="docs-content">
+        <!-- ROOT TABS (Variantes Visuales) -->
+        <alf-tabs [defineComponent]="{ visualType: tabsVisualType.Modern }">
+          
+          <!-- ============================ -->
+          <!-- VARIANT 1: UNDERLINE -->
+          <!-- ============================ -->
+          <alf-tab [defineComponent]="{ label: 'Underline (Standard)' }">
+            <div class="variant-panel">
+              
+              <!-- SECONDARY TABS (Example vs Code) -->
+              <alf-tabs [defineComponent]="{ visualType: tabsVisualType.Modern }">
+                
+                <!-- EXAMPLE -->
+                <alf-tab [defineComponent]="{ label: 'Example' }">
+                  <div class="example-canvas">
+                    <alf-tabs [defineComponent]="{ visualType: tabsVisualType.Underline }">
+                      <alf-tab [defineComponent]="{ label: 'Visión General' }">
+                        <div class="demo-content">
+                          <h3>Resumen del Proyecto</h3>
+                          <p>Bienvenido al panel de control principal. Aquí puedes visualizar el estado general de la aplicación, el rendimiento de los módulos y las alertas recientes generadas por el sistema.</p>
+                        </div>
+                      </alf-tab>
+                      <alf-tab [defineComponent]="{ label: 'Estadísticas' }">
+                        <div class="demo-content">
+                          <h3>Datos en Tiempo Real</h3>
+                          <p>Gráficos volumétricos de tráfico, distribución de ancho de banda y picos de latencia global del clúster.</p>
+                        </div>
+                      </alf-tab>
+                      <alf-tab [defineComponent]="{ label: 'Configuración' }">
+                        <div class="demo-content">
+                          <h3>Preferencias Restringidas</h3>
+                          <p>Ajustes de notificaciones, rotación de tokens criptográficos y políticas de control de acceso basado en roles (RBAC).</p>
+                        </div>
+                      </alf-tab>
+                    </alf-tabs>
+                  </div>
+                </alf-tab>
+
+                <!-- CODE -->
+                <alf-tab [defineComponent]="{ label: 'Code' }">
+                  <div class="code-canvas">
+                    <pre><code>
+&lt;!-- Plantilla HTML --&gt;
+&lt;alf-tabs [defineComponent]="&#123; visualType: tabsVisualType.Underline &#125;"&gt;
+  &lt;alf-tab [defineComponent]="&#123; label: 'Visión General' &#125;"&gt; ... &lt;/alf-tab&gt;
+  &lt;alf-tab [defineComponent]="&#123; label: 'Estadísticas' &#125;"&gt; ... &lt;/alf-tab&gt;
+&lt;/alf-tabs&gt;
+                    </code></pre>
+                  </div>
+                </alf-tab>
+
+              </alf-tabs>
             </div>
           </alf-tab>
-          <alf-tab [defineComponent]="{ label: 'Analíticas', prefix: icons.Bell }">
-            <div class="panel-content">
-              <h4>Datos en tiempo real</h4>
-              <p>Panel de control con métricas avanzadas.</p>
+
+          <!-- ============================ -->
+          <!-- VARIANT 2: MASTER -->
+          <!-- ============================ -->
+          <alf-tab [defineComponent]="{ label: 'Master (Sliding Indicator)' }">
+            <div class="variant-panel">
+              
+              <!-- SECONDARY TABS (Example vs Code) -->
+              <alf-tabs [defineComponent]="{ visualType: tabsVisualType.Modern }">
+                
+                <!-- EXAMPLE -->
+                <alf-tab [defineComponent]="{ label: 'Example' }">
+                  <div class="example-canvas">
+                    <!-- Demo de Pestañas tipo Master -->
+                    <alf-tabs [predefined]="tabsKeys.Master">
+                      <alf-tab [defineComponent]="{ label: 'Diseño' }">
+                        <div class="demo-content">
+                          <h3>Arquitectura Visual Élite</h3>
+                          <p>El diseño UI/UX se enfoca en la usabilidad pura mediante el uso intensivo de micro-animaciones (Signals + WAAPI), paletas de color con cálculos armónicos, y un sistema de espaciado matemático que respeta las leyes de proximidad de la Gestalt.</p>
+                        </div>
+                      </alf-tab>
+                      <alf-tab [defineComponent]="{ label: 'Rendimiento' }">
+                        <div class="demo-content">
+                          <h3>Zoneless & Signals (Full Hardware Acceleration)</h3>
+                          <p>Las métricas de rendimiento marcan 100/100 en Lighthouse de forma consistente. No hay reflows forzados en CSS y Angular actualiza las vistas locales quirúrgicamente a través de reacciones atómicas, sin usar zone.js.</p>
+                        </div>
+                      </alf-tab>
+                      <alf-tab [defineComponent]="{ label: 'Seguridad' }">
+                        <div class="demo-content">
+                          <h3>Defensa en Profundidad (DiD)</h3>
+                          <p>Autenticación hiper segura mediante tokens anti-CSRF inyectados en runtime. Cada Input del usuario es auditado y sanitizado nativamente por el compilador AOT y el motor de render DOM antes de aterrizar en la pantalla.</p>
+                        </div>
+                      </alf-tab>
+                      <alf-tab [defineComponent]="{ label: 'Analíticas' }">
+                        <div class="demo-content">
+                          <h3>Telemetría Inteligente</h3>
+                          <p>Nuestra malla de microservicios procesa 10,000 eventos distribuidos por segundo, autoescalando los nodos edge de forma dinámica para absorber picos de demanda sin el más mínimo temblor de latencia.</p>
+                        </div>
+                      </alf-tab>
+                    </alf-tabs>
+                  </div>
+                </alf-tab>
+
+                <!-- CODE -->
+                <alf-tab [defineComponent]="{ label: 'Code' }">
+                  <div class="code-canvas">
+                    <pre><code>
+&lt;!-- Plantilla HTML --&gt;
+&lt;alf-tabs [predefined]="tabsKeys.Master"&gt;
+  &lt;alf-tab label="Diseño"&gt; ... &lt;/alf-tab&gt;
+  &lt;alf-tab label="Rendimiento"&gt; ... &lt;/alf-tab&gt;
+&lt;/alf-tabs&gt;
+                    </code></pre>
+                  </div>
+                </alf-tab>
+
+              </alf-tabs>
             </div>
           </alf-tab>
+
         </alf-tabs>
-      </section>
-
-      <!-- 2. GEEK & SOLID IDENTITIES (Matrix, Cyber, Jedi) -->
-      <section class="demo-card">
-        <h3 class="demo-title" style="color: #4ade80;">2. Identidades Geek & Solid (Puras)</h3>
-        <p class="demo-desc">Uso directo del ADN cromático en las pestañas. Sin configuración extra, solo inyectando la variante.</p>
-        
-        <div style="display: flex; flex-direction: column; gap: 2rem;">
-          <div>
-            <span class="label-badge">Variante: Matrix</span>
-            <alf-tabs [variant]="variants.Matrix">
-              <alf-tab label="System Log"></alf-tab>
-              <alf-tab label="Intrusion Alert"></alf-tab>
-              <alf-tab label="Mainframe"></alf-tab>
-            </alf-tabs>
-          </div>
-
-          <div>
-            <span class="label-badge">Variante: Cyberpunk</span>
-            <alf-tabs [variant]="variants.Cyber">
-              <alf-tab label="Night City"></alf-tab>
-              <alf-tab label="Netrunner"></alf-tab>
-              <alf-tab label="Cyberware"></alf-tab>
-            </alf-tabs>
-          </div>
-
-          <div>
-            <span class="label-badge">Variante: Jedi</span>
-            <alf-tabs [variant]="variants.Jedi">
-              <alf-tab label="Force Meditation"></alf-tab>
-              <alf-tab label="Lightsaber Skills"></alf-tab>
-            </alf-tabs>
-          </div>
-        </div>
-      </section>
-
-      <!-- 3. SIDEBAR IDENTITY -->
-      <section class="demo-card">
-        <h3 class="demo-title">3. Identidad: Sidebar (Pill + Left)</h3>
-        <p class="demo-desc">Configuración vertical ideal para menús laterales.</p>
-        
-        <alf-tabs [predefined]="tabsKeys.Sidebar" position="left">
-          <alf-tab [defineComponent]="{ label: 'Proyectos', prefix: icons.Settings }">
-            <div class="panel-content"><h4>Proyectos</h4><p>Gestión de proyectos.</p></div>
-          </alf-tab>
-          <alf-tab [defineComponent]="{ label: 'Equipo', prefix: icons.User }">
-            <div class="panel-content"><h4>Equipo</h4><p>Miembros colaboradores.</p></div>
-          </alf-tab>
-        </alf-tabs>
-      </section>
-
-      <!-- 4. MASTER IDENTITY (Sliding Indicator) -->
-      <section class="demo-card master-demo">
-        <h3 class="demo-title" style="color: #6200ee;">4. Identidad: Master (Sliding Indicator)</h3>
-        <p class="demo-desc">La joya de la corona con indicador deslizante y animaciones direccionales.</p>
-        
-        <alf-tabs [predefined]="tabsKeys.Master">
-          <alf-tab label="Diseño"></alf-tab>
-          <alf-tab label="Rendimiento"></alf-tab>
-          <alf-tab label="Seguridad"></alf-tab>
-          <alf-tab label="Analíticas"></alf-tab>
-        </alf-tabs>
-      </section>
-
+      </div>
     </div>
   `,
   styles: [`
-    .demo-card {
+    .docs-container {
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
-      padding: 2.5rem;
-      border-radius: 20px;
-      transition: all 0.3s ease;
-      background: var(--alf-sys-gray-050, #fcfcfd);
-      border: 1px solid var(--alf-sys-gray-100, #f1f3f5);
+      height: 100vh;
+      background: #f8fafc;
+      font-family: 'Inter', sans-serif;
     }
-    .demo-title {
-      margin: 0;
-      font-size: 1.25rem;
-      color: var(--alf-sys-primary, #3b82f6);
-      font-weight: 700;
+    .docs-header {
+      background: #0f172a;
+      color: white;
+      padding: 2rem;
+      h1 { margin: 0; font-size: 1.5rem; font-weight: 700; }
+      p { margin: 0.5rem 0 0; color: #94a3b8; font-size: 0.9rem; }
+      .accent { color: #3b82f6; }
     }
-    .demo-desc {
-      margin: 0;
-      font-size: 0.95rem;
-      color: var(--alf-sys-gray-400, #868e96);
-      line-height: 1.6;
+    .docs-content {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      flex: 1;
+      overflow-y: auto;
     }
-    .panel-content {
+    .variant-panel {
+      margin-top: 2rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
       padding: 1.5rem;
-      min-height: 100px;
-      h4 { margin-top: 0; color: var(--alf-sys-gray-900, #212529); }
-      p { color: var(--alf-sys-gray-400, #868e96); margin-bottom: 0; }
     }
-    .label-badge {
-      display: inline-block;
-      padding: 0.25rem 0.75rem;
-      border-radius: 20px;
-      background: var(--alf-sys-gray-100);
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-      color: var(--alf-sys-gray-600);
+    .example-canvas {
+      padding: 3rem;
+      margin-top: 1rem;
+      background: #f1f5f9;
+      border-radius: 8px;
+      border: 1px dashed #cbd5e1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .code-canvas {
+      margin-top: 1rem;
+      background: #0f172a;
+      border-radius: 8px;
+      padding: 1.5rem;
+      color: #38bdf8;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      overflow-x: auto;
+    }
+    .demo-content {
+      padding: 2.5rem;
+      background: white;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+      h3 { margin: 0 0 0.5rem 0; color: #0f172a; font-size: 1.15rem; }
+      p { margin: 0; color: #475569; font-size: 0.95rem; line-height: 1.6; }
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TabsDemoPage {
+  protected readonly tabsVisualType = AlfTabsVisualTypeEnum;
   protected readonly tabsKeys = DefaultTabsKeys;
-  protected readonly icons = AlfIconsUnicodeIconEnum;
-  protected readonly animations = AlfAnimationTypeEnum;
-  protected readonly variants = AlfColorVariantEnum;
-
-  constructor() { }
 }

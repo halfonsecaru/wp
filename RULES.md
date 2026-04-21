@@ -118,6 +118,8 @@ Este documento es la **fuente de verdad absoluta** para el desarrollo en este pr
     - **SCSS**: Usar SCSS como preprocesador de estilos (NO usar CSS ni LESS)
     - Todos los archivos de estilos deben tener extensión `.scss`
     - **Unidades**: Priorizar siempre el uso de `%` sobre `vh` o `vw` para dimensiones y layouts siempre que sea posible.
+    - **Transiciones (ESTÁNDAR ÉLITE)**: OBLIGATORIO usar el mixin `@include alf-transition;` en el selector principal de cada componente para garantizar una fluidez uniforme de **700ms**.
+    - **Rigor en Mixins Reactivos**: OBLIGATORIO actualizar todas las propiedades individuales (ej. `border-top-left-radius`, `padding-top`) dentro de los estados `:hover`, `:active` y `:focus` de los mixins base. Esto evita bloqueos de especificidad y garantiza que las transiciones funcionen siempre.
 - 11) Enums
     - **Nombre de archivo**: Puede incluir `.enum` o `.interface` según sea necesario.
     - **Contenido**: Usar `export enum NombreEnum`

@@ -28,7 +28,6 @@
   width: 100%;
   gap: var(--alf-tabs-gap);
   overflow: hidden;
-  transition: all 0.3s ease;
 
   &--vertical {
     flex-direction: row;
@@ -36,7 +35,7 @@
 
     .alf-tabs__superior {
       flex-direction: column;
-      border-right: 1px solid var(--alf-brd-color, var(--alf-sys-gray-200));
+      border-right: 1px solid var(--alf-brd-color);
       border-bottom: none;
       width: clamp(200px, 20vw, 300px);
     }
@@ -72,17 +71,17 @@
     width: 24px;
     z-index: 2;
     pointer-events: none;
-    transition: opacity 0.3s ease;
+    @include alf-transition;
   }
 
   &::before {
     left: 0;
-    background: linear-gradient(to right, var(--alf-bg-color, white), transparent);
+    background: linear-gradient(to right, var(--alf-bg-color), transparent);
   }
 
   &::after {
     right: 0;
-    background: linear-gradient(to left, var(--alf-bg-color, white), transparent);
+    background: linear-gradient(to left, var(--alf-bg-color), transparent);
   }
 }
 
@@ -116,7 +115,7 @@
   font-weight: bold;
   font-size: 1.8rem;
   font-family: serif;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  @include alf-transition;
   backdrop-filter: blur(50px);
   -webkit-backdrop-filter: blur(50px);
   padding-left: 10px;
@@ -124,28 +123,19 @@
   border-radius: 0px !important;
 
   // --- Stealth Look for Dark Mode ---
-  [data-alf-theme='dark'] & {
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    opacity: 0.7;
-    background-color: color-mix(in srgb, var(--alf-tabs-header-color-active) 80%, black);
-
-    &:hover:not(:disabled) {
-      opacity: 1;
-      backdrop-filter: blur(30px);
-      -webkit-backdrop-filter: blur(30px);
-    }
+  &:disabled {
+    opacity: 0.5;
   }
 
   &--left {
     left: 0;
-    background: linear-gradient(to right, var(--alf-bg-color, white) 60%, transparent);
+    background: linear-gradient(to right, var(--alf-bg-color) 60%, transparent);
     border-radius: 0 12px 12px 0;
   }
 
   &--right {
     right: 0;
-    background: linear-gradient(to left, var(--alf-bg-color, white) 60%, transparent);
+    background: linear-gradient(to left, var(--alf-bg-color) 60%, transparent);
     border-radius: 12px 0 0 12px;
   }
 
@@ -175,7 +165,7 @@
   background: var(--alf-tabs-indicator-color);
   border-radius: 3px 3px 0 0;
   z-index: 10;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  @include alf-transition;
   will-change: transform, width;
 }
 
@@ -190,6 +180,8 @@
   position: relative;
   overflow: hidden;
   min-height: 100px;
+  interpolate-size: allow-keywords;
+  transition: height var(--alf-transition-duration, 700ms) var(--alf-transition-timing, ease);
 
   alf-tab-content,
   .alf-tabs__panel {
@@ -205,24 +197,19 @@
   --alf-tabs-gap: 0;
   --alf-tabs-indicator-height: 2px;
   --alf-tabs-header-weight: 600;
-  --alf-tabs-header-color: var(--alf-sys-gray-600, #475569);
+  --alf-tabs-header-color: var(--alf-typography-color);
 
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--alf-brd-color, var(--alf-sys-gray-200));
-  background: var(--alf-bg-color, white);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-
-  // --- Dark Mode Refinements (Elite Structural Sync) ---
-  [data-alf-theme='dark'] & {
-    --alf-tabs-header-color: var(--alf-sys-gray-400, #94a3b8);
-    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
-  }
+  border: 1px solid var(--alf-brd-color);
+  background: var(--alf-bg-color);
+  @include alf-transition;
+  box-shadow: var(--alf-shadow-dynamic, 0 12px 40px 0 rgba(0, 0, 0, 0.1));
 
   .alf-tabs__header-container {
-    border-bottom: 1px solid var(--alf-brd-color, var(--alf-sys-gray-200));
+    box-shadow: inset 0 -1px 0 var(--alf-brd-color); /* Ajuste Élite pixel-perfect superpuesto */
     background: transparent;
-    transition: border-color 0.4s ease;
+    @include alf-transition;
   }
 }
 
@@ -231,15 +218,11 @@
   background: transparent;
 
   .alf-tabs__header-container {
-    background: var(--alf-sys-gray-100, #f1f5f9);
+    background: var(--alf-brd-color); // Fondo sutil para el contenedor pill
     padding: 4px;
     border-radius: 99px;
     width: fit-content;
     margin: 0 auto;
-
-    [data-alf-theme='dark'] & {
-      background: var(--alf-sys-gray-200);
-    }
   }
 }
 
@@ -249,11 +232,11 @@
   --alf-tabs-indicator-height: 4px;
 
   .alf-tabs__header-container {
-    border-bottom: 2px solid var(--alf-sys-gray-150, #f8fafc);
+    box-shadow: inset 0 -2px 0 var(--alf-brd-color);
+  }
 
-    [data-alf-theme='dark'] & {
-      border-bottom-color: var(--alf-sys-gray-200);
-    }
+  .alf-tabs__indicator {
+    bottom: 0; /* Al estar el borde como inset, el indicator de bottom 0 se superpone naturalmente por z-index */
   }
 }
 

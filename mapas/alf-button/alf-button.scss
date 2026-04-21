@@ -55,7 +55,6 @@
   user-select: none;
   // overflow: hidden; // Comentado para permitir que box-shadow sea visible (el ripple debe manejar su propio clipping si es necesario)
   width: 100%;
-  transition: all 0.2s ease-in-out;
   border: none; // Resetear border por defecto, los mixins lo manejan
 
   // Crear stacking context para el ripple sin usar position: relative

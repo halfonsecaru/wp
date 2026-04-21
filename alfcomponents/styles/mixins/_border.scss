@@ -33,6 +33,22 @@
     border-width: var(--alf-brd-width-focus, var(--alf-brd-width));
     border-radius: var(--alf-brd-radius-focus, var(--alf-brd-radius));
     border-style: var(--alf-brd-style-focus, var(--alf-brd-style, solid));
+
+    // Individuales Focus
+    border-top-width:    var(--alf-brd-border-top-width-focus,    var(--alf-brd-width-focus, var(--alf-brd-border-top-width)));
+    border-right-width:  var(--alf-brd-border-right-width-focus,  var(--alf-brd-width-focus, var(--alf-brd-border-right-width)));
+    border-bottom-width: var(--alf-brd-border-bottom-width-focus, var(--alf-brd-width-focus, var(--alf-brd-border-bottom-width)));
+    border-left-width:   var(--alf-brd-border-left-width-focus,   var(--alf-brd-width-focus, var(--alf-brd-border-left-width)));
+
+    border-top-color:    var(--alf-brd-border-top-color-focus,    var(--alf-brd-color-focus, var(--alf-brd-border-top-color)));
+    border-right-color:  var(--alf-brd-border-right-color-focus,  var(--alf-brd-color-focus, var(--alf-brd-border-right-color)));
+    border-bottom-color: var(--alf-brd-border-bottom-color-focus, var(--alf-brd-color-focus, var(--alf-brd-border-bottom-color)));
+    border-left-color:   var(--alf-brd-border-left-color-focus,   var(--alf-brd-color-focus, var(--alf-brd-border-left-color)));
+
+    border-top-left-radius:     var(--alf-brd-border-top-left-radius-focus,     var(--alf-brd-radius-focus, var(--alf-brd-border-top-left-radius)));
+    border-top-right-radius:    var(--alf-brd-border-top-right-radius-focus,    var(--alf-brd-radius-focus, var(--alf-brd-border-top-right-radius)));
+    border-bottom-right-radius: var(--alf-brd-border-bottom-right-radius-focus, var(--alf-brd-radius-focus, var(--alf-brd-border-bottom-right-radius)));
+    border-bottom-left-radius:  var(--alf-brd-border-bottom-left-radius-focus,  var(--alf-brd-radius-focus, var(--alf-brd-border-bottom-left-radius)));
   }
 
   &:hover {
@@ -40,6 +56,22 @@
     border-width: var(--alf-brd-width-hover, var(--alf-brd-width));
     border-radius: var(--alf-brd-radius-hover, var(--alf-brd-radius));
     border-style: var(--alf-brd-style-hover, var(--alf-brd-style, solid));
+
+    // Individuales Hover
+    border-top-width:    var(--alf-brd-border-top-width-hover,    var(--alf-brd-width-hover, var(--alf-brd-border-top-width)));
+    border-right-width:  var(--alf-brd-border-right-width-hover,  var(--alf-brd-width-hover, var(--alf-brd-border-right-width)));
+    border-bottom-width: var(--alf-brd-border-bottom-width-hover, var(--alf-brd-width-hover, var(--alf-brd-border-bottom-width)));
+    border-left-width:   var(--alf-brd-border-left-width-hover,   var(--alf-brd-width-hover, var(--alf-brd-border-left-width)));
+
+    border-top-color:    var(--alf-brd-border-top-color-hover,    var(--alf-brd-color-hover, var(--alf-brd-border-top-color)));
+    border-right-color:  var(--alf-brd-border-right-color-hover,  var(--alf-brd-color-hover, var(--alf-brd-border-right-color)));
+    border-bottom-color: var(--alf-brd-border-bottom-color-hover, var(--alf-brd-color-hover, var(--alf-brd-border-bottom-color)));
+    border-left-color:   var(--alf-brd-border-left-color-hover,   var(--alf-brd-color-hover, var(--alf-brd-border-left-color)));
+
+    border-top-left-radius:     var(--alf-brd-border-top-left-radius-hover,     var(--alf-brd-radius-hover, var(--alf-brd-border-top-left-radius)));
+    border-top-right-radius:    var(--alf-brd-border-top-right-radius-hover,    var(--alf-brd-radius-hover, var(--alf-brd-border-top-right-radius)));
+    border-bottom-right-radius: var(--alf-brd-border-bottom-right-radius-hover, var(--alf-brd-radius-hover, var(--alf-brd-border-bottom-right-radius)));
+    border-bottom-left-radius:  var(--alf-brd-border-bottom-left-radius-hover,  var(--alf-brd-radius-hover, var(--alf-brd-border-bottom-left-radius)));
   }
 
   &:active {
@@ -47,6 +79,22 @@
     border-width: var(--alf-brd-width-active, var(--alf-brd-width-hover, var(--alf-brd-width)));
     border-radius: var(--alf-brd-radius-active, var(--alf-brd-radius-hover, var(--alf-brd-radius)));
     border-style: var(--alf-brd-style-active, var(--alf-brd-style-hover, var(--alf-brd-style, solid)));
+
+    // Individuales Active
+    border-top-width:    var(--alf-brd-border-top-width-active,    var(--alf-brd-width-active, var(--alf-brd-border-top-width)));
+    border-right-width:  var(--alf-brd-border-right-width-active,  var(--alf-brd-width-active, var(--alf-brd-border-right-width)));
+    border-bottom-width: var(--alf-brd-border-bottom-width-active, var(--alf-brd-width-active, var(--alf-brd-border-bottom-width)));
+    border-left-width:   var(--alf-brd-border-left-width-active,   var(--alf-brd-width-active, var(--alf-brd-border-left-width)));
+
+    border-top-color:    var(--alf-brd-border-top-color-active,    var(--alf-brd-color-active, var(--alf-brd-border-top-color)));
+    border-right-color:  var(--alf-brd-border-right-color-active,  var(--alf-brd-color-active, var(--alf-brd-border-right-color)));
+    border-bottom-color: var(--alf-brd-border-bottom-color-active, var(--alf-brd-color-active, var(--alf-brd-border-bottom-color)));
+    border-left-color:   var(--alf-brd-border-left-color-active,   var(--alf-brd-color-active, var(--alf-brd-border-left-color)));
+
+    border-top-left-radius:     var(--alf-brd-border-top-left-radius-active,     var(--alf-brd-radius-active, var(--alf-brd-border-top-left-radius)));
+    border-top-right-radius:    var(--alf-brd-border-top-right-radius-active,    var(--alf-brd-radius-active, var(--alf-brd-border-top-right-radius)));
+    border-bottom-right-radius: var(--alf-brd-border-bottom-right-radius-active, var(--alf-brd-radius-active, var(--alf-brd-border-bottom-right-radius)));
+    border-bottom-left-radius:  var(--alf-brd-border-bottom-left-radius-active,  var(--alf-brd-radius-active, var(--alf-brd-border-bottom-left-radius)));
   }
 
   &[disabled],
@@ -56,6 +104,22 @@
     border-width: var(--alf-brd-width-disabled, var(--alf-brd-width));
     border-radius: var(--alf-brd-radius-disabled, var(--alf-brd-radius));
     border-style: var(--alf-brd-style-disabled, var(--alf-brd-style, solid));
+
+    // Individuales Disabled
+    border-top-width:    var(--alf-brd-border-top-width-disabled,    var(--alf-brd-width-disabled, var(--alf-brd-border-top-width)));
+    border-right-width:  var(--alf-brd-border-right-width-disabled,  var(--alf-brd-width-disabled, var(--alf-brd-border-right-width)));
+    border-bottom-width: var(--alf-brd-border-bottom-width-disabled, var(--alf-brd-width-disabled, var(--alf-brd-border-bottom-width)));
+    border-left-width:   var(--alf-brd-border-left-width-disabled,   var(--alf-brd-width-disabled, var(--alf-brd-border-left-width)));
+
+    border-top-color:    var(--alf-brd-border-top-color-disabled,    var(--alf-brd-color-disabled, var(--alf-brd-border-top-color)));
+    border-right-color:  var(--alf-brd-border-right-color-disabled,  var(--alf-brd-color-disabled, var(--alf-brd-border-right-color)));
+    border-bottom-color: var(--alf-brd-border-bottom-color-disabled, var(--alf-brd-color-disabled, var(--alf-brd-border-bottom-color)));
+    border-left-color:   var(--alf-brd-border-left-color-disabled,   var(--alf-brd-color-disabled, var(--alf-brd-border-left-color)));
+
+    border-top-left-radius:     var(--alf-brd-border-top-left-radius-disabled,     var(--alf-brd-radius-disabled, var(--alf-brd-border-top-left-radius)));
+    border-top-right-radius:    var(--alf-brd-border-top-right-radius-disabled,    var(--alf-brd-radius-disabled, var(--alf-brd-border-top-right-radius)));
+    border-bottom-right-radius: var(--alf-brd-border-bottom-right-radius-disabled, var(--alf-brd-radius-disabled, var(--alf-brd-border-bottom-right-radius)));
+    border-bottom-left-radius:  var(--alf-brd-border-bottom-left-radius-disabled,  var(--alf-brd-radius-disabled, var(--alf-brd-border-bottom-left-radius)));
   }
 }
 
