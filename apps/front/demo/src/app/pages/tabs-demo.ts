@@ -183,12 +183,20 @@ import {
     </div>
   `,
   styles: [`
+    :host {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+    }
     .docs-container {
       display: flex;
       flex-direction: column;
-      height: 100vh;
+      height: 100%;
       background: #f8fafc;
       font-family: 'Inter', sans-serif;
+      overflow: hidden;
+      min-height: 0;
     }
     .docs-header {
       background: #0f172a;
@@ -199,12 +207,13 @@ import {
       .accent { color: #3b82f6; }
     }
     .docs-content {
-      padding: 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-      width: 100%;
-      flex: 1;
-      overflow-y: auto;
+    padding: 2rem;
+    margin: 0 auto;
+    width: -webkit-fill-available;
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+    overflow: auto;  /* FIX */
     }
     .variant-panel {
       margin-top: 2rem;

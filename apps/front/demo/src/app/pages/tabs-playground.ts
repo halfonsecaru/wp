@@ -173,7 +173,13 @@ import {
     </div>
   `,
   styles: [`
-    .playground-container { display: flex; flex-direction: column; height: 100vh; background: #f8fafc; font-family: 'Inter', sans-serif; overflow: hidden; }
+    :host {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+    }
+    .playground-container { display: flex; flex-direction: column; height: 100%; background: #f8fafc; font-family: 'Inter', sans-serif; overflow: hidden; min-height: 0; }
     .playground-header {
       background: #0f172a; color: white; padding: 0.75rem 2rem; display: flex; justify-content: space-between; align-items: center;
       h1 { margin: 0; font-size: 1.1rem; }
@@ -181,7 +187,7 @@ import {
       .badge { font-size: 0.6rem; background: #3b82f6; padding: 2px 6px; border-radius: 4px; margin-left: 8px; }
       .btn-reset { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer; }
     }
-    .playground-content { flex: 1; display: flex; flex-direction: column; padding: 1.5rem; gap: 1.5rem; overflow-y: auto; }
+    .playground-content { flex: 1; display: flex; flex-direction: column; padding: 1.5rem; gap: 1.5rem; overflow-y: auto; min-height: 0; }
     .editor-section { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
     .nested-editor { padding: 1rem 0; }
     .category-panel { padding: 0 1.5rem; h4 { margin: 0 0 1rem; font-size: 0.9rem; color: #0f172a; } }
@@ -202,8 +208,8 @@ import {
       .code-block { margin: 0; padding: 1.5rem; overflow-x: auto; color: #38bdf8; font-family: 'Fira Code', monospace; font-size: 0.8rem; }
     }
 
-    .preview-section { flex: 1; display: flex; flex-direction: column; .section-label { font-size: 0.7rem; font-weight: 800; color: #64748b; margin-bottom: 0.5rem; padding-left: 0.5rem; border-left: 3px solid #3b82f6; } }
-    .preview-canvas { flex: 1; background: white; border-radius: 12px; padding: 2rem; border: 1px solid #e2e8f0; display: flex; justify-content: center; align-items: flex-start; }
+    .preview-section { flex: 1; display: flex; flex-direction: column; overflow: hidden; .section-label { font-size: 0.7rem; font-weight: 800; color: #64748b; margin-bottom: 0.5rem; padding-left: 0.5rem; border-left: 3px solid #3b82f6; } }
+    .preview-canvas { flex: 1; background: white; border-radius: 12px; padding: 2rem; border: 1px solid #e2e8f0; display: flex; flex-direction: column; overflow: hidden; }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
