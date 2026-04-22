@@ -164,7 +164,6 @@
   background: var(--alf-tabs-indicator-color);
   border-radius: 3px 3px 0 0;
   z-index: 10;
-  @include alf-transition;
   will-change: transform, width;
 }
 

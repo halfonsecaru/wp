@@ -187,6 +187,20 @@ Este documento es la **fuente de verdad absoluta** para el desarrollo en este pr
     - ❌ **EVITAR A TODA COSTA** el uso de `setTimeout` o `setInterval`.
     - Toda la reactividad y sincronización del DOM debe manejarse mediante Signals (`effect()`, `computed()`), eventos nativos (`animationend`, `transitionend`), promesas nativas (WAAPI `.onfinish`) o los ciclos de vida y directivas modernas de Angular. El uso de retardos artificiales con `setTimeout` es síntoma de mala arquitectura o de un hack inestable.
 
+- 19) CICLOS DE VIDA: PROHIBIDO USAR ARROW FUNCTIONS
+    - ❌ **PROHIBIDO** definir ciclos de vida de Angular (`ngOnInit`, `ngAfterViewInit`, `ngOnDestroy`, `ngOnChanges`, etc.) como Arrow Functions.
+    - Angular detecta los lifecycle hooks a través de la cadena de prototipos. Las Arrow Functions definidas como propiedades de clase (`public readonly ngAfterViewInit = () => {}`) son propiedades de instancia que Angular **NO puede detectar**, causando que el hook nunca se ejecute.
+    - ✅ **OBLIGATORIO** usar métodos regulares para todos los ciclos de vida:
+      ```typescript
+      // ✅ CORRECTO
+      ngAfterViewInit(): void { ... }
+      ngOnDestroy(): void { ... }
+      
+      // ❌ INCORRECTO - Angular NO los detecta
+      public readonly ngAfterViewInit = (): void => { ... };
+      public readonly ngOnDestroy = (): void => { ... };
+      ```
+
 #########################
 # 💎 PRINCIPIOS ULTRA-IMPORTANTES (FILOSOFÍA ÉLITE)
 - **DRY ABSOLUTO (Don't Repeat Yourself)**: Si lo vas a usar dos veces, extráelo. Si está en CSS y puede estar en una variable inyectada, muévelo a la lógica de señales.

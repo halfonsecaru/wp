@@ -19,7 +19,8 @@ import {
   ViewContainerRef,
   TemplateRef,
   Signal,
-  InjectionToken
+  InjectionToken,
+  inject
 } from '@angular/core';
 import { AlfBaseComponent } from '@alfcomponents/base';
 import { AlfTabsInterface } from './interfaces/alf-tabs.interface';
@@ -34,6 +35,7 @@ import { AlfTabContentComponent } from './alf-tab-content/alf-tab-content';
 import { AlfPortalDirective } from './directives/alf-portal';
 import { ALF_TABS_TOKEN } from './tokens';
 import { AlfButtonInterface } from '../../simple/alf-button/interfaces/alf-button.interface';
+import { AlfResizeService } from '../../../services/alf-resize.service';
 
 /**
  * AlfTabsComponent
@@ -89,6 +91,7 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
   protected readonly navigationDirection = signal<'forward' | 'backward'>('forward');
   protected readonly isTransitioning = signal(false);
   protected readonly exitingTabsSet = signal<Set<number>>(new Set());
+  protected readonly isInternalNavigation = signal(false);
 
   // --- Métricas de Alto Rendimiento (Ahorro de recursos) ---
   protected readonly headerMetrics = signal({ scrollWidth: 0, clientWidth: 0, scrollLeft: 0, canLeft: false, canRight: false });
@@ -100,10 +103,12 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
    */
   protected readonly indicatorStyle = computed(() => {
     const m = this.activeTabMetrics();
+    const duration = this.isInternalNavigation() ? '0.25s' : '0s';
     return {
       transform: `translateX(${m.left}px)`,
       width: `${m.width}px`,
       opacity: m.opacity,
+      transition: `transform ${duration} cubic-bezier(0.4, 0, 0.2, 1), width ${duration} cubic-bezier(0.4, 0, 0.2, 1)`,
       backgroundColor: this.indicatorColorVarComputed()
     };
   });
@@ -130,10 +135,19 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
   private touchStartX = 0;
   private readonly swipeThreshold = 50;
   private resizeObserver?: ResizeObserver;
+  private mutationObserver?: MutationObserver;
   private rafId?: number;
+  private readonly resizeService = inject(AlfResizeService);
 
   constructor() {
     super();
+
+    // Reacción al resize del viewport y cambios de pestaña.
+    effect(() => {
+      this.resizeService.resizeSignal();
+      this.activeIndex(); // Reacciona también al cambio de pestaña
+      untracked(() => this.requestMetricsUpdate());
+    });
   }
 
   /** Lógica de Transiciones Natural y Cálculo Estructural */
@@ -142,6 +156,7 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     if (targetIndex === currentIndex || this.isTransitioning()) return;
 
     this.isTransitioning.set(true);
+    this.isInternalNavigation.set(true); // Activamos animación suave
     const direction = targetIndex > currentIndex ? 'forward' : 'backward';
     this.navigationDirection.set(direction);
 
@@ -248,28 +263,44 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     return local ?? globalByParent;
   };
 
+  /**
+   * Listener de Respaldo para la Zone:
+   * Al declarar este listener, aseguramos que Angular dispare la detección de cambios
+   * en cada evento de resize, permitiendo fluidez absoluta en el indicador.
+   */
+  @HostListener('window:resize')
+  public onResize(): void {
+    this.requestMetricsUpdate();
+  }
+
   /** Gestión de Recursos e Interacción con el DOM */
-  public readonly ngAfterViewInit = (): void => {
+  ngAfterViewInit(): void {
     const scrollEl = this.headerScroll()?.nativeElement;
     if (scrollEl) {
       this.resizeObserver = new ResizeObserver(() => this.requestMetricsUpdate());
       this.resizeObserver.observe(scrollEl);
       this.requestMetricsUpdate();
     }
-  };
+  }
 
-  public readonly ngOnDestroy = (): void => {
+  ngOnDestroy(): void {
     this.resizeObserver?.disconnect();
+    this.mutationObserver?.disconnect();
     if (this.rafId) cancelAnimationFrame(this.rafId);
-  };
+  }
 
   /**
-   * Actualización Gradual (Ahorro de CPU): 
-   * Agrupamos lecturas del DOM en un único frame de animación.
+   * Actualización por Frame (Throttle Élite):
+   * Si ya hay un RAF pendiente, no reprogramamos. Esto garantiza
+   * mediciones fluidas a 60fps durante el resize continuo,
+   * sin saturar el hilo principal.
    */
   protected readonly requestMetricsUpdate = (): void => {
-    if (this.rafId) cancelAnimationFrame(this.rafId);
-    this.rafId = requestAnimationFrame(() => this.updateAllMetrics());
+    if (this.rafId) return;
+    this.rafId = requestAnimationFrame(() => {
+      this.rafId = undefined;
+      this.updateAllMetrics();
+    });
   };
 
   private readonly updateAllMetrics = (): void => {
@@ -277,6 +308,7 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     if (!el) return;
 
     // 1. Métricas de Scroll
+    this.isInternalNavigation.set(false); // Durante resize, movimiento instantáneo
     const isOverflowing = el.scrollWidth > el.clientWidth;
     this.headerMetrics.set({
       scrollWidth: el.scrollWidth,
@@ -286,9 +318,8 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
       canRight: isOverflowing && (el.scrollLeft + el.clientWidth < el.scrollWidth - 2)
     });
 
-    // 2. Métricas de la pestaña activa (para el indicador) con doble RAF 
-    // para garantizar que los cambios de layout (font-weight) se han aplicado.
-    requestAnimationFrame(() => this.measureActiveTabParams());
+    // 2. Métricas del indicador activo (medición directa, sin doble RAF)
+    this.measureActiveTabParams();
   };
 
   private readonly measureActiveTabParams = (): void => {
@@ -312,7 +343,29 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
         width: tabRect.width,
         opacity: 1
       });
+    } else {
+      this.setupPanelObserver(host);
     }
+  };
+
+  /**
+   * Configura un MutationObserver en el panel ancestro oculto más cercano.
+   * Se ejecuta solo cuando una medición falla (típico en tabs anidados dentro de paneles [hidden]).
+   */
+  private readonly setupPanelObserver = (element: HTMLElement): void => {
+    if (this.mutationObserver) return;
+
+    const closestPanel = element.closest('.alf-tabs__panel[hidden]');
+    if (!closestPanel) return;
+
+    this.mutationObserver = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        if (mutation.attributeName === 'hidden' && !(closestPanel as HTMLElement).hidden) {
+          this.requestMetricsUpdate();
+        }
+      }
+    });
+    this.mutationObserver.observe(closestPanel, { attributes: true, attributeFilter: ['hidden'] });
   };
 
   public readonly scrollLeft = (): void => { this.headerScroll()?.nativeElement.scrollBy({ left: -150, behavior: 'smooth' }); };
