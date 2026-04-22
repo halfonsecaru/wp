@@ -149,16 +149,15 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     this.targetIndexPending.set(targetIndex);
 
     const container = this.contentContainer()?.nativeElement;
-    
-    // 1. Extraemos la altura EXACTA del panel viejo (no del contenedor, para no sumar paddings 2 veces)
+
+    // 1. Capturamos el estado actual del contenedor (incluyendo paddings reales)
     const currentTab = this.tabs()[currentIndex];
-    let oldHeight = 0;
-    
-    if (currentTab) {
+    if (container && currentTab) {
       const oldPanelEl = document.getElementById(currentTab.panelId()!);
       if (oldPanelEl) {
-        oldHeight = oldPanelEl.offsetHeight;
-        this['_oldHeightMemory'] = oldHeight;
+        // Calculamos el padding vertical exacto del contenedor para ser precisos
+        this['_containerPadding'] = container.offsetHeight - oldPanelEl.offsetHeight;
+        this['_oldHeightMemory'] = container.offsetHeight;
       }
     }
 
@@ -173,14 +172,18 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
 
   protected readonly completeTransition = (targetIndex: number): void => {
     const container = this.contentContainer()?.nativeElement;
-    const oldHeight = this['_oldHeightMemory'] || 0;
+    let oldHeight = this['_oldHeightMemory'] || 0;
 
-    // 2. Transición Lógica (Desmonta el texto viejo, monta el texto nuevo de golpe)
+    // 2. Transición Lógica (Bloqueamos altura para evitar saltos reactivos)
+    if (container && oldHeight > 0) {
+      container.style.height = `${oldHeight}px`;
+    }
+
     this.contentIndex.set(targetIndex);
     this.targetIndexPending.set(null);
     this.isTransitioning.set(false);
 
-    // 3. ¡Animamos al Hijo Directamente! (Tu intuición)
+    // 3. Animación de Contenedor (Sin saltos, sin magic numbers)
     if (container) {
       requestAnimationFrame(() => {
         const allTabs = this.tabs();
@@ -188,51 +191,35 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
         const targetPanelEl = targetTab ? document.getElementById(targetTab.panelId()!) : null;
 
         if (targetPanelEl) {
-          // Extraemos la sangre pura: lo que de verdad mide el Panel Nuevo en sus entrañas
-          const originalPanelHeight = targetPanelEl.style.height;
-          targetPanelEl.style.height = 'max-content'; // Vital: evita que el Grid estire la medida
-          const newHeight = targetPanelEl.offsetHeight;
-          targetPanelEl.style.height = originalPanelHeight;
+          const padding = this['_containerPadding'] || 0;
+          const newHeight = targetPanelEl.offsetHeight + padding;
 
-          if (Math.abs(newHeight - oldHeight) < 2) return;
-
-          const compStyle = getComputedStyle(container);
-          const rawDur = parseFloat(compStyle.transitionDuration) || 0;
-          const cssDuration = rawDur > 0 ? (rawDur * 1000) : 300;
-
-          // Bifurcación Inteligente (Basada en tu intuición):
-          let animFrames: Keyframe[] = [];
-          const originalOverflow = targetPanelEl.style.overflow;
-          targetPanelEl.style.overflow = 'hidden'; // Clip estricto durante animación
-
-          console.log("antiguo: ", oldHeight)
-          console.log("Nuevo: ", newHeight)
-          console.log("Diferencia: ", Math.abs(newHeight - oldHeight));
-          console.log("-------------------------------------")
-          if (oldHeight > newHeight) {
-            // EMPEQUEÑECER: Forzamos la altura por abajo (minHeight) y dejamos que el suelo caiga.
-            // Así el contenido nuevo se queda pegado arriba intacto mientras la caja reduce su vacío.
-            animFrames = [
-              { minHeight: `${oldHeight}px` },
-              { minHeight: `${newHeight}px` }
-            ];
-          } else if (oldHeight < newHeight) {
-            // AGRANDAR: Aplastamos la caja por arriba (maxHeight) y dejamos que el techo suba.
-            // Así el contenido va revelándose progresivamente mientras crece.
-            animFrames = [
-              { maxHeight: `${oldHeight}px` },
-              { maxHeight: `${newHeight}px` }
-            ];
+          if (Math.abs(newHeight - oldHeight) < 2) {
+            container.style.height = 'auto';
+            return;
           }
 
-          // Magia WAAPI Dinámica
-          const resizeAnim = targetPanelEl.animate(animFrames, {
+          // Recuperamos la duración del sistema o fallback premium
+          const compStyle = getComputedStyle(container);
+          const rawDur = parseFloat(compStyle.transitionDuration) || 0;
+          const cssDuration = rawDur > 0 ? (rawDur * 1000) : 450;
+
+          const anim = (oldHeight > newHeight) ? [
+            { minHeight: `${oldHeight}px` },
+            { minHeight: `${newHeight}px` }
+          ] : [
+            { maxHeight: `${oldHeight}px` },
+            { maxHeight: `${newHeight}px` }
+          ];
+          // Animamos el 
+          // CONTENEDOR completo. Esto garantiza que fondos y bordes sigan el flujo.
+          const resizeAnim = container.animate(anim, {
             duration: cssDuration,
             easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
           });
 
           resizeAnim.onfinish = () => {
-            targetPanelEl.style.overflow = originalOverflow;
+            container.style.height = 'auto'; // Al terminar, volvemos a auto para que sea responsive
           };
         }
       });
@@ -475,7 +462,15 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
 
   public readonly getPanelStylesStr = (tab: AlfTabComponent): string => {
     const anim = this.getTabAnimations(tab);
-    let str = (this.contentIndex() === tab.effectiveIndex() || this.exitingTabsSet().has(tab.effectiveIndex())) ? 'display:block;' : 'display:none;';
+    const isActive = this.contentIndex() === tab.effectiveIndex();
+    const isExiting = this.exitingTabsSet().has(tab.effectiveIndex());
+
+    let str = (isActive || isExiting) ? 'display:block;' : 'display:none;';
+
+    // Prioridad de renderizado para evitar que el nuevo tab quede debajo del viejo en el Grid
+    if (isActive) str += 'z-index:2;';
+    else if (isExiting) str += 'z-index:1;';
+
     if (anim?.duration) str += `--animate-duration:${anim.duration};`;
     if (anim?.delay) str += `--animate-delay:${anim.delay};`;
     return str;
