@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, ViewEncapsulation, Signal, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, ViewEncapsulation, Signal, signal, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AlfBaseComponent } from '@alfcomponents/base';
 import { AlfTabContentInterface } from '../interfaces/alf-tabs.interface';
@@ -11,7 +11,7 @@ import { ALF_TABS_TOKEN } from '../tokens';
 @Component({
   selector: 'alf-tab-content',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './alf-tab-content.html',
   styleUrl: './alf-tab-content.scss',
   encapsulation: ViewEncapsulation.Emulated,
@@ -39,6 +39,7 @@ export class AlfTabContentComponent extends AlfBaseComponent<AlfTabContentInterf
 
   /** Determina si este panel es el activo (sigue al contentIndex del padre) */
   public readonly isActive = computed(() => this.parent.contentIndex() === this.index());
+  public readonly hostElement = inject(ElementRef<HTMLElement>);
 
   /** Determina si el panel debe estar presente en el DOM y visible */
   protected readonly shouldBeVisible = computed(() => this.isActive() || this.isExiting());

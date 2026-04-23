@@ -12,10 +12,16 @@
   (touchend)="onTouchEnd($event)"
 >
   <div class="alf-tabs__superior">
-    <div class="alf-tabs__header-container">
+    <div 
+      class="alf-tabs__header-container"
+      [class.alf-tabs__header-container--can-left]="metrics.canLeft"
+      [class.alf-tabs__header-container--can-right]="metrics.canRight"
+    >
       <!-- Flechas de Scroll (CPU Optimized) -->
       @if (metrics.canLeft) {
-      <button type="button" class="alf-tabs__arrow alf-tabs__arrow--left" (click)="scrollLeft()" aria-label="Deslizar izquierda">‹</button>
+      <button type="button" class="alf-tabs__arrow alf-tabs__arrow--left" (click)="scrollLeft()" aria-label="Deslizar izquierda">
+        <span aria-hidden="true">‹</span>
+      </button>
       }
       <div class="alf-tabs__header-scroll" #headerScroll (scroll)="requestMetricsUpdate()">
         <nav class="alf-tabs__nav" role="tablist">
@@ -31,7 +37,9 @@
       </div>
 
       @if (metrics.canRight) {
-      <button type="button" class="alf-tabs__arrow alf-tabs__arrow--right" (click)="scrollRight()" aria-label="Deslizar derecha">›</button>
+      <button type="button" class="alf-tabs__arrow alf-tabs__arrow--right" (click)="scrollRight()" aria-label="Deslizar derecha">
+        <span aria-hidden="true">›</span>
+      </button>
       }
     </div>
 

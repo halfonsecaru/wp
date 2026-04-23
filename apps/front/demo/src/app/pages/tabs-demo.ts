@@ -144,9 +144,18 @@ import {
           <!-- VARIANT 3: SOLID COLLECTION -->
           <!-- ============================ -->
           <alf-tab [defineComponent]="{ label: 'Solid Collection' }">
-             <div class="variant-panel">
-                <p>Esta sección está reservada para la galería de estilos sólidos que se encuentra debajo.</p>
-             </div>
+            <div class="variant-panel">
+              <alf-tabs predefined="underline" variant="primary" [tabsConfiguration]="{ tabConfiguration: { visualType: buttonsVisualType.Solid } }">
+                @for (tab of tenTabsArray; track $index) {
+                  <alf-tab [defineComponent]="{ label: tab.label }">
+                    <div style="padding: 1rem;">
+                      <h3>{{ tab.label }}</h3>
+                      <p>{{ tab.content }}</p>
+                    </div>
+                  </alf-tab>
+                }
+              </alf-tabs>
+            </div>
           </alf-tab>
 
         </alf-tabs>
@@ -158,7 +167,7 @@ import {
             <alf-tab [defineComponent]="{ label: 'Gallery Overview' }">
               <div class="variant-panel">
                 <div class="solid-grid">
-                  @for (variant of solidVariants; track variant.key) {
+                  @for (variant of solidVariants; track $index) {
                     <div class="solid-item">
                       <span class="solid-label">{{ variant.label }}</span>
                       <alf-tabs predefined="underline" [variant]="variant.key" [tabsConfiguration]="{ tabConfiguration: { visualType: buttonsVisualType.Solid } }">
@@ -243,8 +252,6 @@ import {
       overflow-x: auto;
     }
     .solid-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
       gap: 2rem;
       padding: 1rem;
     }
@@ -289,4 +296,9 @@ export class TabsDemoPage {
     { key: AlfColorVariantEnum.Warning, label: 'Warning' },
     { key: AlfColorVariantEnum.Info, label: 'Info' },
   ];
+
+  protected readonly tenTabsArray = Array.from({ length: 10 }, (_, i) => ({
+    label: `Tab ${i + 1}`,
+    content: `Contenido de la pestaña número ${i + 1}. Este es un ejemplo de cómo se ven 10 pestañas sólidas seguidas en la variante primaria.`
+  }));
 }

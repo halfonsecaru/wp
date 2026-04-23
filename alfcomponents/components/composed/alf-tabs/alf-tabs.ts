@@ -16,8 +16,6 @@ import {
   effect,
   untracked,
   output,
-  ViewContainerRef,
-  TemplateRef,
   Signal,
   InjectionToken,
   inject
@@ -103,12 +101,13 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
    */
   protected readonly indicatorStyle = computed(() => {
     const m = this.activeTabMetrics();
-    const duration = this.isInternalNavigation() ? '0.25s' : '0s';
     return {
       transform: `translateX(${m.left}px)`,
       width: `${m.width}px`,
       opacity: m.opacity,
-      transition: `transform ${duration} cubic-bezier(0.4, 0, 0.2, 1), width ${duration} cubic-bezier(0.4, 0, 0.2, 1)`,
+      transition: this.isInternalNavigation() 
+        ? `transform var(--alf-tabs-duration) var(--alf-tabs-easing), width var(--alf-tabs-duration) var(--alf-tabs-easing)` 
+        : 'none',
       backgroundColor: this.indicatorColorVarComputed()
     };
   });
@@ -119,15 +118,13 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
   public readonly tabChange = output<number>();
 
   protected readonly liveMessageComputed = signal<string>('');
-  protected readonly icons = AlfIconsUnicodeIconEnum;
+
   protected readonly tabs = contentChildren(AlfTabComponent);
   protected readonly manualContents = contentChildren(AlfTabContentComponent);
 
   private readonly headerScroll = viewChild<ElementRef<HTMLDivElement>>('headerScroll');
   protected readonly contentContainer = viewChild<ElementRef<HTMLDivElement>>('contentContainer');
-  protected readonly showScrollArrowsComputed = signal<boolean>(false);
-  protected readonly canScrollLeft = signal(false);
-  protected readonly canScrollRight = signal(false);
+
 
   public readonly isNestedModeComputed = computed(() => this.manualContents().length === 0 && this.tabs().length > 0);
 
@@ -138,6 +135,10 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
   private mutationObserver?: MutationObserver;
   private rafId?: number;
   private readonly resizeService = inject(AlfResizeService);
+
+  // --- Memory & Metrics ---
+  private containerPadding = 0;
+  private oldHeightMemory = 0;
 
   constructor() {
     super();
@@ -160,7 +161,9 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     const direction = targetIndex > currentIndex ? 'forward' : 'backward';
     this.navigationDirection.set(direction);
 
-    this.activeIndex.set(targetIndex);
+    if (this.activeIndex() !== targetIndex) {
+      this.activeIndex.set(targetIndex);
+    }
     this.targetIndexPending.set(targetIndex);
 
     const container = this.contentContainer()?.nativeElement;
@@ -168,11 +171,12 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     // 1. Capturamos el estado actual del contenedor (incluyendo paddings reales)
     const currentTab = this.tabs()[currentIndex];
     if (container && currentTab) {
-      const oldPanelEl = document.getElementById(currentTab.panelId()!);
+      const oldContent = this.manualContents().find(c => c.index() === currentIndex);
+      const oldPanelEl = oldContent?.hostElement.nativeElement;
       if (oldPanelEl) {
         // Calculamos el padding vertical exacto del contenedor para ser precisos
-        this['_containerPadding'] = container.offsetHeight - oldPanelEl.offsetHeight;
-        this['_oldHeightMemory'] = container.offsetHeight;
+        this.containerPadding = container.offsetHeight - oldPanelEl.offsetHeight;
+        this.oldHeightMemory = container.offsetHeight;
       }
     }
 
@@ -187,11 +191,10 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
 
   protected readonly completeTransition = (targetIndex: number): void => {
     const container = this.contentContainer()?.nativeElement;
-    let oldHeight = this['_oldHeightMemory'] || 0;
 
     // 2. Transición Lógica (Bloqueamos altura para evitar saltos reactivos)
-    if (container && oldHeight > 0) {
-      container.style.height = `${oldHeight}px`;
+    if (container && this.oldHeightMemory > 0) {
+      container.style.height = `${this.oldHeightMemory}px`;
     }
 
     this.contentIndex.set(targetIndex);
@@ -203,13 +206,14 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
       requestAnimationFrame(() => {
         const allTabs = this.tabs();
         const targetTab = allTabs[targetIndex];
-        const targetPanelEl = targetTab ? document.getElementById(targetTab.panelId()!) : null;
+        const targetContent = this.manualContents().find(c => c.index() === targetIndex);
+        const targetPanelEl = targetContent?.hostElement.nativeElement;
 
         if (targetPanelEl) {
-          const padding = this['_containerPadding'] || 0;
+          const padding = this.containerPadding;
           const newHeight = targetPanelEl.offsetHeight + padding;
 
-          if (Math.abs(newHeight - oldHeight) < 2) {
+          if (Math.abs(newHeight - this.oldHeightMemory) < 2) {
             container.style.height = 'auto';
             return;
           }
@@ -219,11 +223,11 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
           const rawDur = parseFloat(compStyle.transitionDuration) || 0;
           const cssDuration = rawDur > 0 ? (rawDur * 1000) : 450;
 
-          const anim = (oldHeight > newHeight) ? [
-            { minHeight: `${oldHeight}px` },
+          const anim = (this.oldHeightMemory > newHeight) ? [
+            { minHeight: `${this.oldHeightMemory}px` },
             { minHeight: `${newHeight}px` }
           ] : [
-            { maxHeight: `${oldHeight}px` },
+            { maxHeight: `${this.oldHeightMemory}px` },
             { maxHeight: `${newHeight}px` }
           ];
           // Animamos el 
@@ -308,7 +312,10 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     if (!el) return;
 
     // 1. Métricas de Scroll
-    this.isInternalNavigation.set(false); // Durante resize, movimiento instantáneo
+    // Solo reseteamos la navegación interna si no estamos en medio de un cambio de pestaña
+    if (!this.isTransitioning()) {
+      this.isInternalNavigation.set(false);
+    }
     const isOverflowing = el.scrollWidth > el.clientWidth;
     this.headerMetrics.set({
       scrollWidth: el.scrollWidth,
@@ -335,12 +342,9 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     const measurable = host.querySelector('.alf-tab__header') as HTMLElement || host;
 
     if (measurable && measurable.offsetWidth > 0) {
-      const navRect = navEl.getBoundingClientRect();
-      const tabRect = measurable.getBoundingClientRect();
-
       this.activeTabMetrics.set({
-        left: tabRect.left - navRect.left,
-        width: tabRect.width,
+        left: host.offsetLeft + measurable.offsetLeft,
+        width: measurable.offsetWidth,
         opacity: 1
       });
     } else {
@@ -416,9 +420,17 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     effect(() => {
       this.tabs().forEach((tab, index) => {
         tab.setAutoIndex(index);
-        tab.panelId.set(this.getPanelId(index));
-        tab.tabId.set(this.getTabId(index));
       });
+    });
+
+    effect(() => {
+      const target = this.activeIndex();
+      const current = untracked(() => this.contentIndex());
+      const transitioning = untracked(() => this.isTransitioning());
+      
+      if (target !== current && !transitioning) {
+        untracked(() => this.selectTabByIndex(target));
+      }
     });
 
     effect(() => {
@@ -444,7 +456,7 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
 
     // Interpretamos la variante de la pestaña activa (ej: Primary, Success...)
     const variant = activeTab?.configComputed()?.predefined
-      || (this.defineComponentInput() as any)?.variant
+      || this.variantComputed()
       || AlfColorVariantEnum.Primary;
 
     // Obtenemos el ADN puro de la variante
@@ -464,9 +476,7 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     const theme = this.globalTheme().theme;
 
     // Prioridad a la variante del componente (usada en la galería)
-    const variant = this.variantInput()
-      || (this.defineComponentInput() as any)?.variant
-      || AlfColorVariantEnum.Primary;
+    const variant = this.variantComputed() || AlfColorVariantEnum.Primary;
 
     const adn = BASIC_IDENTITIES[theme][variant] || BASIC_IDENTITIES[theme][AlfColorVariantEnum.Primary];
     return `color-mix(in srgb, ${adn.brand} 10%, transparent)`;
@@ -477,7 +487,7 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
    * Si hay una variante (Primary, Success), el borde toma ese color.
    */
   public readonly reactiveBorderColorVarComputed = computed(() => {
-    const variantStr = this.variantInput() || (this.defineComponentInput() as any)?.variant;
+    const variantStr = this.variantComputed();
     if (variantStr) {
       const theme = this.globalTheme().theme;
       const adn = BASIC_IDENTITIES[theme][variantStr as AlfColorVariantEnum];
@@ -529,9 +539,5 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     return str;
   };
 
-  public readonly attachPortal = (vContainerRef: ViewContainerRef, template: TemplateRef<any> | null): void => {
-    if (!vContainerRef || !template) return;
-    vContainerRef.clear();
-    vContainerRef.createEmbeddedView(template);
-  };
+
 }
