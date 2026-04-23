@@ -3,7 +3,6 @@ import {
   Component,
   computed,
   ElementRef,
-  HostListener,
   input,
   model,
   viewChild,
@@ -20,14 +19,13 @@ import {
   ViewContainerRef,
   TemplateRef,
   Signal,
-  InjectionToken,
   inject
 } from '@angular/core';
 import { AlfBaseComponent } from '@alfcomponents/base';
 import { AlfTabsInterface } from './interfaces/alf-tabs.interface';
 import { AlfAnimateCssInterface } from '@alfcomponents/interfaces';
-import { AlfTabsPositionEnum, AlfTabsVisualTypeEnum } from './enums/alf-tabs-visual-type.enum';
-import { AlfIconsUnicodeIconEnum, AlfColorEnum, AlfColorVariantEnum, AlfThemeEnum, AlfButtonVisualTypeEnum } from '@alfcomponents/enums';
+import { AlfTabsPositionEnum } from './enums/alf-tabs-visual-type.enum';
+import { AlfIconsUnicodeIconEnum, AlfColorEnum, AlfColorVariantEnum, AlfButtonVisualTypeEnum } from '@alfcomponents/enums';
 import { BASIC_IDENTITIES } from '../../../predefined/intefaces-basic/basic-colors';
 import { getAlfPredefinedTabs } from './predefined/alf-tabs.predefined';
 import { DefaultTabsKeys } from './enums/default-tabs-keys.enum';
@@ -36,7 +34,6 @@ import { AlfTabContentComponent } from './alf-tab-content/alf-tab-content';
 import { AlfPortalDirective } from './directives/alf-portal';
 import { ALF_TABS_TOKEN } from './tokens';
 import { AlfButtonInterface } from '../../simple/alf-button/interfaces/alf-button.interface';
-import { AlfResizeService } from '../../../services/alf-resize.service';
 
 /**
  * AlfTabsComponent
@@ -50,10 +47,44 @@ import { AlfResizeService } from '../../../services/alf-resize.service';
   styleUrl: './alf-tabs.scss',
   encapsulation: ViewEncapsulation.Emulated,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '(window:resize)': 'onResize()'
+  },
   providers: [{ provide: ALF_TABS_TOKEN, useExisting: AlfTabsComponent }],
 })
 export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> implements AfterViewInit, OnDestroy {
 
+  // --- 1. Effects (Elite Orchestration) ---
+  /**
+   * Orquestador Élite de Sincronización.
+   * Gestiona la coordinación de hijos y notificaciones externas en un único flujo reactivo.
+   */
+  protected readonly stateSyncEffect = effect(() => {
+    // 1. Rastreo de Dependencias (Declarativo)
+    const index = this.activeIndex();
+    const tabs = this.tabs();
+
+    // 2. Coordinación de Hijos (Downstream) - Extraído para evitar anidación (Regla #17)
+    tabs.forEach(this.syncTabMetadata);
+
+    // 3. Reacciones Externas y Visuales (Upstream)
+    this.handleSideEffects(index);
+  });
+
+  // --- 2. Attributes (Traditional & Injected) ---
+  private readonly baseId = `alf-tabs-${Math.random().toString(36).substring(2, 9)}`;
+  protected readonly icons = AlfIconsUnicodeIconEnum;
+  public readonly tabChange = output<number>();
+
+  private touchStartX = 0;
+  private readonly swipeThreshold = 50;
+  private resizeObserver?: ResizeObserver;
+  private mutationObserver?: MutationObserver;
+  private rafId?: number;
+  private containerPadding = 0;
+  private oldHeightMemory = 0;
+
+  // --- 3. Signals (Inputs, Outputs, State) ---
   // **** Esto es usado para el vitest **** //
   @Input('predefined') public set predefined(v: AlfTabsInterface | string | undefined) {
     this.predefinedInput.set(v || DefaultTabsKeys.Underline);
@@ -66,13 +97,33 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
   @Input('tabsConfiguration') public set tabsConfiguration(v: AlfButtonInterface | undefined) {
     this.tabsConfigurationInput.set(v);
   }
-
   // **** Fin vitest **** //
 
+  public readonly activeIndex = model<number>(0);
+  public readonly contentIndex = signal<number>(0);
+  public readonly position = input<AlfTabsPositionEnum>(AlfTabsPositionEnum.Top);
 
   protected readonly predefinedInput = signal<AlfTabsInterface | string>(DefaultTabsKeys.Underline);
   protected readonly tabsConfigurationInput = signal<AlfButtonInterface | undefined>(undefined);
+  protected readonly targetIndexPending = signal<number | null>(null);
+  protected readonly navigationDirection = signal<'forward' | 'backward'>('forward');
+  protected readonly isTransitioning = signal(false);
+  protected readonly exitingTabsSet = signal<Set<number>>(new Set());
+  protected readonly isInternalNavigation = signal(false);
+  protected readonly headerMetrics = signal({ scrollWidth: 0, clientWidth: 0, scrollLeft: 0, canLeft: false, canRight: false });
+  protected readonly activeTabMetrics = signal({ left: 0, width: 0, opacity: 0 });
+  protected readonly showScrollArrowsComputed = signal<boolean>(false);
+  protected readonly canScrollLeft = signal(false);
+  protected readonly canScrollRight = signal(false);
 
+  protected readonly tabs = contentChildren(AlfTabComponent);
+  protected readonly manualContents = contentChildren(AlfTabContentComponent);
+  protected readonly headerScroll = viewChild<ElementRef<HTMLDivElement>>('headerScroll');
+  protected readonly contentContainer = viewChild<ElementRef<HTMLDivElement>>('contentContainer');
+  protected readonly nav = viewChild<ElementRef<HTMLElement>>('nav');
+  protected readonly panels = viewChildren<ElementRef<HTMLDivElement>>('panel');
+
+  // --- 4. Computed (Derived State) ---
   /** 
    * Source of Truth: Identidad Predefinida vinculada al ADN reactivo.
    */
@@ -86,22 +137,6 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
       tabsConfiguration: this.tabsConfigurationInput() || config?.tabsConfiguration
     };
   });
-
-  // --- Identidad y Configuración ---
-  private readonly baseId = `alf-tabs-${Math.random().toString(36).substring(2, 9)}`;
-
-  // --- Máquina de Estados ---
-  public readonly activeIndex = model<number>(0);
-  public readonly contentIndex = signal<number>(0);
-  protected readonly targetIndexPending = signal<number | null>(null);
-  protected readonly navigationDirection = signal<'forward' | 'backward'>('forward');
-  protected readonly isTransitioning = signal(false);
-  protected readonly exitingTabsSet = signal<Set<number>>(new Set());
-  protected readonly isInternalNavigation = signal(false);
-
-  // --- Métricas de Alto Rendimiento (Ahorro de recursos) ---
-  protected readonly headerMetrics = signal({ scrollWidth: 0, clientWidth: 0, scrollLeft: 0, canLeft: false, canRight: false });
-  protected readonly activeTabMetrics = signal({ left: 0, width: 0, opacity: 0 });
 
   /** 
    * Flujo Reactivo Puro: El estilo del indicador es un `computed` 
@@ -120,10 +155,7 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     };
   });
 
-  // --- UI & Proyección ---
-  public readonly position = input<AlfTabsPositionEnum>(AlfTabsPositionEnum.Top);
   public readonly configComputed = this.resolvedConfigComputed;
-  public readonly tabChange = output<number>();
 
   protected readonly liveMessageComputed = computed(() => {
     const index = this.activeIndex();
@@ -133,35 +165,105 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     const label = currentTab.configComputed()?.label || `Pestaña ${index + 1}`;
     return `Pestaña ${label} seleccionada`;
   });
-  protected readonly icons = AlfIconsUnicodeIconEnum;
-  protected readonly tabs = contentChildren(AlfTabComponent);
-  protected readonly manualContents = contentChildren(AlfTabContentComponent);
-
-  private readonly headerScroll = viewChild<ElementRef<HTMLDivElement>>('headerScroll');
-  protected readonly contentContainer = viewChild<ElementRef<HTMLDivElement>>('contentContainer');
-  protected readonly nav = viewChild<ElementRef<HTMLElement>>('nav');
-  protected readonly panels = viewChildren<ElementRef<HTMLDivElement>>('panel');
-  protected readonly showScrollArrowsComputed = signal<boolean>(false);
-  protected readonly canScrollLeft = signal(false);
-  protected readonly canScrollRight = signal(false);
 
   public readonly isNestedModeComputed = computed(() => this.manualContents().length === 0 && this.tabs().length > 0);
 
-  // --- Lógica Interna ---
-  private touchStartX = 0;
-  private readonly swipeThreshold = 50;
-  private resizeObserver?: ResizeObserver;
-  private mutationObserver?: MutationObserver;
-  private rafId?: number;
-  private readonly resizeService = inject(AlfResizeService);
+  /** 
+   * Color dinámico del indicador deslizante.
+   * Se sincroniza con el color de marca de la pestaña activa interpretando su variante al 100%.
+   */
+  public readonly indicatorColorVarComputed = computed(() => {
+    const activeIdx = this.activeIndex();
+    const activeTab = this.tabs().find(t => t.effectiveIndex() === activeIdx);
+    const theme = this.globalTheme().theme;
 
-  // --- Memory & Metrics ---
-  private containerPadding = 0;
-  private oldHeightMemory = 0;
+    // Interpretamos la variante de la pestaña activa (ej: Primary, Success...)
+    const variant = activeTab?.configComputed()?.predefined
+      || (this.defineComponentInput() as any)?.variant
+      || AlfColorVariantEnum.Primary;
 
+    // Obtenemos el ADN puro de la variante
+    const adn = BASIC_IDENTITIES[theme][variant] || BASIC_IDENTITIES[theme][AlfColorVariantEnum.Primary];
+    const baseBrand = adn.brand || AlfColorEnum.Primary;
+
+    // Mismo color base, pero "más fuerte" (oscurecido un 20%)
+    return `color-mix(in srgb, ${baseBrand} 80%, black 20%)`;
+  });
+
+  /** 
+   * Color de fondo para el contenedor de contenido en modo Solid.
+   * Coincide con el tono más claro (10%) de los botones.
+   */
+  public readonly solidContentBgVarComputed = computed(() => {
+    if (!this.isSolidComputed()) return 'transparent';
+    const theme = this.globalTheme().theme;
+
+    // Prioridad a la variante del componente (usada en la galería)
+    const variant = this.variantInput()
+      || (this.defineComponentInput() as any)?.variant
+      || AlfColorVariantEnum.Primary;
+
+    const adn = BASIC_IDENTITIES[theme][variant] || BASIC_IDENTITIES[theme][AlfColorVariantEnum.Primary];
+    return `color-mix(in srgb, ${adn.brand} 10%, transparent)`;
+  });
+
+  /** 
+   * Color de borde dinámico o por defecto (Gray200).
+   * Si hay una variante (Primary, Success), el borde toma ese color.
+   */
+  public readonly reactiveBorderColorVarComputed = computed(() => {
+    const variantStr = this.variantInput() || (this.defineComponentInput() as any)?.variant;
+    if (variantStr) {
+      const theme = this.globalTheme().theme;
+      const adn = BASIC_IDENTITIES[theme][variantStr as AlfColorVariantEnum];
+      if (adn && adn.brand) return adn.brand;
+    }
+    return 'var(--alf-brd-color)';
+  });
+
+  /** Determina si el diseño global es de tipo Solid */
+  public readonly isSolidComputed = computed(() => {
+    return this.resolvedConfigComputed()?.tabsConfiguration?.tabConfiguration?.visualType === AlfButtonVisualTypeEnum.Solid;
+  });
+
+  // --- 5. Lifecycle Hooks ---
   constructor() {
     super();
   }
+
+  /** Gestión de Recursos e Interacción con el DOM */
+  ngAfterViewInit(): void {
+    const scrollEl = this.headerScroll()?.nativeElement;
+    if (scrollEl) {
+      this.resizeObserver = new ResizeObserver(() => this.requestMetricsUpdate());
+      this.resizeObserver.observe(scrollEl);
+      this.requestMetricsUpdate();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.resizeObserver?.disconnect();
+    this.mutationObserver?.disconnect();
+    if (this.rafId) cancelAnimationFrame(this.rafId);
+  }
+
+  // --- 6. Functions (Logic & Event Handlers) ---
+
+  /** Actualiza las propiedades vinculadas de cada pestaña hija */
+  private readonly syncTabMetadata = (tab: AlfTabComponent, i: number): void => {
+    tab.setAutoIndex(i);
+    tab.panelId.set(this.getPanelId(i));
+    tab.tabId.set(this.getTabId(i));
+  };
+
+  /**
+   * Listener de Respaldo para la Zone:
+   * Al declarar este listener, aseguramos que Angular dispare la detección de cambios
+   * en cada evento de resize, permitiendo fluidez absoluta en el indicador.
+   */
+  public readonly onResize = (): void => {
+    this.requestMetricsUpdate();
+  };
 
   /** Lógica de Transiciones Natural y Cálculo Estructural */
   public readonly selectTabByIndex = (targetIndex: number): void => {
@@ -273,38 +375,12 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
   };
 
   /**
-   * Listener de Respaldo para la Zone:
-   * Al declarar este listener, aseguramos que Angular dispare la detección de cambios
-   * en cada evento de resize, permitiendo fluidez absoluta en el indicador.
-   */
-  @HostListener('window:resize')
-  public onResize(): void {
-    this.requestMetricsUpdate();
-  }
-
-  /** Gestión de Recursos e Interacción con el DOM */
-  ngAfterViewInit(): void {
-    const scrollEl = this.headerScroll()?.nativeElement;
-    if (scrollEl) {
-      this.resizeObserver = new ResizeObserver(() => this.requestMetricsUpdate());
-      this.resizeObserver.observe(scrollEl);
-      this.requestMetricsUpdate();
-    }
-  }
-
-  ngOnDestroy(): void {
-    this.resizeObserver?.disconnect();
-    this.mutationObserver?.disconnect();
-    if (this.rafId) cancelAnimationFrame(this.rafId);
-  }
-
-  /**
    * Actualización por Frame (Throttle Élite):
    * Si ya hay un RAF pendiente, no reprogramamos. Esto garantiza
    * mediciones fluidas a 60fps durante el resize continuo,
    * sin saturar el hilo principal.
    */
-  protected readonly requestMetricsUpdate = (): void => {
+  public readonly requestMetricsUpdate = (): void => {
     if (this.rafId) return;
     this.rafId = requestAnimationFrame(() => {
       this.rafId = undefined;
@@ -380,6 +456,7 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     this.mutationObserver.observe(closestPanel, { attributes: true, attributeFilter: ['hidden'] });
   };
 
+  /** Desplazamiento Manual de Flechas */
   public readonly scrollLeft = (): void => { this.headerScroll()?.nativeElement.scrollBy({ left: -150, behavior: 'smooth' }); };
   public readonly scrollRight = (): void => { this.headerScroll()?.nativeElement.scrollBy({ left: 150, behavior: 'smooth' }); };
 
@@ -387,7 +464,7 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
   public readonly getPanelId = (index: number): string => `${this.baseId}-panel-${index}`;
   public readonly getTabId = (index: number): string => `${this.baseId}-tab-${index}`;
 
-  /** Touch & Teclado */
+  /** Manejo de Gestos Táctiles (Swipe) */
   public readonly onTouchStart = (event: TouchEvent): void => {
     this.touchStartX = event.touches[0].clientX;
   };
@@ -413,7 +490,6 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     this.selectTabByIndex(target);
   };
 
-  @HostListener('keydown', ['$event'])
   protected readonly onKeyDown = (event: KeyboardEvent): void => {
     switch (event.key) {
       case 'ArrowRight': event.preventDefault(); this.navigateForward(); break;
@@ -423,96 +499,13 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     }
   };
 
-  /** Reactividad Pura y Coordinación */
-  /**
-   * Orquestador Élite de Sincronización.
-   * Gestiona la coordinación de hijos y notificaciones externas en un único flujo reactivo.
-   */
-  protected readonly stateSyncEffect = effect(() => {
-    // 1. Rastreo de Dependencias (Declarativo)
-    const index = this.activeIndex();
-    const tabs = this.tabs();
-    this.resizeService.resizeSignal(); // Sincroniza con el viewport
-
-    // 2. Coordinación de Hijos (Downstream)
-    tabs.forEach((tab, i) => {
-      tab.setAutoIndex(i);
-      tab.panelId.set(this.getPanelId(i));
-      tab.tabId.set(this.getTabId(i));
-    });
-
-    // 3. Reacciones Externas y Visuales (Upstream)
-    this.handleSideEffects(index);
-  });
-
-  /**
-   * Ejecuta acciones que están fuera del grafo reactivo local (Side Effects).
-   * Se extrae para cumplir con la Regla #17 y mantener la claridad.
-   */
+  /** Actualiza las propiedades vinculadas de cada pestaña hija */
   private readonly handleSideEffects = (index: number): void => {
     untracked(() => {
       this.tabChange.emit(index);
       this.requestMetricsUpdate();
     });
   };
-
-  /** 
-   * Color dinámico del indicador deslizante.
-   * Se sincroniza con el color de marca de la pestaña activa interpretando su variante al 100%.
-   */
-  public readonly indicatorColorVarComputed = computed(() => {
-    const activeIdx = this.activeIndex();
-    const activeTab = this.tabs().find(t => t.effectiveIndex() === activeIdx);
-    const theme = this.globalTheme().theme;
-
-    // Interpretamos la variante de la pestaña activa (ej: Primary, Success...)
-    const variant = activeTab?.configComputed()?.predefined
-      || (this.defineComponentInput() as any)?.variant
-      || AlfColorVariantEnum.Primary;
-
-    // Obtenemos el ADN puro de la variante
-    const adn = BASIC_IDENTITIES[theme][variant] || BASIC_IDENTITIES[theme][AlfColorVariantEnum.Primary];
-    const baseBrand = adn.brand || AlfColorEnum.Primary;
-
-    // Mismo color base, pero "más fuerte" (oscurecido un 20%)
-    return `color-mix(in srgb, ${baseBrand} 80%, black 20%)`;
-  });
-
-  /** 
-   * Color de fondo para el contenedor de contenido en modo Solid.
-   * Coincide con el tono más claro (10%) de los botones.
-   */
-  public readonly solidContentBgVarComputed = computed(() => {
-    if (!this.isSolidComputed()) return 'transparent';
-    const theme = this.globalTheme().theme;
-
-    // Prioridad a la variante del componente (usada en la galería)
-    const variant = this.variantInput()
-      || (this.defineComponentInput() as any)?.variant
-      || AlfColorVariantEnum.Primary;
-
-    const adn = BASIC_IDENTITIES[theme][variant] || BASIC_IDENTITIES[theme][AlfColorVariantEnum.Primary];
-    return `color-mix(in srgb, ${adn.brand} 10%, transparent)`;
-  });
-
-  /** 
-   * Color de borde dinámico o por defecto (Gray200).
-   * Si hay una variante (Primary, Success), el borde toma ese color.
-   */
-  public readonly reactiveBorderColorVarComputed = computed(() => {
-    const variantStr = this.variantInput() || (this.defineComponentInput() as any)?.variant;
-    if (variantStr) {
-      const theme = this.globalTheme().theme;
-      const adn = BASIC_IDENTITIES[theme][variantStr as AlfColorVariantEnum];
-      if (adn && adn.brand) return adn.brand;
-    }
-    return 'var(--alf-brd-color)';
-  });
-
-  /** Determina si el diseño global es de tipo Solid */
-  public readonly isSolidComputed = computed(() => {
-    return this.resolvedConfigComputed()?.tabsConfiguration?.tabConfiguration?.visualType === AlfButtonVisualTypeEnum.Solid;
-  });
 
   /** Helpers de Template */
   public readonly getPanelClassesStr = (tab: AlfTabComponent): string => {

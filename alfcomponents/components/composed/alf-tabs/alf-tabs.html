@@ -24,7 +24,7 @@
       </button>
       }
       <div class="alf-tabs__header-scroll" #headerScroll (scroll)="requestMetricsUpdate()">
-        <nav class="alf-tabs__nav" #nav role="tablist">
+        <nav class="alf-tabs__nav" #nav role="tablist" (keydown)="onKeyDown($event)">
           <!-- Proyección de Cabeceras (AlfTab) -->
           <ng-content select="alf-tab"></ng-content>
 

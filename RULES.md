@@ -201,6 +201,24 @@ Este documento es la **fuente de verdad absoluta** para el desarrollo en este pr
       public readonly ngOnDestroy = (): void => { ... };
       ```
 
+- 20) ORDEN DE MIEMBROS DE CLASE (ESTRUCTURA ÉLITE)
+    - Para mantener la coherencia y facilitar la lectura, todos los componentes deben seguir este orden estricto de declaración:
+    1.  **Effects**: Declaración de `effect()`.
+    2.  **Attributes**: Propiedades tradicionales (no reactivas), inyecciones de dependencias (`inject`) y `output()`.
+    3.  **Signals**: `input()`, `model()`, `signal()`, `contentChildren()`, `viewChild()`, `viewChildren()`.
+    4.  **Computed**: `computed()`.
+    5.  **Lifecycle Hooks**: Métodos de ciclo de vida de Angular (`constructor`, `ngOnInit`, `ngAfterViewInit`, etc.).
+    6.  **Functions**: Métodos de lógica (Arrow Functions) y manejadores de eventos.
+
+- 20) ORDEN DE MIEMBROS DE CLASE (ESTRUCTURA ÉLITE)
+    - Para mantener la coherencia y facilitar la lectura, todos los componentes deben seguir este orden estricto de declaración:
+    1.  **Effects**: Declaración de `effect()`.
+    2.  **Attributes**: Propiedades tradicionales (no reactivas), inyecciones de dependencias (`inject`) y `output()`.
+    3.  **Signals**: `input()`, `model()`, `signal()`, `contentChildren()`, `viewChild()`, `viewChildren()`.
+    4.  **Computed**: `computed()`.
+    5.  **Lifecycle Hooks**: Métodos de ciclo de vida de Angular (`constructor`, `ngOnInit`, `ngAfterViewInit`, etc.).
+    6.  **Functions**: Métodos de lógica (Arrow Functions) y manejadores de eventos.
+
 #########################
 # 💎 PRINCIPIOS ULTRA-IMPORTANTES (FILOSOFÍA ÉLITE)
 - **DRY ABSOLUTO (Don't Repeat Yourself)**: Si lo vas a usar dos veces, extráelo. Si está en CSS y puede estar en una variable inyectada, muévelo a la lógica de señales.
