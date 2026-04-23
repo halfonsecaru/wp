@@ -54,6 +54,21 @@ import { AlfButtonInterface } from '../../simple/alf-button/interfaces/alf-butto
 })
 export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> implements AfterViewInit, OnDestroy {
 
+  // **** Esto es usado para el vitest **** //
+  @Input('predefined') public set predefined(v: AlfTabsInterface | string | undefined) {
+    this.predefinedInput.set(v || DefaultTabsKeys.Underline);
+  }
+
+  /** 
+   * Entrada global para la estética de las cabeceras (DRY).
+   * Si se define aquí, todos los AlfTab hijos heredarán esta configuración.
+  */
+  @Input('tabsConfiguration') public set tabsConfiguration(v: AlfButtonInterface | undefined) {
+    this.tabsConfigurationInput.set(v);
+  }
+  // **** Fin vitest **** //
+
+  
   // --- 1. Effects (Elite Orchestration) ---
   /**
    * Orquestador Élite de Sincronización.
@@ -85,19 +100,7 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
   private oldHeightMemory = 0;
 
   // --- 3. Signals (Inputs, Outputs, State) ---
-  // **** Esto es usado para el vitest **** //
-  @Input('predefined') public set predefined(v: AlfTabsInterface | string | undefined) {
-    this.predefinedInput.set(v || DefaultTabsKeys.Underline);
-  }
 
-  /** 
-   * Entrada global para la estética de las cabeceras (DRY).
-   * Si se define aquí, todos los AlfTab hijos heredarán esta configuración.
-  */
-  @Input('tabsConfiguration') public set tabsConfiguration(v: AlfButtonInterface | undefined) {
-    this.tabsConfigurationInput.set(v);
-  }
-  // **** Fin vitest **** //
 
   public readonly activeIndex = model<number>(0);
   public readonly contentIndex = signal<number>(0);

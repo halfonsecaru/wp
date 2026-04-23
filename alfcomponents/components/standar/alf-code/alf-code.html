@@ -1,0 +1,35 @@
+<div class="alf-code-container" (click)="onTypeClick($event)">
+  @if (title()) {
+  <div class="alf-code-header">
+    <span class="alf-code-title">{{ title() }}</span>
+    <span class="alf-code-language">{{ language() }}</span>
+  </div>
+  }
+
+  <div class="alf-code-wrapper">
+    @if (showCopyButton()) {
+    <button class="alf-code-copy-btn" (click)="copyCode()" [class.copied]="copied" type="button"
+      [attr.aria-label]="copied ? 'Copiado' : 'Copiar código'">
+      @if (copied) {
+      <span class="copy-icon">✓</span>
+      <span class="copy-text">Copied!</span>
+      } @else {
+      <span class="copy-icon">📋</span>
+      <span class="copy-text">Copy</span>
+      }
+    </button>
+    }
+
+    <pre class="alf-code-block" [class.line-numbers]="showLineNumbers()" [class.truncated]="isTruncated()"><code 
+      #codeElement 
+      [class]="'language-' + language()"
+      [innerHTML]="highlightedHtml()"></code></pre>
+
+
+    @if (isTruncated()) {
+    <button class="alf-code-expand-btn" (click)="toggleExpand()" type="button">
+      {{ isExpanded() ? '▲ Ver menos' : '▼ Ver más' }}
+    </button>
+    }
+  </div>
+</div>

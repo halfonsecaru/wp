@@ -1,0 +1,353 @@
+.alf-code-container {
+  box-sizing: border-box;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #374151;
+}
+
+// Header con titulo y lenguaje
+.alf-code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: #2d2d2d;
+  border-bottom: 1px solid #374151;
+}
+
+.alf-code-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+
+.alf-code-language {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+// Wrapper para posicionar boton de copiar
+.alf-code-wrapper {
+  position: relative;
+}
+
+// Boton de copiar
+.alf-code-copy-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  background: #3c3c3c;
+  border: 1px solid #555;
+  border-radius: 4px;
+  color: #d4d4d4;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+
+  &:hover {
+    background: #4a4a4a;
+    border-color: #666;
+  }
+
+  &.copied {
+    background: #2e7d32;
+    border-color: #4caf50;
+    color: #fff;
+  }
+
+  .copy-icon {
+    font-size: 0.875rem;
+  }
+
+  .copy-text {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+}
+
+// Boton de expandir/contraer
+.alf-code-expand-btn {
+  width: 100%;
+  padding: 0.5rem;
+  background: #2d2d2d;
+  border: none;
+  border-top: 1px solid #374151;
+  border-radius: 0 0 8px 8px;
+  color: #9ca3af;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+
+  &:hover {
+    background: #3c3c3c;
+    color: #d4d4d4;
+  }
+
+  &:active {
+    background: #4a4a4a;
+  }
+}
+
+// Bloque de codigo principal
+.alf-code-block {
+  background: #1e1e1e;
+  color: #d4d4d4;
+  padding: 1.5rem;
+  overflow-x: auto;
+  font-family: "Cascadia Code", "Fira Code", "Monaco", "Menlo", "Ubuntu Mono", "Courier New", monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  margin: 0;
+  tab-size: 2;
+  text-align: left;
+  border-radius: 8px;
+
+  // Cuando está truncado (con botón Ver más), quitar border-radius inferior
+  &.truncated {
+    border-radius: 8px 8px 0 0;
+  }
+
+
+
+  code {
+    background: none;
+    color: inherit;
+    padding: 0;
+    font-size: inherit;
+    font-family: inherit;
+    white-space: pre-wrap;
+  }
+
+  code {
+    background: none;
+    color: inherit;
+    padding: 0;
+    font-size: inherit;
+    font-family: inherit;
+  }
+
+  // Scrollbar styling
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #2d2d2d;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 4px;
+
+    &:hover {
+      background: #666;
+    }
+  }
+
+  // Firefox scrollbar
+  scrollbar-width: thin;
+  scrollbar-color: #555 #2d2d2d;
+}
+
+// ============================================================================
+// PRISM.JS SYNTAX HIGHLIGHTING - VS CODE DARK MODERN THEME
+// ============================================================================
+
+.alf-code-block {
+  // Comentarios
+  .token.comment,
+  .token.prolog,
+  .token.doctype,
+  .token.cdata {
+    color: #6a9955 !important;
+    font-style: italic;
+  }
+
+  // Puntuacion
+  .token.punctuation {
+    color: #808080 !important;
+  }
+
+  // Tags HTML (Custom components like alf-tabs)
+  .token.tag {
+    color: #569cd6 !important; // Fallback
+
+    .token.punctuation {
+      color: #808080 !important; // < y > en gris
+    }
+
+    .token.name,
+    .token.keyword {
+      color: #569cd6 !important; // Nombre del tag (alf-tabs) en azul
+    }
+  }
+
+  .token.entity,
+  .token.namespace,
+  .token.deleted {
+    color: #569cd6 !important;
+  }
+
+
+  .token.boolean,
+  .token.number,
+  .token.constant,
+  .token.symbol,
+  .token.deleted {
+    color: #b5cea8 !important;
+  }
+
+  // Strings
+  .token.string,
+  .token.char,
+  .token.builtin,
+  .token.inserted {
+    color: #ce9178 !important;
+  }
+
+  // Atributos HTML
+  .token.attr-name {
+    color: #9cdcfe !important;
+  }
+
+  // Valores de atributos
+  .token.attr-value {
+    color: #ce9178 !important;
+  }
+
+  // Keywords (import, export, const, let, var, default, interface, etc.)
+  .token.keyword {
+    color: #569cd6 !important;
+  }
+
+  // Funciones
+  .token.function {
+    color: #dcdcaa !important;
+  }
+
+  // Clases y tipos
+  .token.class-name {
+    color: #4ec9b0 !important;
+  }
+
+  // Operadores
+  .token.operator {
+    color: #d4d4d4 !important;
+  }
+
+  // Regex, variables
+  .token.regex,
+  .token.important,
+  .token.variable {
+    color: #d16969 !important;
+  }
+
+  // Selector CSS
+  .token.selector {
+    color: #d7ba7d !important;
+  }
+
+  // Property CSS/JSON
+  .token.property {
+    color: #9cdcfe !important;
+  }
+
+  // Atrule CSS (@import, @media, etc.)
+  .token.atrule {
+    color: #c586c0 !important;
+  }
+
+  // Namespace
+  .token.namespace {
+    color: #4ec9b0 !important;
+  }
+
+  // Tipos personalizados Alf (Enums e Interfaces)
+  .token.alf-type {
+    color: #4ec9b0 !important;
+  }
+
+  // Tipos clickeables (tienen definición disponible)
+  .token.alf-type-clickable {
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-underline-offset: 3px;
+
+    &:hover {
+      color: #6ee7b7 !important;
+      text-decoration-style: solid;
+    }
+  }
+}
+
+
+// Popover para mostrar definición de tipo
+.alf-type-popover {
+  position: fixed;
+  z-index: 9999;
+  min-width: 300px;
+  max-width: 600px;
+  max-height: 400px;
+  background: #1e1e1e;
+  border: 1px solid #4ec9b0;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.alf-type-popover-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: #2d2d2d;
+  border-bottom: 1px solid #374151;
+}
+
+.alf-type-popover-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #4ec9b0;
+}
+
+.alf-type-popover-close {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  line-height: 1;
+
+  &:hover {
+    color: #fff;
+  }
+}
+
+.alf-type-popover-code {
+  margin: 0;
+  padding: 1rem;
+  max-height: 340px;
+  overflow: auto;
+  font-family: "Cascadia Code", "Fira Code", "Monaco", monospace;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: #d4d4d4;
+  white-space: pre;
+
+  code {
+    background: none;
+    color: inherit;
+  }
+}

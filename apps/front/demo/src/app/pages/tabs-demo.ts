@@ -7,7 +7,8 @@ import {
   AlfTabsVisualTypeEnum,
   DefaultTabsKeys,
   AlfColorVariantEnum,
-  AlfButtonVisualTypeEnum
+  AlfButtonVisualTypeEnum,
+  AlfCodeComponent
 } from '@alfcomponents';
 
 /**
@@ -17,7 +18,7 @@ import {
 @Component({
   selector: 'app-tabs-demo',
   standalone: true,
-  imports: [CommonModule, AlfTabsComponent, AlfTabComponent],
+  imports: [CommonModule, AlfTabsComponent, AlfTabComponent, AlfCodeComponent],
   template: `
     <div class="docs-container">
       <header class="docs-header">
@@ -66,14 +67,8 @@ import {
 
                 <!-- CODE -->
                 <alf-tab [defineComponent]="{ label: 'Code' }">
-                  <div class="code-canvas">
-                    <pre><code>
-&lt;!-- Plantilla HTML --&gt;
-&lt;alf-tabs [defineComponent]="&#123; visualType: tabsVisualType.Underline &#125;"&gt;
-  &lt;alf-tab [defineComponent]="&#123; label: 'Visión General' &#125;"&gt; ... &lt;/alf-tab&gt;
-  &lt;alf-tab [defineComponent]="&#123; label: 'Estadísticas' &#125;"&gt; ... &lt;/alf-tab&gt;
-&lt;/alf-tabs&gt;
-                    </code></pre>
+                  <div class="code-canvas-adapted">
+                    <alf-code [code]="underlineCode" language="html" title="Underline Configuration"></alf-code>
                   </div>
                 </alf-tab>
 
@@ -125,14 +120,8 @@ import {
 
                 <!-- CODE -->
                 <alf-tab [defineComponent]="{ label: 'Code' }">
-                  <div class="code-canvas">
-                    <pre><code>
-&lt;!-- Plantilla HTML --&gt;
-&lt;alf-tabs [predefined]="tabsKeys.Master"&gt;
-  &lt;alf-tab label="Diseño"&gt; ... &lt;/alf-tab&gt;
-  &lt;alf-tab label="Rendimiento"&gt; ... &lt;/alf-tab&gt;
-&lt;/alf-tabs&gt;
-                    </code></pre>
+                  <div class="code-canvas-adapted">
+                    <alf-code [code]="masterCode" language="html" title="Master Configuration"></alf-code>
                   </div>
                 </alf-tab>
 
@@ -241,15 +230,10 @@ import {
       justify-content: center;
       align-items: center;
     }
-    .code-canvas {
+    .code-canvas-adapted {
       margin-top: 1rem;
-      background: #0f172a;
       border-radius: 8px;
-      padding: 1.5rem;
-      color: #38bdf8;
-      font-family: 'Fira Code', monospace;
-      font-size: 0.85rem;
-      overflow-x: auto;
+      overflow: hidden;
     }
     .solid-grid {
       gap: 2rem;
@@ -288,6 +272,22 @@ export class TabsDemoPage {
   protected readonly tabsKeys = DefaultTabsKeys;
   protected readonly colorVariants = AlfColorVariantEnum;
   protected readonly buttonsVisualType = AlfButtonVisualTypeEnum;
+
+  protected readonly underlineCode = `
+<!-- Plantilla HTML -->
+<alf-tabs [defineComponent]="{ visualType: tabsVisualType.Underline }">
+  <alf-tab [defineComponent]="{ label: 'Visión General' }"> ... </alf-tab>
+  <alf-tab [defineComponent]="{ label: 'Estadísticas' }"> ... </alf-tab>
+</alf-tabs>
+  `.trim();
+
+  protected readonly masterCode = `
+<!-- Plantilla HTML -->
+<alf-tabs [predefined]="tabsKeys.Master">
+  <alf-tab [defineComponent]="{ label: 'Diseño' }"> ... </alf-tab>
+  <alf-tab [defineComponent]="{ label: 'Rendimiento' }"> ... </alf-tab>
+</alf-tabs>
+  `.trim();
 
   protected readonly solidVariants = [
     { key: AlfColorVariantEnum.Primary, label: 'Primary' },

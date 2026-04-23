@@ -12,3 +12,6 @@ export * from './composed/alf-tabs/interfaces/alf-tabs.interface';
 export * from './composed/alf-tabs/enums/alf-tabs-visual-type.enum';
 export * from './composed/alf-tabs/enums/default-tabs-keys.enum';
 export * from './composed/alf-tabs/predefined/alf-tabs.predefined';
+
+// Standar Components
+export * from './standar/alf-code/alf-code';
