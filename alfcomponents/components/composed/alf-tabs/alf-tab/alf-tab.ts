@@ -13,10 +13,11 @@ import {
   ElementRef,
   Input
 } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { AlfBaseComponent } from '@alfcomponents/base';
 import { AlfTabInterface } from '../interfaces/alf-tabs.interface';
 import { AlfRippleDirective } from '@alfcomponents/directives';
-import { AlfAriaRoleEnum, AlfButtonVisualTypeEnum, AlfIconsUnicodeIconEnum, AlfThemeEnum, AlfColorVariantEnum, AlfColorEnum, AlfShadowEnum, AlfBorderStyleEnum, AlfPxEnum, AlfRadiusEnum } from '@alfcomponents/enums';
+import { AlfAriaRoleEnum, AlfButtonVisualTypeEnum, AlfIconsUnicodeIconEnum, AlfThemeEnum, AlfColorVariantEnum, AlfColorEnum, AlfShadowEnum, AlfBorderStyleEnum, AlfPxEnum } from '@alfcomponents/enums';
 import { AlfTabsVisualTypeEnum } from '../enums/alf-tabs-visual-type.enum';
 import { ALF_TABS_TOKEN } from '../tokens';
 import { BASIC_IDENTITIES } from '../../../../predefined/intefaces-basic/basic-colors';
@@ -45,9 +46,9 @@ export class AlfTabComponent extends AlfBaseComponent<AlfTabInterface> {
   private readonly parent = inject(ALF_TABS_TOKEN);
   public readonly hostElement = inject(ElementRef);
 
-  /** IDs para accesibilidad (vinculados al sistema del padre) */
-  public readonly tabId = computed(() => this.parent.getTabId(this.effectiveIndex()));
-  public readonly panelId = computed(() => this.parent.getPanelId(this.effectiveIndex()));
+  /** IDs para accesibilidad (gestionados por el padre) */
+  public readonly tabId = signal<string | null>(null);
+  public readonly panelId = signal<string | null>(null);
 
   /** 
    * Índice de esta pestaña. 
@@ -72,11 +73,11 @@ export class AlfTabComponent extends AlfBaseComponent<AlfTabInterface> {
     const theme = this.globalTheme().theme;
     const parentConfig = this.parent.configComputed();
 
-    // Herencia de variante: Prioridad local -> Variante del padre -> Primary (Fallback)
+    // Herencia de variante: Prioridad local -> Variante en tabsConfiguration (padre/local) -> Variante del padre -> Primary (Fallback)
     const variant = this.variantInput()
-      || (this.defineComponentInput() as any)?.variant
-      || parentConfig?.tabsConfiguration?.tabConfiguration?.variant
-      || this.parent.variantInput()
+      || (this.defineComponentInput() as any)?.tabsConfiguration?.variant
+      || (parentConfig?.tabsConfiguration as any)?.variant
+      || (this.parent as any).variantInput()
       || parentConfig?.predefined
       || AlfColorVariantEnum.Primary;
 
@@ -92,17 +93,6 @@ export class AlfTabComponent extends AlfBaseComponent<AlfTabInterface> {
     const baseIdentiy: AlfTabInterface = {
       label: 'Tab',
       predefined: variant, // Vital para el color del slider
-      border: {
-        default: {
-          borderRadius: AlfRadiusEnum.None,
-          borderBottomWidth: isSolid ? AlfPxEnum.Px1 : AlfPxEnum.None,
-          borderTopWidth: AlfPxEnum.None,
-          borderLeftWidth: AlfPxEnum.None,
-          borderRightWidth: AlfPxEnum.None,
-          borderColor: isSolid ? `color-mix(in srgb, ${adn.brand} 20%, transparent)` as AlfColorEnum : AlfColorEnum.Transparent,
-          borderStyle: isSolid ? AlfBorderStyleEnum.Solid : undefined
-        }
-      },
       backgrounds: {
         default: { backgroundColor: isSolid ? `color-mix(in srgb, ${adn.brand} 10%, transparent)` as AlfColorEnum : AlfColorEnum.Transparent }, 
         hover: { backgroundColor: `color-mix(in srgb, ${adn.brand} ${isSolid ? '20%' : '10%'}, transparent)` as AlfColorEnum }, // Hover: 20% si es solid
@@ -117,6 +107,13 @@ export class AlfTabComponent extends AlfBaseComponent<AlfTabInterface> {
         default: { boxShadow: AlfShadowEnum.None },
         hover: { boxShadow: AlfShadowEnum.None },
         active: { boxShadow: AlfShadowEnum.None }
+      },
+      border: {
+        default: {
+          borderWidth: isSolid ? AlfPxEnum.Px1 : AlfPxEnum.None,
+          borderColor: isSolid ? `color-mix(in srgb, ${adn.brand} 20%, transparent)` as AlfColorEnum : AlfColorEnum.Transparent,
+          borderStyle: isSolid ? AlfBorderStyleEnum.Solid : undefined
+        }
       },
       ripple: true,
       // Ripple más lento y elegante (color-mix con mucha transparencia)

@@ -16,8 +16,6 @@
   --alf-tabs-header-weight: 500;
   --alf-tabs-header-weight-active: 600;
   --alf-tabs-indicator-height: 2px;
-  --alf-tabs-arrow-size: 32px;
-  --alf-tabs-header-color-active: var(--alf-tabs-indicator-color, currentColor);
 
   // Animation Tokens
   --alf-tabs-duration: 250ms;
@@ -121,7 +119,7 @@
 
   position: absolute;
   top: 0;
-  margin-bottom: 2px;
+  margin-bottom: 2px !important;
   bottom: 0px;
   width: var(--alf-tabs-arrow-size);
   z-index: 100;
@@ -150,30 +148,30 @@
 
   &--left {
     left: 0;
-    background-image: linear-gradient(
+    background: linear-gradient(
       to right, 
       color-mix(in srgb, var(--alf-bg-color) 80%, transparent) 0%, 
       color-mix(in srgb, var(--alf-bg-color) 40%, transparent) 60%, 
       transparent 100%
-    );
+    ) !important;
     border-right: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   &--right {
     right: 0;
-    background-image: linear-gradient(
+    background: linear-gradient(
       to left, 
       color-mix(in srgb, var(--alf-bg-color) 80%, transparent) 0%, 
       color-mix(in srgb, var(--alf-bg-color) 40%, transparent) 60%, 
       transparent 100%
-    );
+    ) !important;
     border-left: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   &:hover:not(:disabled) {
     color: var(--alf-tabs-header-color-active);
     transform: scale(1.1);
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(255, 255, 255, 0.05) !important;
   }
 
   &:active {

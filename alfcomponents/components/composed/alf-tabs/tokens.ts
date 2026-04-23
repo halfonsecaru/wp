@@ -8,8 +8,6 @@ export interface AlfTabsCoordinator {
   readonly activeIndex: Signal<number>;
   readonly contentIndex: Signal<number>;
   readonly configComputed: Signal<any>;
-  readonly variantInput: Signal<any>;
-  readonly defineComponentInput: Signal<any>;
   readonly selectTabByIndex: (index: number) => void;
   readonly getPanelId: (index: number) => string;
   readonly getTabId: (index: number) => string;

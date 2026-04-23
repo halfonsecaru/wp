@@ -1,36 +1,35 @@
 @let s = styleVariablesComputed();
 @let visualType = visualTypeComputed();
-@let config = configComputed();
 
 <div 
   class="alf-tab__header"
   [class]="'alf-tab__header--' + visualType"
   [class.alf-tab__header--active]="isActive()"
   [class.alf-tab__header--solid]="isSolidComputed()"
-  [class.alf-tab__header--disabled]="config?.disabled"
+  [class.alf-tab__header--disabled]="configComputed()?.disabled"
   [alfRipple]="rippleConfig()"
   [attr.role]="'tab'"
   [attr.aria-selected]="isActive()"
   [attr.id]="tabId()"
   [attr.aria-controls]="panelId()"
-  [attr.tabindex]="config?.disabled ? -1 : 0"
+  [attr.tabindex]="configComputed()?.disabled ? -1 : 0"
   [style]="s"
   (click)="selectTab()"
   (keydown.enter)="selectTab()"
   (keydown.space)="selectTab()"
 >
-  @if (config?.prefix) {
-    <span class="alf-tab__icon alf-tab__icon--prefix">{{ config?.prefix }}</span>
+  @if (configComputed()?.prefix) {
+    <span class="alf-tab__icon alf-tab__icon--prefix">{{ configComputed()?.prefix }}</span>
   }
 
-  <span class="alf-tab__label">{{ config?.label }}</span>
+  <span class="alf-tab__label">{{ configComputed()?.label }}</span>
 
-  @if (config?.badge !== undefined) {
-    <span class="alf-tab__badge">{{ config?.badge }}</span>
+  @if (configComputed()?.badge !== undefined) {
+    <span class="alf-tab__badge">{{ configComputed()?.badge }}</span>
   }
 
-  @if (config?.suffix) {
-    <span class="alf-tab__icon alf-tab__icon--suffix">{{ config?.suffix }}</span>
+  @if (configComputed()?.suffix) {
+    <span class="alf-tab__icon alf-tab__icon--suffix">{{ configComputed()?.suffix }}</span>
   }
 </div>
 

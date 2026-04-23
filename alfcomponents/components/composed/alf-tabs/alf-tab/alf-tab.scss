@@ -31,6 +31,11 @@
   @include alf-backgrounds;
   @include alf-border;
 
+  border-width: 0 !important;
+  border-radius: 0 !important;
+  border-color: transparent !important;
+  background-image: none !important;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -60,19 +65,16 @@
 
   // --- Identidad: Solid ---
   &--solid {
-    --alf-brd-radius: 0;
-    --alf-mar-margin: 0;
-    --alf-brd-border-top-width: 0;
-    --alf-brd-border-right-width: 0;
-    --alf-brd-border-bottom-width: 0;
-    --alf-brd-border-left-width: 0;
+    border-radius: 0 !important;
+    margin: 0 !important;
     transition: all 0.2s ease-in-out;
+    border: none !important;
   }
 
   &--active {
     font-weight: var(--alf-tabs-header-weight-active, 600);
-    --alf-bg-color: var(--alf-bg-color-active, var(--alf-bg-color));
-    --alf-txt-color: var(--alf-typography-color-active, inherit);
+    background-color: var(--alf-bg-color-active, var(--alf-bg-color)) !important;
+    color: var(--alf-typography-color-active) !important;
   }
 
   &--disabled {
@@ -106,6 +108,6 @@
 :host-context(.alf-tabs--master),
 :host-context(.alf-tabs--solid) {
   &::after {
-    display: none;
+    display: none !important;
   }
 }
