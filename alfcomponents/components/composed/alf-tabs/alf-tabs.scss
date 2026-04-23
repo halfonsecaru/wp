@@ -129,12 +129,12 @@
   cursor: pointer;
   color: inherit;
   @include alf-transition;
-  
+
   // --- Crystal (Glassmorphism) Effect ---
   backdrop-filter: blur(12px) saturate(180%);
   -webkit-backdrop-filter: blur(12px) saturate(180%);
   background-color: transparent;
-  
+
   font-weight: bold;
   font-size: 1.8rem;
   font-family: serif;
@@ -149,9 +149,9 @@
   &--left {
     left: 0;
     background: linear-gradient(
-      to right, 
-      color-mix(in srgb, var(--alf-bg-color) 80%, transparent) 0%, 
-      color-mix(in srgb, var(--alf-bg-color) 40%, transparent) 60%, 
+      to right,
+      color-mix(in srgb, var(--alf-bg-color) 80%, transparent) 0%,
+      color-mix(in srgb, var(--alf-bg-color) 40%, transparent) 60%,
       transparent 100%
     ) !important;
     border-right: 1px solid rgba(255, 255, 255, 0.1);
@@ -160,9 +160,9 @@
   &--right {
     right: 0;
     background: linear-gradient(
-      to left, 
-      color-mix(in srgb, var(--alf-bg-color) 80%, transparent) 0%, 
-      color-mix(in srgb, var(--alf-bg-color) 40%, transparent) 60%, 
+      to left,
+      color-mix(in srgb, var(--alf-bg-color) 80%, transparent) 0%,
+      color-mix(in srgb, var(--alf-bg-color) 40%, transparent) 60%,
       transparent 100%
     ) !important;
     border-left: 1px solid rgba(255, 255, 255, 0.1);
@@ -195,7 +195,9 @@
   border-radius: 3px 3px 0 0;
   z-index: 10;
   will-change: transform, width;
-  transition: transform var(--alf-tabs-duration) var(--alf-tabs-easing), width var(--alf-tabs-duration) var(--alf-tabs-easing);
+  transition:
+    transform var(--alf-tabs-duration) var(--alf-tabs-easing),
+    width var(--alf-tabs-duration) var(--alf-tabs-easing);
 }
 
 // --- Soporte para AlfTab (Componente Hijo) ---
@@ -204,7 +206,7 @@
 .alf-tabs__content-container {
   @include alf-padding;
   box-sizing: border-box;
-  
+
   background: var(--alf-tabs-solid-bg);
   border-radius: 0;
   flex: 1;

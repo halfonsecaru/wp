@@ -57,18 +57,18 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
   @Input('predefined') public set predefined(v: AlfTabsInterface | string | undefined) {
     this.predefinedInput.set(v || DefaultTabsKeys.Underline);
   }
-  
+
   /** 
    * Entrada global para la estética de las cabeceras (DRY).
    * Si se define aquí, todos los AlfTab hijos heredarán esta configuración.
   */
- @Input('tabsConfiguration') public set tabsConfiguration(v: AlfButtonInterface | undefined) {
-   this.tabsConfigurationInput.set(v);
+  @Input('tabsConfiguration') public set tabsConfiguration(v: AlfButtonInterface | undefined) {
+    this.tabsConfigurationInput.set(v);
   }
 
   // **** Fin vitest **** //
 
-  
+
   protected readonly predefinedInput = signal<AlfTabsInterface | string>(DefaultTabsKeys.Underline);
   protected readonly tabsConfigurationInput = signal<AlfButtonInterface | undefined>(undefined);
 
@@ -112,8 +112,8 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
       transform: `translateX(${m.left}px)`,
       width: `${m.width}px`,
       opacity: m.opacity,
-      transition: this.isInternalNavigation() 
-        ? `transform var(--alf-tabs-duration) var(--alf-tabs-easing), width var(--alf-tabs-duration) var(--alf-tabs-easing)` 
+      transition: this.isInternalNavigation()
+        ? `transform var(--alf-tabs-duration) var(--alf-tabs-easing), width var(--alf-tabs-duration) var(--alf-tabs-easing)`
         : 'none',
       backgroundColor: this.indicatorColorVarComputed()
     };
@@ -215,35 +215,36 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
         const targetPanelEl = targetTab ? document.getElementById(targetTab.panelId()!) : null;
 
         if (targetPanelEl) {
-          const padding = this.containerPadding;
-          const newHeight = targetPanelEl.offsetHeight + padding;
+          // 1. Calculamos el nuevo height real
+          const newHeight = targetPanelEl.scrollHeight + this.containerPadding;
 
           if (Math.abs(newHeight - this.oldHeightMemory) < 2) {
             container.style.height = 'auto';
             return;
           }
 
-          // Recuperamos la duración del sistema o fallback premium
-          const compStyle = getComputedStyle(container);
-          const rawDur = parseFloat(compStyle.transitionDuration) || 0;
-          const cssDuration = rawDur > 0 ? (rawDur * 1000) : 450;
-
-          const anim = (this.oldHeightMemory > newHeight) ? [
+          // 2. Lógica Dual Élite: minHeight para encoger, maxHeight para crecer
+          const isShrinking = this.oldHeightMemory > newHeight;
+          const anim = isShrinking ? [
             { minHeight: `${this.oldHeightMemory}px` },
             { minHeight: `${newHeight}px` }
           ] : [
             { maxHeight: `${this.oldHeightMemory}px` },
             { maxHeight: `${newHeight}px` }
           ];
-          // Animamos el 
-          // CONTENEDOR completo. Esto garantiza que fondos y bordes sigan el flujo.
+
+          // LIBERAMOS el height fijo para que min/maxHeight controlen el flujo de la animación
+          container.style.height = 'auto';
+
           const resizeAnim = container.animate(anim, {
-            duration: cssDuration,
-            easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+            duration: 300,
+            easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+            fill: 'forwards'
           });
 
           resizeAnim.onfinish = () => {
-            container.style.height = 'auto'; // Al terminar, volvemos a auto para que sea responsive
+            container.style.height = 'auto';
+            container.style.minHeight = '';
           };
         }
       });
@@ -349,7 +350,7 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     if (measurable && measurable.offsetWidth > 0) {
       // Optimizamos usando offsetLeft/offsetWidth para evitar el costo de getBoundingClientRect
       const host = currentTab.hostElement.nativeElement as HTMLElement;
-      
+
       this.activeTabMetrics.set({
         left: host.offsetLeft + measurable.offsetLeft,
         width: measurable.offsetWidth,
