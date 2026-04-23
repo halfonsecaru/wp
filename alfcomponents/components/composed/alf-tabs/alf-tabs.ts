@@ -53,18 +53,23 @@ import { AlfResizeService } from '../../../services/alf-resize.service';
 })
 export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> implements AfterViewInit, OnDestroy {
 
+  // **** Esto es usado para el vitest **** //
   @Input('predefined') public set predefined(v: AlfTabsInterface | string | undefined) {
     this.predefinedInput.set(v || DefaultTabsKeys.Underline);
   }
-  protected readonly predefinedInput = signal<AlfTabsInterface | string>(DefaultTabsKeys.Underline);
-
+  
   /** 
    * Entrada global para la estética de las cabeceras (DRY).
    * Si se define aquí, todos los AlfTab hijos heredarán esta configuración.
-   */
-  @Input('tabsConfiguration') public set tabsConfiguration(v: AlfButtonInterface | undefined) {
-    this.tabsConfigurationInput.set(v);
+  */
+ @Input('tabsConfiguration') public set tabsConfiguration(v: AlfButtonInterface | undefined) {
+   this.tabsConfigurationInput.set(v);
   }
+
+  // **** Fin vitest **** //
+
+  
+  protected readonly predefinedInput = signal<AlfTabsInterface | string>(DefaultTabsKeys.Underline);
   protected readonly tabsConfigurationInput = signal<AlfButtonInterface | undefined>(undefined);
 
   /** 
@@ -119,7 +124,14 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
   public readonly configComputed = this.resolvedConfigComputed;
   public readonly tabChange = output<number>();
 
-  protected readonly liveMessageComputed = signal<string>('');
+  protected readonly liveMessageComputed = computed(() => {
+    const index = this.activeIndex();
+    const tabs = this.tabs();
+    const currentTab = tabs[index];
+    if (!currentTab) return '';
+    const label = currentTab.configComputed()?.label || `Pestaña ${index + 1}`;
+    return `Pestaña ${label} seleccionada`;
+  });
   protected readonly icons = AlfIconsUnicodeIconEnum;
   protected readonly tabs = contentChildren(AlfTabComponent);
   protected readonly manualContents = contentChildren(AlfTabContentComponent);
@@ -146,13 +158,6 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
 
   constructor() {
     super();
-
-    // Reacción al resize del viewport y cambios de pestaña.
-    effect(() => {
-      this.resizeService.resizeSignal();
-      this.activeIndex(); // Reacciona también al cambio de pestaña
-      untracked(() => this.requestMetricsUpdate());
-    });
   }
 
   /** Lógica de Transiciones Natural y Cálculo Estructural */
@@ -419,26 +424,37 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
   };
 
   /** Reactividad Pura y Coordinación */
-  protected readonly initEffects = (() => {
-    effect(() => {
-      this.tabs().forEach((tab, index) => {
-        tab.setAutoIndex(index);
-        tab.panelId.set(this.getPanelId(index));
-        tab.tabId.set(this.getTabId(index));
-      });
+  /**
+   * Orquestador Élite de Sincronización.
+   * Gestiona la coordinación de hijos y notificaciones externas en un único flujo reactivo.
+   */
+  protected readonly stateSyncEffect = effect(() => {
+    // 1. Rastreo de Dependencias (Declarativo)
+    const index = this.activeIndex();
+    const tabs = this.tabs();
+    this.resizeService.resizeSignal(); // Sincroniza con el viewport
+
+    // 2. Coordinación de Hijos (Downstream)
+    tabs.forEach((tab, i) => {
+      tab.setAutoIndex(i);
+      tab.panelId.set(this.getPanelId(i));
+      tab.tabId.set(this.getTabId(i));
     });
 
-    effect(() => {
-      const currentTab = this.tabs()[this.activeIndex()];
-      if (!currentTab) return;
-      const label = currentTab.configComputed()?.label || `Pestaña ${this.activeIndex() + 1}`;
-      untracked(() => {
-        this.liveMessageComputed.set(`Pestaña ${label} seleccionada`);
-        this.tabChange.emit(this.activeIndex());
-        this.requestMetricsUpdate();
-      });
+    // 3. Reacciones Externas y Visuales (Upstream)
+    this.handleSideEffects(index);
+  });
+
+  /**
+   * Ejecuta acciones que están fuera del grafo reactivo local (Side Effects).
+   * Se extrae para cumplir con la Regla #17 y mantener la claridad.
+   */
+  private readonly handleSideEffects = (index: number): void => {
+    untracked(() => {
+      this.tabChange.emit(index);
+      this.requestMetricsUpdate();
     });
-  })();
+  };
 
   /** 
    * Color dinámico del indicador deslizante.
