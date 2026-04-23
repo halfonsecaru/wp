@@ -24,7 +24,7 @@
       </button>
       }
       <div class="alf-tabs__header-scroll" #headerScroll (scroll)="requestMetricsUpdate()">
-        <nav class="alf-tabs__nav" role="tablist">
+        <nav class="alf-tabs__nav" #nav role="tablist">
           <!-- Proyección de Cabeceras (AlfTab) -->
           <ng-content select="alf-tab"></ng-content>
 
@@ -54,6 +54,7 @@
       @let isExiting = exitingTabsSet().has($index); 
       
       <div
+        #panel
         class="alf-tabs__panel"
         role="tabpanel"
         [hidden]="!isActive && !isExiting"

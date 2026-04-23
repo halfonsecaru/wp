@@ -64,6 +64,7 @@ export class AlfTabComponent extends AlfBaseComponent<AlfTabInterface> {
 
   /** Captura el contenido anidado si el usuario lo pone dentro de la etiqueta alf-tab */
   public readonly contentTemplate = viewChild<TemplateRef<any>>('contentTemplate');
+  public readonly header = viewChild<ElementRef<HTMLElement>>('header');
 
   /** 
    * Miembro abstracto obligatorio de AlfBaseComponent.

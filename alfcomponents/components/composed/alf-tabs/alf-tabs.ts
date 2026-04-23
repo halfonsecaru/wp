@@ -7,6 +7,7 @@ import {
   input,
   model,
   viewChild,
+  viewChildren,
   ViewEncapsulation,
   signal,
   AfterViewInit,
@@ -138,6 +139,8 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
 
   private readonly headerScroll = viewChild<ElementRef<HTMLDivElement>>('headerScroll');
   protected readonly contentContainer = viewChild<ElementRef<HTMLDivElement>>('contentContainer');
+  protected readonly nav = viewChild<ElementRef<HTMLElement>>('nav');
+  protected readonly panels = viewChildren<ElementRef<HTMLDivElement>>('panel');
   protected readonly showScrollArrowsComputed = signal<boolean>(false);
   protected readonly canScrollLeft = signal(false);
   protected readonly canScrollRight = signal(false);
@@ -177,13 +180,11 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
 
     // 1. Capturamos el estado actual del contenedor (incluyendo paddings reales)
     const currentTab = this.tabs()[currentIndex];
-    if (container && currentTab) {
-      const oldPanelEl = document.getElementById(currentTab.panelId()!);
-      if (oldPanelEl) {
-        // Calculamos el padding vertical exacto del contenedor para ser precisos
-        this.containerPadding = container.offsetHeight - oldPanelEl.offsetHeight;
-        this.oldHeightMemory = container.offsetHeight;
-      }
+    const oldPanelEl = this.panels()[currentIndex]?.nativeElement;
+    if (container && oldPanelEl) {
+      // Calculamos el padding vertical exacto del contenedor para ser precisos
+      this.containerPadding = container.offsetHeight - oldPanelEl.offsetHeight;
+      this.oldHeightMemory = container.offsetHeight;
     }
 
     const anim = this.getTabAnimations(currentTab);
@@ -210,9 +211,7 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     // 3. Animación de Contenedor (Sin saltos, sin magic numbers)
     if (container) {
       requestAnimationFrame(() => {
-        const allTabs = this.tabs();
-        const targetTab = allTabs[targetIndex];
-        const targetPanelEl = targetTab ? document.getElementById(targetTab.panelId()!) : null;
+        const targetPanelEl = this.panels()[targetIndex]?.nativeElement;
 
         if (targetPanelEl) {
           // 1. Calculamos el nuevo height real
@@ -337,7 +336,7 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
 
   private readonly measureActiveTabParams = (): void => {
     const currentTab = this.tabs()[this.activeIndex()];
-    const navEl = this.headerScroll()?.nativeElement.querySelector('.alf-tabs__nav') as HTMLElement;
+    const navEl = this.nav()?.nativeElement;
 
     if (!currentTab || !navEl) {
       this.activeTabMetrics.set({ left: 0, width: 0, opacity: 0 });
@@ -345,7 +344,7 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     }
 
     const host = currentTab.hostElement.nativeElement as HTMLElement;
-    const measurable = host.querySelector('.alf-tab__header') as HTMLElement || host;
+    const measurable = currentTab.header()?.nativeElement || host;
 
     if (measurable && measurable.offsetWidth > 0) {
       // Optimizamos usando offsetLeft/offsetWidth para evitar el costo de getBoundingClientRect
