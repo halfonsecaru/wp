@@ -74,16 +74,18 @@ export class AlfTabComponent extends AlfBaseComponent<AlfTabInterface> {
     const theme = this.globalTheme().theme;
     const parentConfig = this.parent.configComputed();
 
-    // Herencia de variante: Prioridad local -> Variante en tabsConfiguration (padre/local) -> Variante del padre -> Primary (Fallback)
+    // 1. Detección de Variante (Herencia jerárquica: Local -> Parent Config Object -> Parent Input Legacy)
     const variant = this.variantInput()
-      || (this.defineComponentInput() as any)?.tabsConfiguration?.variant
-      || (parentConfig?.tabsConfiguration as any)?.variant
-      || (this.parent as any).variantInput()
-      || parentConfig?.predefined
+      || this.defineComponentInput()?.predefined
+      || parentConfig?.brandColor?.type
+      || (parentConfig as any)?.variant
       || AlfColorVariantEnum.Primary;
 
-    // 1. Obtener ADN desde BASIC_IDENTITIES (Source of Truth)
-    const adn = BASIC_IDENTITIES[theme][variant] || BASIC_IDENTITIES[theme][AlfColorVariantEnum.Primary];
+    // 2. ADN de la variante para contrastes e iconos
+    const adn = BASIC_IDENTITIES[theme][variant as AlfColorVariantEnum] || BASIC_IDENTITIES[theme][AlfColorVariantEnum.Primary];
+    
+    // 3. Color de marca (Nuevo Source of Truth: Prioridad al color explícito del padre)
+    const baseBrand = parentConfig?.brandColor?.color || adn.brand || AlfColorEnum.Primary;
 
     const isDark = theme === AlfThemeEnum.Dark;
     const defaultTextColor = isDark ? AlfColorEnum.Gray400 : AlfColorEnum.Gray600;
@@ -95,14 +97,14 @@ export class AlfTabComponent extends AlfBaseComponent<AlfTabInterface> {
       label: 'Tab',
       predefined: variant, // Vital para el color del slider
       backgrounds: {
-        default: { backgroundColor: isSolid ? `color-mix(in srgb, ${adn.brand} 10%, transparent)` as AlfColorEnum : AlfColorEnum.Transparent }, 
-        hover: { backgroundColor: `color-mix(in srgb, ${adn.brand} ${isSolid ? '20%' : '10%'}, transparent)` as AlfColorEnum }, // Hover: 20% si es solid
-        active: { backgroundColor: `color-mix(in srgb, ${adn.brand} ${isSolid ? '30%' : '10%'}, transparent)` as AlfColorEnum } // Activo: 30% si es solid
+        default: { backgroundColor: isSolid ? `color-mix(in srgb, ${baseBrand} 10%, transparent)` as AlfColorEnum : AlfColorEnum.Transparent }, 
+        hover: { backgroundColor: `color-mix(in srgb, ${baseBrand} ${isSolid ? '20%' : '10%'}, transparent)` as AlfColorEnum },
+        active: { backgroundColor: `color-mix(in srgb, ${baseBrand} ${isSolid ? '30%' : '10%'}, transparent)` as AlfColorEnum }
       },
       typography: {
-        default: { color: isSolid ? adn.contrast : defaultTextColor }, // Reactivo al tema global
-        active: { color: isSolid ? adn.brand : undefined }, // En solid activo (30% bg), usamos el brand color para el texto
-        hover: { color: isSolid ? adn.contrast : adn.brand } // Cambia al color de marca en hover
+        default: { color: isSolid ? adn.contrast : defaultTextColor },
+        active: { color: isSolid ? adn.contrast : baseBrand }, // El texto activo toma el color de marca
+        hover: { color: isSolid ? adn.contrast : baseBrand } 
       },
       shadows: {
         default: { boxShadow: AlfShadowEnum.None },
@@ -112,13 +114,13 @@ export class AlfTabComponent extends AlfBaseComponent<AlfTabInterface> {
       border: {
         default: {
           borderWidth: isSolid ? AlfPxEnum.Px1 : AlfPxEnum.None,
-          borderColor: isSolid ? `color-mix(in srgb, ${adn.brand} 20%, transparent)` as AlfColorEnum : AlfColorEnum.Transparent,
+          borderColor: isSolid ? `color-mix(in srgb, ${baseBrand} 20%, transparent)` as AlfColorEnum : AlfColorEnum.Transparent,
           borderStyle: isSolid ? AlfBorderStyleEnum.Solid : undefined
         }
       },
       ripple: true,
-      // Ripple más lento y elegante (color-mix con mucha transparencia)
-      rippleColor: `color-mix(in srgb, ${adn.ripple} 20%, transparent)` as AlfColorEnum,
+      // Ripple más lento y elegante
+      rippleColor: `color-mix(in srgb, ${baseBrand} 20%, transparent)` as AlfColorEnum,
       prefix: adn.icon
     };
 

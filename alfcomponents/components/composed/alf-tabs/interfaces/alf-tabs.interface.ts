@@ -76,7 +76,10 @@ export interface AlfTabContentInterface extends AlfBaseInterface {
  */
 export interface AlfTabsInterface extends AlfBaseInterface {
   /** Color de marca del componente */
-  brandColor?: AlfColorEnum;
+  brandColor?: { 
+    color :AlfColorEnum;
+    type: AlfColorVariantEnum
+  }
 
   /** Lista de pestañas a renderizar (opcional si se usa ng-content) */
   tabs?: AlfTabInterface[];

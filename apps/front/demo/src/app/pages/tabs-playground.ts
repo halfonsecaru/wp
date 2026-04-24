@@ -6,6 +6,7 @@ import {
   AlfTabsInterface,
   AlfTabsPositionEnum,
   AlfTabsVisualTypeEnum,
+  AlfColorVariantEnum,
   AlfIconsUnicodeIconEnum,
   AlfColorEnum,
   AlfRadiusEnum,
@@ -229,7 +230,7 @@ export class TabsPlaygroundPage {
 
   public readonly config = signal<AlfTabsInterface>({
     visualType: AlfTabsVisualTypeEnum.Underline,
-    brandColor: AlfColorEnum.Primary,
+    brandColor: { color: AlfColorEnum.Primary, type: AlfColorVariantEnum.Primary },
     backgrounds: {
       default: { backgroundColor: AlfColorEnum.White },
       hover: { backgroundColor: AlfColorEnum.White }
@@ -282,7 +283,7 @@ export class TabsPlaygroundPage {
   public resetConfig(): void {
     this.config.set({
       visualType: AlfTabsVisualTypeEnum.Underline,
-      brandColor: AlfColorEnum.Primary,
+      brandColor: { color: AlfColorEnum.Primary, type: AlfColorVariantEnum.Primary },
       backgrounds: { default: { backgroundColor: AlfColorEnum.White }, hover: { backgroundColor: AlfColorEnum.White } }
     });
   }

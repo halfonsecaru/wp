@@ -19,12 +19,13 @@ import {
   ViewContainerRef,
   TemplateRef,
   Signal,
-  inject
+  inject,
+  NgZone
 } from '@angular/core';
 import { AlfBaseComponent } from '@alfcomponents/base';
 import { AlfTabsInterface } from './interfaces/alf-tabs.interface';
 import { AlfAnimateCssInterface } from '@alfcomponents/interfaces';
-import { AlfTabsPositionEnum } from './enums/alf-tabs-visual-type.enum';
+import { AlfTabsPositionEnum, AlfTabsVisualTypeEnum } from './enums/alf-tabs-visual-type.enum';
 import { AlfIconsUnicodeIconEnum, AlfColorEnum, AlfColorVariantEnum, AlfButtonVisualTypeEnum } from '@alfcomponents/enums';
 import { BASIC_IDENTITIES } from '../../../predefined/intefaces-basic/basic-colors';
 import { getAlfPredefinedTabs } from './predefined/alf-tabs.predefined';
@@ -47,9 +48,6 @@ import { AlfButtonInterface } from '../../simple/alf-button/interfaces/alf-butto
   styleUrl: './alf-tabs.scss',
   encapsulation: ViewEncapsulation.Emulated,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    '(window:resize)': 'onResize()'
-  },
   providers: [{ provide: ALF_TABS_TOKEN, useExisting: AlfTabsComponent }],
 })
 export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> implements AfterViewInit, OnDestroy {
@@ -64,7 +62,22 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
    * Si se define aquí, todos los AlfTab hijos heredarán esta configuración.
   */
   @Input('tabsConfiguration') public set tabsConfiguration(v: AlfButtonInterface | undefined) {
+    const current = this.tabsConfigurationInput();
+    // Comparación básica para evitar ciclos infinitos si el objeto es recreado en el template
+    if (v?.visualType === current?.visualType && v?.variant === current?.variant) return;
     this.tabsConfigurationInput.set(v);
+  }
+
+  /** Color de marca (Nuevo objeto {color, type}) */
+  @Input('brandColor') public set brandColor(v: { color: AlfColorEnum; type: AlfColorVariantEnum } | undefined) {
+    const current = this.brandColorInput();
+    if (v?.color === current?.color && v?.type === current?.type) return;
+    this.brandColorInput.set(v);
+  }
+
+  /** Estilo visual de las pestañas (Underline, Master...) */
+  @Input('visualType') public set visualType(v: AlfTabsVisualTypeEnum | undefined) {
+    this.visualTypeInput.set(v);
   }
   // **** Fin vitest **** //
 
@@ -86,6 +99,33 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     this.handleSideEffects(index);
   });
 
+  /**
+   * Orquestador de Adaptación de Contenido.
+   * Observa únicamente el panel activo para evitar sobrecarga y loops de redimensionamiento.
+   */
+  private readonly contentSyncEffect = effect(() => {
+    const activeIdx = this.activeIndex();
+    const panels = this.panels();
+    const targetPanel = panels[activeIdx]?.nativeElement;
+
+    untracked(() => {
+      // Inicialización Diferida fuera de Angular para máximo rendimiento
+      if (!this.contentResizeObserver) {
+        this.ngZone.runOutsideAngular(() => {
+          this.contentResizeObserver = new ResizeObserver(() => {
+            if (this.isSyncingHeight) return;
+            this.syncHeight(true);
+          });
+        });
+      }
+
+      this.contentResizeObserver?.disconnect();
+      if (targetPanel) {
+        this.contentResizeObserver?.observe(targetPanel);
+      }
+    });
+  });
+
   // --- 2. Attributes (Traditional & Injected) ---
   private readonly baseId = `alf-tabs-${Math.random().toString(36).substring(2, 9)}`;
   protected readonly icons = AlfIconsUnicodeIconEnum;
@@ -93,11 +133,17 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
 
   private touchStartX = 0;
   private readonly swipeThreshold = 50;
+  private readonly ngZone = inject(NgZone);
   private resizeObserver?: ResizeObserver;
+  private contentResizeObserver?: ResizeObserver;
+  private windowResizeHandler?: () => void;
+  private headerScrollHandler?: () => void;
   private mutationObserver?: MutationObserver;
+  private currentHeightAnim?: Animation;
   private rafId?: number;
   private containerPadding = 0;
   private oldHeightMemory = 0;
+  private isSyncingHeight = false;
 
   // --- 3. Signals (Inputs, Outputs, State) ---
 
@@ -108,6 +154,8 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
 
   protected readonly predefinedInput = signal<AlfTabsInterface | string>(DefaultTabsKeys.Underline);
   protected readonly tabsConfigurationInput = signal<AlfButtonInterface | undefined>(undefined);
+  protected readonly brandColorInput = signal<{ color: AlfColorEnum; type: AlfColorVariantEnum } | undefined>(undefined);
+  protected readonly visualTypeInput = signal<AlfTabsVisualTypeEnum | undefined>(undefined);
   protected readonly targetIndexPending = signal<number | null>(null);
   protected readonly navigationDirection = signal<'forward' | 'backward'>('forward');
   protected readonly isTransitioning = signal(false);
@@ -135,9 +183,14 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     const config = typeof p === 'string' ? getAlfPredefinedTabs(p) : p;
 
     // Inyectamos la configuración de cabeceras en el objeto global del componente
+    const tabsConfig = this.tabsConfigurationInput();
     return {
       ...config,
-      tabsConfiguration: this.tabsConfigurationInput() || config?.tabsConfiguration
+      brandColor: this.brandColorInput() || config?.brandColor,
+      visualType: this.visualTypeInput() || config?.visualType,
+      tabsConfiguration: tabsConfig 
+        ? { tabConfiguration: tabsConfig } 
+        : config?.tabsConfiguration
     };
   });
 
@@ -179,14 +232,21 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
     const activeIdx = this.activeIndex();
     const activeTab = this.tabs().find(t => t.effectiveIndex() === activeIdx);
     const theme = this.globalTheme().theme;
+    const config = this.resolvedConfigComputed();
 
-    // Interpretamos la variante de la pestaña activa (ej: Primary, Success...)
+    // 1. Prioridad: Color explícito en la configuración final
+    const explicitColor = config?.brandColor?.color;
+    if (explicitColor) {
+      return `color-mix(in srgb, ${explicitColor} 80%, black 20%)`;
+    }
+
+    // 2. Fallback: Determinar variante
     const variant = activeTab?.configComputed()?.predefined
-      || (this.defineComponentInput() as any)?.variant
+      || config?.brandColor?.type
       || AlfColorVariantEnum.Primary;
 
     // Obtenemos el ADN puro de la variante
-    const adn = BASIC_IDENTITIES[theme][variant] || BASIC_IDENTITIES[theme][AlfColorVariantEnum.Primary];
+    const adn = BASIC_IDENTITIES[theme][variant as AlfColorVariantEnum] || BASIC_IDENTITIES[theme][AlfColorVariantEnum.Primary];
     const baseBrand = adn.brand || AlfColorEnum.Primary;
 
     // Mismo color base, pero "más fuerte" (oscurecido un 20%)
@@ -200,13 +260,19 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
   public readonly solidContentBgVarComputed = computed(() => {
     if (!this.isSolidComputed()) return 'transparent';
     const theme = this.globalTheme().theme;
+    const config = this.resolvedConfigComputed();
 
-    // Prioridad a la variante del componente (usada en la galería)
-    const variant = this.variantInput()
-      || (this.defineComponentInput() as any)?.variant
+    // 1. Prioridad: Color explícito
+    const explicitColor = config?.brandColor?.color;
+    if (explicitColor) {
+      return `color-mix(in srgb, ${explicitColor} 10%, transparent)`;
+    }
+
+    // 2. Fallback: Variante (Input directo o en config)
+    const variant = config?.brandColor?.type
       || AlfColorVariantEnum.Primary;
 
-    const adn = BASIC_IDENTITIES[theme][variant] || BASIC_IDENTITIES[theme][AlfColorVariantEnum.Primary];
+    const adn = BASIC_IDENTITIES[theme][variant as AlfColorVariantEnum] || BASIC_IDENTITIES[theme][AlfColorVariantEnum.Primary];
     return `color-mix(in srgb, ${adn.brand} 10%, transparent)`;
   });
 
@@ -215,7 +281,14 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
    * Si hay una variante (Primary, Success), el borde toma ese color.
    */
   public readonly reactiveBorderColorVarComputed = computed(() => {
-    const variantStr = this.variantInput() || (this.defineComponentInput() as any)?.variant;
+    const config = this.resolvedConfigComputed();
+    
+    // 1. Prioridad: Color explícito
+    if (config?.brandColor?.color) return config.brandColor.color;
+
+    // 2. Fallback: Variante
+    const variantStr = config?.brandColor?.type;
+
     if (variantStr) {
       const theme = this.globalTheme().theme;
       const adn = BASIC_IDENTITIES[theme][variantStr as AlfColorVariantEnum];
@@ -241,12 +314,82 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
       this.resizeObserver = new ResizeObserver(() => this.requestMetricsUpdate());
       this.resizeObserver.observe(scrollEl);
       this.requestMetricsUpdate();
+
+      // --- Header Scroll Optimization (Zoneless) ---
+      this.ngZone.runOutsideAngular(() => {
+        this.headerScrollHandler = () => this.requestMetricsUpdate();
+        scrollEl.addEventListener('scroll', this.headerScrollHandler, { passive: true });
+      });
     }
+
+    // --- Window Resize Optimization (Zoneless) ---
+    this.ngZone.runOutsideAngular(() => {
+      this.windowResizeHandler = () => this.requestMetricsUpdate();
+      window.addEventListener('resize', this.windowResizeHandler, { passive: true });
+    });
   }
+
+  /**
+   * Sincroniza la altura del contenedor con el panel activo.
+   * Si 'animate' es true, realiza una transición suave.
+   * Crucial para soportar contenido dinámico y tabs anidados.
+   */
+  private readonly syncHeight = (animate = true): void => {
+    const container = this.contentContainer()?.nativeElement;
+    const activePanel = this.panels()[this.activeIndex()]?.nativeElement;
+    if (!container || !activePanel || this.isTransitioning()) return;
+
+    const targetHeight = activePanel.scrollHeight;
+    const currentHeight = container.offsetHeight;
+
+    if (Math.abs(targetHeight - currentHeight) < 4) return;
+
+    if (animate) {
+      this.isSyncingHeight = true;
+      
+      // Cancelamos cualquier animación previa para evitar acumulación (especialmente tras background tabs)
+      this.currentHeightAnim?.cancel();
+
+      const anim = container.animate([
+        { height: `${currentHeight}px` },
+        { height: `${targetHeight}px` }
+      ], {
+        duration: 250,
+        easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+      });
+
+      this.currentHeightAnim = anim;
+
+      anim.onfinish = () => {
+        container.style.height = 'auto';
+        this.isSyncingHeight = false;
+        this.currentHeightAnim = undefined;
+        
+        if (this.rafId === undefined) {
+          this.ngZone.run(() => this.requestMetricsUpdate());
+        }
+      };
+
+      // Seguridad: Si la animación se cancela o falla, liberamos el lock
+      anim.oncancel = () => {
+        this.isSyncingHeight = false;
+        this.currentHeightAnim = undefined;
+      };
+    } else {
+      container.style.height = 'auto';
+    }
+  };
 
   ngOnDestroy(): void {
     this.resizeObserver?.disconnect();
+    this.contentResizeObserver?.disconnect();
     this.mutationObserver?.disconnect();
+    if (this.windowResizeHandler) {
+      window.removeEventListener('resize', this.windowResizeHandler);
+    }
+    if (this.headerScrollHandler) {
+      this.headerScroll()?.nativeElement.removeEventListener('scroll', this.headerScrollHandler);
+    }
     if (this.rafId) cancelAnimationFrame(this.rafId);
   }
 
@@ -340,15 +483,18 @@ export class AlfTabsComponent extends AlfBaseComponent<AlfTabsInterface> impleme
           // LIBERAMOS el height fijo para que min/maxHeight controlen el flujo de la animación
           container.style.height = 'auto';
 
+          // Ejecutamos la animación sin fill:forwards para evitar bloquear el layout
           const resizeAnim = container.animate(anim, {
             duration: 300,
-            easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
-            fill: 'forwards'
+            easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
           });
 
           resizeAnim.onfinish = () => {
             container.style.height = 'auto';
             container.style.minHeight = '';
+            container.style.maxHeight = '';
+            container.style.overflow = ''; // Restauramos overflow para fluidez
+            this.requestMetricsUpdate();
           };
         }
       });

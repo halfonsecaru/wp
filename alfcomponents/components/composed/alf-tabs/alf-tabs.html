@@ -23,7 +23,7 @@
         <span aria-hidden="true">‹</span>
       </button>
       }
-      <div class="alf-tabs__header-scroll" #headerScroll (scroll)="requestMetricsUpdate()">
+      <div class="alf-tabs__header-scroll" #headerScroll>
         <nav class="alf-tabs__nav" #nav role="tablist" (keydown)="onKeyDown($event)">
           <!-- Proyección de Cabeceras (AlfTab) -->
           <ng-content select="alf-tab"></ng-content>

@@ -7,8 +7,10 @@ import {
   AlfTabsVisualTypeEnum,
   DefaultTabsKeys,
   AlfColorVariantEnum,
+  AlfColorEnum,
   AlfButtonVisualTypeEnum,
-  AlfCodeComponent
+  AlfCodeComponent,
+  AlfColorEnum
 } from '@alfcomponents';
 
 /**
@@ -65,10 +67,17 @@ import {
                   </div>
                 </alf-tab>
 
-                <!-- CODE -->
-                <alf-tab [defineComponent]="{ label: 'Code' }">
+                <!-- HTML -->
+                <alf-tab [defineComponent]="{ label: 'HTML' }">
                   <div class="code-canvas-adapted">
-                    <alf-code [code]="underlineCode" language="html" title="Underline Configuration"></alf-code>
+                    <alf-code [code]="underlineHtml" language="html" title="HTML Template"></alf-code>
+                  </div>
+                </alf-tab>
+
+                <!-- TS -->
+                <alf-tab [defineComponent]="{ label: 'TS' }">
+                  <div class="code-canvas-adapted">
+                    <alf-code [code]="underlineTs" language="typescript" title="Property Declaration"></alf-code>
                   </div>
                 </alf-tab>
 
@@ -118,10 +127,17 @@ import {
                   </div>
                 </alf-tab>
 
-                <!-- CODE -->
-                <alf-tab [defineComponent]="{ label: 'Code' }">
+                <!-- HTML -->
+                <alf-tab [defineComponent]="{ label: 'HTML' }">
                   <div class="code-canvas-adapted">
-                    <alf-code [code]="masterCode" language="html" title="Master Configuration"></alf-code>
+                    <alf-code [code]="masterHtml" language="html" title="HTML Template"></alf-code>
+                  </div>
+                </alf-tab>
+
+                <!-- TS -->
+                <alf-tab [defineComponent]="{ label: 'TS' }">
+                  <div class="code-canvas-adapted">
+                    <alf-code [code]="masterTs" language="typescript" title="Property Declaration"></alf-code>
                   </div>
                 </alf-tab>
 
@@ -134,15 +150,41 @@ import {
           <!-- ============================ -->
           <alf-tab [defineComponent]="{ label: 'Solid Collection' }">
             <div class="variant-panel">
-              <alf-tabs predefined="underline" variant="primary" [tabsConfiguration]="{ tabConfiguration: { visualType: buttonsVisualType.Solid } }">
-                @for (tab of tenTabsArray; track $index) {
-                  <alf-tab [defineComponent]="{ label: tab.label }">
-                    <div style="padding: 1rem;">
-                      <h3>{{ tab.label }}</h3>
-                      <p>{{ tab.content }}</p>
-                    </div>
-                  </alf-tab>
-                }
+              <alf-tabs predefined="master">
+                
+                <!-- EXAMPLE -->
+                <alf-tab [defineComponent]="{ label: 'Example' }">
+                  <div class="example-canvas">
+                    <alf-tabs 
+                      predefined="underline" 
+                      [brandColor]="{ color: colorEnum.Primary, type: variantEnum.Primary }"
+                      [tabsConfiguration]="{ visualType: buttonsVisualType.Solid }">
+                      @for (tab of tenTabsArray; track $index) {
+                        <alf-tab [defineComponent]="{ label: tab.label }">
+                          <div style="padding: 1rem;">
+                            <h3>{{ tab.label }}</h3>
+                            <p>{{ tab.content }}</p>
+                          </div>
+                        </alf-tab>
+                      }
+                    </alf-tabs>
+                  </div>
+                </alf-tab>
+
+                <!-- HTML -->
+                <alf-tab [defineComponent]="{ label: 'HTML' }">
+                  <div class="code-canvas-adapted">
+                    <alf-code [code]="solidHtml" language="html" title="Solid Template"></alf-code>
+                  </div>
+                </alf-tab>
+
+                <!-- TS -->
+                <alf-tab [defineComponent]="{ label: 'TS' }">
+                  <div class="code-canvas-adapted">
+                    <alf-code [code]="solidTs" language="typescript" title="Property Declaration"></alf-code>
+                  </div>
+                </alf-tab>
+
               </alf-tabs>
             </div>
           </alf-tab>
@@ -155,24 +197,48 @@ import {
           <alf-tabs predefined="master">
             <alf-tab [defineComponent]="{ label: 'Gallery Overview' }">
               <div class="variant-panel">
-                <div class="solid-grid">
-                  @for (variant of solidVariants; track $index) {
-                    <div class="solid-item">
-                      <span class="solid-label">{{ variant.label }}</span>
-                      <alf-tabs predefined="underline" [variant]="variant.key" [tabsConfiguration]="{ tabConfiguration: { visualType: buttonsVisualType.Solid } }">
-                        <alf-tab [defineComponent]="{ label: 'Uno' }">
-                          <div>Contenido {{ variant.label }} 1</div>
-                        </alf-tab>
-                        <alf-tab [defineComponent]="{ label: 'Dos' }">
-                          <div>Contenido {{ variant.label }} 2</div>
-                        </alf-tab>
-                        <alf-tab [defineComponent]="{ label: 'Tres' }">
-                          <div>Contenido {{ variant.label }} 3</div>
-                        </alf-tab>
-                      </alf-tabs>
+                <alf-tabs predefined="master">
+                  
+                  <!-- EXAMPLE -->
+                  <alf-tab [defineComponent]="{ label: 'Example' }">
+                    <div class="solid-grid">
+                      @for (variant of solidVariants; track $index) {
+                        <div class="solid-item">
+                          <span class="solid-label">{{ variant.label }}</span>
+                          <alf-tabs 
+                            predefined="underline" 
+                            [brandColor]="{ color: variant.color, type: variant.key }"
+                            [tabsConfiguration]="{ visualType: buttonsVisualType.Solid }">
+                            <alf-tab [defineComponent]="{ label: 'Uno' }">
+                              <div>Contenido {{ variant.label }} 1</div>
+                            </alf-tab>
+                            <alf-tab [defineComponent]="{ label: 'Dos' }">
+                              <div>Contenido {{ variant.label }} 2</div>
+                            </alf-tab>
+                            <alf-tab [defineComponent]="{ label: 'Tres' }">
+                              <div>Contenido {{ variant.label }} 3</div>
+                            </alf-tab>
+                          </alf-tabs>
+                        </div>
+                      }
                     </div>
-                  }
-                </div>
+                  </alf-tab>
+
+                  <!-- HTML -->
+                  <alf-tab [defineComponent]="{ label: 'HTML' }">
+                    <div class="code-canvas-adapted">
+                      <alf-code [code]="galleryHtml" language="html" title="Gallery Template"></alf-code>
+                    </div>
+                  </alf-tab>
+
+                  <!-- TS -->
+                  <alf-tab [defineComponent]="{ label: 'TS' }">
+                    <div class="code-canvas-adapted">
+                      <alf-code [code]="galleryTs" language="typescript" title="Property Declaration"></alf-code>
+                    </div>
+                  </alf-tab>
+
+                </alf-tabs>
               </div>
             </alf-tab>
           </alf-tabs>
@@ -271,30 +337,119 @@ export class TabsDemoPage {
   protected readonly tabsVisualType = AlfTabsVisualTypeEnum;
   protected readonly tabsKeys = DefaultTabsKeys;
   protected readonly colorVariants = AlfColorVariantEnum;
+  protected readonly colorEnum = AlfColorEnum;
+  protected readonly variantEnum = AlfColorVariantEnum;
   protected readonly buttonsVisualType = AlfButtonVisualTypeEnum;
 
-  protected readonly underlineCode = `
-<!-- Plantilla HTML -->
-<alf-tabs [defineComponent]="{ visualType: tabsVisualType.Underline }">
-  <alf-tab [defineComponent]="{ label: 'Visión General' }"> ... </alf-tab>
-  <alf-tab [defineComponent]="{ label: 'Estadísticas' }"> ... </alf-tab>
+  protected readonly underlineHtml = `
+<alf-tabs [visualType]="visualType()">
+  <alf-tab [defineComponent]="{ label: 'Tab 1' }"> ... </alf-tab>
+  <alf-tab [defineComponent]="{ label: 'Tab 2' }"> ... </alf-tab>
 </alf-tabs>
   `.trim();
 
-  protected readonly masterCode = `
-<!-- Plantilla HTML -->
-<alf-tabs [predefined]="tabsKeys.Master">
-  <alf-tab [defineComponent]="{ label: 'Diseño' }"> ... </alf-tab>
-  <alf-tab [defineComponent]="{ label: 'Rendimiento' }"> ... </alf-tab>
+  protected readonly underlineTs = `
+import { signal } from '@angular/core';
+import { AlfTabsVisualTypeEnum } from '@alfcomponents';
+
+// 1. Definimos el estilo visual de las pestañas
+public readonly visualType = signal(AlfTabsVisualTypeEnum.Underline);
+  `.trim();
+
+  protected readonly masterHtml = `
+<alf-tabs [visualType]="visualType()">
+  <alf-tab [defineComponent]="{ label: 'Tab 1' }"> ... </alf-tab>
+  <alf-tab [defineComponent]="{ label: 'Tab 2' }"> ... </alf-tab>
 </alf-tabs>
+  `.trim();
+
+  protected readonly masterTs = `
+import { signal } from '@angular/core';
+import { AlfTabsVisualTypeEnum } from '@alfcomponents';
+
+// 1. Definimos el estilo visual (Master = Indicador Deslizante)
+public readonly visualType = signal(AlfTabsVisualTypeEnum.Master);
+  `.trim();
+
+  protected readonly solidHtml = `
+<alf-tabs 
+  [visualType]="tabsVisual()"
+  [brandColor]="brand()"
+  [tabsConfiguration]="buttonStyle()">
+  
+  @for (tab of tenTabsArray; track $index) {
+    <alf-tab [defineComponent]="{ label: tab.label }">
+      <div>{{ tab.content }}</div>
+    </alf-tab>
+  }
+</alf-tabs>
+  `.trim();
+
+  protected readonly solidTs = `
+import { signal } from '@angular/core';
+import { 
+  AlfColorEnum, 
+  AlfColorVariantEnum, 
+  AlfButtonVisualTypeEnum,
+  AlfTabsVisualTypeEnum,
+  AlfButtonInterface 
+} from '@alfcomponents';
+
+// 1. Estilo general de la navegación
+public readonly tabsVisual = signal(AlfTabsVisualTypeEnum.Underline);
+
+// 2. Color de marca (Nuevo objeto {color, type})
+public readonly brand = signal({ 
+  color: AlfColorEnum.Primary, 
+  type: AlfColorVariantEnum.Primary 
+});
+
+// 3. Estilo de los botones internos (Solid)
+public readonly buttonStyle = signal<AlfButtonInterface>({
+  visualType: AlfButtonVisualTypeEnum.Solid
+});
+  `.trim();
+
+  protected readonly galleryHtml = `
+@for (variant of solidVariants; track $index) {
+  <alf-tabs 
+    [brandColor]="{ color: variant.color, type: variant.key }"
+    [tabsConfiguration]="buttonStyle()">
+    
+    <alf-tab [defineComponent]="{ label: 'Uno' }"> ... </alf-tab>
+    <alf-tab [defineComponent]="{ label: 'Dos' }"> ... </alf-tab>
+  </alf-tabs>
+}
+  `.trim();
+
+  protected readonly galleryTs = `
+import { signal } from '@angular/core';
+import { 
+  AlfColorEnum, 
+  AlfColorVariantEnum, 
+  AlfButtonVisualTypeEnum,
+  AlfButtonInterface 
+} from '@alfcomponents';
+
+// 1. Listado de variantes para el bucle
+public readonly solidVariants = [
+  { key: AlfColorVariantEnum.Primary, color: AlfColorEnum.Primary, label: 'Primary' },
+  { key: AlfColorVariantEnum.Success, color: AlfColorEnum.Success, label: 'Success' },
+  { key: AlfColorVariantEnum.Danger, color: AlfColorEnum.Danger, label: 'Danger' }
+];
+
+// 2. Estilo de los botones internos
+public readonly buttonStyle = signal<AlfButtonInterface>({
+  visualType: AlfButtonVisualTypeEnum.Solid
+});
   `.trim();
 
   protected readonly solidVariants = [
-    { key: AlfColorVariantEnum.Primary, label: 'Primary' },
-    { key: AlfColorVariantEnum.Success, label: 'Success' },
-    { key: AlfColorVariantEnum.Danger, label: 'Danger' },
-    { key: AlfColorVariantEnum.Warning, label: 'Warning' },
-    { key: AlfColorVariantEnum.Info, label: 'Info' },
+    { key: AlfColorVariantEnum.Primary, color: AlfColorEnum.Primary, label: 'Primary' },
+    { key: AlfColorVariantEnum.Success, color: AlfColorEnum.Success, label: 'Success' },
+    { key: AlfColorVariantEnum.Danger, color: AlfColorEnum.Danger, label: 'Danger' },
+    { key: AlfColorVariantEnum.Warning, color: AlfColorEnum.Warning, label: 'Warning' },
+    { key: AlfColorVariantEnum.Info, color: AlfColorEnum.Info, label: 'Info' },
   ];
 
   protected readonly tenTabsArray = Array.from({ length: 10 }, (_, i) => ({
