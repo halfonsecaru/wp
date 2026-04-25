@@ -10,5 +10,10 @@
   },
   "include": [
     "**/*.ts"
+  ],
+  "exclude": [
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "../vitest.setup.ts"
   ]
 }

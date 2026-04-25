@@ -127,14 +127,6 @@ export interface AlfDisplayAndLayoutBaseInterface {
    */
   flexWrap?: AlfFlexWrapEnum;
 
-  /** Clase CSS personalizada delegada al elemento */
-  customCssClass?: string | string[];
-
-  /** 
-   * Estilos CSS en línea personalizados 
-   * @example [{ 'aspect-ratio': '16/9' }] 
-   */
-  customCssStyle?: Record<string, string>[];
 }
 
 /**

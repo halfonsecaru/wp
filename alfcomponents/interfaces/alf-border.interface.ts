@@ -7,7 +7,7 @@ import {
 } from '../enums';
 
 /**
- * Propiedades de borde y contorno para un estado específico
+ * Propiedades base de borde y contorno para un estado específico.
  */
 export interface AlfBorderBaseInterface {
   // ===== BORDER WIDTH =====
@@ -111,14 +111,6 @@ export interface AlfBorderBaseInterface {
    */
   boxSizing?: 'border-box' | 'content-box';
 
-  /** Clase CSS personalizada delegada al elemento */
-  customCssClass?: string | string[];
-
-  /** 
-   * Estilos CSS en línea personalizados 
-   * @example [{ 'border-image': 'none' }] 
-   */
-  customCssStyle?: Record<string, string>[];
 }
 
 /**

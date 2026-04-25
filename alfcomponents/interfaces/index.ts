@@ -1,4 +1,3 @@
-export * from './alf-base.interface';
 export * from './alf-typography.interface';
 export * from './alf-transform.interface';
 export * from './alf-text-style.interface';
@@ -15,4 +14,3 @@ export * from './alf-animations.interface';
 export * from './alf-aria.interface';
 export * from './alf-loading.interface';
 export * from './alf-ripple.interface';
-export * from './alf-transitions.interface';

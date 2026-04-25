@@ -25,15 +25,6 @@ export interface AlfPaddingBaseInterface {
 
   /** Padding izquierdo */
   paddingLeft?: AlfPxEnum | AlfRemEnum | AlfPercentageEnum;
-
-  /** Clase CSS personalizada delegada al elemento */
-  customCssClass?: string | string[];
-
-  /** 
-   * Estilos CSS en línea personalizados 
-   * @example [{ 'box-sizing': 'border-box' }] 
-   */
-  customCssStyle?: Record<string, string>[];
 }
 
 /**

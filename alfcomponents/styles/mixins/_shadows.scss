@@ -52,3 +52,36 @@
     text-shadow: var(--alf-shd-text-disabled, var(--alf-shd-text));
   }
 }
+
+/**
+ * Aplica shadows reactivos basados en variables CSS con prefijo.
+ * Ejemplo de prefijo: '--alf-btn'
+ */
+@mixin alf-shadows-css-vars(
+  $prefix,
+  $disabled-selectors: '&[disabled], &:disabled, &.disabled'
+) {
+  box-shadow: var(#{$prefix}-shadows-box-shadow, none);
+  text-shadow: var(#{$prefix}-shadows-text-shadow, none);
+
+  &:hover {
+    box-shadow: var(#{$prefix}-shadows-hover-box-shadow, var(#{$prefix}-shadows-box-shadow, none));
+    text-shadow: var(#{$prefix}-shadows-hover-text-shadow, var(#{$prefix}-shadows-text-shadow, none));
+  }
+
+  &:active {
+    box-shadow: var(#{$prefix}-shadows-active-box-shadow, var(#{$prefix}-shadows-hover-box-shadow, var(#{$prefix}-shadows-box-shadow, none)));
+    text-shadow: var(#{$prefix}-shadows-active-text-shadow, var(#{$prefix}-shadows-hover-text-shadow, var(#{$prefix}-shadows-text-shadow, none)));
+  }
+
+  &:focus,
+  &:focus-visible {
+    box-shadow: var(#{$prefix}-shadows-focus-box-shadow, var(#{$prefix}-shadows-box-shadow, none));
+    text-shadow: var(#{$prefix}-shadows-focus-text-shadow, var(#{$prefix}-shadows-text-shadow, none));
+  }
+
+  #{$disabled-selectors} {
+    box-shadow: var(#{$prefix}-shadows-disabled-box-shadow, var(#{$prefix}-shadows-box-shadow, none));
+    text-shadow: var(#{$prefix}-shadows-disabled-text-shadow, var(#{$prefix}-shadows-text-shadow, none));
+  }
+}

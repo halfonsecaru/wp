@@ -1,0 +1,43 @@
+/**
+ * Aplica estilos de texto reactivos basados en variables CSS con prefijo.
+ * Ejemplo de prefijo: '--alf-btn'
+ */
+@mixin alf-text-style-css-vars(
+  $prefix,
+  $default-color: inherit,
+  $disabled-selectors: '&[disabled], &:disabled, &.disabled'
+) {
+  color: var(#{$prefix}-text-color, #{$default-color});
+  text-shadow: var(#{$prefix}-text-text-shadow, none);
+  text-decoration: var(#{$prefix}-text-text-decoration, none);
+  text-transform: var(#{$prefix}-text-text-transform, none);
+
+  &:hover {
+    color: var(#{$prefix}-text-hover-color, var(#{$prefix}-text-color, #{$default-color}));
+    text-shadow: var(#{$prefix}-text-hover-text-shadow, var(#{$prefix}-text-text-shadow, none));
+    text-decoration: var(#{$prefix}-text-hover-text-decoration, var(#{$prefix}-text-text-decoration, none));
+    text-transform: var(#{$prefix}-text-hover-text-transform, var(#{$prefix}-text-text-transform, none));
+  }
+
+  &:active {
+    color: var(#{$prefix}-text-active-color, var(#{$prefix}-text-hover-color, var(#{$prefix}-text-color, #{$default-color})));
+    text-shadow: var(#{$prefix}-text-active-text-shadow, var(#{$prefix}-text-hover-text-shadow, var(#{$prefix}-text-text-shadow, none)));
+    text-decoration: var(#{$prefix}-text-active-text-decoration, var(#{$prefix}-text-hover-text-decoration, var(#{$prefix}-text-text-decoration, none)));
+    text-transform: var(#{$prefix}-text-active-text-transform, var(#{$prefix}-text-hover-text-transform, var(#{$prefix}-text-text-transform, none)));
+  }
+
+  &:focus,
+  &:focus-visible {
+    color: var(#{$prefix}-text-focus-color, var(#{$prefix}-text-color, #{$default-color}));
+    text-shadow: var(#{$prefix}-text-focus-text-shadow, var(#{$prefix}-text-text-shadow, none));
+    text-decoration: var(#{$prefix}-text-focus-text-decoration, var(#{$prefix}-text-text-decoration, none));
+    text-transform: var(#{$prefix}-text-focus-text-transform, var(#{$prefix}-text-text-transform, none));
+  }
+
+  #{$disabled-selectors} {
+    color: var(#{$prefix}-text-disabled-color, var(#{$prefix}-text-color, #{$default-color}));
+    text-shadow: var(#{$prefix}-text-disabled-text-shadow, var(#{$prefix}-text-text-shadow, none));
+    text-decoration: var(#{$prefix}-text-disabled-text-decoration, var(#{$prefix}-text-text-decoration, none));
+    text-transform: var(#{$prefix}-text-disabled-text-transform, var(#{$prefix}-text-text-transform, none));
+  }
+}

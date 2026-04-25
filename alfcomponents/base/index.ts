@@ -1,2 +1,3 @@
-export * from './alf-base.component';
-export * from './alf-base.style-resolver';
+export * from './alf-base-configuration';
+export * from './base-visual';
+export * from './default-visual';

@@ -67,10 +67,4 @@ export interface AlfLoadingInterface {
    * @example 'Cargando datos...' 
    */
   message?: string;
-
-  /** Clase CSS personalizada delegada al elemento de carga */
-  customCssClass?: string | string[];
-
-  /** Estilos CSS en línea personalizados @example [{ 'backdrop-filter': 'blur(4px)' }] */
-  customCssStyle?: Record<string, string>[];
 }

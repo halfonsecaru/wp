@@ -131,7 +131,8 @@ export class AlfLoadingDirective implements OnDestroy {
       'align-items': 'center',
       'justify-content': 'center',
       'gap': '12px',
-      'transition': 'none'
+      'transition': 'none',
+      'overflow': 'hidden'
     };
 
     if (config.useBlur) {
@@ -164,7 +165,13 @@ export class AlfLoadingDirective implements OnDestroy {
       'font-size': '14px',
       'font-weight': '500',
       'margin-top': '8px',
-      'text-shadow': '0 1px 2px rgba(0,0,0,0.5)'
+      'text-shadow': '0 1px 2px rgba(0,0,0,0.5)',
+      'max-width': '100%',
+      'padding': '0 8px',
+      'box-sizing': 'border-box',
+      'white-space': 'nowrap',
+      'overflow': 'hidden',
+      'text-overflow': 'ellipsis'
     };
 
     Object.entries(styles).forEach(([prop, val]) => {

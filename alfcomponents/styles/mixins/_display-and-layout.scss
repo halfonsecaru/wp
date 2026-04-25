@@ -1,0 +1,127 @@
+/**
+ * Aplica display/layout reactivo con variables CSS por prefijo.
+ * Ejemplo de prefijo: '--alf-btn'
+ */
+@mixin alf-display-layout-css-vars(
+  $prefix,
+  $display-fallback: inline-flex,
+  $align-items-fallback: center,
+  $justify-content-fallback: center,
+  $gap-fallback: 0.5rem,
+  $disabled-selectors: '&[disabled], &:disabled, &.disabled'
+) {
+  display: var(#{$prefix}-layout-display, #{$display-fallback});
+  position: var(#{$prefix}-layout-position, static);
+  top: var(#{$prefix}-layout-top, auto);
+  right: var(#{$prefix}-layout-right, auto);
+  bottom: var(#{$prefix}-layout-bottom, auto);
+  left: var(#{$prefix}-layout-left, auto);
+  z-index: var(#{$prefix}-layout-z-index, auto);
+
+  width: var(#{$prefix}-layout-width, auto);
+  height: var(#{$prefix}-layout-height, auto);
+  min-width: var(#{$prefix}-layout-min-width, 0);
+  max-width: var(#{$prefix}-layout-max-width, none);
+  min-height: var(#{$prefix}-layout-min-height, 0);
+  max-height: var(#{$prefix}-layout-max-height, none);
+
+  overflow: var(#{$prefix}-layout-overflow, visible);
+  overflow-x: var(#{$prefix}-layout-overflow-x, var(#{$prefix}-layout-overflow, visible));
+  overflow-y: var(#{$prefix}-layout-overflow-y, var(#{$prefix}-layout-overflow, visible));
+  visibility: var(#{$prefix}-layout-visibility, visible);
+  object-fit: var(#{$prefix}-layout-object-fit, fill);
+
+  flex-direction: var(#{$prefix}-layout-flex-direction, row);
+  justify-content: var(#{$prefix}-layout-justify-content, #{$justify-content-fallback});
+  align-items: var(#{$prefix}-layout-align-items, #{$align-items-fallback});
+  gap: var(#{$prefix}-layout-gap, #{$gap-fallback});
+  flex-wrap: var(#{$prefix}-layout-flex-wrap, nowrap);
+
+  &:hover {
+    display: var(#{$prefix}-layout-hover-display, var(#{$prefix}-layout-display, #{$display-fallback}));
+    position: var(#{$prefix}-layout-hover-position, var(#{$prefix}-layout-position, static));
+    top: var(#{$prefix}-layout-hover-top, var(#{$prefix}-layout-top, auto));
+    right: var(#{$prefix}-layout-hover-right, var(#{$prefix}-layout-right, auto));
+    bottom: var(#{$prefix}-layout-hover-bottom, var(#{$prefix}-layout-bottom, auto));
+    left: var(#{$prefix}-layout-hover-left, var(#{$prefix}-layout-left, auto));
+    z-index: var(#{$prefix}-layout-hover-z-index, var(#{$prefix}-layout-z-index, auto));
+
+    width: var(#{$prefix}-layout-hover-width, var(#{$prefix}-layout-width, auto));
+    height: var(#{$prefix}-layout-hover-height, var(#{$prefix}-layout-height, auto));
+    min-width: var(#{$prefix}-layout-hover-min-width, var(#{$prefix}-layout-min-width, 0));
+    max-width: var(#{$prefix}-layout-hover-max-width, var(#{$prefix}-layout-max-width, none));
+    min-height: var(#{$prefix}-layout-hover-min-height, var(#{$prefix}-layout-min-height, 0));
+    max-height: var(#{$prefix}-layout-hover-max-height, var(#{$prefix}-layout-max-height, none));
+
+    overflow: var(#{$prefix}-layout-hover-overflow, var(#{$prefix}-layout-overflow, visible));
+    overflow-x: var(#{$prefix}-layout-hover-overflow-x, var(#{$prefix}-layout-overflow-x, var(#{$prefix}-layout-overflow, visible)));
+    overflow-y: var(#{$prefix}-layout-hover-overflow-y, var(#{$prefix}-layout-overflow-y, var(#{$prefix}-layout-overflow, visible)));
+    visibility: var(#{$prefix}-layout-hover-visibility, var(#{$prefix}-layout-visibility, visible));
+    object-fit: var(#{$prefix}-layout-hover-object-fit, var(#{$prefix}-layout-object-fit, fill));
+
+    flex-direction: var(#{$prefix}-layout-hover-flex-direction, var(#{$prefix}-layout-flex-direction, row));
+    justify-content: var(#{$prefix}-layout-hover-justify-content, var(#{$prefix}-layout-justify-content, #{$justify-content-fallback}));
+    align-items: var(#{$prefix}-layout-hover-align-items, var(#{$prefix}-layout-align-items, #{$align-items-fallback}));
+    gap: var(#{$prefix}-layout-hover-gap, var(#{$prefix}-layout-gap, #{$gap-fallback}));
+    flex-wrap: var(#{$prefix}-layout-hover-flex-wrap, var(#{$prefix}-layout-flex-wrap, nowrap));
+  }
+
+  &:focus,
+  &:focus-visible {
+    display: var(#{$prefix}-layout-focus-display, var(#{$prefix}-layout-display, #{$display-fallback}));
+    position: var(#{$prefix}-layout-focus-position, var(#{$prefix}-layout-position, static));
+    top: var(#{$prefix}-layout-focus-top, var(#{$prefix}-layout-top, auto));
+    right: var(#{$prefix}-layout-focus-right, var(#{$prefix}-layout-right, auto));
+    bottom: var(#{$prefix}-layout-focus-bottom, var(#{$prefix}-layout-bottom, auto));
+    left: var(#{$prefix}-layout-focus-left, var(#{$prefix}-layout-left, auto));
+    z-index: var(#{$prefix}-layout-focus-z-index, var(#{$prefix}-layout-z-index, auto));
+
+    width: var(#{$prefix}-layout-focus-width, var(#{$prefix}-layout-width, auto));
+    height: var(#{$prefix}-layout-focus-height, var(#{$prefix}-layout-height, auto));
+    min-width: var(#{$prefix}-layout-focus-min-width, var(#{$prefix}-layout-min-width, 0));
+    max-width: var(#{$prefix}-layout-focus-max-width, var(#{$prefix}-layout-max-width, none));
+    min-height: var(#{$prefix}-layout-focus-min-height, var(#{$prefix}-layout-min-height, 0));
+    max-height: var(#{$prefix}-layout-focus-max-height, var(#{$prefix}-layout-max-height, none));
+
+    overflow: var(#{$prefix}-layout-focus-overflow, var(#{$prefix}-layout-overflow, visible));
+    overflow-x: var(#{$prefix}-layout-focus-overflow-x, var(#{$prefix}-layout-overflow-x, var(#{$prefix}-layout-overflow, visible)));
+    overflow-y: var(#{$prefix}-layout-focus-overflow-y, var(#{$prefix}-layout-overflow-y, var(#{$prefix}-layout-overflow, visible)));
+    visibility: var(#{$prefix}-layout-focus-visibility, var(#{$prefix}-layout-visibility, visible));
+    object-fit: var(#{$prefix}-layout-focus-object-fit, var(#{$prefix}-layout-object-fit, fill));
+
+    flex-direction: var(#{$prefix}-layout-focus-flex-direction, var(#{$prefix}-layout-flex-direction, row));
+    justify-content: var(#{$prefix}-layout-focus-justify-content, var(#{$prefix}-layout-justify-content, #{$justify-content-fallback}));
+    align-items: var(#{$prefix}-layout-focus-align-items, var(#{$prefix}-layout-align-items, #{$align-items-fallback}));
+    gap: var(#{$prefix}-layout-focus-gap, var(#{$prefix}-layout-gap, #{$gap-fallback}));
+    flex-wrap: var(#{$prefix}-layout-focus-flex-wrap, var(#{$prefix}-layout-flex-wrap, nowrap));
+  }
+
+  #{$disabled-selectors} {
+    display: var(#{$prefix}-layout-disabled-display, var(#{$prefix}-layout-display, #{$display-fallback}));
+    position: var(#{$prefix}-layout-disabled-position, var(#{$prefix}-layout-position, static));
+    top: var(#{$prefix}-layout-disabled-top, var(#{$prefix}-layout-top, auto));
+    right: var(#{$prefix}-layout-disabled-right, var(#{$prefix}-layout-right, auto));
+    bottom: var(#{$prefix}-layout-disabled-bottom, var(#{$prefix}-layout-bottom, auto));
+    left: var(#{$prefix}-layout-disabled-left, var(#{$prefix}-layout-left, auto));
+    z-index: var(#{$prefix}-layout-disabled-z-index, var(#{$prefix}-layout-z-index, auto));
+
+    width: var(#{$prefix}-layout-disabled-width, var(#{$prefix}-layout-width, auto));
+    height: var(#{$prefix}-layout-disabled-height, var(#{$prefix}-layout-height, auto));
+    min-width: var(#{$prefix}-layout-disabled-min-width, var(#{$prefix}-layout-min-width, 0));
+    max-width: var(#{$prefix}-layout-disabled-max-width, var(#{$prefix}-layout-max-width, none));
+    min-height: var(#{$prefix}-layout-disabled-min-height, var(#{$prefix}-layout-min-height, 0));
+    max-height: var(#{$prefix}-layout-disabled-max-height, var(#{$prefix}-layout-max-height, none));
+
+    overflow: var(#{$prefix}-layout-disabled-overflow, var(#{$prefix}-layout-overflow, visible));
+    overflow-x: var(#{$prefix}-layout-disabled-overflow-x, var(#{$prefix}-layout-overflow-x, var(#{$prefix}-layout-overflow, visible)));
+    overflow-y: var(#{$prefix}-layout-disabled-overflow-y, var(#{$prefix}-layout-overflow-y, var(#{$prefix}-layout-overflow, visible)));
+    visibility: var(#{$prefix}-layout-disabled-visibility, var(#{$prefix}-layout-visibility, visible));
+    object-fit: var(#{$prefix}-layout-disabled-object-fit, var(#{$prefix}-layout-object-fit, fill));
+
+    flex-direction: var(#{$prefix}-layout-disabled-flex-direction, var(#{$prefix}-layout-flex-direction, row));
+    justify-content: var(#{$prefix}-layout-disabled-justify-content, var(#{$prefix}-layout-justify-content, #{$justify-content-fallback}));
+    align-items: var(#{$prefix}-layout-disabled-align-items, var(#{$prefix}-layout-align-items, #{$align-items-fallback}));
+    gap: var(#{$prefix}-layout-disabled-gap, var(#{$prefix}-layout-gap, #{$gap-fallback}));
+    flex-wrap: var(#{$prefix}-layout-disabled-flex-wrap, var(#{$prefix}-layout-flex-wrap, nowrap));
+  }
+}

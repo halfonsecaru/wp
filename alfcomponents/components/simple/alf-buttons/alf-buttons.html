@@ -1,0 +1,83 @@
+@let tooltip = tooltipComputed();
+<!-- Esto lo que hace es obtener el tipo de botón que se ha pasado por entrada submit, button, reset, etc. -->
+@let buttonType = typeComputed();
+@let ripple = rippleComputed();
+@let buttonStyle = createButtonStyle();
+@let cursor = cursorComputed();
+@let isDisabled = disabledComputed();
+@let idButton = internalId;
+@let leftIcon = iconLeftComputed();
+@let rightIcon = iconRightComputed();
+@let label = labelComputed();
+@let aria = ariaComputed();
+@let link = linkComputed();
+@let borderStyle = createBorderStyle();
+@let displayAndLayoutStyle = createDisplayAndLayoutStyle();
+@let marginStyle = createMarginStyle();
+@let outlineStyle = createOutlineStyle();
+@let paddingStyle = createPaddingStyle();
+@let shadowsStyle = createShadowsStyle();
+@let typographyStyle = createTypographyStyle();
+@let textStyle = createTextStyle();
+@let transformStyle = createTransformStyle();
+
+
+@if (link) {
+  <a
+      [attr.id]="idButton"
+      [attr.role]="aria?.role"
+      [attr.aria-describedby]="aria?.ariaDescribedBy"
+      [attr.aria-label]="aria?.ariaLabel"
+      [attr.aria-labelledby]="aria?.ariaLabelledBy"
+      [attr.aria-invalid]="aria?.ariaInvalid"
+      [attr.aria-required]="aria?.ariaRequired"
+      [attr.aria-selected]="aria?.ariaSelected"
+      [attr.aria-disabled]="isDisabled"
+      [attr.href]="isDisabled ? null : link.url"
+      [attr.target]="link.target ?? '_self'"
+      [attr.rel]="(link.target ?? '_self') === '_blank' ? 'noopener noreferrer' : null"
+      [attr.tabindex]="isDisabled ? -1 : null"
+      [alfTooltipText]="tooltip"
+      [alfRipple]="ripple"
+      [style.cursor]="isDisabled ? 'not-allowed' : cursor"
+      [style]="buttonStyle + borderStyle + displayAndLayoutStyle + marginStyle + outlineStyle + paddingStyle + shadowsStyle + typographyStyle + textStyle + transformStyle"
+      [class.alf-buttons-main--disabled]="isDisabled"
+      class="alf-buttons-main"
+  >
+    @if (leftIcon) {
+      <span class="alf-buttons-main__icon alf-buttons-main__icon--left">{{ leftIcon }}</span>
+    }
+    <span class="alf-buttons-main__label">{{ label }}</span>
+    @if (rightIcon) {
+      <span class="alf-buttons-main__icon alf-buttons-main__icon--right">{{ rightIcon }}</span>
+    }
+  </a>
+} @else {
+  <button 
+      [attr.id]="idButton"
+      [attr.role]="aria?.role"
+      [attr.aria-describedby]="aria?.ariaDescribedBy"
+      [attr.aria-label]="aria?.ariaLabel"
+      [attr.aria-labelledby]="aria?.ariaLabelledBy"
+      [attr.aria-invalid]="aria?.ariaInvalid"
+      [attr.aria-required]="aria?.ariaRequired"
+      [attr.aria-selected]="aria?.ariaSelected"
+      [type]="buttonType" 
+      [disabled]="isDisabled"
+      [attr.aria-disabled]="isDisabled"
+      [alfTooltipText]="tooltip" 
+      [alfRipple]="ripple" 
+      [style.cursor]="isDisabled ? 'not-allowed' : cursor"
+      [style]="buttonStyle + borderStyle + displayAndLayoutStyle + marginStyle + outlineStyle + paddingStyle + shadowsStyle + typographyStyle + textStyle + transformStyle"
+      [class.alf-buttons-main--disabled]="isDisabled"
+      class="alf-buttons-main"
+  >
+    @if (leftIcon) {
+      <span class="alf-buttons-main__icon alf-buttons-main__icon--left">{{ leftIcon }}</span>
+    }
+    <span class="alf-buttons-main__label">{{ label }}</span>
+    @if (rightIcon) {
+      <span class="alf-buttons-main__icon alf-buttons-main__icon--right">{{ rightIcon }}</span>
+    }
+  </button>
+}

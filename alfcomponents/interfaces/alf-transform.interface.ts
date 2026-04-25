@@ -118,11 +118,6 @@ export interface AlfTransformBaseInterface {
    */
   backfaceVisibility?: 'visible' | 'hidden';
 
-  /** Clase CSS personalizada delegada al elemento */
-  customCssClass?: string | string[];
-
-  /** Estilos CSS en línea personalizados @example [{ 'transform-origin': 'center' }] */
-  customCssStyle?: Record<string, string>[];
 }
 
 /**

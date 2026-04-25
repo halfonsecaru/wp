@@ -1,50 +1,52 @@
-// =============================================================
-// MIXIN: alf-margin
-// Mapea las CSS vars generadas por AlfBaseComponent (resolver)
-// a propiedades CSS reales para todos los estados.
-//
-// Uso: @include alf-margin();
-// =============================================================
+/**
+ * Aplica margin reactivo basado en variables CSS con prefijo.
+ * Ejemplo de prefijo: '--alf-btn'
+ */
+@mixin alf-margin-css-vars(
+  $prefix,
+  $disabled-selectors: '&[disabled], &:disabled, &.disabled'
+) {
+  margin: var(#{$prefix}-margin, 0);
+  margin-top: var(#{$prefix}-margin-top, var(#{$prefix}-margin, 0));
+  margin-right: var(#{$prefix}-margin-right, var(#{$prefix}-margin, 0));
+  margin-bottom: var(#{$prefix}-margin-bottom, var(#{$prefix}-margin, 0));
+  margin-left: var(#{$prefix}-margin-left, var(#{$prefix}-margin, 0));
 
-@mixin alf-margin() {
+  &:hover {
+    margin: var(#{$prefix}-margin-hover, var(#{$prefix}-margin, 0));
+    margin-top: var(#{$prefix}-margin-hover-top, var(#{$prefix}-margin-hover, var(#{$prefix}-margin-top, var(#{$prefix}-margin, 0))));
+    margin-right: var(#{$prefix}-margin-hover-right, var(#{$prefix}-margin-hover, var(#{$prefix}-margin-right, var(#{$prefix}-margin, 0))));
+    margin-bottom: var(#{$prefix}-margin-hover-bottom, var(#{$prefix}-margin-hover, var(#{$prefix}-margin-bottom, var(#{$prefix}-margin, 0))));
+    margin-left: var(#{$prefix}-margin-hover-left, var(#{$prefix}-margin-hover, var(#{$prefix}-margin-left, var(#{$prefix}-margin, 0))));
+  }
 
-  // --- DEFAULT ---
-  margin-top:    var(--alf-mar-margin-top);
-  margin-right:  var(--alf-mar-margin-right);
-  margin-bottom: var(--alf-mar-margin-bottom);
-  margin-left:   var(--alf-mar-margin-left);
+  &:active {
+    margin: var(#{$prefix}-margin-active, var(#{$prefix}-margin-hover, var(#{$prefix}-margin, 0)));
+    margin-top: var(#{$prefix}-margin-active-top, var(#{$prefix}-margin-active, var(#{$prefix}-margin-hover-top, var(#{$prefix}-margin-top, var(#{$prefix}-margin, 0)))));
+    margin-right: var(#{$prefix}-margin-active-right, var(#{$prefix}-margin-active, var(#{$prefix}-margin-hover-right, var(#{$prefix}-margin-right, var(#{$prefix}-margin, 0)))));
+    margin-bottom: var(#{$prefix}-margin-active-bottom, var(#{$prefix}-margin-active, var(#{$prefix}-margin-hover-bottom, var(#{$prefix}-margin-bottom, var(#{$prefix}-margin, 0)))));
+    margin-left: var(#{$prefix}-margin-active-left, var(#{$prefix}-margin-active, var(#{$prefix}-margin-hover-left, var(#{$prefix}-margin-left, var(#{$prefix}-margin, 0)))));
+  }
 
-  // --- FOCUS ---
   &:focus,
   &:focus-visible {
-    margin-top:    var(--alf-mar-margin-top-focus,    var(--alf-mar-margin-top));
-    margin-right:  var(--alf-mar-margin-right-focus,  var(--alf-mar-margin-right));
-    margin-bottom: var(--alf-mar-margin-bottom-focus, var(--alf-mar-margin-bottom));
-    margin-left:   var(--alf-mar-margin-left-focus,   var(--alf-mar-margin-left));
+    margin: var(#{$prefix}-margin-focus, var(#{$prefix}-margin, 0));
+    margin-top: var(#{$prefix}-margin-focus-top, var(#{$prefix}-margin-focus, var(#{$prefix}-margin-top, var(#{$prefix}-margin, 0))));
+    margin-right: var(#{$prefix}-margin-focus-right, var(#{$prefix}-margin-focus, var(#{$prefix}-margin-right, var(#{$prefix}-margin, 0))));
+    margin-bottom: var(#{$prefix}-margin-focus-bottom, var(#{$prefix}-margin-focus, var(#{$prefix}-margin-bottom, var(#{$prefix}-margin, 0))));
+    margin-left: var(#{$prefix}-margin-focus-left, var(#{$prefix}-margin-focus, var(#{$prefix}-margin-left, var(#{$prefix}-margin, 0))));
   }
 
-  // --- HOVER ---
-  &:hover {
-    margin-top:    var(--alf-mar-margin-top-hover,    var(--alf-mar-margin-top));
-    margin-right:  var(--alf-mar-margin-right-hover,  var(--alf-mar-margin-right));
-    margin-bottom: var(--alf-mar-margin-bottom-hover, var(--alf-mar-margin-bottom));
-    margin-left:   var(--alf-mar-margin-left-hover,   var(--alf-mar-margin-left));
+  #{$disabled-selectors} {
+    margin: var(#{$prefix}-margin-disabled, var(#{$prefix}-margin, 0));
+    margin-top: var(#{$prefix}-margin-disabled-top, var(#{$prefix}-margin-disabled, var(#{$prefix}-margin-top, var(#{$prefix}-margin, 0))));
+    margin-right: var(#{$prefix}-margin-disabled-right, var(#{$prefix}-margin-disabled, var(#{$prefix}-margin-right, var(#{$prefix}-margin, 0))));
+    margin-bottom: var(#{$prefix}-margin-disabled-bottom, var(#{$prefix}-margin-disabled, var(#{$prefix}-margin-bottom, var(#{$prefix}-margin, 0))));
+    margin-left: var(#{$prefix}-margin-disabled-left, var(#{$prefix}-margin-disabled, var(#{$prefix}-margin-left, var(#{$prefix}-margin, 0))));
   }
+}
 
-  // --- ACTIVE ---
-  &:active {
-    margin-top:    var(--alf-mar-margin-top-active,    var(--alf-mar-margin-top));
-    margin-right:  var(--alf-mar-margin-right-active,  var(--alf-mar-margin-right));
-    margin-bottom: var(--alf-mar-margin-bottom-active, var(--alf-mar-margin-bottom));
-    margin-left:   var(--alf-mar-margin-left-active,   var(--alf-mar-margin-left));
-  }
-
-  // --- DISABLED ---
-  &[disabled],
-  &:disabled {
-    margin-top:    var(--alf-mar-margin-top-disabled,    var(--alf-mar-margin-top));
-    margin-right:  var(--alf-mar-margin-right-disabled,  var(--alf-mar-margin-right));
-    margin-bottom: var(--alf-mar-margin-bottom-disabled, var(--alf-mar-margin-bottom));
-    margin-left:   var(--alf-mar-margin-left-disabled,   var(--alf-mar-margin-left));
-  }
+// Compatibilidad retroactiva con prefijo histórico.
+@mixin alf-margin() {
+  @include alf-margin-css-vars('--alf-mar');
 }

@@ -10,17 +10,17 @@ export enum AlfColorEnum {
 
   // ===== THEME ROLES =====
   Primary = '#0d6efd',
-  PrimaryHover = '#0b5ed7',
+  PrimaryHover = '#0a55c7ff',
   Secondary = '#6c757d',
-  SecondaryHover = '#5c636a',
+  SecondaryHover = '#4a5055ff',
   Success = '#198754',
-  SuccessHover = '#157347',
+  SuccessHover = '#125b39ff',
   Danger = '#dc3545',
   DangerHover = '#bb2d3b',
   Warning = '#ffc107',
-  WarningHover = '#ffca2c',
+  WarningHover = '#d5a926ff',
   Info = '#0dcaf0',
-  InfoHover = '#31d2f2',
+  InfoHover = '#2bb9d6ff',
 
   // ===== GRAY SCALE (Complete 050-999) =====
   Gray050 = '#fafafa',

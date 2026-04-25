@@ -93,5 +93,6 @@ export enum AlfColorVariantEnum {
   Fire = 'fire',
   Frost = 'frost',
   Lava = 'lava',
-  Zen = 'zen'
+  Zen = 'zen',
+  Default = "Default"
 }

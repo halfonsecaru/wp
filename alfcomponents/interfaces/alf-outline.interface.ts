@@ -32,15 +32,6 @@ export interface AlfOutlineBaseInterface {
    * @example AlfPxEnum.Px2 
    */
   outlineOffset?: AlfPxEnum | AlfRemEnum;
-
-  /** Clase CSS personalizada delegada al elemento */
-  customCssClass?: string | string[];
-
-  /** 
-   * Estilos CSS en línea personalizados 
-   * @example [{ 'outline-color': 'transparent' }] 
-   */
-  customCssStyle?: Record<string, string>[];
 }
 
 /**

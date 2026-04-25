@@ -25,15 +25,6 @@ export interface AlfMarginBaseInterface {
 
   /** Margen izquierdo */
   marginLeft?: AlfPxEnum | AlfRemEnum | AlfPercentageEnum | 'auto';
-
-  /** Clase CSS personalizada delegada al elemento */
-  customCssClass?: string | string[];
-
-  /** 
-   * Estilos CSS en línea personalizados 
-   * @example [{ 'margin-inline': 'auto' }] 
-   */
-  customCssStyle?: Record<string, string>[];
 }
 
 /**

@@ -10,6 +10,7 @@ export * from './predefined';
 export * from './directives';
 export * from './components';
 export * from './base';
+export * from './shared';
 export * from './services';
 export * from './themes/alf-theme.tokens';
 

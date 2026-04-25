@@ -61,6 +61,7 @@ export * from './alf-theme.enum';
 export * from './alf-timing-function.enum';
 export * from './alf-variant.enum';
 export * from './alf-vertical-align.enum';
+export * from './alf-visual-predefined.enum';
 export * from './alf-visibility.enum';
 export * from './alf-white-space.enum';
 export * from './alf-word-break.enum';

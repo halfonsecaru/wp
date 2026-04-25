@@ -53,21 +53,12 @@ export interface AlfBackgroundsBaseInterface {
    */
   backgroundImage?: string;
 
-  /** Clase CSS personalizada delegada al elemento */
-  customCssClass?: string | string[];
-
-  /** 
-   * Estilos CSS en línea personalizados 
-   * Úsalo para imágenes externas o degradados custom.
-   * @example [{ 'background-image': 'url("...")' }] 
-   */
-  customCssStyle?: Record<string, string>[];
 }
 
 /**
  * Interface para estilos de fondo con soporte de estados
  */
-export interface AlfBackgroundsInterface {
+export interface AlfBackgroundsStyleInterface {
   /**
    * Estilos base aplicados por defecto al componente.
    */
@@ -93,3 +84,8 @@ export interface AlfBackgroundsInterface {
    */
   active?: AlfBackgroundsBaseInterface;
 }
+
+/**
+ * Alias principal para mantener consistencia con el resto de interfaces visuales.
+ */
+export type AlfBackgroundsInterface = AlfBackgroundsStyleInterface;

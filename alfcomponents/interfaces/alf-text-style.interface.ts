@@ -38,12 +38,6 @@ export interface AlfTextStyleStateBaseInterface {
      * @example textTransform: AlfTextTransformEnum.Uppercase
      */
     textTransform?: AlfTextTransformEnum;
-
-    /** Clase CSS personalizada delegada al elemento */
-    customCssClass?: string | string[];
-
-    /** Estilos CSS en línea personalizados @example [{ 'opacity': '0.8' }] */
-    customCssStyle?: Record<string, string>[];
 }
 
 /**

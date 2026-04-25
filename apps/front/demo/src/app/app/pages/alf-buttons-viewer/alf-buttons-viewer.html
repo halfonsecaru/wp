@@ -1,0 +1,42 @@
+<div class="viewer-card">
+  <p class="card-title">Signals + Outputs (Live)</p>
+  <div class="card-row">
+    <div class="sample-item">
+      <p class="sample-title">
+        Clicks: {{ signalClicks() }} | Hovers: {{ signalHovers() }} | Debounce: {{ debounceMsSignal() }}ms
+      </p>
+      <alf-buttons
+        [inputConfig]="liveButtonConfig()"
+        [debounceTime]="debounceMsSignal()"
+        tooltip="Live example with signals and outputs"
+        (onClick)="onLiveClick()"
+        (onHoverEnter)="onLiveHover()"
+      />
+    </div>
+    <button class="loading-toggle" type="button" (click)="toggleLiveVisualType()">
+      Toggle Solid/Outline
+    </button>
+    <button class="loading-toggle" type="button" (click)="toggleLiveTone()">
+      Toggle Guardar/Eliminar
+    </button>
+    <button class="loading-toggle" type="button" (click)="rotateDebounce()">
+      Debounce 0/300/600
+    </button>
+  </div>
+</div>
+
+<section class="viewer-grid">
+  @for (section of visualSections; track section.title) {
+    <div class="viewer-card">
+      <p class="card-title">{{ section.title }}</p>
+      <div class="card-row">
+        @for (example of section.buttons; track example.tooltip) {
+          <div class="sample-item">
+            <p class="sample-title">{{ example.title }}</p>
+            <alf-buttons [inputConfig]="example.config" [tooltip]="example.tooltip" />
+          </div>
+        }
+      </div>
+    </div>
+  }
+</section>

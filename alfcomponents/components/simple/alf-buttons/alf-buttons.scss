@@ -1,0 +1,45 @@
+@use '../../../styles/mixins' as *;
+
+.alf-buttons-main {
+  --alf-btn-typography-line-height: 1;
+  @include alf-border-css-vars('--alf-btn', 0.375rem, '&:disabled, &.alf-buttons-main--disabled');
+  @include alf-background-css-vars('--alf-btn', '&:disabled, &.alf-buttons-main--disabled');
+  @include alf-margin-css-vars('--alf-btn', '&:disabled, &.alf-buttons-main--disabled');
+  @include alf-outline-css-vars('--alf-btn', '&:disabled, &.alf-buttons-main--disabled');
+  @include alf-padding-css-vars('--alf-btn', 0.625rem, 1rem, '&:disabled, &.alf-buttons-main--disabled');
+  @include alf-shadows-css-vars('--alf-btn', '&:disabled, &.alf-buttons-main--disabled');
+  @include alf-typography-css-vars('--alf-btn', '&:disabled, &.alf-buttons-main--disabled');
+  @include alf-text-style-css-vars('--alf-btn', #ffffff, '&:disabled, &.alf-buttons-main--disabled');
+  @include alf-transform-css-vars('--alf-btn', '&:disabled, &.alf-buttons-main--disabled');
+  @include alf-display-layout-css-vars(
+    '--alf-btn',
+    inline-flex,
+    center,
+    center,
+    0.5rem,
+    '&:disabled, &.alf-buttons-main--disabled'
+  );
+  align-items: center;
+  display: inline-flex;
+  gap: 0.5rem;
+  justify-content: center;
+  line-height: 1;
+  text-decoration: none;
+  transition: background-color 300ms ease, transform 220ms ease;
+}
+
+.alf-buttons-main:disabled,
+.alf-buttons-main--disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.alf-buttons-main--disabled {
+  pointer-events: none;
+}
+
+.alf-buttons-main__icon {
+  display: inline-flex;
+  font-size: 0.875rem;
+  line-height: 1;
+}

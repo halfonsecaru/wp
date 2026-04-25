@@ -121,11 +121,6 @@ export interface AlfTypographyBaseInterface {
    */
   textShadow?: AlfTextShadowEnum;
 
-  /** Clase CSS personalizada delegada al elemento */
-  customCssClass?: string | string[];
-
-  /** Estilos CSS en línea personalizados @example [{ 'color': 'red' }] */
-  customCssStyle?: Record<string, string>[];
 }
 
 /**

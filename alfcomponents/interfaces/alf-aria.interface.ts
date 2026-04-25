@@ -4,38 +4,14 @@ import {
 } from '../enums';
 
 /**
- * Interfaz para propiedades de accesibilidad (ARIA) comunes
- * Útil para componentes que actúan como combobox, menús, diálogos o elementos interactivos.
+ * Propiedades ARIA realmente genéricas para la mayoría de componentes.
  */
-export interface AlfAriaInterface {
+export interface AlfAriaBaseInterface {
   /**
    * Rol ARIA del elemento que define su propósito semántico.
    * @example AlfAriaRoleEnum.Combobox 
    */
   role?: AlfAriaRoleEnum;
-
-  /**
-   * Estado de expansión del elemento (para combobox o menús desplegables).
-   * @default false
-   */
-  ariaExpanded?: boolean;
-
-  /**
-   * ID del elemento o elementos que este componente controla.
-   * @example 'listbox-id-123'
-   */
-  ariaControls?: string;
-
-  /**
-   * ID del elemento actualmente activo entre sus descendientes (para navegación con teclado).
-   */
-  ariaActiveDescendant?: string;
-
-  /**
-   * Indica si el elemento dispara un popup y de qué tipo es.
-   * @example AlfAriaHasPopupEnum.Listbox 
-   */
-  ariaHasPopup?: AlfAriaHasPopupEnum;
 
   /**
    * ID o IDs de los elementos que proporcionan una descripción extensa del componente.
@@ -60,9 +36,6 @@ export interface AlfAriaInterface {
   /**
    * Indica si el elemento es obligatorio.
    */
-  /**
-   * Indica si el elemento es obligatorio.
-   */
   ariaRequired?: boolean;
 
   /**
@@ -70,3 +43,35 @@ export interface AlfAriaInterface {
    */
   ariaSelected?: boolean;
 }
+
+/**
+ * ARIA para componentes con comportamiento de popup/overlay
+ * (combobox, menu, listbox, dialog trigger, etc.).
+ */
+export interface AlfAriaPopupInterface {
+  /**
+   * Estado de expansión del elemento.
+   * @default false
+   */
+  ariaExpanded?: boolean;
+
+  /**
+   * ID del elemento o elementos que este componente controla.
+   */
+  ariaControls?: string;
+
+  /**
+   * ID del elemento actualmente activo entre sus descendientes.
+   */
+  ariaActiveDescendant?: string;
+
+  /**
+   * Indica si el elemento dispara un popup y de qué tipo es.
+   */
+  ariaHasPopup?: AlfAriaHasPopupEnum;
+}
+
+/**
+ * Contrato completo actual para compatibilidad.
+ */
+export interface AlfAriaInterface extends AlfAriaBaseInterface, AlfAriaPopupInterface { }

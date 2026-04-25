@@ -42,17 +42,6 @@ export interface AlfShadowsBaseInterface {
    * @example AlfColorEnum.Black 
    */
   textShadowColor?: AlfColorEnum;
-
-  /** 
-   * Clase CSS personalizada delegada al elemento 
-   */
-  customCssClass?: string | string[];
-
-  /** 
-   * Estilos CSS en línea personalizados 
-   * @example [{ 'filter': 'blur(2px)' }] 
-   */
-  customCssStyle?: Record<string, string>[];
 }
 
 /**
