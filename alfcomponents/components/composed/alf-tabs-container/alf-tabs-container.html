@@ -1,5 +1,5 @@
 @let currentConfig = inputConfig();
-@let buttonStyle = createButtonStyle();
+@let backgroundsStyle = createBackgroundsStyle();
 @let borderStyle = createBorderStyle();
 @let displayAndLayoutStyle = createDisplayAndLayoutStyle();
 @let marginStyle = createMarginStyle();
@@ -9,11 +9,17 @@
 @let typographyStyle = createTypographyStyle();
 @let textStyle = createTextStyle();
 @let transformStyle = createTransformStyle();
+@let animationsStyle = createAnimationsStyle();
+@let animationsClass = animationsClassComputed();
+@let contentAnimStyle = contentAnimationsStyle();
+@let contentAnimClass = contentAnimationsClass();
+@let customClass = customClassComputed();
+@let customStyle = customStyleComputed();
 
 <div 
-  class="alf-tabs-container"
+  [class]="'alf-tabs-container ' + customClass + ' ' + animationsClass"
   [style]="
-    buttonStyle + 
+    backgroundsStyle + 
     borderStyle + 
     displayAndLayoutStyle + 
     marginStyle + 
@@ -22,26 +28,54 @@
     shadowsStyle + 
     typographyStyle + 
     textStyle + 
-    transformStyle
+    transformStyle +
+    animationsStyle +
+    customStyle
   "
 >
   <!-- Navegación de pestañas -->
-  <nav class="alf-tabs-navigation" role="tablist">
-    @for (tab of navigationTabs(); track tab.label; let i = $index) {
-      <alf-buttons 
-        [inputConfig]="tab.configuration"
-        (click)="setActiveTab(i)"
-        [class.is-active]="activeIndex() === i"
-        role="tab"
-        [attr.aria-selected]="activeIndex() === i"
-      />
+  <div 
+    class="alf-tabs-header-container"
+    [class.alf-tabs-header-container--can-left]="headerMetrics().canLeft"
+    [class.alf-tabs-header-container--can-right]="headerMetrics().canRight"
+  >
+    @if (headerMetrics().canLeft) {
+      <button type="button" class="alf-tabs-arrow alf-tabs-arrow--left" (click)="scrollLeft()" aria-label="Deslizar izquierda">
+        <span aria-hidden="true">‹</span>
+      </button>
     }
-    <!-- Slider animado -->
-    <div #slider class="alf-tabs-slider"></div>
-  </nav>
+
+    <div class="alf-tabs-header-scroll" #headerScroll (scroll)="onScroll()">
+      <nav class="alf-tabs-navigation" role="tablist">
+        @for (tab of navigationTabs(); track tab.label; let i = $index) {
+          <alf-buttons 
+            [inputConfig]="tab.configuration"
+            (click)="setActiveTab(i)"
+            [class.is-active]="activeIndex() === i"
+            role="tab"
+            [attr.aria-selected]="activeIndex() === i"
+          />
+        }
+        <!-- Slider animado -->
+        <div #slider class="alf-tabs-slider"></div>
+      </nav>
+    </div>
+
+    @if (headerMetrics().canRight) {
+      <button type="button" class="alf-tabs-arrow alf-tabs-arrow--right" (click)="scrollRight()" aria-label="Deslizar derecha">
+        <span aria-hidden="true">›</span>
+      </button>
+    }
+  </div>
 
   <!-- Contenido de las pestañas -->
-  <div #contentContainer class="alf-tabs-content" role="tabpanel">
+  <div 
+    #contentContainer 
+    class="alf-tabs-content" 
+    role="tabpanel"
+    [class]="contentAnimClass"
+    [style]="contentAnimStyle"
+  >
     <ng-content />
   </div>
 </div>

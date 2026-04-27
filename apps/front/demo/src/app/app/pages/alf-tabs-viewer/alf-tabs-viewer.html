@@ -8,28 +8,28 @@
 
   <div class="basic-card">
     <alf-tabs-container>
-      
-      <alf-tab [tabName]="'perfiles'">
-        <div class="tab-pane">
-          <h3>Perfil Público</h3>
-          <p>Esta información será visible para otros usuarios en la plataforma.</p>
-        </div>
-      </alf-tab>
+      @for (tab of nestedTabs; track tab.name) {
+        <alf-tab [tabName]="tab.name">
+          <div class="tab-pane">
+            <h2 style="margin-bottom: 20px;">Panel {{ tab.name }}</h2>
+            
+            <!-- Pestañas Anidadas -->
+            <alf-tabs-container>
+              @for (sub of tab.subTabs; track sub.name) {
+                <alf-tab [tabName]="sub.name">
+                  <div class="tab-pane sub-pane" style="background: rgba(0,0,0,0.02); border-radius: 8px; padding: 15px;">
+                    <h4>{{ sub.name }}</h4>
+                    @for (line of sub.lines; track line) {
+                      <p>{{ line }}</p>
+                    }
+                  </div>
+                </alf-tab>
+              }
+            </alf-tabs-container>
 
-      <alf-tab [tabName]="'notificaciones'">
-        <div class="tab-pane">
-          <h3>Notificaciones</h3>
-          <p>Configura cómo y cuándo quieres recibir alertas de seguridad.</p>
-        </div>
-      </alf-tab>
-
-      <alf-tab [tabName]="'privacidad'">
-        <div class="tab-pane">
-          <h3>Privacidad</h3>
-          <p>Controla quién puede ver tu actividad y datos de contacto.</p>
-        </div>
-      </alf-tab>
-
+          </div>
+        </alf-tab>
+      }
     </alf-tabs-container>
   </div>
 </div>

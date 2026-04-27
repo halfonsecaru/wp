@@ -13,11 +13,37 @@
   @include alf-transform-css-vars('--alf-tabs');
   @include alf-display-layout-css-vars('--alf-tabs');
 
-  // Estructura interna (No controlada por variables CSS de diseño base)
+  display: flex;
+  flex-direction: column;
+
+  .alf-tabs-header-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background: transparent;
+  }
+
+  .alf-tabs-header-scroll {
+    flex: 1;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
   .alf-tabs-navigation {
     display: flex;
+    flex-wrap: nowrap;
     position: relative;
     border-bottom: 1px solid var(--alf-tabs-border-color, #e2e8f0);
+    width: fit-content;
+    min-width: 100%;
     
     .alf-tabs-slider {
       position: absolute;
@@ -26,6 +52,52 @@
       background-color: var(--alf-tabs-slider-color, var(--alf-tabs-primary, #3b82f6));
       z-index: 1;
       will-change: left, width;
+    }
+  }
+
+  .alf-tabs-arrow {
+    appearance: none;
+    background: none;
+    border: none;
+    padding: 0 10px;
+    margin: 0;
+    outline: none;
+    position: absolute;
+    top: -5px;
+    bottom: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--alf-tabs-text-color, inherit);
+    
+    // --- Crystal (Glassmorphism) Effect ---
+    backdrop-filter: blur(8px) saturate(150%);
+    -webkit-backdrop-filter: blur(8px) saturate(150%);
+    font-weight: bold;
+    font-size: 2rem;
+    @include alf-transition;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+      transform: scale(1.1);
+    }
+
+    &:active {
+      transform: scale(0.9);
+    }
+
+    &--left {
+      left: 0;
+      background: linear-gradient(to right, color-mix(in srgb, var(--alf-tabs-bg-color, white) 80%, transparent), transparent);
+      border-right: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    &--right {
+      right: 0;
+      background: linear-gradient(to left, color-mix(in srgb, var(--alf-tabs-bg-color, white) 80%, transparent), transparent);
+      border-left: 1px solid rgba(0, 0, 0, 0.05);
     }
   }
 

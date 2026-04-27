@@ -1,5 +1,5 @@
 import { Component, HostListener, input, output } from '@angular/core';
-import { generateUniqueId } from '@alfcomponents/shared';
+import { generateUniqueId, visualprefixEnum } from '@alfcomponents/shared';
 import { AlfButtonInterface } from './interfaces/alf-button.interface';
 import { AlfRippleDirective, AlfTooltipTextDirective } from '@alfcomponents/directives';
 import { AlfBaseButtonConfiguration } from '@alfcomponents/components/simple/alf-buttons/base/base-button-configuration';
@@ -14,7 +14,7 @@ import { AlfBaseButtonConfiguration } from '@alfcomponents/components/simple/alf
 export class AlfButtons extends AlfBaseButtonConfiguration<AlfButtonInterface> {
 
     // **** Configuracion general del componente **** //
-    protected readonly visualPrefix = '--alf-btn';
+    protected readonly visualPrefix = visualprefixEnum.Buttons;
     protected readonly internalId = generateUniqueId({ prefix: 'button' });
     protected readonly debounceTime = input<number>(0);
 

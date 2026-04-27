@@ -1,6 +1,7 @@
 import { Component, contentChildren, effect, input, signal, computed, viewChild, ElementRef, viewChildren, untracked } from '@angular/core';
 import { AlfTabComponent } from './components/alf-tab/alf-tab';
 import { AlfButtons } from '../../simple/alf-buttons/alf-buttons';
+import { visualprefixEnum } from '@alfcomponents/shared';
 import { AlfButtonVisualTypeEnum, AlfColorVariantEnum, AlfCursorEnum, AlfColorEnum } from '@alfcomponents/enums';
 import { AlfBorderInterface } from '@alfcomponents/interfaces';
 import { AlfBaseConfiguration } from '@alfcomponents/base';
@@ -19,7 +20,7 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
   /**
    * Prefijo para las variables CSS.
    */
-  protected readonly visualPrefix = '--alf-tabs';
+  protected readonly visualPrefix = visualprefixEnum.TabsContainer;
 
   /**
    * Configuración general del contenedor con valores por defecto.
@@ -29,12 +30,22 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
   /**
    * Listado de pestañas proyectadas.
    */
-  protected readonly tabs = contentChildren(AlfTabComponent, { descendants: true });
+  protected readonly tabs = contentChildren(AlfTabComponent, { descendants: false });
+
+  /**
+   * Referencia al contenedor de scroll de la cabecera.
+   */
+  protected readonly headerScrollRef = viewChild<ElementRef<HTMLDivElement>>('headerScroll');
+
+  /**
+   * Métricas de scroll para mostrar/ocultar flechas.
+   */
+  protected readonly headerMetrics = signal({ canLeft: false, canRight: false });
 
   /**
    * Índice de la pestaña activa.
    */
-  protected readonly activeIndex = signal<number>(0);
+  public readonly activeIndex = signal<number>(0);
 
   /**
    * Referencias a los botones de navegación para cálculos del slider.
@@ -47,9 +58,79 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
   protected readonly sliderRef = viewChild<ElementRef<HTMLDivElement>>('slider');
 
   /**
-   * Efecto para animar el slider cuando cambia la pestaña activa.
+   * Observer para actualizar métricas de scroll.
    */
-  protected readonly animateSlider = effect(() => {
+  private resizeObserver?: ResizeObserver;
+
+  constructor() {
+    super();
+    
+    // Efecto para inicializar el ResizeObserver cuando el scrollRef esté disponible
+    effect((onCleanup) => {
+      const scrollEl = this.headerScrollRef()?.nativeElement;
+      if (!scrollEl) return;
+
+      this.resizeObserver = new ResizeObserver(() => {
+        this.updateScrollMetrics();
+      });
+
+      this.resizeObserver.observe(scrollEl);
+      this.updateScrollMetrics();
+
+      onCleanup(() => {
+        this.resizeObserver?.disconnect();
+      });
+    });
+  }
+
+  /**
+   * Actualiza las métricas de scroll (canLeft, canRight).
+   */
+  protected updateScrollMetrics(): void {
+    const el = this.headerScrollRef()?.nativeElement;
+    if (!el) return;
+
+    const { scrollLeft, scrollWidth, clientWidth } = el;
+    
+    // Tolerancia de 1px para redondeos
+    this.headerMetrics.set({
+      canLeft: scrollLeft > 1,
+      canRight: scrollLeft + clientWidth < scrollWidth - 1
+    });
+
+    // Aprovechamos para actualizar el slider si ha cambiado la visibilidad
+    this.updateSlider(false);
+  }
+
+  /**
+   * Desplaza el scroll hacia la izquierda.
+   */
+  public scrollLeft(): void {
+    const el = this.headerScrollRef()?.nativeElement;
+    if (!el) return;
+    el.scrollBy({ left: -200, behavior: 'smooth' });
+  }
+
+  /**
+   * Desplaza el scroll hacia la derecha.
+   */
+  public scrollRight(): void {
+    const el = this.headerScrollRef()?.nativeElement;
+    if (!el) return;
+    el.scrollBy({ left: 200, behavior: 'smooth' });
+  }
+
+  /**
+   * Manejador del evento de scroll.
+   */
+  protected onScroll(): void {
+    this.updateScrollMetrics();
+  }
+
+  /**
+   * Actualiza la posición y ancho del slider.
+   */
+  public updateSlider(animate: boolean = true): void {
     const active = this.activeIndex();
     const buttons = this.buttonRefs();
     const slider = this.sliderRef()?.nativeElement;
@@ -59,11 +140,13 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
     const targetButton = buttons[active]?.nativeElement;
     if (!targetButton) return;
 
-    untracked(() => {
-      // Calculamos posición y ancho respecto al contenedor nav
-      const width = targetButton.offsetWidth;
-      const left = targetButton.offsetLeft;
+    const width = targetButton.offsetWidth;
+    const left = targetButton.offsetLeft;
 
+    // Si no hay dimensiones (ej: está oculto), no hacemos nada
+    if (width === 0) return;
+
+    if (animate) {
       slider.animate([
         { width: slider.style.width || '0px', left: slider.style.left || '0px' },
         { width: `${width}px`, left: `${left}px` }
@@ -72,10 +155,22 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
         easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
         fill: 'forwards'
       });
+    }
 
-      // Sincronizamos estilo inline para el siguiente frame si fuera necesario
-      slider.style.width = `${width}px`;
-      slider.style.left = `${left}px`;
+    slider.style.width = `${width}px`;
+    slider.style.left = `${left}px`;
+  }
+
+  /**
+   * Efecto para animar el slider cuando cambia la pestaña activa.
+   */
+  protected readonly animateSlider = effect(() => {
+    // Suscribimos a cambios de pestaña o botones
+    this.activeIndex();
+    this.buttonRefs();
+    
+    untracked(() => {
+      this.updateSlider();
     });
   });
 
@@ -85,7 +180,7 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
   protected readonly navigationTabs = computed(() => {
     const active = this.activeIndex();
     return this.tabs().map((tab, index) => {
-      const baseConfig = (tab.tabConfig()?.configuration ?? getAlfTabDefaultConfig(tab.tabName())) as AlfButtonInterface;
+      const baseConfig = (tab.inputConfig()?.configuration ?? getAlfTabDefaultConfig(tab.tabName())) as AlfButtonInterface;
       const isActive = index === active;
       const activeColor = baseConfig.backgrounds?.active?.backgroundColor;
 
@@ -111,9 +206,13 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
   protected readonly syncActiveTab = effect(() => {
     const currentTabs = this.tabs();
     const active = this.activeIndex();
+    const contentAnim = this.inputConfig()?.contentAnimations;
 
     currentTabs.forEach((tab, index) => {
       tab.isActive.set(index === active);
+      if (contentAnim) {
+        tab.parentContentAnimations.set(contentAnim);
+      }
     });
   });
 
@@ -154,4 +253,28 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
       });
     });
   };
+
+  /**
+   * Estilos de animación para el contenido.
+   */
+  protected readonly contentAnimationsStyle = computed(() => {
+    const anim = this.inputConfig()?.contentAnimations;
+    if (!anim) return '';
+    const declarations: string[] = [];
+    if (anim.duration) declarations.push(`--animate-duration: ${anim.duration};`);
+    if (anim.delay) declarations.push(`--animate-delay: ${anim.delay};`);
+    return declarations.join(' ');
+  });
+
+  /**
+   * Clases de animación para el contenido.
+   */
+  protected readonly contentAnimationsClass = computed(() => {
+    const anim = this.inputConfig()?.contentAnimations?.enterStage ?? '';
+    if (!anim) return '';
+    
+    // Forzamos el recalculo al cambiar de pestaña
+    this.activeIndex();
+    return anim;
+  });
 }

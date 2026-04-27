@@ -3,7 +3,7 @@ import { AlfTooltipConfig } from '@alfcomponents/directives';
 import { AlfButtonVisualTypeEnum, AlfColorVariantEnum, AlfCursorEnum, AlfVisualPredefinedEnum } from '@alfcomponents/enums';
 import { AlfAnimateCssInterface, AlfBackgroundsInterface, AlfBorderInterface, AlfDisplayAndLayoutInterface, AlfMarginInterface, AlfOutlineInterface, AlfPaddingInterface, AlfRippleInterface, AlfShadowsInterface, AlfTextStyleInterface, AlfTransformInterface, AlfTypographyInterface } from '@alfcomponents/interfaces';
 import { AlfAriaBaseInterface } from '@alfcomponents/interfaces/alf-aria.interface';
-import { visualBackgroundBase, visualBorderBase, visualDisplayAndLayoutBase, visualMarginBase, visualOutlineBase, visualPaddingBase, visualRippleColorBase, visualShadowsBase, visualTextStyleBase, visualTransformBase, visualTypographyBase } from './base-visual';
+import { visualAnimationsBase, visualBackgroundBase, visualBorderBase, visualDisplayAndLayoutBase, visualMarginBase, visualOutlineBase, visualPaddingBase, visualRippleColorBase, visualShadowsBase, visualTextStyleBase, visualTransformBase, visualTypographyBase } from './base-visual';
 
 export interface AlfBaseCommonConfigInterface {
   readonly colorVariant?: AlfColorVariantEnum;
@@ -22,6 +22,8 @@ export interface AlfBaseCommonConfigInterface {
   readonly transform?: AlfTransformInterface;
   readonly typography?: AlfTypographyInterface;
   readonly animations?: AlfAnimateCssInterface;
+  readonly customClass?: string;
+  readonly customStyle?: string;
 }
 
 @Directive()
@@ -30,7 +32,7 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
 
   // Inputs base comunes a la mayoría de componentes interactivos
   // El input de configuracion principal que engloba todos
-  protected readonly inputConfig = input<TConfig>();
+  public readonly inputConfig = input<TConfig>();
 
   // ***************************************************** //
   // **** CONFIGURACION BASE PARA LOS INPUTS DIRECTOS **** //
@@ -138,12 +140,20 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
     this.animations() ?? this.inputConfig()?.animations,
   );
 
+  protected readonly customClassComputed = computed(() =>
+    this.inputConfig()?.customClass ?? '',
+  );
+
+  protected readonly customStyleComputed = computed(() =>
+    this.inputConfig()?.customStyle ?? '',
+  );
+
   // ****************************************** //
   // **** CREACION DE LO ESTILOS PARA SCSS **** //
   // ****************************************** //
   // Computeds visuales comunes (estilo + ripple)
 
-  protected readonly createButtonStyle = computed(() =>
+  protected readonly createBackgroundsStyle = computed(() =>
     visualBackgroundBase(this.visualPrefix, {
       type: this.colorVariantComputed() ?? AlfColorVariantEnum.Default,
       predefined: this.predefinedComputed(),
@@ -232,6 +242,16 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
       typography: this.typographyComputed(),
     }),
   );
+
+  protected readonly createAnimationsStyle = computed(() =>
+    visualAnimationsBase(this.visualPrefix, {
+      animations: this.animationsComputed(),
+    }),
+  );
+
+  protected readonly animationsClassComputed = computed(() => {
+    return this.animationsComputed()?.enterStage ?? '';
+  });
 
   protected readonly rippleComputed = computed<boolean | AlfRippleInterface>(() => {
     const baseRippleConf: AlfRippleInterface = {

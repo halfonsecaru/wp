@@ -2,7 +2,7 @@
 <!-- Esto lo que hace es obtener el tipo de botón que se ha pasado por entrada submit, button, reset, etc. -->
 @let buttonType = typeComputed();
 @let ripple = rippleComputed();
-@let buttonStyle = createButtonStyle();
+@let buttonStyle = createBackgroundsStyle();
 @let cursor = cursorComputed();
 @let isDisabled = disabledComputed();
 @let idButton = internalId;
@@ -20,6 +20,10 @@
 @let typographyStyle = createTypographyStyle();
 @let textStyle = createTextStyle();
 @let transformStyle = createTransformStyle();
+@let animationsStyle = createAnimationsStyle();
+@let animationsClass = animationsClassComputed();
+@let customClass = customClassComputed();
+@let customStyle = customStyleComputed();
 
 
 @if (link) {
@@ -40,9 +44,9 @@
       [alfTooltipText]="tooltip"
       [alfRipple]="ripple"
       [style.cursor]="isDisabled ? 'not-allowed' : cursor"
-      [style]="buttonStyle + borderStyle + displayAndLayoutStyle + marginStyle + outlineStyle + paddingStyle + shadowsStyle + typographyStyle + textStyle + transformStyle"
+      [style]="buttonStyle + borderStyle + displayAndLayoutStyle + marginStyle + outlineStyle + paddingStyle + shadowsStyle + typographyStyle + textStyle + transformStyle + animationsStyle + customStyle"
+      [class]="'alf-buttons-main ' + customClass + ' ' + animationsClass"
       [class.alf-buttons-main--disabled]="isDisabled"
-      class="alf-buttons-main"
   >
     @if (leftIcon) {
       <span class="alf-buttons-main__icon alf-buttons-main__icon--left">{{ leftIcon }}</span>
@@ -68,9 +72,9 @@
       [alfTooltipText]="tooltip" 
       [alfRipple]="ripple" 
       [style.cursor]="isDisabled ? 'not-allowed' : cursor"
-      [style]="buttonStyle + borderStyle + displayAndLayoutStyle + marginStyle + outlineStyle + paddingStyle + shadowsStyle + typographyStyle + textStyle + transformStyle"
+      [style]="buttonStyle + borderStyle + displayAndLayoutStyle + marginStyle + outlineStyle + paddingStyle + shadowsStyle + typographyStyle + textStyle + transformStyle + animationsStyle + customStyle"
+      [class]="'alf-buttons-main ' + customClass + ' ' + animationsClass"
       [class.alf-buttons-main--disabled]="isDisabled"
-      class="alf-buttons-main"
   >
     @if (leftIcon) {
       <span class="alf-buttons-main__icon alf-buttons-main__icon--left">{{ leftIcon }}</span>

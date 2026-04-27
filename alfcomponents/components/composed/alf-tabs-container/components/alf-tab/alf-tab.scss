@@ -1,0 +1,12 @@
+@use '../../../../../styles/mixins' as *;
+
+.alf-tab-content {
+  @include alf-background-css-vars('--alf-tab-content');
+  @include alf-padding-css-vars('--alf-tab-content');
+  @include alf-text-style-css-vars('--alf-tab-content');
+  @include alf-typography-css-vars('--alf-tab-content');
+  
+  // Aseguramos que ocupe el ancho disponible si no se especifica otra cosa
+  width: 100%;
+  box-sizing: border-box;
+}

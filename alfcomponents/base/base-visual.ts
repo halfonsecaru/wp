@@ -19,7 +19,8 @@ import {
     AlfTransformBaseInterface,
     AlfTransformInterface,
     AlfOutlineBaseInterface,
-    AlfOutlineInterface
+    AlfOutlineInterface,
+    AlfAnimateCssInterface
 } from '@alfcomponents/interfaces';
 import { MainVisualStyleInterface, resolveDefaultVisual } from './default-visual';
 export type { MainVisualStyleInterface } from './default-visual';
@@ -856,6 +857,28 @@ export const visualOutlineBase = <TPrefix extends string>(prefix: TPrefix, input
     addState(`${prefix}-outline-hover`, outline?.hover);
     addState(`${prefix}-outline-focus`, outline?.focus);
     addState(`${prefix}-outline-disabled`, outline?.disabled);
+
+    return declarations.join(' ');
+};
+
+/**
+ * Resuelve variables CSS para animaciones.
+ */
+export const visualAnimationsBase = <TPrefix extends string>(prefix: TPrefix, input: {
+    readonly animations?: AlfAnimateCssInterface;
+}): string => {
+    const anim = input.animations;
+    if (!anim) return '';
+
+    const declarations: string[] = [];
+    if (anim.duration) {
+        declarations.push(`${prefix}-anim-duration: ${anim.duration};`);
+        declarations.push(`--animate-duration: ${anim.duration};`);
+    }
+    if (anim.delay) {
+        declarations.push(`${prefix}-anim-delay: ${anim.delay};`);
+        declarations.push(`--animate-delay: ${anim.delay};`);
+    }
 
     return declarations.join(' ');
 };
