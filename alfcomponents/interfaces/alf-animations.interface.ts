@@ -49,15 +49,6 @@ export interface AlfAnimationConfigInterface {
    * @example 1 | 'infinite'
    */
   iterationCount?: number | 'infinite';
-
-  /** Clase CSS personalizada delegada al elemento */
-  customCssClass?: string | string[];
-
-  /** 
-   * Estilos CSS en línea personalizados 
-   * @example [{ 'animation-fill-mode': 'both' }] 
-   */
-  customCssStyle?: Record<string, string>[];
 }
 
 /**

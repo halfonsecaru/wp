@@ -1,0 +1,47 @@
+@let currentConfig = inputConfig();
+@let buttonStyle = createButtonStyle();
+@let borderStyle = createBorderStyle();
+@let displayAndLayoutStyle = createDisplayAndLayoutStyle();
+@let marginStyle = createMarginStyle();
+@let outlineStyle = createOutlineStyle();
+@let paddingStyle = createPaddingStyle();
+@let shadowsStyle = createShadowsStyle();
+@let typographyStyle = createTypographyStyle();
+@let textStyle = createTextStyle();
+@let transformStyle = createTransformStyle();
+
+<div 
+  class="alf-tabs-container"
+  [style]="
+    buttonStyle + 
+    borderStyle + 
+    displayAndLayoutStyle + 
+    marginStyle + 
+    outlineStyle + 
+    paddingStyle + 
+    shadowsStyle + 
+    typographyStyle + 
+    textStyle + 
+    transformStyle
+  "
+>
+  <!-- Navegación de pestañas -->
+  <nav class="alf-tabs-navigation" role="tablist">
+    @for (tab of navigationTabs(); track tab.label; let i = $index) {
+      <alf-buttons 
+        [inputConfig]="tab.configuration"
+        (click)="setActiveTab(i)"
+        [class.is-active]="activeIndex() === i"
+        role="tab"
+        [attr.aria-selected]="activeIndex() === i"
+      />
+    }
+    <!-- Slider animado -->
+    <div #slider class="alf-tabs-slider"></div>
+  </nav>
+
+  <!-- Contenido de las pestañas -->
+  <div #contentContainer class="alf-tabs-content" role="tabpanel">
+    <ng-content />
+  </div>
+</div>

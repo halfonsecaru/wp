@@ -1,21 +1,14 @@
-import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { AlfButtonsViewer } from './app/pages/alf-buttons-viewer/alf-buttons-viewer';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { AlfTabsViewer } from './app/pages/alf-tabs-viewer/alf-tabs-viewer';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [AlfButtonsViewer],
+  imports: [AlfTabsViewer],
   templateUrl: './app.html',
   styleUrls: ['./app.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class App {
-
-  private readonly router = inject(Router);
-  
-
-  constructor() {}
-}
+export class App { }
 
 

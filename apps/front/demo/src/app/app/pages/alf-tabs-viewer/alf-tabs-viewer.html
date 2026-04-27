@@ -1,0 +1,35 @@
+@let config = tabsConfig();
+
+<div class="demo-container">
+  <header class="demo-header">
+    <h1>Configuración de Cuenta</h1>
+    <p>Administra tus preferencias y ajustes de seguridad.</p>
+  </header>
+
+  <div class="basic-card">
+    <alf-tabs-container>
+      
+      <alf-tab [tabName]="'perfiles'">
+        <div class="tab-pane">
+          <h3>Perfil Público</h3>
+          <p>Esta información será visible para otros usuarios en la plataforma.</p>
+        </div>
+      </alf-tab>
+
+      <alf-tab [tabName]="'notificaciones'">
+        <div class="tab-pane">
+          <h3>Notificaciones</h3>
+          <p>Configura cómo y cuándo quieres recibir alertas de seguridad.</p>
+        </div>
+      </alf-tab>
+
+      <alf-tab [tabName]="'privacidad'">
+        <div class="tab-pane">
+          <h3>Privacidad</h3>
+          <p>Controla quién puede ver tu actividad y datos de contacto.</p>
+        </div>
+      </alf-tab>
+
+    </alf-tabs-container>
+  </div>
+</div>

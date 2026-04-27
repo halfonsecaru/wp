@@ -87,18 +87,21 @@ export const visualBackgroundBase = <TPrefix extends string>(prefix: TPrefix, in
     const backgrounds = input.backgrounds;
     const declarations: string[] = [];
 
-    const addState = (statePrefix: string, state?: AlfBackgroundsBaseInterface): void => {
+    const addState = (statePrefix: string, state?: AlfBackgroundsBaseInterface, defaultState?: AlfBackgroundsBaseInterface): void => {
         if (!state) {
             return;
         }
 
-        if (state.backgroundColor !== undefined) declarations.push(`${statePrefix}-color: ${state.backgroundColor};`);
-        if (state.backgroundImage !== undefined) declarations.push(`${statePrefix}-img: ${state.backgroundImage};`);
-        if (state.backgroundSize !== undefined) declarations.push(`${statePrefix}-size: ${state.backgroundSize};`);
-        if (state.backgroundPosition !== undefined) declarations.push(`${statePrefix}-pos: ${state.backgroundPosition};`);
-        if (state.backgroundRepeat !== undefined) declarations.push(`${statePrefix}-repeat: ${state.backgroundRepeat};`);
-        if (state.backgroundAttachment !== undefined) declarations.push(`${statePrefix}-attachment: ${state.backgroundAttachment};`);
-        if (state.backgroundClip !== undefined) declarations.push(`${statePrefix}-clip: ${state.backgroundClip};`);
+        const isHoverOrActive = statePrefix.includes('-hover') || statePrefix.includes('-active') || statePrefix.includes('-focus') || statePrefix.includes('-disabled');
+        const shouldAdd = (val: any, defVal: any) => val !== undefined && (!isHoverOrActive || val !== defVal);
+
+        if (shouldAdd(state.backgroundColor, defaultState?.backgroundColor)) declarations.push(`${statePrefix}-color: ${state.backgroundColor};`);
+        if (shouldAdd(state.backgroundImage, defaultState?.backgroundImage)) declarations.push(`${statePrefix}-img: ${state.backgroundImage};`);
+        if (shouldAdd(state.backgroundSize, defaultState?.backgroundSize)) declarations.push(`${statePrefix}-size: ${state.backgroundSize};`);
+        if (shouldAdd(state.backgroundPosition, defaultState?.backgroundPosition)) declarations.push(`${statePrefix}-pos: ${state.backgroundPosition};`);
+        if (shouldAdd(state.backgroundRepeat, defaultState?.backgroundRepeat)) declarations.push(`${statePrefix}-repeat: ${state.backgroundRepeat};`);
+        if (shouldAdd(state.backgroundAttachment, defaultState?.backgroundAttachment)) declarations.push(`${statePrefix}-attachment: ${state.backgroundAttachment};`);
+        if (shouldAdd(state.backgroundClip, defaultState?.backgroundClip)) declarations.push(`${statePrefix}-clip: ${state.backgroundClip};`);
     };
 
     const defaultState: AlfBackgroundsBaseInterface = {
@@ -109,12 +112,12 @@ export const visualBackgroundBase = <TPrefix extends string>(prefix: TPrefix, in
     const hoverState: AlfBackgroundsBaseInterface = {
         ...predefinedBackgrounds?.hover,
         ...backgrounds?.hover,
-        backgroundColor: backgrounds?.hover?.backgroundColor ?? predefinedBackgrounds?.hover?.backgroundColor ?? hoverBg,
+        backgroundColor: backgrounds?.hover?.backgroundColor ?? backgrounds?.default?.backgroundColor ?? predefinedBackgrounds?.hover?.backgroundColor ?? hoverBg,
     };
     const activeState: AlfBackgroundsBaseInterface = {
         ...predefinedBackgrounds?.active,
         ...backgrounds?.active,
-        backgroundColor: backgrounds?.active?.backgroundColor ?? predefinedBackgrounds?.active?.backgroundColor ?? activeBg,
+        backgroundColor: backgrounds?.active?.backgroundColor ?? backgrounds?.default?.backgroundColor ?? predefinedBackgrounds?.active?.backgroundColor ?? activeBg,
     };
     const focusState: AlfBackgroundsBaseInterface = {
         ...predefinedBackgrounds?.focus,
@@ -128,10 +131,10 @@ export const visualBackgroundBase = <TPrefix extends string>(prefix: TPrefix, in
     };
 
     addState(`${prefix}-bg`, defaultState);
-    addState(`${prefix}-bg-hover`, hoverState);
-    addState(`${prefix}-bg-active`, activeState);
-    addState(`${prefix}-bg-focus`, focusState);
-    addState(`${prefix}-bg-disabled`, disabledState);
+    addState(`${prefix}-bg-hover`, hoverState, defaultState);
+    addState(`${prefix}-bg-active`, activeState, defaultState);
+    addState(`${prefix}-bg-focus`, focusState, defaultState);
+    addState(`${prefix}-bg-disabled`, disabledState, defaultState);
 
     // Compatibilidad con variables legacy (solo color por estado)
     declarations.push(`${prefix}-bg: ${defaultState.backgroundColor ?? defaultBg};`);
@@ -184,40 +187,43 @@ export const visualBorderBase = <TPrefix extends string>(prefix: TPrefix, input:
     const border = input.border;
     const declarations: string[] = [];
 
-    const addState = (statePrefix: string, state?: AlfBorderBaseInterface): void => {
+    const addState = (statePrefix: string, state?: AlfBorderBaseInterface, defaultState?: AlfBorderBaseInterface): void => {
         if (!state) {
             return;
         }
 
-        if (state.borderWidth !== undefined) declarations.push(`${statePrefix}-width: ${state.borderWidth};`);
-        if (state.borderTopWidth !== undefined) declarations.push(`${statePrefix}-top-width: ${state.borderTopWidth};`);
-        if (state.borderRightWidth !== undefined) declarations.push(`${statePrefix}-right-width: ${state.borderRightWidth};`);
-        if (state.borderBottomWidth !== undefined) declarations.push(`${statePrefix}-bottom-width: ${state.borderBottomWidth};`);
-        if (state.borderLeftWidth !== undefined) declarations.push(`${statePrefix}-left-width: ${state.borderLeftWidth};`);
+        const isInteractive = statePrefix.includes('-hover') || statePrefix.includes('-active') || statePrefix.includes('-focus') || statePrefix.includes('-disabled');
+        const shouldAdd = (val: any, defVal: any) => val !== undefined && (!isInteractive || val !== defVal);
 
-        if (state.borderStyle !== undefined) declarations.push(`${statePrefix}-style: ${state.borderStyle};`);
-        if (state.borderTopStyle !== undefined) declarations.push(`${statePrefix}-top-style: ${state.borderTopStyle};`);
-        if (state.borderRightStyle !== undefined) declarations.push(`${statePrefix}-right-style: ${state.borderRightStyle};`);
-        if (state.borderBottomStyle !== undefined) declarations.push(`${statePrefix}-bottom-style: ${state.borderBottomStyle};`);
-        if (state.borderLeftStyle !== undefined) declarations.push(`${statePrefix}-left-style: ${state.borderLeftStyle};`);
+        if (shouldAdd(state.borderWidth, defaultState?.borderWidth)) declarations.push(`${statePrefix}-width: ${state.borderWidth};`);
+        if (shouldAdd(state.borderTopWidth, defaultState?.borderTopWidth)) declarations.push(`${statePrefix}-top-width: ${state.borderTopWidth};`);
+        if (shouldAdd(state.borderRightWidth, defaultState?.borderRightWidth)) declarations.push(`${statePrefix}-right-width: ${state.borderRightWidth};`);
+        if (shouldAdd(state.borderBottomWidth, defaultState?.borderBottomWidth)) declarations.push(`${statePrefix}-bottom-width: ${state.borderBottomWidth};`);
+        if (shouldAdd(state.borderLeftWidth, defaultState?.borderLeftWidth)) declarations.push(`${statePrefix}-left-width: ${state.borderLeftWidth};`);
 
-        if (state.borderColor !== undefined) declarations.push(`${statePrefix}-color: ${state.borderColor};`);
-        if (state.borderTopColor !== undefined) declarations.push(`${statePrefix}-top-color: ${state.borderTopColor};`);
-        if (state.borderRightColor !== undefined) declarations.push(`${statePrefix}-right-color: ${state.borderRightColor};`);
-        if (state.borderBottomColor !== undefined) declarations.push(`${statePrefix}-bottom-color: ${state.borderBottomColor};`);
-        if (state.borderLeftColor !== undefined) declarations.push(`${statePrefix}-left-color: ${state.borderLeftColor};`);
+        if (shouldAdd(state.borderStyle, defaultState?.borderStyle)) declarations.push(`${statePrefix}-style: ${state.borderStyle};`);
+        if (shouldAdd(state.borderTopStyle, defaultState?.borderTopStyle)) declarations.push(`${statePrefix}-top-style: ${state.borderTopStyle};`);
+        if (shouldAdd(state.borderRightStyle, defaultState?.borderRightStyle)) declarations.push(`${statePrefix}-right-style: ${state.borderRightStyle};`);
+        if (shouldAdd(state.borderBottomStyle, defaultState?.borderBottomStyle)) declarations.push(`${statePrefix}-bottom-style: ${state.borderBottomStyle};`);
+        if (shouldAdd(state.borderLeftStyle, defaultState?.borderLeftStyle)) declarations.push(`${statePrefix}-left-style: ${state.borderLeftStyle};`);
 
-        if (state.borderRadius !== undefined) declarations.push(`${statePrefix}-radius: ${state.borderRadius};`);
-        if (state.borderTopLeftRadius !== undefined) declarations.push(`${statePrefix}-top-left-radius: ${state.borderTopLeftRadius};`);
-        if (state.borderTopRightRadius !== undefined) declarations.push(`${statePrefix}-top-right-radius: ${state.borderTopRightRadius};`);
-        if (state.borderBottomRightRadius !== undefined) declarations.push(`${statePrefix}-bottom-right-radius: ${state.borderBottomRightRadius};`);
-        if (state.borderBottomLeftRadius !== undefined) declarations.push(`${statePrefix}-bottom-left-radius: ${state.borderBottomLeftRadius};`);
+        if (shouldAdd(state.borderColor, defaultState?.borderColor)) declarations.push(`${statePrefix}-color: ${state.borderColor};`);
+        if (shouldAdd(state.borderTopColor, defaultState?.borderTopColor)) declarations.push(`${statePrefix}-top-color: ${state.borderTopColor};`);
+        if (shouldAdd(state.borderRightColor, defaultState?.borderRightColor)) declarations.push(`${statePrefix}-right-color: ${state.borderRightColor};`);
+        if (shouldAdd(state.borderBottomColor, defaultState?.borderBottomColor)) declarations.push(`${statePrefix}-bottom-color: ${state.borderBottomColor};`);
+        if (shouldAdd(state.borderLeftColor, defaultState?.borderLeftColor)) declarations.push(`${statePrefix}-left-color: ${state.borderLeftColor};`);
 
-        if (state.outlineWidth !== undefined) declarations.push(`${statePrefix}-outline-width: ${state.outlineWidth};`);
-        if (state.outlineStyle !== undefined) declarations.push(`${statePrefix}-outline-style: ${state.outlineStyle};`);
-        if (state.outlineColor !== undefined) declarations.push(`${statePrefix}-outline-color: ${state.outlineColor};`);
-        if (state.outlineOffset !== undefined) declarations.push(`${statePrefix}-outline-offset: ${state.outlineOffset};`);
-        if (state.boxSizing !== undefined) declarations.push(`${statePrefix}-box-sizing: ${state.boxSizing};`);
+        if (shouldAdd(state.borderRadius, defaultState?.borderRadius)) declarations.push(`${statePrefix}-radius: ${state.borderRadius};`);
+        if (shouldAdd(state.borderTopLeftRadius, defaultState?.borderTopLeftRadius)) declarations.push(`${statePrefix}-top-left-radius: ${state.borderTopLeftRadius};`);
+        if (shouldAdd(state.borderTopRightRadius, defaultState?.borderTopRightRadius)) declarations.push(`${statePrefix}-top-right-radius: ${state.borderTopRightRadius};`);
+        if (shouldAdd(state.borderBottomRightRadius, defaultState?.borderBottomRightRadius)) declarations.push(`${statePrefix}-bottom-right-radius: ${state.borderBottomRightRadius};`);
+        if (shouldAdd(state.borderBottomLeftRadius, defaultState?.borderBottomLeftRadius)) declarations.push(`${statePrefix}-bottom-left-radius: ${state.borderBottomLeftRadius};`);
+
+        if (shouldAdd(state.outlineWidth, defaultState?.outlineWidth)) declarations.push(`${statePrefix}-outline-width: ${state.outlineWidth};`);
+        if (shouldAdd(state.outlineStyle, defaultState?.outlineStyle)) declarations.push(`${statePrefix}-outline-style: ${state.outlineStyle};`);
+        if (shouldAdd(state.outlineColor, defaultState?.outlineColor)) declarations.push(`${statePrefix}-outline-color: ${state.outlineColor};`);
+        if (shouldAdd(state.outlineOffset, defaultState?.outlineOffset)) declarations.push(`${statePrefix}-outline-offset: ${state.outlineOffset};`);
+        if (shouldAdd(state.boxSizing, defaultState?.boxSizing)) declarations.push(`${statePrefix}-box-sizing: ${state.boxSizing};`);
     };
 
     const defaultState: AlfBorderBaseInterface = {
@@ -229,14 +235,14 @@ export const visualBorderBase = <TPrefix extends string>(prefix: TPrefix, input:
     const hoverState: AlfBorderBaseInterface = {
         ...predefinedBorder?.hover,
         ...border?.hover,
-        borderWidth: border?.hover?.borderWidth ?? predefinedBorder?.hover?.borderWidth ?? hoverBorderWidth,
-        borderColor: border?.hover?.borderColor ?? predefinedBorder?.hover?.borderColor ?? hoverBorderColor,
+        borderWidth: border?.hover?.borderWidth ?? border?.default?.borderWidth ?? predefinedBorder?.hover?.borderWidth ?? hoverBorderWidth,
+        borderColor: border?.hover?.borderColor ?? border?.default?.borderColor ?? predefinedBorder?.hover?.borderColor ?? hoverBorderColor,
     };
     const activeState: AlfBorderBaseInterface = {
         ...predefinedBorder?.active,
         ...border?.active,
-        borderWidth: border?.active?.borderWidth ?? predefinedBorder?.active?.borderWidth ?? activeBorderWidth,
-        borderColor: border?.active?.borderColor ?? predefinedBorder?.active?.borderColor ?? activeBorderColor,
+        borderWidth: border?.active?.borderWidth ?? border?.default?.borderWidth ?? predefinedBorder?.active?.borderWidth ?? activeBorderWidth,
+        borderColor: border?.active?.borderColor ?? border?.default?.borderColor ?? predefinedBorder?.active?.borderColor ?? activeBorderColor,
     };
     const focusState: AlfBorderBaseInterface = {
         ...predefinedBorder?.focus,
@@ -252,10 +258,10 @@ export const visualBorderBase = <TPrefix extends string>(prefix: TPrefix, input:
     };
 
     addState(`${prefix}-border`, defaultState);
-    addState(`${prefix}-border-hover`, hoverState);
-    addState(`${prefix}-border-active`, activeState);
-    addState(`${prefix}-border-focus`, focusState);
-    addState(`${prefix}-border-disabled`, disabledState);
+    addState(`${prefix}-border-hover`, hoverState, defaultState);
+    addState(`${prefix}-border-active`, activeState, defaultState);
+    addState(`${prefix}-border-focus`, focusState, defaultState);
+    addState(`${prefix}-border-disabled`, disabledState, defaultState);
 
     if (border?.default?.boxSizing !== undefined) {
         declarations.push(`${prefix}-box-sizing: ${border.default.boxSizing};`);
@@ -287,56 +293,62 @@ export const visualDisplayAndLayoutBase = <TPrefix extends string>(prefix: TPref
         },
         hover: {
             ...predefinedDisplayAndLayout?.hover,
+            ...input.displayAndLayout?.default,
             ...input.displayAndLayout?.hover,
         },
         focus: {
             ...predefinedDisplayAndLayout?.focus,
+            ...input.displayAndLayout?.default,
             ...input.displayAndLayout?.focus,
         },
         disabled: {
             ...predefinedDisplayAndLayout?.disabled,
+            ...input.displayAndLayout?.default,
             ...input.displayAndLayout?.disabled,
         },
     };
     const declarations: string[] = [];
 
-    const addState = (statePrefix: string, state?: AlfDisplayAndLayoutBaseInterface): void => {
+    const addState = (statePrefix: string, state?: AlfDisplayAndLayoutBaseInterface, defaultState?: AlfDisplayAndLayoutBaseInterface): void => {
         if (!state) {
             return;
         }
 
-        if (state.display !== undefined) declarations.push(`${statePrefix}-display: ${state.display};`);
-        if (state.position !== undefined) declarations.push(`${statePrefix}-position: ${state.position};`);
-        if (state.top !== undefined) declarations.push(`${statePrefix}-top: ${state.top};`);
-        if (state.right !== undefined) declarations.push(`${statePrefix}-right: ${state.right};`);
-        if (state.bottom !== undefined) declarations.push(`${statePrefix}-bottom: ${state.bottom};`);
-        if (state.left !== undefined) declarations.push(`${statePrefix}-left: ${state.left};`);
-        if (state.zIndex !== undefined) declarations.push(`${statePrefix}-z-index: ${state.zIndex};`);
+        const isInteractive = statePrefix.includes('-hover') || statePrefix.includes('-focus') || statePrefix.includes('-disabled');
+        const shouldAdd = (val: any, defVal: any) => val !== undefined && (!isInteractive || val !== defVal);
 
-        if (state.width !== undefined) declarations.push(`${statePrefix}-width: ${state.width};`);
-        if (state.height !== undefined) declarations.push(`${statePrefix}-height: ${state.height};`);
-        if (state.minWidth !== undefined) declarations.push(`${statePrefix}-min-width: ${state.minWidth};`);
-        if (state.maxWidth !== undefined) declarations.push(`${statePrefix}-max-width: ${state.maxWidth};`);
-        if (state.minHeight !== undefined) declarations.push(`${statePrefix}-min-height: ${state.minHeight};`);
-        if (state.maxHeight !== undefined) declarations.push(`${statePrefix}-max-height: ${state.maxHeight};`);
+        if (shouldAdd(state.display, defaultState?.display)) declarations.push(`${statePrefix}-display: ${state.display};`);
+        if (shouldAdd(state.position, defaultState?.position)) declarations.push(`${statePrefix}-position: ${state.position};`);
+        if (shouldAdd(state.top, defaultState?.top)) declarations.push(`${statePrefix}-top: ${state.top};`);
+        if (shouldAdd(state.right, defaultState?.right)) declarations.push(`${statePrefix}-right: ${state.right};`);
+        if (shouldAdd(state.bottom, defaultState?.bottom)) declarations.push(`${statePrefix}-bottom: ${state.bottom};`);
+        if (shouldAdd(state.left, defaultState?.left)) declarations.push(`${statePrefix}-left: ${state.left};`);
+        if (shouldAdd(state.zIndex, defaultState?.zIndex)) declarations.push(`${statePrefix}-z-index: ${state.zIndex};`);
 
-        if (state.overflow !== undefined) declarations.push(`${statePrefix}-overflow: ${state.overflow};`);
-        if (state.overflowX !== undefined) declarations.push(`${statePrefix}-overflow-x: ${state.overflowX};`);
-        if (state.overflowY !== undefined) declarations.push(`${statePrefix}-overflow-y: ${state.overflowY};`);
-        if (state.visibility !== undefined) declarations.push(`${statePrefix}-visibility: ${state.visibility};`);
-        if (state.objectFit !== undefined) declarations.push(`${statePrefix}-object-fit: ${state.objectFit};`);
+        if (shouldAdd(state.width, defaultState?.width)) declarations.push(`${statePrefix}-width: ${state.width};`);
+        if (shouldAdd(state.height, defaultState?.height)) declarations.push(`${statePrefix}-height: ${state.height};`);
+        if (shouldAdd(state.minWidth, defaultState?.minWidth)) declarations.push(`${statePrefix}-min-width: ${state.minWidth};`);
+        if (shouldAdd(state.maxWidth, defaultState?.maxWidth)) declarations.push(`${statePrefix}-max-width: ${state.maxWidth};`);
+        if (shouldAdd(state.minHeight, defaultState?.minHeight)) declarations.push(`${statePrefix}-min-height: ${state.minHeight};`);
+        if (shouldAdd(state.maxHeight, defaultState?.maxHeight)) declarations.push(`${statePrefix}-max-height: ${state.maxHeight};`);
 
-        if (state.flexDirection !== undefined) declarations.push(`${statePrefix}-flex-direction: ${state.flexDirection};`);
-        if (state.justifyContent !== undefined) declarations.push(`${statePrefix}-justify-content: ${state.justifyContent};`);
-        if (state.alignItems !== undefined) declarations.push(`${statePrefix}-align-items: ${state.alignItems};`);
-        if (state.gap !== undefined) declarations.push(`${statePrefix}-gap: ${state.gap};`);
-        if (state.flexWrap !== undefined) declarations.push(`${statePrefix}-flex-wrap: ${state.flexWrap};`);
+        if (shouldAdd(state.overflow, defaultState?.overflow)) declarations.push(`${statePrefix}-overflow: ${state.overflow};`);
+        if (shouldAdd(state.overflowX, defaultState?.overflowX)) declarations.push(`${statePrefix}-overflow-x: ${state.overflowX};`);
+        if (shouldAdd(state.overflowY, defaultState?.overflowY)) declarations.push(`${statePrefix}-overflow-y: ${state.overflowY};`);
+        if (shouldAdd(state.visibility, defaultState?.visibility)) declarations.push(`${statePrefix}-visibility: ${state.visibility};`);
+        if (shouldAdd(state.objectFit, defaultState?.objectFit)) declarations.push(`${statePrefix}-object-fit: ${state.objectFit};`);
+
+        if (shouldAdd(state.flexDirection, defaultState?.flexDirection)) declarations.push(`${statePrefix}-flex-direction: ${state.flexDirection};`);
+        if (shouldAdd(state.justifyContent, defaultState?.justifyContent)) declarations.push(`${statePrefix}-justify-content: ${state.justifyContent};`);
+        if (shouldAdd(state.alignItems, defaultState?.alignItems)) declarations.push(`${statePrefix}-align-items: ${state.alignItems};`);
+        if (shouldAdd(state.gap, defaultState?.gap)) declarations.push(`${statePrefix}-gap: ${state.gap};`);
+        if (shouldAdd(state.flexWrap, defaultState?.flexWrap)) declarations.push(`${statePrefix}-flex-wrap: ${state.flexWrap};`);
     };
 
     addState(`${prefix}-layout`, displayAndLayout?.default);
-    addState(`${prefix}-layout-hover`, displayAndLayout?.hover);
-    addState(`${prefix}-layout-focus`, displayAndLayout?.focus);
-    addState(`${prefix}-layout-disabled`, displayAndLayout?.disabled);
+    addState(`${prefix}-layout-hover`, displayAndLayout?.hover, displayAndLayout?.default);
+    addState(`${prefix}-layout-focus`, displayAndLayout?.focus, displayAndLayout?.default);
+    addState(`${prefix}-layout-disabled`, displayAndLayout?.disabled, displayAndLayout?.default);
 
     return declarations.join(' ');
 };
@@ -364,18 +376,22 @@ export const visualMarginBase = <TPrefix extends string>(prefix: TPrefix, input:
         },
         hover: {
             ...predefinedMargin?.hover,
+            ...input.margin?.default,
             ...input.margin?.hover,
         },
         active: {
             ...predefinedMargin?.active,
+            ...input.margin?.default,
             ...input.margin?.active,
         },
         focus: {
             ...predefinedMargin?.focus,
+            ...input.margin?.default,
             ...input.margin?.focus,
         },
         disabled: {
             ...predefinedMargin?.disabled,
+            ...input.margin?.default,
             ...input.margin?.disabled,
         },
     };
@@ -425,40 +441,47 @@ export const visualPaddingBase = <TPrefix extends string>(prefix: TPrefix, input
         },
         hover: {
             ...predefinedPadding?.hover,
+            ...input.padding?.default,
             ...input.padding?.hover,
         },
         active: {
             ...predefinedPadding?.active,
+            ...input.padding?.default,
             ...input.padding?.active,
         },
         focus: {
             ...predefinedPadding?.focus,
+            ...input.padding?.default,
             ...input.padding?.focus,
         },
         disabled: {
             ...predefinedPadding?.disabled,
+            ...input.padding?.default,
             ...input.padding?.disabled,
         },
     };
     const declarations: string[] = [];
 
-    const addState = (statePrefix: string, state?: AlfPaddingBaseInterface): void => {
+    const addState = (statePrefix: string, state?: AlfPaddingBaseInterface, defaultState?: AlfPaddingBaseInterface): void => {
         if (!state) {
             return;
         }
 
-        if (state.padding !== undefined) declarations.push(`${statePrefix}: ${state.padding};`);
-        if (state.paddingTop !== undefined) declarations.push(`${statePrefix}-top: ${state.paddingTop};`);
-        if (state.paddingRight !== undefined) declarations.push(`${statePrefix}-right: ${state.paddingRight};`);
-        if (state.paddingBottom !== undefined) declarations.push(`${statePrefix}-bottom: ${state.paddingBottom};`);
-        if (state.paddingLeft !== undefined) declarations.push(`${statePrefix}-left: ${state.paddingLeft};`);
+        const isInteractive = statePrefix.includes('-hover') || statePrefix.includes('-active') || statePrefix.includes('-focus') || statePrefix.includes('-disabled');
+        const shouldAdd = (val: any, defVal: any) => val !== undefined && (!isInteractive || val !== defVal);
+
+        if (shouldAdd(state.padding, defaultState?.padding)) declarations.push(`${statePrefix}: ${state.padding};`);
+        if (shouldAdd(state.paddingTop, defaultState?.paddingTop)) declarations.push(`${statePrefix}-top: ${state.paddingTop};`);
+        if (shouldAdd(state.paddingRight, defaultState?.paddingRight)) declarations.push(`${statePrefix}-right: ${state.paddingRight};`);
+        if (shouldAdd(state.paddingBottom, defaultState?.paddingBottom)) declarations.push(`${statePrefix}-bottom: ${state.paddingBottom};`);
+        if (shouldAdd(state.paddingLeft, defaultState?.paddingLeft)) declarations.push(`${statePrefix}-left: ${state.paddingLeft};`);
     };
 
     addState(`${prefix}-padding`, padding?.default);
-    addState(`${prefix}-padding-hover`, padding?.hover);
-    addState(`${prefix}-padding-active`, padding?.active);
-    addState(`${prefix}-padding-focus`, padding?.focus);
-    addState(`${prefix}-padding-disabled`, padding?.disabled);
+    addState(`${prefix}-padding-hover`, padding?.hover, padding?.default);
+    addState(`${prefix}-padding-active`, padding?.active, padding?.default);
+    addState(`${prefix}-padding-focus`, padding?.focus, padding?.default);
+    addState(`${prefix}-padding-disabled`, padding?.disabled, padding?.default);
 
     return declarations.join(' ');
 };
@@ -518,18 +541,22 @@ export const visualShadowsBase = <TPrefix extends string>(prefix: TPrefix, input
         },
         hover: {
             ...predefinedShadows?.hover,
+            ...input.shadows?.default,
             ...input.shadows?.hover,
         },
         active: {
             ...predefinedShadows?.active,
+            ...input.shadows?.default,
             ...input.shadows?.active,
         },
         focus: {
             ...predefinedShadows?.focus,
+            ...input.shadows?.default,
             ...input.shadows?.focus,
         },
         disabled: {
             ...predefinedShadows?.disabled,
+            ...input.shadows?.default,
             ...input.shadows?.disabled,
         },
     };
@@ -584,14 +611,17 @@ export const visualTextStyleBase = <TPrefix extends string>(prefix: TPrefix, inp
         },
         hover: {
             ...predefinedTextStyle?.hover,
+            ...input.textStyle?.default,
             ...input.textStyle?.hover,
         },
         active: {
             ...predefinedTextStyle?.active,
+            ...input.textStyle?.default,
             ...input.textStyle?.active,
         },
         focus: {
             ...predefinedTextStyle?.focus,
+            ...input.textStyle?.default,
             ...input.textStyle?.focus,
         },
     };
@@ -639,18 +669,22 @@ export const visualTypographyBase = <TPrefix extends string>(prefix: TPrefix, in
         },
         hover: {
             ...predefinedTypography?.hover,
+            ...input.typography?.default,
             ...input.typography?.hover,
         },
         active: {
             ...predefinedTypography?.active,
+            ...input.typography?.default,
             ...input.typography?.active,
         },
         focus: {
             ...predefinedTypography?.focus,
+            ...input.typography?.default,
             ...input.typography?.focus,
         },
         disabled: {
             ...predefinedTypography?.disabled,
+            ...input.typography?.default,
             ...input.typography?.disabled,
         },
     };
@@ -735,14 +769,17 @@ export const visualTransformBase = <TPrefix extends string>(prefix: TPrefix, inp
         },
         hover: {
             ...predefinedTransform?.hover,
+            ...input.transform?.default,
             ...input.transform?.hover,
         },
         active: {
             ...predefinedTransform?.active,
+            ...input.transform?.default,
             ...input.transform?.active,
         },
         focus: {
             ...predefinedTransform?.focus,
+            ...input.transform?.default,
             ...input.transform?.focus,
         },
     };

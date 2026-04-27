@@ -67,15 +67,7 @@ interface ColorRecipe {
 
 const LIGHT_TEXT_COLOR = '#9a9a9a' as AlfColorEnum;
 
-const COMMON_BASE: Pick<MainVisualStyleInterface, 'displayAndLayout' | 'margin' | 'outline' | 'padding' | 'shadows' | 'transform'> = {
-  displayAndLayout: {
-    default: {
-      display: AlfDisplayEnum.InlineFlex,
-      justifyContent: AlfJustifyContentEnum.Center,
-      alignItems: AlfAlignItemsEnum.Center,
-      gap: AlfPxEnum.Px8,
-    },
-  },
+const COMMON_BASE: Pick<MainVisualStyleInterface, 'margin' | 'outline' | 'padding' | 'shadows' | 'transform'> = {
   margin: {
     default: {
       margin: AlfPxEnum.None,

@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AlfButtons } from './alf-buttons';
+import { AlfTabsContainer } from './alf-tabs-container';
 
-describe('AlfButtons', () => {
-  let component: AlfButtons;
-  let fixture: ComponentFixture<AlfButtons>;
+describe('AlfTabsContainer', () => {
+  let component: AlfTabsContainer;
+  let fixture: ComponentFixture<AlfTabsContainer>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AlfButtons],
+      imports: [AlfTabsContainer],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AlfButtons);
+    fixture = TestBed.createComponent(AlfTabsContainer);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

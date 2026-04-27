@@ -25,6 +25,32 @@
   </div>
 </div>
 
+<div class="viewer-card">
+  <p class="card-title">Animate.css Exit (Two-Phase)</p>
+  <div class="card-row">
+    <button class="loading-toggle" type="button" (click)="openAnimationPanel()">
+      Mostrar panel
+    </button>
+    <button class="loading-toggle" type="button" (click)="closeAnimationPanel()">
+      Ocultar panel
+    </button>
+    <button class="loading-toggle" type="button" (click)="toggleAnimationsEnabled()">
+      {{ animationsEnabledSignal() ? 'Desactivar animacion' : 'Activar animacion' }}
+    </button>
+  </div>
+
+  @if (animationPanelRenderedSignal()) {
+    <div
+      class="animation-panel"
+      [class]="animationPanelClass()"
+      [style]="animationPanelStyle()"
+      (animationend)="onAnimationPanelEnd()"
+    >
+      El panel mantiene el DOM durante exit y se destruye al finalizar <code>animationend</code>.
+    </div>
+  }
+</div>
+
 <section class="viewer-grid">
   @for (section of visualSections; track section.title) {
     <div class="viewer-card">

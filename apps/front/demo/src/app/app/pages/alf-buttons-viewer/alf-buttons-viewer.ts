@@ -4,13 +4,14 @@ import { getAlfPredefinedButton } from '@alfcomponents/components/simple/alf-but
 import { DefaultButtonKeys } from '@alfcomponents/components/simple/alf-buttons/enums/defaultButtonKeys.interface';
 import { AlfButtonInterface } from '@alfcomponents/components/simple/alf-buttons/interfaces/alf-button.interface';
 import {
+  AlfAnimationTypeEnum,
   AlfButtonVisualTypeEnum,
   AlfColorVariantEnum,
   AlfIconsUnicodeIconEnum,
   AlfLinkTargetEnum,
   AlfPxEnum,
 } from '@alfcomponents/enums';
-import { AlfDisplayAndLayoutInterface } from '@alfcomponents/interfaces';
+import { AlfAnimateCssInterface, AlfDisplayAndLayoutInterface } from '@alfcomponents/interfaces';
 
 @Component({
   selector: 'app-alf-buttons-viewer',
@@ -24,6 +25,34 @@ export class AlfButtonsViewer {
   protected readonly useOutlineSignal = signal(false);
   protected readonly useDangerSignal = signal(false);
   protected readonly debounceMsSignal = signal(600);
+  protected readonly animationsEnabledSignal = signal(true);
+  protected readonly animationPanelRenderedSignal = signal(false);
+  protected readonly animationPanelExitingSignal = signal(false);
+
+  private readonly panelAnimations: AlfAnimateCssInterface = {
+    enterStage: AlfAnimationTypeEnum.FadeIn,
+    exitStage: AlfAnimationTypeEnum.FadeOut,
+    duration: '350ms',
+  };
+
+  protected readonly animationPanelClass = computed(() => {
+    if (!this.animationsEnabledSignal()) {
+      return '';
+    }
+    return this.animationPanelExitingSignal()
+      ? (this.panelAnimations.exitStage ?? '')
+      : (this.panelAnimations.enterStage ?? '');
+  });
+
+  protected readonly animationPanelStyle = computed<Record<string, string>>(() => {
+    if (!this.animationsEnabledSignal()) {
+      return {};
+    }
+    return {
+      '--animate-duration': this.panelAnimations.duration ?? '350ms',
+      '--animate-delay': this.panelAnimations.delay ?? '0ms',
+    };
+  });
 
   protected readonly liveButtonConfig = computed<AlfButtonInterface>(() => {
     const visualType = this.useOutlineSignal()
@@ -206,5 +235,33 @@ export class AlfButtonsViewer {
       return;
     }
     this.debounceMsSignal.set(0);
+  }
+
+  protected toggleAnimationsEnabled(): void {
+    this.animationsEnabledSignal.update((current) => !current);
+  }
+
+  protected openAnimationPanel(): void {
+    this.animationPanelExitingSignal.set(false);
+    this.animationPanelRenderedSignal.set(true);
+  }
+
+  protected closeAnimationPanel(): void {
+    if (!this.animationPanelRenderedSignal()) {
+      return;
+    }
+    if (!this.animationsEnabledSignal() || !this.panelAnimations.exitStage) {
+      this.animationPanelExitingSignal.set(false);
+      this.animationPanelRenderedSignal.set(false);
+      return;
+    }
+    this.animationPanelExitingSignal.set(true);
+  }
+
+  protected onAnimationPanelEnd(): void {
+    if (this.animationPanelExitingSignal()) {
+      this.animationPanelExitingSignal.set(false);
+      this.animationPanelRenderedSignal.set(false);
+    }
   }
 }

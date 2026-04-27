@@ -1,7 +1,7 @@
 import { computed, Directive, input } from '@angular/core';
 import { AlfTooltipConfig } from '@alfcomponents/directives';
 import { AlfButtonVisualTypeEnum, AlfColorVariantEnum, AlfCursorEnum, AlfVisualPredefinedEnum } from '@alfcomponents/enums';
-import { AlfBackgroundsInterface, AlfBorderInterface, AlfDisplayAndLayoutInterface, AlfMarginInterface, AlfOutlineInterface, AlfPaddingInterface, AlfRippleInterface, AlfShadowsInterface, AlfTextStyleInterface, AlfTransformInterface, AlfTypographyInterface } from '@alfcomponents/interfaces';
+import { AlfAnimateCssInterface, AlfBackgroundsInterface, AlfBorderInterface, AlfDisplayAndLayoutInterface, AlfMarginInterface, AlfOutlineInterface, AlfPaddingInterface, AlfRippleInterface, AlfShadowsInterface, AlfTextStyleInterface, AlfTransformInterface, AlfTypographyInterface } from '@alfcomponents/interfaces';
 import { AlfAriaBaseInterface } from '@alfcomponents/interfaces/alf-aria.interface';
 import { visualBackgroundBase, visualBorderBase, visualDisplayAndLayoutBase, visualMarginBase, visualOutlineBase, visualPaddingBase, visualRippleColorBase, visualShadowsBase, visualTextStyleBase, visualTransformBase, visualTypographyBase } from './base-visual';
 
@@ -21,6 +21,7 @@ export interface AlfBaseCommonConfigInterface {
   readonly textStyle?: AlfTextStyleInterface;
   readonly transform?: AlfTransformInterface;
   readonly typography?: AlfTypographyInterface;
+  readonly animations?: AlfAnimateCssInterface;
 }
 
 @Directive()
@@ -54,6 +55,7 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
   protected readonly textStyle = input<AlfTextStyleInterface | undefined>();
   protected readonly transform = input<AlfTransformInterface | undefined>();
   protected readonly typography = input<AlfTypographyInterface | undefined>();
+  protected readonly animations = input<AlfAnimateCssInterface | undefined>();
 
   // ******************************************** //
   // **** CONFIGURACION BASE PARA LOS INPUTS **** //
@@ -130,6 +132,10 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
 
   protected readonly typographyComputed = computed(() =>
     this.typography() ?? this.inputConfig()?.typography,
+  );
+
+  protected readonly animationsComputed = computed(() =>
+    this.animations() ?? this.inputConfig()?.animations,
   );
 
   // ****************************************** //

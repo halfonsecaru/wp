@@ -14,3 +14,4 @@ export * from './alf-animations.interface';
 export * from './alf-aria.interface';
 export * from './alf-loading.interface';
 export * from './alf-ripple.interface';
+export * from './alf-theme.interface';
