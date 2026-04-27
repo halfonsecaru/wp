@@ -16,7 +16,7 @@
             <!-- Pestañas Anidadas -->
             <alf-tabs-container>
               @for (sub of tab.subTabs; track sub.name) {
-                <alf-tab [tabName]="sub.name">
+                <alf-tab [tabName]="sub.name" [expandHeight]="true">
                   <div class="tab-pane sub-pane" style="background: rgba(0,0,0,0.02); border-radius: 8px; padding: 15px;">
                     <h4>{{ sub.name }}</h4>
                     @for (line of sub.lines; track line) {

@@ -247,7 +247,7 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
         { height: `${startHeight}px` },
         { height: `${endHeight}px` }
       ], {
-        duration: 300,
+        duration: 500,
         easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
         fill: 'forwards'
       });

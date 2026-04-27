@@ -16,4 +16,8 @@ export interface AlfTabsContainerConfigInterface extends AlfBaseCommonConfigInte
 export interface AlfSingleTabInterface extends AlfBaseCommonConfigInterface {
   readonly tabName: string;
   readonly configuration?: AlfButtonInterface;
+  /**
+   * Indica si se debe aplicar un efecto de agrandamiento al entrar.
+   */
+  readonly expandHeight?: boolean;
 }

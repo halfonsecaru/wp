@@ -24,6 +24,11 @@ export class AlfTabComponent extends AlfBaseConfiguration<AlfSingleTabInterface>
   public readonly tabName = input.required<string>();
 
   /**
+   * Indica si se debe aplicar un efecto de agrandamiento al entrar.
+   */
+  public readonly expandHeight = input<boolean>(false);
+
+  /**
    * Estado de visibilidad (controlado por el contenedor).
    */
   public readonly isActive = signal<boolean>(false);

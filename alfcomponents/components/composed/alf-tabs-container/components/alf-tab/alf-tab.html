@@ -6,8 +6,12 @@
 
 <div 
   [class]="'alf-tab-content ' + customClass + ' ' + (isActive() ? (effectiveAnimations()?.enterStage ?? '') : '')"
-  [style.display]="isActive() ? 'block' : 'none'"
+  [class.alf-tab-expand]="isActive() && (expandHeight() || inputConfig()?.expandHeight)"
+  [class.alf-tab-use-expand]="expandHeight() || inputConfig()?.expandHeight"
+  [style.display]="isActive() ? 'grid' : 'none'"
   [style]="bgStyle + paddingStyle + textStyle + animationStyle() + customStyle"
 >
-  <ng-content />
+  <div class="alf-tab-content-inner">
+    <ng-content />
+  </div>
 </div>

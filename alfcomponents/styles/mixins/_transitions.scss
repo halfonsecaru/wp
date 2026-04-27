@@ -17,3 +17,22 @@
     width $duration $timing,
     height $duration $timing;
 }
+
+/**
+ * Mixin para efecto de agrandamiento (Reveal) usando max-height.
+ */
+@mixin alf-expand-height($duration: 500ms) {
+  overflow: hidden;
+  animation: alf-expand-height-anim $duration cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes alf-expand-height-anim {
+  from { 
+    max-height: 0;
+    opacity: 0;
+  }
+  to { 
+    max-height: 1500px; // Valor suficientemente alto para la mayoría de contenidos
+    opacity: 1;
+  }
+}
