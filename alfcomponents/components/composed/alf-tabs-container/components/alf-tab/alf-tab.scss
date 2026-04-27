@@ -5,7 +5,7 @@
   @include alf-padding-css-vars('--alf-tab-content');
   @include alf-text-style-css-vars('--alf-tab-content');
   @include alf-typography-css-vars('--alf-tab-content');
-  
+
   width: 100%;
   box-sizing: border-box;
   display: grid;
@@ -13,18 +13,10 @@
 
   &.alf-tab-use-expand {
     overflow: hidden;
-
-    &.alf-tab-expand {
-      animation: alf-tab-expand-anim 500ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    }
+    // Eliminamos la animación de grid-template-rows interna para no chocar con la del padre
   }
 
   .alf-tab-content-inner {
     min-height: 0;
   }
-}
-
-@keyframes alf-tab-expand-anim {
-  from { grid-template-rows: 0fr; opacity: 0; }
-  to { grid-template-rows: 1fr; opacity: 1; }
 }

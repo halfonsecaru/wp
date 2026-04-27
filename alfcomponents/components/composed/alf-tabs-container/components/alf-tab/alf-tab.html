@@ -11,7 +11,7 @@
   [style.display]="isActive() ? 'grid' : 'none'"
   [style]="bgStyle + paddingStyle + textStyle + animationStyle() + customStyle"
 >
-  <div class="alf-tab-content-inner">
+  <div #contentInner class="alf-tab-content-inner">
     <ng-content />
   </div>
 </div>
