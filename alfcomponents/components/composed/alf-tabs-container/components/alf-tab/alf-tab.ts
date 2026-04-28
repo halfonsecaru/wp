@@ -180,6 +180,16 @@ export class AlfTabComponent extends AlfBaseButtonConfiguration<AlfSingleTabInte
   });
 
   /**
+   * Clase de animación actual según el estado (Entrada/Salida).
+   */
+  protected readonly currentAnimationClass = computed(() => {
+    const anims = this.effectiveAnimations();
+    if (this.isExiting()) return anims?.exitStage ?? '';
+    if (this.isActive()) return anims?.enterStage ?? '';
+    return '';
+  });
+
+  /**
    * Estilos de animación calculados.
    */
   protected readonly animationStyle = computed(() => {
@@ -187,7 +197,11 @@ export class AlfTabComponent extends AlfBaseButtonConfiguration<AlfSingleTabInte
     if (!anim) return '';
     const declarations: string[] = [];
     if (anim.duration) declarations.push(`--animate-duration: ${anim.duration};`);
-    if (anim.delay) declarations.push(`--animate-delay: ${anim.delay};`);
+    
+    // Solo aplicamos delay en la entrada (isActive) para permitir que la salida (isExiting) sea inmediata
+    const delay = (this.isActive() && !this.isExiting()) ? (anim.delay || '0s') : '0s';
+    declarations.push(`--animate-delay: ${delay};`);
+    
     return declarations.join(' ');
   });
 }

@@ -92,14 +92,14 @@ export const ALF_TABS_CONTAINER_DEFAULT: AlfTabsContainerConfigInterface = {
   animations: {
     enterStage: AlfAnimationTypeEnum.FadeIn,
     exitStage: AlfAnimationTypeEnum.FadeOut,
-    duration: '5s',
+    duration: '0.4s',
     delay: '0s',
   },
   contentAnimations: {
     enterStage: AlfAnimationTypeEnum.FadeIn,
     exitStage: AlfAnimationTypeEnum.FadeOut,
-    duration: '5s',
-    delay: '0s',
+    duration: '0.4s',
+    delay: '0.1s',
   }
 };
 

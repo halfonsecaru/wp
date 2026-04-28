@@ -209,33 +209,6 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
   }
 
   /**
-   * Maneja el reporte de altura de un tab hijo y ejecuta la transición.
-   * @param height Altura en píxeles reportada por el hijo.
-   */
-  /**
-   * Mide la altura natural del contenido proyectado.
-   */
-  public readonly measureContentHeight = (): void => {
-    if (!this.isFluidHeight()) return;
-
-    const container = this.contentContainer()?.nativeElement;
-    if (!container) return;
-
-    // Guardamos la altura actual para la animación
-    const startHeight = container.offsetHeight;
-
-    // Forzamos altura auto temporalmente para medir el "natural"
-    container.style.height = 'auto';
-    const endHeight = container.scrollHeight;
-
-    // Restauramos la altura de inicio para que WAAPI pueda animar desde ahí
-    container.style.height = `${startHeight}px`;
-
-    console.log(`[Tabs] Medición: start=${startHeight}px, end=${endHeight}px`);
-    this.onTabHeightMeasured(endHeight, startHeight);
-  };
-
-  /**
    * Referencia al elemento contenedor del contenido.
    */
   protected readonly contentContainer = viewChild<ElementRef<HTMLDivElement>>('contentContainer');
@@ -489,12 +462,6 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
       }
     });
 
-    // Disparamos la auto-medición cuando cambia la pestaña
-    untracked(() => {
-      setTimeout(() => {
-        this.measureContentHeight();
-      }, 50);
-    });
   });
 
   /**
@@ -502,7 +469,17 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
    * @param index Nuevo índice
    */
   public readonly setActiveTab = (index: number): void => {
-    if (this.activeIndex() !== index) {
+    const oldIndex = this.activeIndex();
+    if (oldIndex !== index) {
+      const tabs = this.tabs();
+      const oldTab = tabs[oldIndex];
+
+      // Disparamos el efecto de salida en la pestaña actual (no bloqueante)
+      if (oldTab) {
+        oldTab.playExitAnimation();
+      }
+
+      // Cambiamos a la nueva inmediatamente para permitir el cross-fade (superposición)
       this.activeIndex.set(index);
     }
   };

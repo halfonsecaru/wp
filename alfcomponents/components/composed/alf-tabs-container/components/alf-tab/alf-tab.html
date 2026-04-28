@@ -5,10 +5,13 @@
 @let customStyle = customStyleComputed();
 
 <div 
-  [class]="'alf-tab-content ' + customClass + ' ' + (isExiting() ? (effectiveAnimations()?.exitStage ?? '') : (isActive() ? (effectiveAnimations()?.enterStage ?? '') : ''))"
+  [class]="'alf-tab-content ' + customClass + ' ' + currentAnimationClass()"
   [class.alf-tab-expand]="isActive() && (expandHeight() || inputConfig()?.expandHeight)"
   [class.alf-tab-use-expand]="expandHeight() || inputConfig()?.expandHeight"
   [style.display]="isActive() || isExiting() ? 'grid' : 'none'"
+  [style.position]="isExiting() ? 'absolute' : 'relative'"
+  [style.top]="0"
+  [style.left]="0"
   [style]="bgStyle + paddingStyle + textStyle + animationStyle() + customStyle"
 >
   <div #contentInner class="alf-tab-content-inner">
