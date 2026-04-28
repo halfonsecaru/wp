@@ -4,6 +4,8 @@ import { AlfSingleTabInterface, ALF_TABS_CONTAINER_TOKEN, AlfTabsParentInterface
 import { visualprefixEnum } from '@alfcomponents/shared';
 import { AlfAnimateCssInterface } from '@alfcomponents/interfaces';
 import { ALF_TAB_CONTENT_DEFAULT } from '../../predefined/alf-tabs-container.predefined';
+import { AlfBaseButtonConfiguration } from '../../../../simple/alf-buttons/base/base-button-configuration';
+import { AlfButtonInterface } from '../../../../simple/alf-buttons/interfaces/alf-button.interface';
 
 @Component({
   selector: 'alf-tab',
@@ -16,15 +18,20 @@ import { ALF_TAB_CONTENT_DEFAULT } from '../../predefined/alf-tabs-container.pre
     '[style.width]': '"100%"'
   }
 })
-export class AlfTabComponent extends AlfBaseConfiguration<AlfSingleTabInterface> implements OnDestroy {
+export class AlfTabComponent extends AlfBaseButtonConfiguration<AlfSingleTabInterface> implements OnDestroy {
   protected readonly visualPrefix = visualprefixEnum.TabsContent;
 
   public override readonly inputConfig = input<AlfSingleTabInterface>(ALF_TAB_CONTENT_DEFAULT as AlfSingleTabInterface);
 
   /**
-   * Nombre de la pestaña.
+   * Nombre de la pestaña (Mantenemos el input para retrocompatibilidad, pero priorizamos label de la base).
    */
-  public readonly tabName = input.required<string>();
+  public readonly tabName = input<string>('');
+
+  /**
+   * Nombre final resuelto para mostrar en la cabecera.
+   */
+  public readonly finalLabel = computed(() => this.label() || this.tabName() || this.inputConfig()?.tabName || 'Tab');
 
   /**
    * Referencia al elemento nativo para mediciones puntuales.
@@ -46,11 +53,15 @@ export class AlfTabComponent extends AlfBaseConfiguration<AlfSingleTabInterface>
    */
   private readonly _isActive = signal<boolean>(false);
   public readonly isActive = this._isActive.asReadonly();
-
   /**
    * Estado de salida para mantener la pestaña visible durante la animación de cierre.
    */
   protected readonly isExiting = signal<boolean>(false);
+
+  /**
+   * Referencia a la función de resolución de la promesa de salida.
+   */
+  private exitResolveFn: (() => void) | null = null;
 
   /**
    * Ejecuta la animación de salida y retorna una promesa que se resuelve al terminar.
@@ -72,18 +83,26 @@ export class AlfTabComponent extends AlfBaseConfiguration<AlfSingleTabInterface>
         return;
       }
 
-      // Intentamos usar el evento nativo de animación finalizada
-      const onEnd = () => {
-        el.removeEventListener('animationend', onEnd);
-        clearTimeout(fallback);
-        this.isExiting.set(false);
-        resolve();
-      };
-      
-      el.addEventListener('animationend', onEnd);
-      // Fallback de seguridad de 1 segundo (por si la animación falla o se cancela)
-      const fallback = setTimeout(onEnd, 1000);
+      this.exitResolveFn = resolve;
+      el.addEventListener('animationend', this.onExitAnimationEnd);
     });
+  };
+
+  /**
+   * Manejador del evento de fin de animación de salida.
+   */
+  private readonly onExitAnimationEnd = (event: AnimationEvent): void => {
+    const el = this.elementRef.nativeElement.firstElementChild as HTMLElement;
+    if (el) {
+      el.removeEventListener('animationend', this.onExitAnimationEnd);
+    }
+    
+    this.isExiting.set(false);
+    
+    if (this.exitResolveFn) {
+      this.exitResolveFn();
+      this.exitResolveFn = null;
+    }
   };
 
   /**
@@ -102,30 +121,31 @@ export class AlfTabComponent extends AlfBaseConfiguration<AlfSingleTabInterface>
   public readonly setActive = (active: boolean): void => {
     this._isActive.set(active);
     if (active) {
-      afterNextRender(() => {
-        this.reportHeight();
-      }, { injector: this.injector });
+      afterNextRender(this.reportHeight, { injector: this.injector });
     }
   };
 
   private resizeObserver?: ResizeObserver;
 
+  private readonly handleResizeEvent = (entries: ResizeObserverEntry[]): void => {
+    for (let i = 0; i < entries.length; i++) {
+      if (this._isActive() && entries[i].contentRect.height > 0) {
+        this.reportHeight();
+      }
+    }
+  };
+
+  private readonly initResizeObserver = (): void => {
+    const el = this.elementRef.nativeElement;
+    if (el) {
+      this.resizeObserver = new ResizeObserver(this.handleResizeEvent);
+      this.resizeObserver.observe(el);
+    }
+  };
+
   constructor() {
     super();
-
-    afterNextRender(() => {
-      const el = this.elementRef.nativeElement;
-      if (el) {
-        this.resizeObserver = new ResizeObserver((entries) => {
-          for (const entry of entries) {
-            if (this._isActive() && entry.contentRect.height > 0) {
-              this.reportHeight();
-            }
-          }
-        });
-        this.resizeObserver.observe(el);
-      }
-    }, { injector: this.injector });
+    afterNextRender(this.initResizeObserver, { injector: this.injector });
   }
 
   ngOnDestroy(): void {

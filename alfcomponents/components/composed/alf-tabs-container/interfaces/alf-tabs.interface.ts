@@ -28,9 +28,12 @@ export interface AlfTabsContainerConfigInterface extends AlfBaseCommonConfigInte
   readonly fluid?: boolean;
 }
 
-export interface AlfSingleTabInterface extends AlfBaseCommonConfigInterface {
-  readonly tabName: string;
-  readonly configuration?: AlfButtonInterface;
+export interface AlfSingleTabInterface extends AlfButtonInterface {
+  /**
+   * Nombre de la pestaña (alias de label para retrocompatibilidad).
+   */
+  readonly tabName?: string;
+  
   /**
    * Indica si se debe aplicar un efecto de agrandamiento al entrar.
    */
