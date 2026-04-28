@@ -48,6 +48,45 @@ export class AlfTabComponent extends AlfBaseConfiguration<AlfSingleTabInterface>
   public readonly isActive = this._isActive.asReadonly();
 
   /**
+   * Estado de salida para mantener la pestaña visible durante la animación de cierre.
+   */
+  protected readonly isExiting = signal<boolean>(false);
+
+  /**
+   * Ejecuta la animación de salida y retorna una promesa que se resuelve al terminar.
+   */
+  public readonly playExitAnimation = (): Promise<void> => {
+    return new Promise((resolve) => {
+      const anims = this.effectiveAnimations();
+      if (!anims || !anims.exitStage) {
+        resolve();
+        return;
+      }
+
+      this.isExiting.set(true);
+      
+      const el = this.elementRef.nativeElement.firstElementChild as HTMLElement;
+      if (!el) {
+        this.isExiting.set(false);
+        resolve();
+        return;
+      }
+
+      // Intentamos usar el evento nativo de animación finalizada
+      const onEnd = () => {
+        el.removeEventListener('animationend', onEnd);
+        clearTimeout(fallback);
+        this.isExiting.set(false);
+        resolve();
+      };
+      
+      el.addEventListener('animationend', onEnd);
+      // Fallback de seguridad de 1 segundo (por si la animación falla o se cancela)
+      const fallback = setTimeout(onEnd, 1000);
+    });
+  };
+
+  /**
    * Indica si se debe aplicar un efecto de agrandamiento al entrar.
    */
   public readonly expandHeight = input<boolean>(false);
@@ -116,7 +155,7 @@ export class AlfTabComponent extends AlfBaseConfiguration<AlfSingleTabInterface>
   /**
    * Animaciones finales aplicadas, priorizando las propias sobre las del padre.
    */
-  protected readonly effectiveAnimations = computed(() => {
+  public readonly effectiveAnimations = computed(() => {
     return this.inputConfig()?.animations || this.parentContentAnimations();
   });
 

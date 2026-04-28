@@ -351,12 +351,29 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
     });
   });
 
+  protected readonly isSwitchingTabs = signal<boolean>(false);
+
   /**
-   * Cambia la pestaña activa.
+   * Cambia la pestaña activa, ejecutando la animación de salida si es necesario.
    * @param index Nuevo índice
    */
   public readonly setActiveTab = (index: number): void => {
-    if (this.activeIndex() !== index) {
+    if (this.activeIndex() === index || this.isSwitchingTabs()) {
+      return;
+    }
+
+    const oldIndex = this.activeIndex();
+    const currentTabs = this.tabs();
+    const oldTab = currentTabs[oldIndex];
+
+    // Si la pestaña anterior tiene animación de salida configurada, esperamos a que termine
+    if (oldTab && oldTab.effectiveAnimations()?.exitStage) {
+      this.isSwitchingTabs.set(true);
+      oldTab.playExitAnimation().then(() => {
+        this.activeIndex.set(index);
+        this.isSwitchingTabs.set(false);
+      });
+    } else {
       this.activeIndex.set(index);
     }
   };
