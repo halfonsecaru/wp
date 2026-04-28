@@ -1,4 +1,5 @@
 .demo-container {
+  overflow: auto;
   padding: 40px 20px;
   max-width: 900px;
   margin: 0 auto;
@@ -25,8 +26,8 @@
   }
 }
 
-
 :host {
+  overflow: auto;  
   display: block;
   background: #fdfdfd;
 }

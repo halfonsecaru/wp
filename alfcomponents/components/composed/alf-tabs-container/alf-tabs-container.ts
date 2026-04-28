@@ -25,31 +25,34 @@ import { AlfButtonInterface } from '../../simple/alf-buttons/interfaces/alf-butt
 export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsContainerConfigInterface> {
   /**
    * Indica si se debe activar el comportamiento de altura fluida con transiciones.
-   * Por defecto es true.
+   * Por defecto es false (height: auto).
    */
-  public readonly fluidHeightInput = input<boolean, unknown>(true, {
+  public readonly fluidHeightInput = input(false, {
     alias: 'fluid',
     transform: booleanAttribute
   });
 
   /**
-   * Busca otros contenedores de pestañas dentro de este para detectar anidamientos.
+   * Busca otros contenedores de pestañas dentro de este para detectar si somos el último nivel.
    */
   protected readonly nestedContainers = contentChildren(forwardRef(() => AlfTabsContainerComponent), { descendants: true });
 
   /**
-   * Propiedad computada que combina el input directo y la configuración.
+   * Propiedad computada que combina el input directo, la configuración y la auto-detección.
    */
   protected readonly isFluidHeight = computed(() => {
-    const fromInput = this.fluidHeightInput();
+    // Si la config explícitamente lo desactiva, respetamos
     const config = this.inputConfig();
     const fromConfig = config?.fluidHeight || (config as any)?.fluid;
-
-    // Si la config explícitamente lo desactiva, respetamos
     if (fromConfig === false) return false;
     
-    // Por defecto es fluido a menos que el usuario le ponga [fluid]="false"
-    return fromInput;
+    // Si el usuario lo fuerza por input, tiene prioridad
+    if (this.fluidHeightInput() || fromConfig === true) return true;
+    
+    // Por defecto: Solo somos fluidos (animamos) si somos el contenedor RAÍZ.
+    // Si tenemos un parentTab, somos un contenedor anidado y NO debemos animar
+    // (el padre raíz se encargará de la animación global).
+    return !this.parentTab;
   });
 
   /**
@@ -166,6 +169,8 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
     }
 
     const ghost = this.ghostRef()?.nativeElement;
+
+    // La altura que llega ya incluye los paddings internos calculados por el hijo
     const endHeight = height;
 
     if (!ghost) {
