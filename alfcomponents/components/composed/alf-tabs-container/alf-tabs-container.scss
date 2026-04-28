@@ -41,7 +41,6 @@
     display: flex;
     flex-wrap: nowrap;
     position: relative;
-    border-bottom: 1px solid var(--alf-tabs-border-color, #e2e8f0);
     width: fit-content;
     min-width: 100%;
     
@@ -49,7 +48,7 @@
       position: absolute;
       bottom: 0;
       height: 2px;
-      background-color: var(--alf-tabs-slider-color, var(--alf-tabs-primary, #3b82f6));
+      background-color: var(--alf-tabs-slider-color, var(--alf-tabs-secondary, #3b82f6));
       z-index: 1;
       will-change: left, width;
     }

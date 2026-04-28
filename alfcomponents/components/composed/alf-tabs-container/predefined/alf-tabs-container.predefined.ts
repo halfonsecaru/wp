@@ -13,7 +13,6 @@ import {
   AlfPercentageEnum,
   AlfShadowEnum,
   AlfAnimationTypeEnum,
-  AlfVisualPredefinedEnum
 } from '@alfcomponents/enums';
 import { AlfTabsContainerConfigInterface, AlfSingleTabInterface } from '../interfaces/alf-tabs.interface';
 
@@ -86,89 +85,87 @@ export const ALF_TAB_CONTENT_DEFAULT: Partial<AlfSingleTabInterface> = {
   }
 };
 
+
+
+import { resolveDefaultVisual } from '@alfcomponents/base';
+
 /**
- * Obtiene una configuración predefinida para el contenedor de pestañas.
- * @param variant Variante de color (Primary, Secondary, etc.)
- * @param visualType Tipo visual (Solid, Outlined)
+ * Obtiene la configuración por defecto para el contenedor según una variante semántica.
+ * Utiliza el motor visual central de Alfonizer para máxima consistencia.
  */
-export const getAlfPredefinedTabs = (
-  variant: AlfColorVariantEnum,
-  visualType: AlfButtonVisualTypeEnum = AlfButtonVisualTypeEnum.Solid
-): AlfTabsContainerConfigInterface => {
-  const isOutlined = visualType === AlfButtonVisualTypeEnum.Outlined;
-  const predefined = isOutlined 
-    ? resolveOutlinedPredefined(variant) 
-    : resolveSolidPredefined(variant);
+export const getAlfTabDefaultConfig = (variantName?: string): AlfTabsContainerConfigInterface => {
+  const defaultConfig = { ...ALF_TABS_CONTAINER_DEFAULT };
+  if (!variantName) return defaultConfig;
+
+  // Normalizamos a PascalCase (ej: outline-primary -> OutlinePrimary)
+  const normalized = variantName.charAt(0).toUpperCase() + 
+                     variantName.slice(1).replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+
+  // Detectamos tipo visual y variante de color
+  const isOutline = normalized.startsWith('Outline');
+  const variantKey = isOutline ? normalized.replace('Outline', '') : normalized;
+  
+  const colorVariant = (AlfColorVariantEnum as any)[variantKey] || AlfColorVariantEnum.Secondary;
+  const visualType = isOutline ? AlfButtonVisualTypeEnum.Outlined : AlfButtonVisualTypeEnum.Text;
+
+  // Resolvemos el estilo visual usando el motor central de Alfonizer
+  const visualBase = resolveDefaultVisual({
+    colorVariant,
+    visualType
+  });
+
+  // Mapeamos el color real para el borde según la variante
+  let variantColor: AlfColorEnum = AlfColorEnum.Secondary;
+  switch (variantKey.toLowerCase()) {
+    case 'primary': variantColor = AlfColorEnum.Primary; break;
+    case 'success': variantColor = AlfColorEnum.Success; break;
+    case 'danger': variantColor = AlfColorEnum.Danger; break;
+    case 'warning': variantColor = AlfColorEnum.Warning; break;
+    case 'info': variantColor = AlfColorEnum.Info; break;
+  }
 
   return {
-    ...ALF_TABS_CONTAINER_DEFAULT,
-    colorVariant: variant,
-    visualType: visualType,
-    predefined: predefined,
+    ...defaultConfig,
+    colorVariant,
+    visualType,
+    // Definición explícita de bordes
     border: {
       default: {
         borderWidth: AlfPxEnum.Px1,
         borderStyle: AlfBorderStyleEnum.Solid,
-        borderColor: AlfColorEnum.Transparent, // El color lo gestionará el predefined
+        borderColor: isOutline ? variantColor : AlfColorEnum.Transparent,
         borderRadius: AlfRadiusEnum.Md
       }
+    },
+    // Definición explícita de fondos
+    backgrounds: {
+      default: { backgroundColor: AlfColorEnum.Transparent },
+      hover: { backgroundColor: isOutline ? AlfColorEnum.Gray100 : AlfColorEnum.Transparent }
+    },
+    // Estilo de texto heredado de la variante
+    textStyle: {
+      default: { color: variantColor },
+      hover: { color: variantColor }
+    },
+    // Layout horizontal inamovible
+    displayAndLayout: {
+      default: {
+        display: AlfDisplayEnum.Flex,
+        flexDirection: AlfFlexDirectionEnum.Row,
+        alignItems: AlfAlignItemsEnum.Center,
+        justifyContent: AlfJustifyContentEnum.Center,
+        gap: AlfPxEnum.Px8,
+        width: AlfPercentageEnum.Percent100
+      }
+    },
+    // Estabilidad total
+    transform: {
+      default: { scale: 1 },
+      hover: { scale: 1 }
+    },
+    shadows: {
+      default: { boxShadow: AlfShadowEnum.None },
+      hover: { boxShadow: AlfShadowEnum.None }
     }
   };
 };
-
-/**
- * Auxiliares para resolver el enum de predefinidos (copiados de button para consistencia)
- */
-const resolveSolidPredefined = (variant: AlfColorVariantEnum): AlfVisualPredefinedEnum => {
-  switch (variant) {
-    case AlfColorVariantEnum.Primary: return AlfVisualPredefinedEnum.SolidPrimary;
-    case AlfColorVariantEnum.Secondary: return AlfVisualPredefinedEnum.SolidSecondary;
-    case AlfColorVariantEnum.Success: return AlfVisualPredefinedEnum.SolidSuccess;
-    case AlfColorVariantEnum.Danger: return AlfVisualPredefinedEnum.SolidDanger;
-    case AlfColorVariantEnum.Warning: return AlfVisualPredefinedEnum.SolidWarning;
-    case AlfColorVariantEnum.Info: return AlfVisualPredefinedEnum.SolidInfo;
-    case AlfColorVariantEnum.Light: return AlfVisualPredefinedEnum.SolidLight;
-    case AlfColorVariantEnum.Dark: return AlfVisualPredefinedEnum.SolidDark;
-    default: return AlfVisualPredefinedEnum.SolidDefault;
-  }
-};
-
-const resolveOutlinedPredefined = (variant: AlfColorVariantEnum): AlfVisualPredefinedEnum => {
-  switch (variant) {
-    case AlfColorVariantEnum.Primary: return AlfVisualPredefinedEnum.OutlinedPrimary;
-    case AlfColorVariantEnum.Secondary: return AlfVisualPredefinedEnum.OutlinedSecondary;
-    case AlfColorVariantEnum.Success: return AlfVisualPredefinedEnum.OutlinedSuccess;
-    case AlfColorVariantEnum.Danger: return AlfVisualPredefinedEnum.OutlinedDanger;
-    case AlfColorVariantEnum.Warning: return AlfVisualPredefinedEnum.OutlinedWarning;
-    case AlfColorVariantEnum.Info: return AlfVisualPredefinedEnum.OutlinedInfo;
-    case AlfColorVariantEnum.Light: return AlfVisualPredefinedEnum.OutlinedLight;
-    case AlfColorVariantEnum.Dark: return AlfVisualPredefinedEnum.OutlinedDark;
-    default: return AlfVisualPredefinedEnum.OutlinedDefault;
-  }
-};
-
-/**
- * Obtiene la configuración por defecto para el botón de una pestaña.
- */
-export const getAlfTabDefaultConfig = (label: string) => ({
-  label,
-  visualType: AlfButtonVisualTypeEnum.Text,
-  colorVariant: AlfColorVariantEnum.Secondary,
-  backgrounds: {
-    default: { backgroundColor: AlfColorEnum.Transparent },
-    hover: { backgroundColor: AlfColorEnum.Gray150 },
-    active: { backgroundColor: AlfColorEnum.Transparent },
-  },
-  border: {
-    default: { borderRadius: AlfRadiusEnum.None, borderWidth: AlfPxEnum.None, borderColor: AlfColorEnum.Transparent },
-    hover: { borderRadius: AlfRadiusEnum.None, borderWidth: AlfPxEnum.None, borderColor: AlfColorEnum.Transparent },
-  },
-  textStyle: {
-    default: { color: AlfColorEnum.Secondary },
-    hover: { color: AlfColorEnum.Secondary },
-  },
-  shadows: {
-    default: { boxShadow: AlfShadowEnum.None },
-    hover: { boxShadow: AlfShadowEnum.None },
-  }
-});

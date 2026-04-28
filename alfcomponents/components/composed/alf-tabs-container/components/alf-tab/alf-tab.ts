@@ -1,4 +1,4 @@
-import { Component, input, signal, computed, inject, ElementRef, output, effect, viewChild, Injector, afterNextRender, OnDestroy } from '@angular/core';
+import { Component, input, signal, computed, inject, ElementRef, viewChild, Injector, afterNextRender, OnDestroy } from '@angular/core';
 import { AlfBaseConfiguration } from '@alfcomponents/base';
 import { AlfSingleTabInterface, ALF_TABS_CONTAINER_TOKEN, AlfTabsParentInterface } from '../../interfaces/alf-tabs.interface';
 import { visualprefixEnum } from '@alfcomponents/shared';

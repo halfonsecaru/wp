@@ -3,6 +3,7 @@ import { AlfTabsStyleEnum } from "../enums/alf-tabs.enum";
 import { AlfBaseCommonConfigInterface } from "@alfcomponents/base";
 import { AlfAnimateCssInterface } from "@alfcomponents/interfaces";
 import { InjectionToken } from "@angular/core";
+import { AlfButtonTypeEnum, AlfButtonVisualTypeEnum } from "@alfcomponents/enums";
 
 /**
  * Interfaz para el contrato de comunicación Padre-Hijo.
@@ -33,7 +34,7 @@ export interface AlfSingleTabInterface extends AlfButtonInterface {
    * Nombre de la pestaña (alias de label para retrocompatibilidad).
    */
   readonly tabName?: string;
-  
+
   /**
    * Indica si se debe aplicar un efecto de agrandamiento al entrar.
    */

@@ -2,11 +2,22 @@ import { Component, contentChildren, effect, input, signal, computed, viewChild,
 import { AlfTabComponent } from './components/alf-tab/alf-tab';
 import { AlfButtons } from '../../simple/alf-buttons/alf-buttons';
 import { visualprefixEnum } from '@alfcomponents/shared';
-import { AlfButtonVisualTypeEnum, AlfColorVariantEnum, AlfCursorEnum, AlfColorEnum } from '@alfcomponents/enums';
+import { 
+  AlfButtonVisualTypeEnum, 
+  AlfColorVariantEnum, 
+  AlfCursorEnum, 
+  AlfColorEnum, 
+  AlfButtonTypeEnum,
+  AlfDisplayEnum,
+  AlfFlexDirectionEnum,
+  AlfAlignItemsEnum,
+  AlfJustifyContentEnum,
+  AlfPxEnum 
+} from '@alfcomponents/enums';
 import { AlfBorderInterface } from '@alfcomponents/interfaces';
 import { AlfBaseConfiguration } from '@alfcomponents/base';
 import { AlfTabsContainerConfigInterface, ALF_TABS_CONTAINER_TOKEN } from './interfaces/alf-tabs.interface';
-import { getAlfTabDefaultConfig, ALF_TABS_CONTAINER_DEFAULT, getAlfPredefinedTabs } from './predefined/alf-tabs-container.predefined';
+import { getAlfTabDefaultConfig, ALF_TABS_CONTAINER_DEFAULT } from './predefined/alf-tabs-container.predefined';
 import { AlfButtonInterface } from '../../simple/alf-buttons/interfaces/alf-button.interface';
 
 @Component({
@@ -23,9 +34,57 @@ import { AlfButtonInterface } from '../../simple/alf-buttons/interfaces/alf-butt
   ]
 })
 export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsContainerConfigInterface> {
+
+  /**
+   * Señal para elegir un estilo predefinido (Primary, Secondary, OutlinePrimary, etc.)
+   */
+  public readonly variant = input<string | AlfColorVariantEnum>(undefined, { alias: 'variant' });
+
+  /**
+   * Configuración predefinida basada en la variante elegida.
+   */
+  protected readonly predefinedConfig = computed(() => {
+    const variant = this.variant();
+    return variant ? getAlfTabDefaultConfig(variant) : ALF_TABS_CONTAINER_DEFAULT;
+  });
+
+  /**
+   * Configuración directa del usuario.
+   */
+  public override readonly inputConfig = input<AlfTabsContainerConfigInterface>(ALF_TABS_CONTAINER_DEFAULT, { alias: 'config' });
+
+  /**
+   * Configuración FINAL (Prioridad absoluta a la variante si existe).
+   */
+  protected readonly finalConfig = computed(() => {
+    const variant = this.variant();
+    const input = this.inputConfig();
+    
+    // Si el usuario elige una variante, esa manda sobre todo lo demás
+    if (variant) {
+      return this.predefinedConfig();
+    }
+    
+    // Si no hay variante, usamos la configuración manual o el default
+    return input ?? ALF_TABS_CONTAINER_DEFAULT;
+  });
+
+  // --- SOBREESCRITURA DE COMPUTEDS DE LA CLASE BASE ---
+  // Esto es vital para que los mixins de la clase base usen los colores de la variante
+  
+  protected override readonly colorVariantComputed = computed(() => this.finalConfig().colorVariant ?? AlfColorVariantEnum.Default);
+  protected override readonly visualTypeComputed = computed(() => this.finalConfig().visualType);
+  protected override readonly backgroundsComputed = computed(() => this.finalConfig().backgrounds);
+  protected override readonly borderComputed = computed(() => this.finalConfig().border);
+  protected override readonly displayAndLayoutComputed = computed(() => this.finalConfig().displayAndLayout);
+  protected override readonly paddingComputed = computed(() => this.finalConfig().padding);
+  protected override readonly textStyleComputed = computed(() => this.finalConfig().textStyle);
+  protected override readonly typographyComputed = computed(() => this.finalConfig().typography);
+  protected override readonly transformComputed = computed(() => this.finalConfig().transform);
+  protected override readonly shadowsComputed = computed(() => this.finalConfig().shadows);
+
   /**
    * Indica si se debe activar el comportamiento de altura fluida con transiciones.
-   * Por defecto es false (height: auto).
    */
   public readonly fluidHeightInput = input(false, {
     alias: 'fluid',
@@ -41,18 +100,13 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
    * Propiedad computada que combina el input directo, la configuración y la auto-detección.
    */
   protected readonly isFluidHeight = computed(() => {
-    // Si la config explícitamente lo desactiva, respetamos
-    const config = this.inputConfig();
+    const fromInput = this.fluidHeightInput();
+    const config = this.finalConfig();
     const fromConfig = config?.fluidHeight || (config as any)?.fluid;
-    if (fromConfig === false) return false;
-    
-    // Si el usuario lo fuerza por input, tiene prioridad
-    if (this.fluidHeightInput() || fromConfig === true) return true;
-    
-    // Por defecto: Solo somos fluidos (animamos) si somos el contenedor RAÍZ.
-    // Si tenemos un parentTab, somos un contenedor anidado y NO debemos animar
-    // (el padre raíz se encargará de la animación global).
-    return !this.parentTab;
+
+    if (fromInput || fromConfig) return true;
+
+    return this.nestedContainers().length === 0;
   });
 
   /**
@@ -64,11 +118,6 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
    * Prefijo para las variables CSS.
    */
   protected readonly visualPrefix = visualprefixEnum.TabsContainer;
-
-  /**
-   * Configuración general del contenedor con valores por defecto.
-   */
-  public override readonly inputConfig = input<AlfTabsContainerConfigInterface>(ALF_TABS_CONTAINER_DEFAULT, { alias: 'config' });
 
   /**
    * Listado de pestañas proyectadas.
@@ -116,44 +165,60 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
    */
   public readonly containerHeight = signal<string>('auto');
 
-  /**
-   * Efecto para inicializar el ResizeObserver cuando el scrollRef esté disponible
-   */
-  protected readonly initScrollObserver = effect((onCleanup) => {
-    const scrollEl = this.headerScrollRef()?.nativeElement;
-    if (!scrollEl) return;
-
-    this.resizeObserver = new ResizeObserver(this.handleResizeEvent);
-    this.resizeObserver.observe(scrollEl);
-    this.updateScrollMetrics();
-
-    onCleanup(this.handleCleanupResizeObserver);
-  });
-
-  private readonly handleResizeEvent = (): void => {
-    this.updateScrollMetrics();
-  };
-
-  private readonly handleCleanupResizeObserver = (): void => {
-    this.resizeObserver?.disconnect();
-  };
-
-  private readonly handleInitialMeasurement = (): void => {
-    const activeTab = this.tabs()[this.activeIndex()];
-    if (activeTab) activeTab.reportHeight();
-  };
-
   constructor() {
     super();
 
+    // Efecto para inicializar el ResizeObserver cuando el scrollRef esté disponible
+    effect((onCleanup) => {
+      const scrollEl = this.headerScrollRef()?.nativeElement;
+      if (!scrollEl) return;
+
+      this.resizeObserver = new ResizeObserver(() => {
+        this.updateScrollMetrics();
+      });
+
+      this.resizeObserver.observe(scrollEl);
+      this.updateScrollMetrics();
+
+      onCleanup(() => {
+        this.resizeObserver?.disconnect();
+      });
+    });
+
     // Asegurar medición inicial estable
-    afterNextRender(this.handleInitialMeasurement);
+    afterNextRender(() => {
+      const activeTab = this.tabs()[this.activeIndex()];
+      if (activeTab) activeTab.reportHeight();
+    });
   }
 
   /**
    * Maneja el reporte de altura de un tab hijo y ejecuta la transición.
    * @param height Altura en píxeles reportada por el hijo.
    */
+  /**
+   * Mide la altura natural del contenido proyectado.
+   */
+  public readonly measureContentHeight = (): void => {
+    if (!this.isFluidHeight()) return;
+
+    const container = this.contentContainer()?.nativeElement;
+    if (!container) return;
+
+    // Guardamos la altura actual para la animación
+    const startHeight = container.offsetHeight;
+
+    // Forzamos altura auto temporalmente para medir el "natural"
+    container.style.height = 'auto';
+    const endHeight = container.scrollHeight;
+
+    // Restauramos la altura de inicio para que WAAPI pueda animar desde ahí
+    container.style.height = `${startHeight}px`;
+
+    console.log(`[Tabs] Medición: start=${startHeight}px, end=${endHeight}px`);
+    this.onTabHeightMeasured(endHeight, startHeight);
+  };
+
   /**
    * Referencia al elemento contenedor del contenido.
    */
@@ -163,24 +228,6 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
    * Referencia al elemento "fantasma" que empuja la altura.
    */
   protected readonly ghostRef = viewChild<ElementRef<HTMLDivElement>>('ghost');
-
-  private activeHeightAnimation?: Animation;
-
-  private pendingEndHeight: number = 0;
-
-  /**
-   * Manejador del fin de la animación de altura.
-   */
-  private readonly onHeightAnimationFinish = (): void => {
-    this.activeHeightAnimation = undefined;
-    this.containerHeight.set(`${this.pendingEndHeight}px`);
-    this.isAnimating.set(false);
-
-    // PROPAGACIÓN: Si estamos anidados, avisamos al padre para que el abuelo se ajuste
-    if (this.parentTab) {
-      this.parentTab.reportHeight();
-    }
-  };
 
   /**
    * Maneja el reporte de altura y ejecuta la transición usando el truco del "Fantasma".
@@ -192,6 +239,8 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
     }
 
     const ghost = this.ghostRef()?.nativeElement;
+
+    // La altura que llega ya incluye los paddings internos calculados por el hijo
     const endHeight = height;
 
     if (!ghost) {
@@ -199,6 +248,7 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
       return;
     }
 
+    // El startHeight es la altura actual del fantasma (o la override)
     const startHeight = startHeightOverride ?? ghost.offsetHeight;
 
     if (startHeight === 0 || this.containerHeight() === 'auto' || Math.abs(startHeight - endHeight) < 1) {
@@ -206,12 +256,9 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
       return;
     }
 
-    if (this.activeHeightAnimation) {
-      this.activeHeightAnimation.cancel();
-    }
-
     this.isAnimating.set(true);
 
+    // Animamos el FANTASMA. Como el padre es auto, seguirá al fantasma.
     const anim = ghost.animate([
       { height: `${startHeight}px` },
       { height: `${endHeight}px` }
@@ -221,9 +268,15 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
       fill: 'forwards'
     });
 
-    this.activeHeightAnimation = anim;
-    this.pendingEndHeight = endHeight;
-    anim.onfinish = this.onHeightAnimationFinish;
+    anim.onfinish = () => {
+      this.containerHeight.set(`${endHeight}px`);
+      this.isAnimating.set(false);
+
+      // PROPAGACIÓN: Si estamos anidados, avisamos al padre para que el abuelo se ajuste
+      if (this.parentTab) {
+        this.parentTab.reportHeight();
+      }
+    };
   };
 
   /**
@@ -304,10 +357,6 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
     slider.style.left = `${left}px`;
   }
 
-  private readonly processSliderAnimation = (): void => {
-    this.updateSlider();
-  };
-
   /**
    * Efecto para animar el slider cuando cambia la pestaña activa.
    */
@@ -316,98 +365,84 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
     this.activeIndex();
     this.buttonRefs();
 
-    untracked(this.processSliderAnimation);
+    untracked(() => {
+      this.updateSlider();
+    });
   });
 
   /**
    * Datos de navegación derivados de las pestañas proyectadas.
+   * Es vital que sea estable y NO dependa de activeIndex para evitar re-renders innecesarios.
    */
   protected readonly navigationTabs = computed(() => {
-    const active = this.activeIndex();
-    const currentTabs = this.tabs();
-    const result = [];
-    
-    for (let index = 0; index < currentTabs.length; index++) {
-      const tab = currentTabs[index];
+    const containerConfig = this.finalConfig();
+    const containerVisualType = this.visualTypeComputed() ?? containerConfig.visualType;
+    const containerColorVariant = this.colorVariantComputed() ?? containerConfig.colorVariant;
+
+    return this.tabs().map((tabInstance) => {
+      const tab = tabInstance as any;
+      const tabLabel = tab.finalLabel();
+      const tabInputConfig = tab.inputConfig() ?? {};
       
-      // Resolvemos la configuración base del botón (ya sea del inputConfig del tab o por defecto)
-      const baseConfig = (tab.inputConfig() ?? getAlfTabDefaultConfig(tab.finalLabel())) as AlfButtonInterface;
-      const isActive = index === active;
-      const activeColor = baseConfig.backgrounds?.active?.backgroundColor;
+      // Resolvemos el tipo visual prioritariamente (por defecto Text para las pestañas)
+      const visualType = tab.visualType() ?? tabInputConfig.visualType ?? AlfButtonVisualTypeEnum.Text;
 
-      result.push({
-        label: tab.finalLabel(),
-        configuration: {
-          ...baseConfig,
-          // Propagamos los nuevos inputs individuales del tab al botón de la cabecera
-          iconLeft: (tab as any).iconLeft() ?? baseConfig.iconLeft,
-          iconRight: (tab as any).iconRight() ?? baseConfig.iconRight,
-          type: (tab as any).type() ?? baseConfig.type,
-          // Si el contenedor tiene un visualType (ej: Outlined), lo propagamos a las pestañas si estas no tienen uno propio
-          visualType: (tab as any).visualType() ?? baseConfig.visualType ?? this.visualTypeComputed(),
-          backgrounds: isActive ? {
-            ...baseConfig.backgrounds,
-            default: { ...baseConfig.backgrounds?.default, backgroundColor: activeColor },
-            hover: { ...baseConfig.backgrounds?.hover, backgroundColor: activeColor },
-            focus: { ...baseConfig.backgrounds?.focus, backgroundColor: activeColor },
-            active: { ...baseConfig.backgrounds?.active, backgroundColor: activeColor },
-          } : baseConfig.backgrounds
+      const configuration: AlfButtonInterface = {
+        ...tabInputConfig,
+        label: tabLabel,
+        iconLeft: tab.iconLeft() ?? tabInputConfig.iconLeft,
+        iconRight: tab.iconRight() ?? tabInputConfig.iconRight,
+        visualType,
+        colorVariant: tab.colorVariant() ?? tabInputConfig.colorVariant ?? AlfColorVariantEnum.Secondary,
+        displayAndLayout: {
+          default: {
+            display: AlfDisplayEnum.Flex,
+            flexDirection: AlfFlexDirectionEnum.Row,
+            alignItems: AlfAlignItemsEnum.Center,
+            justifyContent: AlfJustifyContentEnum.Center,
+            gap: AlfPxEnum.Px8
+          }
         }
-      });
-    }
-    
-    return result;
+      };
+
+      return {
+        label: tabLabel,
+        configuration
+      };
+    });
   });
-
-  /**
-   * Mapea y configura una pestaña según su estado activo.
-   */
-  private readonly configureTabState = (tab: AlfTabComponent, index: number, active: number, contentAnim: any): void => {
-    const isActive = index === active;
-    tab.setActive(isActive);
-
-    if (contentAnim) {
-      tab.parentContentAnimations.set(contentAnim);
-    }
-  };
 
   /**
    * Efecto para sincronizar la pestaña activa con los componentes hijos.
    */
   protected readonly syncActiveTab = effect(() => {
-    const currentTabs = this.tabs();
     const active = this.activeIndex();
-    const contentAnim = this.inputConfig()?.contentAnimations;
+    const currentTabs = this.tabs();
+    const contentAnim = this.finalConfig()?.contentAnimations;
 
-    // NO se usa foreach con arrow function anidada, se usa un bucle for tradicional
-    // para cumplir la regla estricta de no funciones dentro de funciones.
-    for (let index = 0; index < currentTabs.length; index++) {
-      this.configureTabState(currentTabs[index], index, active, contentAnim);
-    }
+    currentTabs.forEach((tab, index) => {
+      const isActive = index === active;
+      tab.setActive(isActive);
+
+      if (contentAnim) {
+        tab.parentContentAnimations.set(contentAnim);
+      }
+    });
+
+    // Disparamos la auto-medición cuando cambia la pestaña
+    untracked(() => {
+      setTimeout(() => {
+        this.measureContentHeight();
+      }, 50);
+    });
   });
 
-  protected readonly isSwitchingTabs = signal<boolean>(false);
-
   /**
-   * Cambia la pestaña activa, ejecutando la animación de salida si es necesario.
+   * Cambia la pestaña activa.
    * @param index Nuevo índice
    */
-  public readonly setActiveTab = async (index: number): Promise<void> => {
-    if (this.activeIndex() === index || this.isSwitchingTabs()) {
-      return;
-    }
-
-    const oldIndex = this.activeIndex();
-    const currentTabs = this.tabs();
-    const oldTab = currentTabs[oldIndex];
-
-    // Si la pestaña anterior tiene animación de salida configurada, esperamos a que termine
-    if (oldTab && oldTab.effectiveAnimations()?.exitStage) {
-      this.isSwitchingTabs.set(true);
-      await oldTab.playExitAnimation();
-      this.activeIndex.set(index);
-      this.isSwitchingTabs.set(false);
-    } else {
+  public readonly setActiveTab = (index: number): void => {
+    if (this.activeIndex() !== index) {
       this.activeIndex.set(index);
     }
   };
@@ -416,7 +451,7 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
    * Estilos de animación para el contenido.
    */
   protected readonly contentAnimationsStyle = computed(() => {
-    const anim = this.inputConfig()?.contentAnimations;
+    const anim = this.finalConfig()?.contentAnimations;
     if (!anim) return '';
     const declarations: string[] = [];
     if (anim.duration) declarations.push(`--animate-duration: ${anim.duration};`);
@@ -428,7 +463,7 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
    * Clases de animación para el contenido.
    */
   protected readonly contentAnimationsClass = computed(() => {
-    const anim = this.inputConfig()?.contentAnimations?.enterStage ?? '';
+    const anim = this.finalConfig()?.contentAnimations?.enterStage ?? '';
     if (!anim) return '';
 
     // Forzamos el recalculo al cambiar de pestaña
