@@ -1,4 +1,4 @@
-import { Component, input, signal, computed, inject, ElementRef, output, effect, viewChild, Injector, afterNextRender } from '@angular/core';
+import { Component, input, signal, computed, inject, ElementRef, output, effect, viewChild, Injector, afterNextRender, OnDestroy } from '@angular/core';
 import { AlfBaseConfiguration } from '@alfcomponents/base';
 import { AlfSingleTabInterface, ALF_TABS_CONTAINER_TOKEN, AlfTabsParentInterface } from '../../interfaces/alf-tabs.interface';
 import { visualprefixEnum } from '@alfcomponents/shared';
@@ -16,7 +16,7 @@ import { ALF_TAB_CONTENT_DEFAULT } from '../../predefined/alf-tabs-container.pre
     '[style.width]': '"100%"'
   }
 })
-export class AlfTabComponent extends AlfBaseConfiguration<AlfSingleTabInterface> {
+export class AlfTabComponent extends AlfBaseConfiguration<AlfSingleTabInterface> implements OnDestroy {
   protected readonly visualPrefix = visualprefixEnum.TabsContent;
 
   public override readonly inputConfig = input<AlfSingleTabInterface>(ALF_TAB_CONTENT_DEFAULT as AlfSingleTabInterface);
@@ -69,8 +69,28 @@ export class AlfTabComponent extends AlfBaseConfiguration<AlfSingleTabInterface>
     }
   };
 
+  private resizeObserver?: ResizeObserver;
+
   constructor() {
     super();
+
+    afterNextRender(() => {
+      const el = this.elementRef.nativeElement;
+      if (el) {
+        this.resizeObserver = new ResizeObserver((entries) => {
+          for (const entry of entries) {
+            if (this._isActive() && entry.contentRect.height > 0) {
+              this.reportHeight();
+            }
+          }
+        });
+        this.resizeObserver.observe(el);
+      }
+    }, { injector: this.injector });
+  }
+
+  ngOnDestroy(): void {
+    this.resizeObserver?.disconnect();
   }
 
   /**
