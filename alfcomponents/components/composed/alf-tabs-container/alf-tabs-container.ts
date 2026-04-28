@@ -77,26 +77,36 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
    * Estilos custom adicionales (Sincroniza el color del slider con el borde o variante)
    */
   protected override readonly customStyleComputed = computed(() => {
-    // 1. Prioridad absoluta: Si hay un color de borde explícito y NO es transparente
+    let styles = '';
+    const visual = this.visualTypeComputed();
+    
+    // 1. Lógica del color del slider
     const explicitBorder = this.borderComputed()?.default?.borderColor;
+    let sliderColor: string;
+
     if (explicitBorder && explicitBorder !== AlfColorEnum.Transparent) {
-      return `--alf-tabs-slider-color: ${explicitBorder};`;
+      sliderColor = explicitBorder;
+    } else {
+      const variant = this.colorVariantComputed();
+      switch (variant) {
+        case AlfColorVariantEnum.Primary: sliderColor = AlfColorEnum.Primary; break;
+        case AlfColorVariantEnum.Success: sliderColor = AlfColorEnum.Success; break;
+        case AlfColorVariantEnum.Danger: sliderColor = AlfColorEnum.Danger; break;
+        case AlfColorVariantEnum.Warning: sliderColor = AlfColorEnum.Warning; break;
+        case AlfColorVariantEnum.Info: sliderColor = AlfColorEnum.Info; break;
+        case AlfColorVariantEnum.Light: sliderColor = AlfColorEnum.Gray300; break;
+        case AlfColorVariantEnum.Dark: sliderColor = AlfColorEnum.Gray900; break;
+        default: sliderColor = AlfColorEnum.Secondary;
+      }
+    }
+    styles += `--alf-tabs-slider-color: ${sliderColor};`;
+
+    // 2. Lógica para variante Crystal (Glassmorphism)
+    if (visual === AlfButtonVisualTypeEnum.Crystal) {
+      styles += 'backdrop-filter: blur(12px) saturate(180%); background-color: rgba(255, 255, 255, 0.3) !important;';
     }
 
-    // 2. Si el borde es transparente (ej. diseño Solid/Text sin bordes), usamos el color de la variante
-    const variant = this.colorVariantComputed();
-    let color: AlfColorEnum = AlfColorEnum.Secondary;
-    switch (variant) {
-      case AlfColorVariantEnum.Primary: color = AlfColorEnum.Primary; break;
-      case AlfColorVariantEnum.Success: color = AlfColorEnum.Success; break;
-      case AlfColorVariantEnum.Danger: color = AlfColorEnum.Danger; break;
-      case AlfColorVariantEnum.Warning: color = AlfColorEnum.Warning; break;
-      case AlfColorVariantEnum.Info: color = AlfColorEnum.Info; break;
-      case AlfColorVariantEnum.Light: color = AlfColorEnum.Gray300; break;
-      case AlfColorVariantEnum.Dark: color = AlfColorEnum.Gray900; break;
-    }
-
-    return `--alf-tabs-slider-color: ${color};`;
+    return styles;
   });
 
   /**
@@ -503,8 +513,47 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
     const anim = this.finalConfig()?.contentAnimations?.enterStage ?? '';
     if (!anim) return '';
 
-    // Forzamos el recalculo al cambiar de pestaña
     this.activeIndex();
     return anim;
   });
+
+  /**
+   * Coordenadas iniciales para el gesto de swipe en móviles.
+   */
+  private _touchStartX = 0;
+  private _touchStartY = 0;
+
+  /**
+   * Maneja el inicio del toque para gestos de navegación.
+   */
+  public readonly onTouchStart = (event: TouchEvent): void => {
+    this._touchStartX = event.touches[0].clientX;
+    this._touchStartY = event.touches[0].clientY;
+  };
+
+  /**
+   * Maneja el fin del toque y ejecuta el cambio de pestaña si el swipe es válido.
+   */
+  public readonly onTouchEnd = (event: TouchEvent): void => {
+    const touchEndX = event.changedTouches[0].clientX;
+    const touchEndY = event.changedTouches[0].clientY;
+    
+    const deltaX = touchEndX - this._touchStartX;
+    const deltaY = touchEndY - this._touchStartY;
+
+    // Solo disparamos si el movimiento es predominantemente horizontal
+    // y supera un umbral mínimo de 60px para evitar toques accidentales
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 60) {
+      const active = this.activeIndex();
+      const total = this.tabs().length;
+
+      if (deltaX > 0 && active > 0) {
+        // Swipe Derecha -> Anterior
+        this.setActiveTab(active - 1);
+      } else if (deltaX < 0 && active < total - 1) {
+        // Swipe Izquierda -> Siguiente
+        this.setActiveTab(active + 1);
+      }
+    }
+  };
 }

@@ -88,6 +88,8 @@
     role="tabpanel"
     [class]="contentAnimClass"
     [style]="contentAnimStyle"
+    (touchstart)="onTouchStart($event)"
+    (touchend)="onTouchEnd($event)"
     style="position: relative; height: auto; overflow: hidden;"
   >
     <!-- El Fantasma: Es el que empuja la altura del padre -->

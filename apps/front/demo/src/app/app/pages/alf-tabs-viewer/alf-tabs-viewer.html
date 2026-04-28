@@ -64,7 +64,7 @@
             <div style="display: flex; gap: 20px; align-items: start;">
               <div style="flex: 1;">
                 <h4 style="color: #2563eb; margin-bottom: 10px;">Resumen del Sistema</h4>
-                <p>Bienvenido a tu panel de control modernizado. Aquí puedes observar cómo el componente <code>alf-tabs-container</code> gestiona el espacio de forma inteligente. El slider se desliza suavemente hacia la pestaña activa, reforzando la jerarquía visual de la navegación.</p>
+                <p>Bienvenido a tu panel de control modernizado. Aquí puedes observar cómo el componente <code>alf-tabs-container</code> gestiona el espacio de forma inteligente.</p>
               </div>
               <div style="width: 150px; background: #eff6ff; border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #bfdbfe;">
                 <span style="display: block; font-size: 0.8rem; color: #3b82f6; font-weight: 600;">UPTIME</span>
@@ -75,8 +75,167 @@
         </alf-tab>
         <alf-tab label="Ajustes" iconLeft="⚙️">
           <div class="tab-pane" style="padding: 20px;">
-            <h4 style="margin-bottom: 10px;">Configuración de Interfaz</h4>
-            <p>Fíjate en los detalles: los iconos están perfectamente alineados, la tipografía usa un peso SemiBold para mejorar la legibilidad, y el hover tiene un fondo sutil que respeta los bordes redondeados del contenedor gracias al clipping por <code>overflow: hidden</code>.</p>
+            <h4 style="margin-bottom: 10px;">Configuración Detallada de Interfaz</h4>
+            <p>Fíjate en los detalles: los iconos están perfectamente alineados y la tipografía usa un peso SemiBold. Además, el sistema de clipping asegura que los efectos de hover no sobresalgan de los bordes redondeados del contenedor principal.</p>
+            <p style="margin-top: 10px;">Este panel de ajustes permite configurar parámetros globales como el refresco de datos, la densidad de la interfaz y la sincronización con servicios externos. Cada cambio que realices aquí se propagará de forma reactiva a través de los signals de Angular 21, garantizando una respuesta instantánea y sin parpadeos.</p>
+            <p style="margin-top: 10px;">La arquitectura Elite del componente permite que el slider de navegación se desplace con una suavidad extrema (WAAPI), calculando su posición exacta basándose en el ancho real del botón de navegación, incluso si cambias el texto dinámicamente.</p>
+          </div>
+        </alf-tab>
+      </alf-tabs-container>
+    </div>
+
+    <!-- Ejemplo OutlineSecondary -->
+    <div style="margin-top: 40px;">
+      <h3 style="margin-bottom: 16px;">Variante: OutlineSecondary (Documentación)</h3>
+      <alf-tabs-container variant="OutlineSecondary">
+        <alf-tab label="Guía de Uso" iconLeft="📖">
+          <div class="tab-pane" style="padding: 20px;">
+            <p>La variante Secondary es ideal para contenidos neutrales o documentación técnica que no requiera llamar excesivamente la atención.</p>
+          </div>
+        </alf-tab>
+        <alf-tab label="API" iconLeft="🔧">
+          <div class="tab-pane" style="padding: 20px;">
+            <p>Detalles técnicos y endpoints disponibles para desarrolladores.</p>
+          </div>
+        </alf-tab>
+      </alf-tabs-container>
+    </div>
+
+    <!-- Ejemplo OutlineDanger -->
+    <div style="margin-top: 40px;">
+      <h3 style="margin-bottom: 16px;">Variante: OutlineDanger (Zona Crítica)</h3>
+      <alf-tabs-container variant="OutlineDanger">
+        <alf-tab label="Eliminar Datos" iconLeft="⚠️">
+          <div class="tab-pane" style="padding: 20px;">
+            <h4 style="color: #dc2626; margin-bottom: 10px;">¡Atención: Acción Irreversible!</h4>
+            <p>Este panel utiliza la variante Danger para advertir al usuario sobre acciones críticas que podrían provocar pérdida de información.</p>
+          </div>
+        </alf-tab>
+        <alf-tab label="Logs de Error" iconLeft="🛑">
+          <div class="tab-pane" style="padding: 20px;">
+            <p>Registro detallado de fallos críticos en el servidor.</p>
+          </div>
+        </alf-tab>
+      </alf-tabs-container>
+    </div>
+
+    <!-- Ejemplo OutlineWarning -->
+    <div style="margin-top: 40px;">
+      <h3 style="margin-bottom: 16px;">Variante: OutlineWarning (Mantenimiento)</h3>
+      <alf-tabs-container variant="OutlineWarning">
+        <alf-tab label="Alertas" iconLeft="🔔">
+          <div class="tab-pane" style="padding: 20px;">
+            <p>La variante Warning es perfecta para notificaciones de mantenimiento o avisos preventivos.</p>
+          </div>
+        </alf-tab>
+      </alf-tabs-container>
+    </div>
+
+    <!-- Ejemplo OutlineInfo con MUCHAS pestañas -->
+    <div style="margin-top: 40px;">
+      <h3 style="margin-bottom: 16px;">Variante: OutlineInfo (Scroll Infinito y Flechas)</h3>
+      <alf-tabs-container variant="OutlineInfo">
+        <alf-tab label="Pestaña 1" iconLeft="1️⃣"> <div class="tab-pane" style="padding: 20px;"><p>Contenido de la pestaña 1</p></div> </alf-tab>
+        <alf-tab label="Pestaña 2" iconLeft="2️⃣"> <div class="tab-pane" style="padding: 20px;"><p>Contenido de la pestaña 2</p></div> </alf-tab>
+        <alf-tab label="Pestaña 3" iconLeft="3️⃣"> <div class="tab-pane" style="padding: 20px;"><p>Contenido de la pestaña 3</p></div> </alf-tab>
+        <alf-tab label="Pestaña 4" iconLeft="4️⃣"> <div class="tab-pane" style="padding: 20px;"><p>Contenido de la pestaña 4</p></div> </alf-tab>
+        <alf-tab label="Pestaña 5" iconLeft="5️⃣"> <div class="tab-pane" style="padding: 20px;"><p>Contenido de la pestaña 5</p></div> </alf-tab>
+        <alf-tab label="Pestaña 6" iconLeft="6️⃣"> <div class="tab-pane" style="padding: 20px;"><p>Contenido de la pestaña 6</p></div> </alf-tab>
+        <alf-tab label="Pestaña 7" iconLeft="7️⃣"> <div class="tab-pane" style="padding: 20px;"><p>Contenido de la pestaña 7</p></div> </alf-tab>
+        <alf-tab label="Pestaña 8" iconLeft="8️⃣"> <div class="tab-pane" style="padding: 20px;"><p>Contenido de la pestaña 8</p></div> </alf-tab>
+        <alf-tab label="Pestaña 9" iconLeft="9️⃣"> <div class="tab-pane" style="padding: 20px;"><p>Contenido de la pestaña 9</p></div> </alf-tab>
+        <alf-tab label="Pestaña 10" iconLeft="🔟"> <div class="tab-pane" style="padding: 20px;"><p>Contenido de la pestaña 10</p></div> </alf-tab>
+      </alf-tabs-container>
+    </div>
+
+    <!-- Ejemplo OutlineDark -->
+    <div style="margin-top: 40px;">
+      <h3 style="margin-bottom: 16px;">Variante: OutlineDark (Modo Noche)</h3>
+      <alf-tabs-container variant="OutlineDark">
+        <alf-tab label="Consola" iconLeft="💻">
+          <div class="tab-pane" style="padding: 20px; background: #111827; color: white; border-radius: 4px;">
+            <code style="color: #10b981;">$ system.status() --verbose</code>
+            <p style="margin-top: 10px;">La variante Dark es excelente para interfaces técnicas o consolas de comandos.</p>
+          </div>
+        </alf-tab>
+      </alf-tabs-container>
+    </div>
+
+    <!-- Ejemplo SolidPrimary -->
+    <div style="margin-top: 40px;">
+      <h3 style="margin-bottom: 16px;">Variante: SolidPrimary (Fondo Suave)</h3>
+      <alf-tabs-container variant="SolidPrimary">
+        <alf-tab label="Ventas" iconLeft="📈">
+          <div class="tab-pane" style="padding: 20px;">
+            <p>La variante Solid (o Soft) aplica un tono muy ligero del color de la marca al fondo del contenedor.</p>
+          </div>
+        </alf-tab>
+      </alf-tabs-container>
+    </div>
+
+    <!-- Ejemplo SolidSecondary -->
+    <div style="margin-top: 40px;">
+      <h3 style="margin-bottom: 16px;">Variante: SolidSecondary</h3>
+      <alf-tabs-container variant="SolidSecondary">
+        <alf-tab label="Archivos" iconLeft="📂"> <div class="tab-pane" style="padding: 20px;"><p>Estilo neutral sólido.</p></div> </alf-tab>
+      </alf-tabs-container>
+    </div>
+
+    <!-- Ejemplo SolidSuccess -->
+    <div style="margin-top: 40px;">
+      <h3 style="margin-bottom: 16px;">Variante: SolidSuccess</h3>
+      <alf-tabs-container variant="SolidSuccess">
+        <alf-tab label="Completado" iconLeft="✅"> <div class="tab-pane" style="padding: 20px;"><p>Validación positiva suave.</p></div> </alf-tab>
+      </alf-tabs-container>
+    </div>
+
+    <!-- Ejemplo SolidDanger -->
+    <div style="margin-top: 40px;">
+      <h3 style="margin-bottom: 16px;">Variante: SolidDanger</h3>
+      <alf-tabs-container variant="SolidDanger">
+        <alf-tab label="Errores" iconLeft="❌"> <div class="tab-pane" style="padding: 20px;"><p>Alerta crítica discreta.</p></div> </alf-tab>
+      </alf-tabs-container>
+    </div>
+
+    <!-- Ejemplo SolidWarning -->
+    <div style="margin-top: 40px;">
+      <h3 style="margin-bottom: 16px;">Variante: SolidWarning</h3>
+      <alf-tabs-container variant="SolidWarning">
+        <alf-tab label="Atención" iconLeft="⚠️"> <div class="tab-pane" style="padding: 20px;"><p>Aviso preventivo en tono ámbar suave.</p></div> </alf-tab>
+      </alf-tabs-container>
+    </div>
+
+    <!-- Ejemplo SolidInfo -->
+    <div style="margin-top: 40px;">
+      <h3 style="margin-bottom: 16px;">Variante: SolidInfo</h3>
+      <alf-tabs-container variant="SolidInfo">
+        <alf-tab label="Detalles" iconLeft="ℹ️"> <div class="tab-pane" style="padding: 20px;"><p>Información complementaria.</p></div> </alf-tab>
+      </alf-tabs-container>
+    </div>
+
+    <!-- Ejemplo SolidDark -->
+    <div style="margin-top: 40px;">
+      <h3 style="margin-bottom: 16px;">Variante: SolidDark</h3>
+      <alf-tabs-container variant="SolidDark">
+        <alf-tab label="Noche" iconLeft="🌙"> <div class="tab-pane" style="padding: 20px;"><p>Estilo oscuro pero con fondo grisáceo suave.</p></div> </alf-tab>
+      </alf-tabs-container>
+    </div>
+
+    <!-- Ejemplo SolidLight -->
+    <div style="margin-top: 40px;">
+      <h3 style="margin-bottom: 16px;">Variante: SolidLight</h3>
+      <alf-tabs-container variant="SolidLight">
+        <alf-tab label="Nieve" iconLeft="❄️"> <div class="tab-pane" style="padding: 20px;"><p>Casi blanco, máxima discreción.</p></div> </alf-tab>
+      </alf-tabs-container>
+    </div>
+
+    <!-- Ejemplo CrystalPrimary -->
+    <div style="margin-top: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; border-radius: 20px;">
+      <h3 style="margin-bottom: 16px; color: white;">Variante: CrystalPrimary (Glassmorphism)</h3>
+      <alf-tabs-container variant="CrystalPrimary">
+        <alf-tab label="Cristalino" iconLeft="💎">
+          <div class="tab-pane" style="padding: 20px; color: #1e293b;">
+            <p>La variante Crystal utiliza <code>backdrop-filter</code> para crear un efecto de cristal esmerilado que deja ver el fondo del sitio.</p>
           </div>
         </alf-tab>
       </alf-tabs-container>
