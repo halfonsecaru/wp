@@ -2,19 +2,18 @@ import { Component, contentChildren, effect, input, signal, computed, viewChild,
 import { AlfTabComponent } from './components/alf-tab/alf-tab';
 import { AlfButtons } from '../../simple/alf-buttons/alf-buttons';
 import { visualprefixEnum } from '@alfcomponents/shared';
-import { 
-  AlfButtonVisualTypeEnum, 
-  AlfColorVariantEnum, 
-  AlfCursorEnum, 
-  AlfColorEnum, 
-  AlfButtonTypeEnum,
+import {
+  AlfButtonVisualTypeEnum,
+  AlfColorVariantEnum,
+  AlfColorEnum,
   AlfDisplayEnum,
   AlfFlexDirectionEnum,
   AlfAlignItemsEnum,
   AlfJustifyContentEnum,
-  AlfPxEnum 
+  AlfPxEnum,
+  AlfFontWeightEnum,
+  AlfRadiusEnum
 } from '@alfcomponents/enums';
-import { AlfBorderInterface } from '@alfcomponents/interfaces';
 import { AlfBaseConfiguration } from '@alfcomponents/base';
 import { AlfTabsContainerConfigInterface, ALF_TABS_CONTAINER_TOKEN } from './interfaces/alf-tabs.interface';
 import { getAlfTabDefaultConfig, ALF_TABS_CONTAINER_DEFAULT } from './predefined/alf-tabs-container.predefined';
@@ -59,29 +58,46 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
   protected readonly finalConfig = computed(() => {
     const variant = this.variant();
     const input = this.inputConfig();
-    
+
     // Si el usuario elige una variante, esa manda sobre todo lo demás
     if (variant) {
       return this.predefinedConfig();
     }
-    
+
     // Si no hay variante, usamos la configuración manual o el default
     return input ?? ALF_TABS_CONTAINER_DEFAULT;
   });
 
   // --- SOBREESCRITURA DE COMPUTEDS DE LA CLASE BASE ---
-  // Esto es vital para que los mixins de la clase base usen los colores de la variante
-  
-  protected override readonly colorVariantComputed = computed(() => this.finalConfig().colorVariant ?? AlfColorVariantEnum.Default);
-  protected override readonly visualTypeComputed = computed(() => this.finalConfig().visualType);
-  protected override readonly backgroundsComputed = computed(() => this.finalConfig().backgrounds);
-  protected override readonly borderComputed = computed(() => this.finalConfig().border);
-  protected override readonly displayAndLayoutComputed = computed(() => this.finalConfig().displayAndLayout);
-  protected override readonly paddingComputed = computed(() => this.finalConfig().padding);
-  protected override readonly textStyleComputed = computed(() => this.finalConfig().textStyle);
-  protected override readonly typographyComputed = computed(() => this.finalConfig().typography);
-  protected override readonly transformComputed = computed(() => this.finalConfig().transform);
-  protected override readonly shadowsComputed = computed(() => this.finalConfig().shadows);
+  // Sobrescribimos el resolvedConfig de la clase base para que todo el motor (colores, fondos, bordes, etc.)
+  // lea directamente de nuestra configuración final (que combina la variante elegida con la manual).
+  protected override readonly resolvedConfig = this.finalConfig;
+
+  /**
+   * Estilos custom adicionales (Sincroniza el color del slider con el borde o variante)
+   */
+  protected override readonly customStyleComputed = computed(() => {
+    // 1. Prioridad absoluta: Si hay un color de borde explícito y NO es transparente
+    const explicitBorder = this.borderComputed()?.default?.borderColor;
+    if (explicitBorder && explicitBorder !== AlfColorEnum.Transparent) {
+      return `--alf-tabs-slider-color: ${explicitBorder};`;
+    }
+
+    // 2. Si el borde es transparente (ej. diseño Solid/Text sin bordes), usamos el color de la variante
+    const variant = this.colorVariantComputed();
+    let color: AlfColorEnum = AlfColorEnum.Secondary;
+    switch (variant) {
+      case AlfColorVariantEnum.Primary: color = AlfColorEnum.Primary; break;
+      case AlfColorVariantEnum.Success: color = AlfColorEnum.Success; break;
+      case AlfColorVariantEnum.Danger: color = AlfColorEnum.Danger; break;
+      case AlfColorVariantEnum.Warning: color = AlfColorEnum.Warning; break;
+      case AlfColorVariantEnum.Info: color = AlfColorEnum.Info; break;
+      case AlfColorVariantEnum.Light: color = AlfColorEnum.Gray300; break;
+      case AlfColorVariantEnum.Dark: color = AlfColorEnum.Gray900; break;
+    }
+
+    return `--alf-tabs-slider-color: ${color};`;
+  });
 
   /**
    * Indica si se debe activar el comportamiento de altura fluida con transiciones.
@@ -383,9 +399,23 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
       const tab = tabInstance as any;
       const tabLabel = tab.finalLabel();
       const tabInputConfig = tab.inputConfig() ?? {};
-      
-      // Resolvemos el tipo visual prioritariamente (por defecto Text para las pestañas)
-      const visualType = tab.visualType() ?? tabInputConfig.visualType ?? AlfButtonVisualTypeEnum.Text;
+
+      // Resolvemos el tipo visual prioritariamente (Ghost para que tenga hover suave, en vez de Text)
+      const visualType = tab.visualType() ?? tabInputConfig.visualType ?? AlfButtonVisualTypeEnum.Ghost;
+
+      // Color muy clarito para el hover de las pestañas
+      const resolvedVariant = tab.colorVariant() ?? tabInputConfig.colorVariant ?? containerColorVariant ?? AlfColorVariantEnum.Secondary;
+      let hoverBg = AlfColorEnum.Gray050;
+      switch (resolvedVariant) {
+        case AlfColorVariantEnum.Primary: hoverBg = AlfColorEnum.Blue050; break;
+        case AlfColorVariantEnum.Secondary: hoverBg = AlfColorEnum.Gray050; break;
+        case AlfColorVariantEnum.Success: hoverBg = AlfColorEnum.Green050; break;
+        case AlfColorVariantEnum.Danger: hoverBg = AlfColorEnum.Red050; break;
+        case AlfColorVariantEnum.Warning: hoverBg = AlfColorEnum.Yellow050; break;
+        case AlfColorVariantEnum.Info: hoverBg = AlfColorEnum.Cyan050; break;
+        case AlfColorVariantEnum.Light: hoverBg = AlfColorEnum.Gray050; break;
+        case AlfColorVariantEnum.Dark: hoverBg = AlfColorEnum.Gray100; break;
+      }
 
       const configuration: AlfButtonInterface = {
         ...tabInputConfig,
@@ -393,7 +423,37 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
         iconLeft: tab.iconLeft() ?? tabInputConfig.iconLeft,
         iconRight: tab.iconRight() ?? tabInputConfig.iconRight,
         visualType,
-        colorVariant: tab.colorVariant() ?? tabInputConfig.colorVariant ?? AlfColorVariantEnum.Secondary,
+        colorVariant: resolvedVariant,
+        // Forzamos el background para que el hover sea extremadamente clarito (050) y no el 200 de Ghost
+        backgrounds: {
+          default: { backgroundColor: AlfColorEnum.Transparent },
+          hover: { backgroundColor: hoverBg },
+          active: { backgroundColor: hoverBg }
+        },
+        typography: {
+          default: {
+            ...tabInputConfig.typography?.default,
+            fontWeight: tabInputConfig.typography?.default?.fontWeight ?? AlfFontWeightEnum.SemiBold
+          },
+          hover: tabInputConfig.typography?.hover,
+          active: tabInputConfig.typography?.active,
+          focus: tabInputConfig.typography?.focus,
+          disabled: tabInputConfig.typography?.disabled
+        },
+        border: {
+          default: {
+            ...tabInputConfig.border?.default,
+            borderRadius: tabInputConfig.border?.default?.borderRadius ?? AlfRadiusEnum.None
+          },
+          hover: {
+            ...tabInputConfig.border?.hover,
+            borderRadius: tabInputConfig.border?.hover?.borderRadius ?? AlfRadiusEnum.None
+          },
+          active: {
+            ...tabInputConfig.border?.active,
+            borderRadius: tabInputConfig.border?.active?.borderRadius ?? AlfRadiusEnum.None
+          }
+        },
         displayAndLayout: {
           default: {
             display: AlfDisplayEnum.Flex,

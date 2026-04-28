@@ -30,7 +30,25 @@ export const ALF_TABS_CONTAINER_DEFAULT: AlfTabsContainerConfigInterface = {
       borderStyle: AlfBorderStyleEnum.Solid,
       borderColor: AlfColorEnum.Gray300,
       borderRadius: AlfRadiusEnum.Md
+    },
+    hover: {
+      borderWidth: AlfPxEnum.Px1,
+      borderStyle: AlfBorderStyleEnum.Solid,
+      borderColor: AlfColorEnum.Gray300,
+      borderRadius: AlfRadiusEnum.Md
+    },
+    active: {
+      borderWidth: AlfPxEnum.Px1,
+      borderStyle: AlfBorderStyleEnum.Solid,
+      borderColor: AlfColorEnum.Gray300,
+      borderRadius: AlfRadiusEnum.Md
     }
+  },
+  backgrounds: {
+    default: { backgroundColor: AlfColorEnum.Transparent },
+    hover: { backgroundColor: AlfColorEnum.Transparent },
+    active: { backgroundColor: AlfColorEnum.Transparent },
+    focus: { backgroundColor: AlfColorEnum.Transparent }
   },
   padding: {
     default: {
@@ -53,35 +71,65 @@ export const ALF_TABS_CONTAINER_DEFAULT: AlfTabsContainerConfigInterface = {
   textStyle: {
     default: {
       color: AlfColorEnum.SecondaryHover
+    },
+    hover: {
+      color: AlfColorEnum.SecondaryHover
+    },
+    active: {
+      color: AlfColorEnum.SecondaryHover
     }
+  },
+  shadows: {
+    default: { boxShadow: AlfShadowEnum.None },
+    hover: { boxShadow: AlfShadowEnum.None },
+    active: { boxShadow: AlfShadowEnum.None }
+  },
+  transform: {
+    default: { scale: 1 },
+    hover: { scale: 1 },
+    active: { scale: 1 }
   },
   animations: {
     enterStage: AlfAnimationTypeEnum.FadeIn,
     exitStage: AlfAnimationTypeEnum.FadeOut,
-    duration: '0.6s',
+    duration: '5s',
     delay: '0s',
   },
   contentAnimations: {
     enterStage: AlfAnimationTypeEnum.FadeIn,
     exitStage: AlfAnimationTypeEnum.FadeOut,
-    duration: '0.6s',
+    duration: '5s',
     delay: '0s',
   }
 };
 
-/**
- * Configuración por defecto para el contenido de las pestañas.
- */
 export const ALF_TAB_CONTENT_DEFAULT: Partial<AlfSingleTabInterface> = {
   padding: {
-    default: {
-      padding: AlfPxEnum.Px10
-    }
+    default: { padding: AlfPxEnum.Px10 },
+    hover: { padding: AlfPxEnum.Px10 },
+    active: { padding: AlfPxEnum.Px10 },
+    focus: { padding: AlfPxEnum.Px10 }
   },
   backgrounds: {
-    default: {
-      backgroundColor: AlfColorEnum.Transparent
-    }
+    default: { backgroundColor: AlfColorEnum.Transparent },
+    hover: { backgroundColor: AlfColorEnum.Transparent },
+    active: { backgroundColor: AlfColorEnum.Transparent },
+    focus: { backgroundColor: AlfColorEnum.Transparent }
+  },
+  border: {
+    default: { borderWidth: AlfPxEnum.None, borderColor: AlfColorEnum.Transparent },
+    hover: { borderWidth: AlfPxEnum.None, borderColor: AlfColorEnum.Transparent },
+    active: { borderWidth: AlfPxEnum.None, borderColor: AlfColorEnum.Transparent }
+  },
+  shadows: {
+    default: { boxShadow: AlfShadowEnum.None },
+    hover: { boxShadow: AlfShadowEnum.None },
+    active: { boxShadow: AlfShadowEnum.None }
+  },
+  transform: {
+    default: { scale: 1 },
+    hover: { scale: 1 },
+    active: { scale: 1 }
   }
 };
 
@@ -135,37 +183,53 @@ export const getAlfTabDefaultConfig = (variantName?: string): AlfTabsContainerCo
         borderStyle: AlfBorderStyleEnum.Solid,
         borderColor: isOutline ? variantColor : AlfColorEnum.Transparent,
         borderRadius: AlfRadiusEnum.Md
+      },
+      hover: {
+        borderWidth: AlfPxEnum.Px1,
+        borderStyle: AlfBorderStyleEnum.Solid,
+        borderColor: isOutline ? variantColor : AlfColorEnum.Transparent,
+        borderRadius: AlfRadiusEnum.Md
+      },
+      active: {
+        borderWidth: AlfPxEnum.Px1,
+        borderStyle: AlfBorderStyleEnum.Solid,
+        borderColor: isOutline ? variantColor : AlfColorEnum.Transparent,
+        borderRadius: AlfRadiusEnum.Md
       }
     },
     // Definición explícita de fondos
     backgrounds: {
       default: { backgroundColor: AlfColorEnum.Transparent },
-      hover: { backgroundColor: isOutline ? AlfColorEnum.Gray100 : AlfColorEnum.Transparent }
+      hover: { backgroundColor: AlfColorEnum.Transparent },
+      active: { backgroundColor: AlfColorEnum.Transparent },
+      focus: { backgroundColor: AlfColorEnum.Transparent }
     },
     // Estilo de texto heredado de la variante
     textStyle: {
       default: { color: variantColor },
-      hover: { color: variantColor }
+      hover: { color: variantColor },
+      active: { color: variantColor }
     },
-    // Layout horizontal inamovible
+    // Layout inamovible (debe ser columna para el contenedor)
     displayAndLayout: {
       default: {
         display: AlfDisplayEnum.Flex,
-        flexDirection: AlfFlexDirectionEnum.Row,
-        alignItems: AlfAlignItemsEnum.Center,
-        justifyContent: AlfJustifyContentEnum.Center,
-        gap: AlfPxEnum.Px8,
-        width: AlfPercentageEnum.Percent100
+        flexDirection: AlfFlexDirectionEnum.Column,
+        alignItems: AlfAlignItemsEnum.Stretch,
+        justifyContent: AlfJustifyContentEnum.Start,
+        width: AlfPercentageEnum.Full
       }
     },
     // Estabilidad total
     transform: {
       default: { scale: 1 },
-      hover: { scale: 1 }
+      hover: { scale: 1 },
+      active: { scale: 1 }
     },
     shadows: {
       default: { boxShadow: AlfShadowEnum.None },
-      hover: { boxShadow: AlfShadowEnum.None }
+      hover: { boxShadow: AlfShadowEnum.None },
+      active: { boxShadow: AlfShadowEnum.None }
     }
   };
 };

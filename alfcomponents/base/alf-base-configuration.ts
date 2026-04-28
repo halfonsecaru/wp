@@ -62,26 +62,34 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
   // ******************************************** //
   // **** CONFIGURACION BASE PARA LOS INPUTS **** //
   // ******************************************** //
-  // Computeds base (fallback: direct input -> inputConfig -> default)
+  
+  /**
+   * Configuración resuelta. 
+   * Por defecto es el inputConfig(), pero puede ser sobrescrita en componentes derivados 
+   * (ej: para combinar configuraciones predefinidas de un input [variant]).
+   */
+  protected readonly resolvedConfig = computed(() => this.inputConfig());
+
+  // Computeds base (fallback: direct input -> resolvedConfig -> default)
 
   protected readonly tooltipComputed = computed(() =>
     this.tooltip() ?? undefined,
   );
 
   protected readonly colorVariantComputed = computed(() =>
-    this.colorVariant() ?? this.inputConfig()?.colorVariant ?? AlfColorVariantEnum.Default,
+    this.colorVariant() ?? this.resolvedConfig()?.colorVariant ?? AlfColorVariantEnum.Default,
   );
 
   protected readonly cursorComputed = computed(() =>
-    this.cursor() ?? this.inputConfig()?.cursor ?? AlfCursorEnum.Pointer,
+    this.cursor() ?? this.resolvedConfig()?.cursor ?? AlfCursorEnum.Pointer,
   );
 
   protected readonly predefinedComputed = computed(() =>
-    this.predefined() ?? this.inputConfig()?.predefined,
+    this.predefined() ?? this.resolvedConfig()?.predefined,
   );
 
   protected readonly visualTypeComputed = computed(() =>
-    this.visualType() ?? this.inputConfig()?.visualType,
+    this.visualType() ?? this.resolvedConfig()?.visualType,
   );
 
   protected readonly rippleInputComputed = computed(() =>
@@ -89,7 +97,7 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
   );
 
   protected readonly disabledComputed = computed(() =>
-    this.disabled() ?? this.inputConfig()?.disabled ?? false,
+    this.disabled() ?? this.resolvedConfig()?.disabled ?? false,
   );
 
   protected readonly ariaComputed = computed(() =>
@@ -97,55 +105,55 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
   );
 
   protected readonly backgroundsComputed = computed(() =>
-    this.backgrounds() ?? this.inputConfig()?.backgrounds,
+    this.backgrounds() ?? this.resolvedConfig()?.backgrounds,
   );
 
   protected readonly borderComputed = computed(() =>
-    this.border() ?? this.inputConfig()?.border,
+    this.border() ?? this.resolvedConfig()?.border,
   );
 
   protected readonly displayAndLayoutComputed = computed(() =>
-    this.displayAndLayout() ?? this.inputConfig()?.displayAndLayout,
+    this.displayAndLayout() ?? this.resolvedConfig()?.displayAndLayout,
   );
 
   protected readonly marginComputed = computed(() =>
-    this.margin() ?? this.inputConfig()?.margin,
+    this.margin() ?? this.resolvedConfig()?.margin,
   );
 
   protected readonly outlineComputed = computed(() =>
-    this.outline() ?? this.inputConfig()?.outline,
+    this.outline() ?? this.resolvedConfig()?.outline,
   );
 
   protected readonly paddingComputed = computed(() =>
-    this.padding() ?? this.inputConfig()?.padding,
+    this.padding() ?? this.resolvedConfig()?.padding,
   );
 
   protected readonly shadowsComputed = computed(() =>
-    this.shadows() ?? this.inputConfig()?.shadows,
+    this.shadows() ?? this.resolvedConfig()?.shadows,
   );
 
   protected readonly textStyleComputed = computed(() =>
-    this.textStyle() ?? this.inputConfig()?.textStyle,
+    this.textStyle() ?? this.resolvedConfig()?.textStyle,
   );
 
   protected readonly transformComputed = computed(() =>
-    this.transform() ?? this.inputConfig()?.transform,
+    this.transform() ?? this.resolvedConfig()?.transform,
   );
 
   protected readonly typographyComputed = computed(() =>
-    this.typography() ?? this.inputConfig()?.typography,
+    this.typography() ?? this.resolvedConfig()?.typography,
   );
 
   protected readonly animationsComputed = computed(() =>
-    this.animations() ?? this.inputConfig()?.animations,
+    this.animations() ?? this.resolvedConfig()?.animations,
   );
 
   protected readonly customClassComputed = computed(() =>
-    this.inputConfig()?.customClass ?? '',
+    this.resolvedConfig()?.customClass ?? '',
   );
 
   protected readonly customStyleComputed = computed(() =>
-    this.inputConfig()?.customStyle ?? '',
+    this.resolvedConfig()?.customStyle ?? '',
   );
 
   // ****************************************** //

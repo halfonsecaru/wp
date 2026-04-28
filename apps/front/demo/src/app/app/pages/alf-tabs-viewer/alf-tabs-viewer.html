@@ -33,16 +33,23 @@
     </alf-tabs-container>
     <!-- Ejemplo OutlineSuccess -->
     <div style="margin-top: 40px;">
-      <h3 style="margin-bottom: 16px;">Variante: OutlineSuccess (Verde)</h3>
+      <h3 style="margin-bottom: 16px;">Variante: OutlineSuccess (Seguridad y Validación)</h3>
       <alf-tabs-container variant="OutlineSuccess">
         <alf-tab label="Aprobado" iconLeft="✅">
-          <div class="tab-pane">
-            <p>Contenedor con marco verde Success y botones limpios.</p>
+          <div class="tab-pane" style="padding: 20px;">
+            <h4 style="color: #059669; margin-bottom: 10px;">Estado de Verificación: Completado</h4>
+            <p>Tu cuenta ha superado todos los protocolos de seguridad de Élite. Hemos verificado tu identidad y la integridad de tus datos. Este estado te permite acceder a todas las funcionalidades avanzadas de la plataforma sin restricciones.</p>
+            <ul style="margin-top: 15px; color: #4b5563; font-size: 0.9rem;">
+              <li>Métricas de rendimiento desbloqueadas.</li>
+              <li>Soporte técnico de alta prioridad activado.</li>
+              <li>Acceso total a la API de Alfonizer.</li>
+            </ul>
           </div>
         </alf-tab>
         <alf-tab label="Válido" iconLeft="👍">
-          <div class="tab-pane">
-            <p>Todo el estilo visual se hereda del motor de Alfonizer.</p>
+          <div class="tab-pane" style="padding: 20px;">
+            <h4 style="margin-bottom: 10px;">Cumplimiento Normativo</h4>
+            <p>Este contenedor utiliza la arquitectura dual de Alfonizer para asegurar que la interfaz sea no solo bella, sino funcional. Al usar el motor de variantes, el borde, el slider y los estados interactivos se sincronizan automáticamente con el color Success, manteniendo la coherencia visual en todo momento.</p>
           </div>
         </alf-tab>
       </alf-tabs-container>
@@ -50,16 +57,26 @@
 
     <!-- Ejemplo OutlinePrimary -->
     <div style="margin-top: 40px;">
-      <h3 style="margin-bottom: 16px;">Variante: OutlinePrimary (Azul)</h3>
+      <h3 style="margin-bottom: 16px;">Variante: OutlinePrimary (Centro de Control)</h3>
       <alf-tabs-container variant="OutlinePrimary">
         <alf-tab label="Principal" iconLeft="⭐">
-          <div class="tab-pane">
-            <p>Contenedor con marco azul Primary.</p>
+          <div class="tab-pane" style="padding: 20px;">
+            <div style="display: flex; gap: 20px; align-items: start;">
+              <div style="flex: 1;">
+                <h4 style="color: #2563eb; margin-bottom: 10px;">Resumen del Sistema</h4>
+                <p>Bienvenido a tu panel de control modernizado. Aquí puedes observar cómo el componente <code>alf-tabs-container</code> gestiona el espacio de forma inteligente. El slider se desliza suavemente hacia la pestaña activa, reforzando la jerarquía visual de la navegación.</p>
+              </div>
+              <div style="width: 150px; background: #eff6ff; border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #bfdbfe;">
+                <span style="display: block; font-size: 0.8rem; color: #3b82f6; font-weight: 600;">UPTIME</span>
+                <span style="display: block; font-size: 1.5rem; font-weight: 700; color: #1e40af;">99.9%</span>
+              </div>
+            </div>
           </div>
         </alf-tab>
         <alf-tab label="Ajustes" iconLeft="⚙️">
-          <div class="tab-pane">
-            <p>Fíjate cómo los iconos se mantienen inline y perfectamente alineados.</p>
+          <div class="tab-pane" style="padding: 20px;">
+            <h4 style="margin-bottom: 10px;">Configuración de Interfaz</h4>
+            <p>Fíjate en los detalles: los iconos están perfectamente alineados, la tipografía usa un peso SemiBold para mejorar la legibilidad, y el hover tiene un fondo sutil que respeta los bordes redondeados del contenedor gracias al clipping por <code>overflow: hidden</code>.</p>
           </div>
         </alf-tab>
       </alf-tabs-container>
