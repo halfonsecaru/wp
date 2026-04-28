@@ -12,7 +12,8 @@ import {
   AlfJustifyContentEnum,
   AlfPercentageEnum,
   AlfShadowEnum,
-  AlfAnimationTypeEnum
+  AlfAnimationTypeEnum,
+  AlfVisualPredefinedEnum
 } from '@alfcomponents/enums';
 import { AlfTabsContainerConfigInterface, AlfSingleTabInterface } from '../interfaces/alf-tabs.interface';
 
