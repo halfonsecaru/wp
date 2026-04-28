@@ -25,31 +25,31 @@ import { AlfButtonInterface } from '../../simple/alf-buttons/interfaces/alf-butt
 export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsContainerConfigInterface> {
   /**
    * Indica si se debe activar el comportamiento de altura fluida con transiciones.
-   * Por defecto es false (height: auto).
+   * Por defecto es true.
    */
-  public readonly fluidHeightInput = input(false, {
+  public readonly fluidHeightInput = input<boolean, unknown>(true, {
     alias: 'fluid',
     transform: booleanAttribute
   });
 
   /**
-   * Busca otros contenedores de pestañas dentro de este para detectar si somos el último nivel.
+   * Busca otros contenedores de pestañas dentro de este para detectar anidamientos.
    */
   protected readonly nestedContainers = contentChildren(forwardRef(() => AlfTabsContainerComponent), { descendants: true });
 
   /**
-   * Propiedad computada que combina el input directo, la configuración y la auto-detección.
+   * Propiedad computada que combina el input directo y la configuración.
    */
   protected readonly isFluidHeight = computed(() => {
-    // Si el usuario lo fuerza por input o config, tiene prioridad
     const fromInput = this.fluidHeightInput();
     const config = this.inputConfig();
     const fromConfig = config?.fluidHeight || (config as any)?.fluid;
 
-    if (fromInput || fromConfig) return true;
-
-    // Auto-detección: Si no hay contenedores anidados, somos el último nivel y activamos el modo fluido
-    return this.nestedContainers().length === 0;
+    // Si la config explícitamente lo desactiva, respetamos
+    if (fromConfig === false) return false;
+    
+    // Por defecto es fluido a menos que el usuario le ponga [fluid]="false"
+    return fromInput;
   });
 
   /**
@@ -145,29 +145,6 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
    * @param height Altura en píxeles reportada por el hijo.
    */
   /**
-   * Mide la altura natural del contenido proyectado.
-   */
-  public readonly measureContentHeight = (): void => {
-    if (!this.isFluidHeight()) return;
-
-    const container = this.contentContainer()?.nativeElement;
-    if (!container) return;
-
-    // Guardamos la altura actual para la animación
-    const startHeight = container.offsetHeight;
-
-    // Forzamos altura auto temporalmente para medir el "natural"
-    container.style.height = 'auto';
-    const endHeight = container.scrollHeight;
-
-    // Restauramos la altura de inicio para que WAAPI pueda animar desde ahí
-    container.style.height = `${startHeight}px`;
-
-    console.log(`[Tabs] Medición: start=${startHeight}px, end=${endHeight}px`);
-    this.onTabHeightMeasured(endHeight, startHeight);
-  };
-
-  /**
    * Referencia al elemento contenedor del contenido.
    */
   protected readonly contentContainer = viewChild<ElementRef<HTMLDivElement>>('contentContainer');
@@ -176,6 +153,8 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
    * Referencia al elemento "fantasma" que empuja la altura.
    */
   protected readonly ghostRef = viewChild<ElementRef<HTMLDivElement>>('ghost');
+
+  private activeHeightAnimation?: Animation;
 
   /**
    * Maneja el reporte de altura y ejecuta la transición usando el truco del "Fantasma".
@@ -187,8 +166,6 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
     }
 
     const ghost = this.ghostRef()?.nativeElement;
-
-    // La altura que llega ya incluye los paddings internos calculados por el hijo
     const endHeight = height;
 
     if (!ghost) {
@@ -204,6 +181,10 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
       return;
     }
 
+    if (this.activeHeightAnimation) {
+      this.activeHeightAnimation.cancel();
+    }
+
     this.isAnimating.set(true);
 
     // Animamos el FANTASMA. Como el padre es auto, seguirá al fantasma.
@@ -216,7 +197,10 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
       fill: 'forwards'
     });
 
+    this.activeHeightAnimation = anim;
+
     anim.onfinish = () => {
+      this.activeHeightAnimation = undefined;
       this.containerHeight.set(`${endHeight}px`);
       this.isAnimating.set(false);
 
@@ -359,13 +343,6 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
       if (contentAnim) {
         tab.parentContentAnimations.set(contentAnim);
       }
-    });
-
-    // Disparamos la auto-medición cuando cambia la pestaña
-    untracked(() => {
-      setTimeout(() => {
-        this.measureContentHeight();
-      }, 50);
     });
   });
 
