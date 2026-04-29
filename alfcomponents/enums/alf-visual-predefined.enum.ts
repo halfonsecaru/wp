@@ -17,4 +17,14 @@ export enum AlfVisualPredefinedEnum {
   OutlinedLight = 'outlined-light',
   OutlinedDark = 'outlined-dark',
   OutlinedDefault = 'outlined-default',
+  StandardPrimary = 'standard-primary',
+  StandardSecondary = 'standard-secondary',
+  StandardSuccess = 'standard-success',
+  StandardDanger = 'standard-danger',
+  StandardWarning = 'standard-warning',
+  StandardInfo = 'standard-info',
+  StandardLight = 'standard-light',
+  StandardDark = 'standard-dark',
+  StandardDefault = 'standard-default',
 }
+

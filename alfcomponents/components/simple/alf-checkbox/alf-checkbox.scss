@@ -19,7 +19,8 @@
   @include alf-display-layout-css-vars('--alf-cb', flex, center, flex-start, 0.5rem, '&.alf-cb--disabled');
 
   --alf-cb-size: 1.5rem;
-  --alf-cb-theme-color: var(--alf-cb-background-color, #4f46e5);
+  --alf-cb-theme-color: var(--alf-cb-text-color, #4f46e5);
+
   
   display: flex;
   flex-direction: column;
@@ -60,7 +61,8 @@
     background-color: var(--alf-cb-background-color);
     border-width: var(--alf-cb-border-width, 1px);
     border-style: var(--alf-cb-border-style, solid);
-    border-color: var(--alf-cb-border-color, var(--alf-cb-theme-color));
+    border-color: var(--alf-cb-theme-color);
+
     border-radius: var(--alf-cb-border-radius, 4px);
     
     .alf-cb-icon {
@@ -113,9 +115,10 @@
   // ------------------------------------------
   &--elegant {
     .alf-cb-box {
+      border: 1px solid var(--alf-cb-text-color);
       border-radius: 50%;
       box-shadow: 
-        1px 1px 3px rgba(0, 0, 0, 0.05),
+        1px 1px 3px color-mix(in srgb, var(--alf-cb-theme-color), transparent 90%),
         -1px -1px 3px rgba(255, 255, 255, 0.9);
       
       svg path {
@@ -126,10 +129,11 @@
     &.alf-cb--checked .alf-cb-box {
       background-color: white;
       box-shadow: 
-        inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+        inset 2px 2px 4px color-mix(in srgb, var(--alf-cb-theme-color), transparent 90%),
         inset -2px -2px 4px rgba(255, 255, 255, 0.8);
     }
   }
+
   
   // ------------------------------------------
   // ESTILO VISUAL: STANDARD (Cuadrado Clásico)
@@ -138,9 +142,10 @@
   // ESTILO VISUAL: STANDARD (Cuadrado Clásico)
   // ------------------------------------------
   &--standard {
+    
     .alf-cb-box {
       border-style: solid;
-      
+      border: 1px solid var(--alf-cb-text-color);
       &:hover {
         border-color: var(--alf-cb-border-color-hover, var(--alf-cb-theme-color));
       }
@@ -156,6 +161,7 @@
   // ESTILO VISUAL: MOVING (Expansión)
   // ------------------------------------------
   &--moving {
+  
     .alf-cb-wrapper {
       padding: 0.5rem 1rem 0.5rem 3.5rem;
       border-radius: 12px;
@@ -176,7 +182,7 @@
       z-index: 1;
       border-radius: 6px;
       background: transparent;
-      border: 2px solid var(--alf-cb-border-color, #ccc);
+      border: 1px solid var(--alf-cb-text-color, #ccc);
     }
     
     &.alf-cb--checked {
@@ -203,9 +209,10 @@
   .alf-cb-label-text {
     font-size: 1rem;
     font-weight: 500;
-    color: #374151; // A bit lighter than pitch black
+    color: inherit;
     transition: color 0.2s ease;
   }
+
   
   .alf-cb-description {
     font-size: 0.85rem;

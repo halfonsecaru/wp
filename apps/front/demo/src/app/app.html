@@ -1,2 +1,80 @@
-<!-- <app-alf-tabs-viewer></app-alf-tabs-viewer> -->
-<app-alf-checkbox-viewer></app-alf-checkbox-viewer>
+<div class="demo-container">
+  <h1 class="demo-title">💎 AlfCheckbox Elite Demo</h1>
+
+  <div class="demo-card">
+    <h3>Standard Visual Variants</h3>
+    
+    @for (style of styles; track style.value) {
+      <div class="style-section">
+        <h4 class="style-title">{{ style.name }} Style</h4>
+        
+        <div class="color-grid">
+          @for (variant of standardVariants; track variant) {
+            @let cbSignal = getChecked(style.name, variant);
+            <div class="color-item">
+              <span class="variant-name">{{ variant }}</span>
+              <alf-checkbox 
+                [(checked)]="cbSignal" 
+                [label]="style.name" 
+                [variant]="variant"
+                [checkboxStyle]="style.value">
+              </alf-checkbox>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="demo-card">
+    <h3>Outlined Visual Variants</h3>
+    
+    @for (style of styles; track style.value) {
+      <div class="style-section">
+        <h4 class="style-title">{{ style.name }} Style</h4>
+        
+        <div class="color-grid">
+          @for (variant of outlinedVariants; track variant) {
+            @let cbSignal = getChecked(style.name, variant);
+            <div class="color-item">
+              <span class="variant-name">{{ variant }}</span>
+              <alf-checkbox 
+                [(checked)]="cbSignal" 
+                [label]="style.name" 
+                [variant]="variant"
+                [checkboxStyle]="style.value">
+              </alf-checkbox>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="demo-card">
+    <h3>Solid Visual Variants</h3>
+
+    
+    @for (style of styles; track style.value) {
+      <div class="style-section">
+        <h4 class="style-title">{{ style.name }} Style</h4>
+        
+        <div class="color-grid">
+          @for (variant of solidVariants; track variant) {
+            @let cbSignal = getChecked(style.name, variant);
+            <div class="color-item">
+              <span class="variant-name">{{ variant }}</span>
+              <alf-checkbox 
+                [(checked)]="cbSignal" 
+                [label]="style.name" 
+                [variant]="variant"
+                [checkboxStyle]="style.value">
+              </alf-checkbox>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>
+

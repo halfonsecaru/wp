@@ -73,6 +73,7 @@ export const getAlfCheckboxDefaultConfig = (variantName?: string | AlfColorVaria
   const isOutline = normalized.startsWith('Outline');
   const isSolid = normalized.startsWith('Solid');
   const isCrystal = normalized.startsWith('Crystal');
+  const isStandard = normalized.startsWith('Standard');
 
   let variantKey = normalized;
   let visualType = AlfButtonVisualTypeEnum.Text;
@@ -86,7 +87,11 @@ export const getAlfCheckboxDefaultConfig = (variantName?: string | AlfColorVaria
   } else if (isCrystal) {
     variantKey = normalized.replace('Crystal', '');
     visualType = AlfButtonVisualTypeEnum.Crystal;
+  } else if (isStandard) {
+    variantKey = normalized.replace('Standard', '');
+    visualType = AlfButtonVisualTypeEnum.Text;
   }
+
   
   const colorVariant = (AlfColorVariantEnum as any)[variantKey] || AlfColorVariantEnum.Primary;
 
@@ -104,7 +109,7 @@ export const getAlfCheckboxDefaultConfig = (variantName?: string | AlfColorVaria
   }
 
   // Colores para variantes Solid
-  let backgroundColor: AlfColorEnum = AlfColorEnum.White;
+  let backgroundColor: AlfColorEnum = isStandard ? AlfColorEnum.Transparent : AlfColorEnum.White;
   let borderColor: AlfColorEnum = AlfColorEnum.Gray300;
 
   if (isSolid) {
@@ -125,11 +130,14 @@ export const getAlfCheckboxDefaultConfig = (variantName?: string | AlfColorVaria
     visualType,
     border: {
       default: {
-        borderWidth: AlfPxEnum.Px1,
+        borderWidth: isStandard ? AlfPxEnum.None : AlfPxEnum.Px1,
         borderStyle: AlfBorderStyleEnum.Solid,
         borderColor: isOutline ? variantColor : (isSolid ? borderColor : (isCrystal ? AlfColorEnum.White : AlfColorEnum.Gray300)),
         borderRadius: AlfRadiusEnum.Sm
       },
+
+
+
       hover: {
         borderColor: variantColor
       }

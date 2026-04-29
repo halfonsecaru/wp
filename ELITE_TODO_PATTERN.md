@@ -99,7 +99,9 @@ Antes de crear el archivo TODO del componente, la IA **DEBE** ejecutar estos pas
 ### 📄 FASE 5: Calidad, Integración y Documentación
 - [ ] **Unit Tests**: Crear suite en `.spec.ts` validando estados y accesibilidad.
 - [ ] **Demo Viewer**: Añadir una página de ejemplos en la app de demo con todas las variantes (Outline, Solid, Crystal) y casos de uso reales.
+  - [ ] **No Demo Hover**: Ensure demo containers (cards, sections, items) do NOT have hover effects, shadows, or transforms on hover. Focus the interactivity ONLY on the component itself.
 - [ ] **Documentación Triple**:
+
   - `README.english.md` (Manual de uso, sin emojis).
   - `README.spanish.md` (Manual de uso, sin emojis).
   - `ia_usage.md` (Guía técnica para IAs en inglés).

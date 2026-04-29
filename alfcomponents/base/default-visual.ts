@@ -208,7 +208,17 @@ const PREDEFINED_MAP: Readonly<Record<AlfVisualPredefinedEnum, { kind: VisualKin
   [AlfVisualPredefinedEnum.OutlinedLight]: { kind: 'outlined', variant: AlfColorVariantEnum.Light },
   [AlfVisualPredefinedEnum.OutlinedDark]: { kind: 'outlined', variant: AlfColorVariantEnum.Dark },
   [AlfVisualPredefinedEnum.OutlinedDefault]: { kind: 'outlined', variant: AlfColorVariantEnum.Default },
+  [AlfVisualPredefinedEnum.StandardPrimary]: { kind: 'text', variant: AlfColorVariantEnum.Primary },
+  [AlfVisualPredefinedEnum.StandardSecondary]: { kind: 'text', variant: AlfColorVariantEnum.Secondary },
+  [AlfVisualPredefinedEnum.StandardSuccess]: { kind: 'text', variant: AlfColorVariantEnum.Success },
+  [AlfVisualPredefinedEnum.StandardDanger]: { kind: 'text', variant: AlfColorVariantEnum.Danger },
+  [AlfVisualPredefinedEnum.StandardWarning]: { kind: 'text', variant: AlfColorVariantEnum.Warning },
+  [AlfVisualPredefinedEnum.StandardInfo]: { kind: 'text', variant: AlfColorVariantEnum.Info },
+  [AlfVisualPredefinedEnum.StandardLight]: { kind: 'text', variant: AlfColorVariantEnum.Light },
+  [AlfVisualPredefinedEnum.StandardDark]: { kind: 'text', variant: AlfColorVariantEnum.Dark },
+  [AlfVisualPredefinedEnum.StandardDefault]: { kind: 'text', variant: AlfColorVariantEnum.Default },
 };
+
 
 const resolveVisualKind = (predefined?: AlfVisualPredefinedEnum, visualType?: AlfButtonVisualTypeEnum): VisualKind => {
   if (predefined) {
