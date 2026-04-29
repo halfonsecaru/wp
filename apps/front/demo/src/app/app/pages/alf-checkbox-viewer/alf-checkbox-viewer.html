@@ -1,0 +1,84 @@
+<div class="demo-container">
+  <h1 class="demo-title">💎 AlfCheckbox Elite Showcase</h1>
+  
+  <section class="demo-section">
+    <h2 class="section-title">Image Reference Match</h2>
+    <div class="demo-card" style="max-width: 300px;">
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <alf-checkbox [(checked)]="checked1" label="Checkbox 1" variant="SolidPrimary"></alf-checkbox>
+        <alf-checkbox [(indeterminate)]="indeterminate2" label="Checkbox 2" variant="SolidPrimary"></alf-checkbox>
+        <alf-checkbox [(checked)]="checked3" label="Checkbox 3"></alf-checkbox>
+        <alf-checkbox [(checked)]="checked4" label="Checkbox 4"></alf-checkbox>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2 class="section-title">Estilos Visuales (checkboxStyle)</h2>
+    <div class="demo-grid">
+      <div class="demo-card">
+        <h3>Elegant (Neumorphic)</h3>
+        <alf-checkbox [(checked)]="checkedElegant" label="Elegant Design" checkboxStyle="elegant"></alf-checkbox>
+        <p class="demo-hint">Default premium circular design with soft shadows.</p>
+      </div>
+      <div class="demo-card">
+        <h3>Standard (Material)</h3>
+        <alf-checkbox [(checked)]="checkedStandard" label="Standard Design" checkboxStyle="standard"></alf-checkbox>
+        <p class="demo-hint">Classic square design with solid fill and animations.</p>
+      </div>
+      <div class="demo-card">
+        <h3>Moving (Expansion)</h3>
+        <alf-checkbox [(checked)]="checkedMoving" label="Moving Design" checkboxStyle="moving"></alf-checkbox>
+        <p class="demo-hint">Interactive expansion that wraps the whole label.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2 class="section-title">Variantes de Color (via Factory)</h2>
+    <div class="demo-flex">
+      <alf-checkbox variant="SolidPrimary" label="Solid Primary" [checked]="true"></alf-checkbox>
+      <alf-checkbox variant="SolidSuccess" label="Solid Success" [checked]="true"></alf-checkbox>
+      <alf-checkbox variant="SolidDanger" label="Solid Danger" [checked]="true"></alf-checkbox>
+      <alf-checkbox variant="SolidWarning" label="Solid Warning" [checked]="true"></alf-checkbox>
+      <alf-checkbox variant="OutlineInfo" label="Outline Info" [checked]="true"></alf-checkbox>
+      <alf-checkbox variant="CrystalPrimary" label="Crystal Primary" [checked]="true"></alf-checkbox>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2 class="section-title">Tamaños (size)</h2>
+    <div class="demo-flex demo-flex--align-center">
+      <alf-checkbox size="sm" label="Small (sm)"></alf-checkbox>
+      <alf-checkbox size="md" label="Medium (md)"></alf-checkbox>
+      <alf-checkbox size="lg" label="Large (lg)"></alf-checkbox>
+      <alf-checkbox size="xl" label="Extra Large (xl)"></alf-checkbox>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2 class="section-title">Estados y Etiquetas</h2>
+    <div class="demo-grid">
+      <div class="demo-card">
+        <h3>Indeterminado</h3>
+        <alf-checkbox [(indeterminate)]="indeterminate2" label="Estado Parcial"></alf-checkbox>
+      </div>
+      <div class="demo-card">
+        <h3>Etiqueta a la Izquierda</h3>
+        <alf-checkbox [config]="{ labelPosition: 'before' }" label="Label Before"></alf-checkbox>
+      </div>
+      <div class="demo-card">
+        <h3>Deshabilitado</h3>
+        <div style="display: flex; gap: 1rem; flex-direction: column;">
+          <alf-checkbox [disabled]="true" label="Disabled Off"></alf-checkbox>
+          <alf-checkbox [disabled]="true" [checked]="true" label="Disabled On"></alf-checkbox>
+        </div>
+      </div>
+      <div class="demo-card">
+        <h3>Mensajes</h3>
+        <alf-checkbox [config]="{ helperText: 'Información adicional debajo' }" label="Con Ayuda"></alf-checkbox>
+        <alf-checkbox [config]="{ error: 'Debe aceptar para continuar' }" label="Con Error" style="margin-top: 1rem; display: block;"></alf-checkbox>
+      </div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,112 @@
+@let tooltip = tooltipComputed();
+@let ripple = rippleComputed();
+@let backgroundsStyle = createBackgroundsStyle();
+@let cursor = cursorComputed();
+@let isComponentDisabled = isDisabled();
+@let idCheckbox = internalId;
+@let labelText = labelComputed();
+@let labelPos = labelPositionComputed();
+@let aria = ariaComputed();
+@let borderStyle = createBorderStyle();
+@let displayAndLayoutStyle = createDisplayAndLayoutStyle();
+@let marginStyle = createMarginStyle();
+@let outlineStyle = createOutlineStyle();
+@let paddingStyle = createPaddingStyle();
+@let shadowsStyle = createShadowsStyle();
+@let typographyStyle = createTypographyStyle();
+@let textStyle = createTextStyle();
+@let transformStyle = createTransformStyle();
+@let animationsStyle = createAnimationsStyle();
+@let animationsClass = animationsClassComputed();
+@let customClass = customClassComputed();
+@let customStyle = customStyleComputed();
+
+@let isChecked = checked();
+@let isIndeterminate = indeterminate();
+@let size = sizeComputed();
+@let styleVariant = checkboxStyleComputed();
+@let icon = displayIcon();
+
+<div 
+  class="alf-cb"
+  [class]="'alf-cb--' + styleVariant + ' alf-cb--' + size + ' ' + customClass + ' ' + animationsClass"
+  [class.alf-cb--checked]="isChecked"
+  [class.alf-cb--indeterminate]="isIndeterminate"
+  [class.alf-cb--disabled]="isComponentDisabled"
+  [style]="
+    backgroundsStyle + 
+    borderStyle + 
+    displayAndLayoutStyle + 
+    marginStyle + 
+    outlineStyle + 
+    paddingStyle + 
+    shadowsStyle + 
+    typographyStyle + 
+    textStyle + 
+    transformStyle +
+    animationsStyle +
+    customStyle
+  "
+>
+  <label 
+    class="alf-cb-wrapper"
+    [class.alf-cb-wrapper--label-before]="labelPos === 'before'"
+    [attr.for]="idCheckbox"
+    [style.cursor]="isComponentDisabled ? 'not-allowed' : cursor"
+  >
+    <input 
+      type="checkbox"
+      hidden
+      [id]="idCheckbox"
+      [disabled]="isComponentDisabled"
+      [checked]="isChecked"
+      [indeterminate]="isIndeterminate"
+      (keydown)="onInputKeydown($event)"
+      [attr.aria-checked]="isIndeterminate ? 'mixed' : isChecked"
+      [attr.aria-label]="aria?.ariaLabel || labelText"
+      [attr.aria-describedby]="aria?.ariaDescribedBy || (idCheckbox + '-description')"
+    >
+
+    <div 
+      class="alf-cb-box"
+      [alfRipple]="ripple"
+      [alfTooltipText]="tooltip"
+    >
+      @if (isIndeterminate || (isChecked && resolvedConfig()?.iconSelected)) {
+        <span class="alf-cb-icon">{{ icon }}</span>
+      } @else if (isChecked) {
+        @switch (styleVariant) {
+          @case ('moving') {
+            <!-- Pure CSS expansion, no SVG -->
+          }
+          @case ('standard') {
+            <svg class="std-svg" viewBox="0 0 24 24">
+              <path fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+            </svg>
+          }
+          @default {
+            <svg class="elegant-svg" viewBox="0 0 24 24">
+              <path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+            </svg>
+          }
+        }
+      }
+    </div>
+
+    @if (labelText) {
+      <span class="alf-cb-label-text">
+        {{ labelText }}
+      </span>
+    }
+  </label>
+</div>
+
+@if (resolvedConfig()?.helperText || resolvedConfig()?.error) {
+  <div [id]="idCheckbox + '-description'" class="alf-cb-description">
+    @if (resolvedConfig()?.error) {
+      <span class="alf-cb-error">{{ resolvedConfig()?.error }}</span>
+    } @else {
+      <span class="alf-cb-helper">{{ resolvedConfig()?.helperText }}</span>
+    }
+  </div>
+}

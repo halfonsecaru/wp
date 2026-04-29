@@ -3,6 +3,9 @@ export * from './simple/alf-buttons/alf-buttons';
 export * from './simple/alf-buttons/interfaces/alf-button.interface';
 export * from './simple/alf-buttons/alf-button-predefined';
 export * from './simple/alf-buttons/enums/defaultButtonKeys.interface';
+export * from './simple/alf-checkbox/alf-checkbox';
+export * from './simple/alf-checkbox/interfaces/alf-checkbox.interface';
+export * from './simple/alf-checkbox/predefined/alf-checkbox.predefined';
 
 // Standar Components
 export * from './standar/alf-code/alf-code';

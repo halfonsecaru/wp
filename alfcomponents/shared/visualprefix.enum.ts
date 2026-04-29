@@ -5,6 +5,7 @@ export enum visualprefixEnum {
     TabsContent = '--alf-tab-content',
     TabsNavigation = '--alf-tabs-navigation',
     TabsSlider = '--alf-tabs-slider',
+    Checkbox = '--alf-cb',
 
     // Directivas
     Ripple = '--alf-ripple',
