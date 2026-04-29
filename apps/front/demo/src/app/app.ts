@@ -38,6 +38,31 @@ export class App {
     AlfVisualPredefinedEnum.StandardDefault,
   ];
 
+  public readonly crystalVariants = [
+    AlfVisualPredefinedEnum.CrystalPrimary,
+    AlfVisualPredefinedEnum.CrystalSecondary,
+    AlfVisualPredefinedEnum.CrystalSuccess,
+    AlfVisualPredefinedEnum.CrystalDanger,
+    AlfVisualPredefinedEnum.CrystalWarning,
+    AlfVisualPredefinedEnum.CrystalInfo,
+    AlfVisualPredefinedEnum.CrystalLight,
+    AlfVisualPredefinedEnum.CrystalDark,
+    AlfVisualPredefinedEnum.CrystalDefault,
+  ];
+
+  public readonly softVariants = [
+    AlfVisualPredefinedEnum.SoftPrimary,
+    AlfVisualPredefinedEnum.SoftSecondary,
+    AlfVisualPredefinedEnum.SoftSuccess,
+    AlfVisualPredefinedEnum.SoftDanger,
+    AlfVisualPredefinedEnum.SoftWarning,
+    AlfVisualPredefinedEnum.SoftInfo,
+    AlfVisualPredefinedEnum.SoftLight,
+    AlfVisualPredefinedEnum.SoftDark,
+    AlfVisualPredefinedEnum.SoftDefault,
+  ];
+
+
 
   public readonly outlinedVariants = [
     AlfVisualPredefinedEnum.OutlinedPrimary,

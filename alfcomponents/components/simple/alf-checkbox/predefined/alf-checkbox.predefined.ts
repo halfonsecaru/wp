@@ -29,7 +29,8 @@ export const ALF_CHECKBOX_DEFAULT: AlfCheckboxInterface = {
       borderWidth: AlfPxEnum.Px1,
       borderStyle: AlfBorderStyleEnum.Solid,
       borderColor: AlfColorEnum.Gray500,
-      borderRadius: AlfRadiusEnum.Sm
+      borderRadius: AlfRadiusEnum.Md
+
     },
     hover: {
       borderColor: AlfColorEnum.Primary
@@ -70,16 +71,17 @@ export const getAlfCheckboxDefaultConfig = (variantName?: string | AlfColorVaria
   const normalized = variantName.charAt(0).toUpperCase() + 
                      variantName.slice(1).replace(/-([a-z])/g, (g) => g[1].toUpperCase());
 
-  const isOutline = normalized.startsWith('Outline');
+  const isOutline = normalized.startsWith('Outlined');
   const isSolid = normalized.startsWith('Solid');
   const isCrystal = normalized.startsWith('Crystal');
   const isStandard = normalized.startsWith('Standard');
+  const isSoft = normalized.startsWith('Soft');
 
   let variantKey = normalized;
   let visualType = AlfButtonVisualTypeEnum.Text;
 
   if (isOutline) {
-    variantKey = normalized.replace('Outline', '');
+    variantKey = normalized.replace('Outlined', '');
     visualType = AlfButtonVisualTypeEnum.Outlined;
   } else if (isSolid) {
     variantKey = normalized.replace('Solid', '');
@@ -90,8 +92,10 @@ export const getAlfCheckboxDefaultConfig = (variantName?: string | AlfColorVaria
   } else if (isStandard) {
     variantKey = normalized.replace('Standard', '');
     visualType = AlfButtonVisualTypeEnum.Text;
+  } else if (isSoft) {
+    variantKey = normalized.replace('Soft', '');
+    visualType = AlfButtonVisualTypeEnum.Soft;
   }
-
   
   const colorVariant = (AlfColorVariantEnum as any)[variantKey] || AlfColorVariantEnum.Primary;
 
@@ -99,6 +103,7 @@ export const getAlfCheckboxDefaultConfig = (variantName?: string | AlfColorVaria
   let variantColor: AlfColorEnum = AlfColorEnum.Primary;
   switch (variantKey.toLowerCase()) {
     case 'primary': variantColor = AlfColorEnum.Primary; break;
+    case 'secondary': variantColor = AlfColorEnum.Secondary; break;
     case 'success': variantColor = AlfColorEnum.Success; break;
     case 'danger': variantColor = AlfColorEnum.Danger; break;
     case 'warning': variantColor = AlfColorEnum.Warning; break;
@@ -108,21 +113,60 @@ export const getAlfCheckboxDefaultConfig = (variantName?: string | AlfColorVaria
     default: variantColor = AlfColorEnum.Primary;
   }
 
-  // Colores para variantes Solid
-  let backgroundColor: AlfColorEnum = isStandard ? AlfColorEnum.Transparent : AlfColorEnum.White;
+  // Colores para variantes Solid y Soft
+  let backgroundColor: AlfColorEnum = isStandard || isCrystal || isSoft ? AlfColorEnum.Transparent : AlfColorEnum.White;
   let borderColor: AlfColorEnum = AlfColorEnum.Gray300;
 
-  if (isSolid) {
+  if (isSolid || isSoft) {
     switch (variantKey.toLowerCase()) {
-      case 'primary': backgroundColor = AlfColorEnum.Blue050; borderColor = AlfColorEnum.Blue200; variantColor = AlfColorEnum.Blue600; break;
-      case 'success': backgroundColor = AlfColorEnum.Green050; borderColor = AlfColorEnum.Green200; variantColor = AlfColorEnum.Green600; break;
-      case 'danger': backgroundColor = AlfColorEnum.Red050; borderColor = AlfColorEnum.Red200; variantColor = AlfColorEnum.Red600; break;
-      case 'warning': backgroundColor = AlfColorEnum.Yellow050; borderColor = AlfColorEnum.Yellow200; variantColor = AlfColorEnum.Yellow700; break;
-      case 'info': backgroundColor = AlfColorEnum.Cyan050; borderColor = AlfColorEnum.Cyan200; variantColor = AlfColorEnum.Cyan600; break;
-      case 'dark': backgroundColor = AlfColorEnum.Gray100; borderColor = AlfColorEnum.Gray300; variantColor = AlfColorEnum.Gray900; break;
-      case 'light': backgroundColor = AlfColorEnum.Gray050; borderColor = AlfColorEnum.Gray200; variantColor = AlfColorEnum.Gray500; break;
+      case 'primary': 
+        backgroundColor = isSoft ? 'color-mix(in srgb, #0d6efd, transparent 90%)' as AlfColorEnum : AlfColorEnum.Blue050; 
+        borderColor = isSoft ? AlfColorEnum.Blue200 : AlfColorEnum.Blue200; 
+        variantColor = isSoft ? AlfColorEnum.Blue600 : AlfColorEnum.Blue600; 
+        break;
+      case 'secondary': 
+        backgroundColor = isSoft ? 'color-mix(in srgb, #6c757d, transparent 90%)' as AlfColorEnum : AlfColorEnum.Gray050; 
+        borderColor = isSoft ? AlfColorEnum.Gray200 : AlfColorEnum.Gray200; 
+        variantColor = isSoft ? AlfColorEnum.Gray600 : AlfColorEnum.Gray600; 
+        break;
+      case 'success': 
+        backgroundColor = isSoft ? 'color-mix(in srgb, #198754, transparent 90%)' as AlfColorEnum : AlfColorEnum.Green050; 
+        borderColor = isSoft ? AlfColorEnum.Green200 : AlfColorEnum.Green200; 
+        variantColor = isSoft ? AlfColorEnum.Green600 : AlfColorEnum.Green600; 
+        break;
+      case 'danger': 
+        backgroundColor = isSoft ? 'color-mix(in srgb, #dc3545, transparent 90%)' as AlfColorEnum : AlfColorEnum.Red050; 
+        borderColor = isSoft ? AlfColorEnum.Red200 : AlfColorEnum.Red200; 
+        variantColor = isSoft ? AlfColorEnum.Red600 : AlfColorEnum.Red600; 
+        break;
+      case 'warning': 
+        backgroundColor = isSoft ? 'color-mix(in srgb, #ffc107, transparent 90%)' as AlfColorEnum : AlfColorEnum.Yellow050; 
+        borderColor = isSoft ? AlfColorEnum.Yellow200 : AlfColorEnum.Yellow200; 
+        variantColor = isSoft ? AlfColorEnum.Yellow700 : AlfColorEnum.Yellow700; 
+        break;
+      case 'info': 
+        backgroundColor = isSoft ? 'color-mix(in srgb, #0dcaf0, transparent 90%)' as AlfColorEnum : AlfColorEnum.Cyan050; 
+        borderColor = isSoft ? AlfColorEnum.Cyan200 : AlfColorEnum.Cyan200; 
+        variantColor = isSoft ? AlfColorEnum.Cyan600 : AlfColorEnum.Cyan600; 
+        break;
+      case 'dark': 
+        backgroundColor = isSoft ? 'color-mix(in srgb, #212529, transparent 90%)' as AlfColorEnum : AlfColorEnum.Gray100; 
+        borderColor = isSoft ? AlfColorEnum.Gray300 : AlfColorEnum.Gray300; 
+        variantColor = isSoft ? AlfColorEnum.Gray900 : AlfColorEnum.Gray900; 
+        break;
+      case 'light': 
+        backgroundColor = isSoft ? 'color-mix(in srgb, #f8f9fa, transparent 90%)' as AlfColorEnum : AlfColorEnum.Gray050; 
+        borderColor = isSoft ? AlfColorEnum.Gray200 : AlfColorEnum.Gray200; 
+        variantColor = isSoft ? AlfColorEnum.Gray500 : AlfColorEnum.Gray500; 
+        break;
     }
   }
+
+  if (isCrystal) {
+    borderColor = 'color-mix(in srgb, white, transparent 70%)' as AlfColorEnum;
+    backgroundColor = 'color-mix(in srgb, white, transparent 90%)' as AlfColorEnum;
+  }
+
 
   return {
     ...defaultConfig,
@@ -133,8 +177,9 @@ export const getAlfCheckboxDefaultConfig = (variantName?: string | AlfColorVaria
         borderWidth: isStandard ? AlfPxEnum.None : AlfPxEnum.Px1,
         borderStyle: AlfBorderStyleEnum.Solid,
         borderColor: isOutline ? variantColor : (isSolid ? borderColor : (isCrystal ? AlfColorEnum.White : AlfColorEnum.Gray300)),
-        borderRadius: AlfRadiusEnum.Sm
+        borderRadius: AlfRadiusEnum.Md
       },
+
 
 
 

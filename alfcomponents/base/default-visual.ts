@@ -217,7 +217,26 @@ const PREDEFINED_MAP: Readonly<Record<AlfVisualPredefinedEnum, { kind: VisualKin
   [AlfVisualPredefinedEnum.StandardLight]: { kind: 'text', variant: AlfColorVariantEnum.Light },
   [AlfVisualPredefinedEnum.StandardDark]: { kind: 'text', variant: AlfColorVariantEnum.Dark },
   [AlfVisualPredefinedEnum.StandardDefault]: { kind: 'text', variant: AlfColorVariantEnum.Default },
+  [AlfVisualPredefinedEnum.CrystalPrimary]: { kind: 'crystal', variant: AlfColorVariantEnum.Primary },
+  [AlfVisualPredefinedEnum.CrystalSecondary]: { kind: 'crystal', variant: AlfColorVariantEnum.Secondary },
+  [AlfVisualPredefinedEnum.CrystalSuccess]: { kind: 'crystal', variant: AlfColorVariantEnum.Success },
+  [AlfVisualPredefinedEnum.CrystalDanger]: { kind: 'crystal', variant: AlfColorVariantEnum.Danger },
+  [AlfVisualPredefinedEnum.CrystalWarning]: { kind: 'crystal', variant: AlfColorVariantEnum.Warning },
+  [AlfVisualPredefinedEnum.CrystalInfo]: { kind: 'crystal', variant: AlfColorVariantEnum.Info },
+  [AlfVisualPredefinedEnum.CrystalLight]: { kind: 'crystal', variant: AlfColorVariantEnum.Light },
+  [AlfVisualPredefinedEnum.CrystalDark]: { kind: 'crystal', variant: AlfColorVariantEnum.Dark },
+  [AlfVisualPredefinedEnum.CrystalDefault]: { kind: 'crystal', variant: AlfColorVariantEnum.Default },
+  [AlfVisualPredefinedEnum.SoftPrimary]: { kind: 'soft', variant: AlfColorVariantEnum.Primary },
+  [AlfVisualPredefinedEnum.SoftSecondary]: { kind: 'soft', variant: AlfColorVariantEnum.Secondary },
+  [AlfVisualPredefinedEnum.SoftSuccess]: { kind: 'soft', variant: AlfColorVariantEnum.Success },
+  [AlfVisualPredefinedEnum.SoftDanger]: { kind: 'soft', variant: AlfColorVariantEnum.Danger },
+  [AlfVisualPredefinedEnum.SoftWarning]: { kind: 'soft', variant: AlfColorVariantEnum.Warning },
+  [AlfVisualPredefinedEnum.SoftInfo]: { kind: 'soft', variant: AlfColorVariantEnum.Info },
+  [AlfVisualPredefinedEnum.SoftLight]: { kind: 'soft', variant: AlfColorVariantEnum.Light },
+  [AlfVisualPredefinedEnum.SoftDark]: { kind: 'soft', variant: AlfColorVariantEnum.Dark },
+  [AlfVisualPredefinedEnum.SoftDefault]: { kind: 'soft', variant: AlfColorVariantEnum.Default },
 };
+
 
 
 const resolveVisualKind = (predefined?: AlfVisualPredefinedEnum, visualType?: AlfButtonVisualTypeEnum): VisualKind => {
