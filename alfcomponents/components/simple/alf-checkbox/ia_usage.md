@@ -5,9 +5,11 @@ AlfCheckbox is an Elite component designed for high-performance and premium aest
 ## Implementation Details
 
 - **Inheritance**: Extends `AlfBaseConfiguration<AlfCheckboxInterface>`.
-- **State Management**: Uses Angular Signals `model()` for two-way binding.
+- **State Management**: Uses Angular Signals `model()` for two-way binding (`checked`, `indeterminate`).
 - **Visual Engine**: Uses `visualPrefix = '--alf-cb'` to map CSS variables.
-- **Variants**: Supports `Solid`, `Outline`, and `Crystal` prefixes in the `variant` input.
+- **Variants**: Supports `Solid`, `Outlined`, `Standard`, `Soft`, and `Crystal` prefixes in the `variant` input.
+- **Validation**: Built-in support for `helperText` and `error` messages.
+
 
 ## Style Variants (checkboxStyle)
 

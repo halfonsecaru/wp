@@ -4,11 +4,11 @@ Componente de checkbox élite para la librería AlfComponents. Ofrece un diseño
 
 ## Características
 
-- 3 Estilos Visuales: Elegant (Neumórfico), Standard (Material), Moving (Expansivo).
+- 3 Estilos de Interacción: Elegant (Neumórfico), Standard (Limpio), Moving (Expansivo).
+- 5 Familias Visuales: Solid, Outlined, Standard, Soft, Crystal.
 - Soporte para Two-way binding (`checked`, `indeterminate`).
-- Sistema de variantes predefinidas (Solid, Outline, Crystal).
-- Soporte multilingüe integrado.
-- Accesibilidad mejorada (WAI-ARIA).
+- Sistema de validación (helperText, error).
+- Soporte multilingüe y accesibilidad WAI-ARIA.
 
 ## Uso Básico
 
@@ -34,8 +34,16 @@ Componente de checkbox élite para la librería AlfComponents. Ofrece un diseño
 | `size` | `AlfSizeEnum` | Tamaño: Sm, Md, Lg, Xl |
 | `disabled` | `boolean` | Deshabilita el componente |
 
-## Variantes Visuales
+## Estilos de Interacción
 
 1. **Elegant**: Diseño circular con efectos de profundidad neumórfica.
 2. **Standard**: Diseño cuadrado tradicional con transiciones suaves.
 3. **Moving**: El checkbox se expande para envolver el texto al ser seleccionado.
+
+## Familias de Variantes
+
+- **Solid**: Fondo relleno y borde sólido.
+- **Outlined**: Borde sólido y fondo transparente.
+- **Standard**: Sin bordes, estilo minimalista.
+- **Soft**: Fondo pastel muy suave sin bordes.
+- **Crystal**: Efecto traslúcido tipo cristal sin bordes.

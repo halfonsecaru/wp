@@ -14,7 +14,8 @@
             <div class="color-item">
               <span class="variant-name">{{ variant }}</span>
               <alf-checkbox 
-                [(checked)]="cbSignal" 
+                [checked]="cbSignal()"
+                (checkedChange)="cbSignal.set($event)"
                 [label]="style.name" 
                 [variant]="variant"
                 [checkboxStyle]="style.value">
@@ -39,7 +40,8 @@
             <div class="color-item">
               <span class="variant-name">{{ variant }}</span>
               <alf-checkbox 
-                [(checked)]="cbSignal" 
+                [checked]="cbSignal()"
+                (checkedChange)="cbSignal.set($event)"
                 [label]="style.name" 
                 [variant]="variant"
                 [checkboxStyle]="style.value">
@@ -64,7 +66,8 @@
             <div class="color-item">
               <span class="variant-name">{{ variant }}</span>
               <alf-checkbox 
-                [(checked)]="cbSignal" 
+                [checked]="cbSignal()"
+                (checkedChange)="cbSignal.set($event)"
                 [label]="style.name" 
                 [variant]="variant"
                 [checkboxStyle]="style.value">
@@ -89,7 +92,8 @@
             <div class="color-item">
               <span class="variant-name">{{ variant }}</span>
               <alf-checkbox 
-                [(checked)]="cbSignal" 
+                [checked]="cbSignal()"
+                (checkedChange)="cbSignal.set($event)"
                 [label]="style.name" 
                 [variant]="variant"
                 [checkboxStyle]="style.value">
@@ -104,8 +108,6 @@
   <div class="demo-card">
     <h3>Solid Visual Variants</h3>
 
-
-    
     @for (style of styles; track style.value) {
       <div class="style-section">
         <h4 class="style-title">{{ style.name }} Style</h4>
@@ -116,7 +118,8 @@
             <div class="color-item">
               <span class="variant-name">{{ variant }}</span>
               <alf-checkbox 
-                [(checked)]="cbSignal" 
+                [checked]="cbSignal()"
+                (checkedChange)="cbSignal.set($event)"
                 [label]="style.name" 
                 [variant]="variant"
                 [checkboxStyle]="style.value">
@@ -127,5 +130,58 @@
       </div>
     }
   </div>
+
+  <div class="demo-card">
+    <h3>States & Validation</h3>
+    
+    <div class="color-grid">
+      <div class="color-item">
+        <span class="variant-name">Disabled State</span>
+        <alf-checkbox 
+          [label]="'Disabled'" 
+          [variant]="AlfVisualPredefinedEnum.SolidPrimary"
+          [config]="{ disabled: true }">
+        </alf-checkbox>
+      </div>
+
+      <div class="color-item">
+        @let helperChecked = getChecked('state', 'helper');
+        <span class="variant-name">Helper Text</span>
+        <alf-checkbox 
+          [checked]="helperChecked()"
+          (checkedChange)="helperChecked.set($event)"
+          [label]="'Accept Terms'" 
+          [variant]="AlfVisualPredefinedEnum.OutlinedSuccess"
+          [config]="{ helperText: 'We protect your data with elite security.' }">
+        </alf-checkbox>
+      </div>
+
+      <div class="color-item">
+        @let errorChecked = getChecked('state', 'error');
+        <span class="variant-name">Error State</span>
+        <alf-checkbox 
+          [checked]="errorChecked()"
+          (checkedChange)="errorChecked.set($event)"
+          [label]="'Required field'" 
+          [variant]="AlfVisualPredefinedEnum.StandardDanger"
+          [config]="{ error: 'You must accept the terms to continue.' }">
+        </alf-checkbox>
+      </div>
+
+      <div class="color-item">
+        @let indeterminateState = getChecked('state', 'indet');
+        <span class="variant-name">Indeterminate</span>
+        <alf-checkbox 
+          [checked]="indeterminateState()"
+          (checkedChange)="indeterminateState.set($event)"
+          [indeterminate]="true"
+          [label]="'Mixed selection'" 
+          [variant]="AlfVisualPredefinedEnum.SoftInfo">
+        </alf-checkbox>
+      </div>
+    </div>
+  </div>
+
 </div>
+
 
