@@ -44,6 +44,7 @@ export * from './alf-percentage.enum';
 export * from './alf-pointer-events.enum';
 export * from './alf-position.enum';
 export * from './alf-px.enum';
+export * from './alf-radio-button-variant.enum';
 export * from './alf-radius.enum';
 export * from './alf-rem.enum';
 export * from './alf-resize.enum';

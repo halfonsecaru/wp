@@ -122,5 +122,8 @@
   "vsicons.presets.angular": true,
   "[markdown]": {
     "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "vscode.css-language-features"
   }
 }

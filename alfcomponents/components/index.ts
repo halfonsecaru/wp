@@ -6,6 +6,9 @@ export * from './simple/alf-buttons/enums/defaultButtonKeys.interface';
 export * from './simple/alf-checkbox/alf-checkbox';
 export * from './simple/alf-checkbox/interfaces/alf-checkbox.interface';
 export * from './simple/alf-checkbox/predefined/alf-checkbox.predefined';
+export * from './simple/alf-radio-button/alf-radio-button';
+export * from './simple/alf-radio-button/interfaces/alf-radio-button.interface';
+export * from './simple/alf-radio-button/predefined/alf-radio-button.predefined';
 
 // Standar Components
 export * from './standar/alf-code/alf-code';

@@ -1,0 +1,106 @@
+@let tooltip = tooltipComputed();
+@let ripple = rippleComputed();
+@let backgroundsStyle = createBackgroundsStyle();
+@let cursor = cursorComputed();
+@let isComponentDisabled = isDisabled();
+@let idRadio = internalId;
+
+@let config = resolvedConfig();
+@let labelText = config.label;
+@let labelPos = config.labelPosition || 'after';
+@let isChecked = checked();
+@let size = config.size || 'md';
+@let styleVariant = config.radioButtonStyle || 'elegant';
+@let radioName = config.name;
+
+@let aria = ariaComputed();
+@let borderStyle = createBorderStyle();
+@let displayAndLayoutStyle = createDisplayAndLayoutStyle();
+@let marginStyle = createMarginStyle();
+@let outlineStyle = createOutlineStyle();
+@let paddingStyle = createPaddingStyle();
+@let shadowsStyle = createShadowsStyle();
+@let typographyStyle = createTypographyStyle();
+@let textStyle = createTextStyle();
+@let transformStyle = createTransformStyle();
+@let animationsStyle = createAnimationsStyle();
+@let animationsClass = animationsClassComputed();
+@let customClass = customClassComputed();
+@let customStyle = customStyleComputed();
+
+@let isHovered = hovered();
+@let isFocused = focused();
+
+<div 
+  class="alf-rb"
+  [class]="'alf-rb--' + styleVariant + ' alf-rb--' + size + ' ' + customClass + ' ' + animationsClass"
+  [class.alf-rb--checked]="isChecked"
+  [class.alf-rb--disabled]="isComponentDisabled"
+  [class.alf-rb--hovered]="isHovered"
+  [class.alf-rb--focused]="isFocused"
+  (mouseenter)="hovered.set(true)"
+  (mouseleave)="hovered.set(false)"
+  [style]="
+    backgroundsStyle + 
+    borderStyle + 
+    displayAndLayoutStyle + 
+    marginStyle + 
+    outlineStyle + 
+    paddingStyle + 
+    shadowsStyle + 
+    typographyStyle + 
+    textStyle + 
+    transformStyle +
+    animationsStyle +
+    customStyle
+  "
+>
+  <label 
+    class="alf-rb-wrapper"
+    [class.alf-rb-wrapper--label-before]="labelPos === 'before'"
+    [attr.for]="idRadio"
+    [style.cursor]="isComponentDisabled ? 'not-allowed' : cursor"
+  >
+    <input 
+      type="radio"
+      class="alf-rb-input"
+      [id]="idRadio"
+      [name]="radioName"
+      [disabled]="isComponentDisabled"
+      [checked]="isChecked"
+      [tabindex]="isComponentDisabled ? -1 : 0"
+      (change)="onInputChange($event)"
+      (keydown)="onInputKeydown($event)"
+      (focus)="focused.set(true)"
+      (blur)="focused.set(false)"
+      [attr.aria-checked]="isChecked"
+      [attr.aria-label]="aria?.ariaLabel || labelText"
+      [attr.aria-describedby]="aria?.ariaDescribedBy || (idRadio + '-description')"
+    >
+
+    <div 
+      class="alf-rb-circle"
+      [alfRipple]="ripple"
+      [alfTooltipText]="tooltip"
+    >
+      <div class="alf-rb-ripple-bg"></div>
+      <div class="alf-rb-dot"></div>
+    </div>
+
+    @if (labelText) {
+      <span class="alf-rb-label-text">
+        {{ labelText }}
+      </span>
+    }
+  </label>
+</div>
+
+@if (config.helperText || config.error) {
+  <div [id]="idRadio + '-description'" class="alf-rb-description">
+    @if (config.error) {
+      <span class="alf-rb-error">{{ config.error }}</span>
+    } @else {
+      <span class="alf-rb-helper">{{ config.helperText }}</span>
+    }
+  </div>
+}
