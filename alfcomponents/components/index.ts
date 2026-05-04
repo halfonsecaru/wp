@@ -9,6 +9,9 @@ export * from './simple/alf-checkbox/predefined/alf-checkbox.predefined';
 export * from './simple/alf-radio-button/alf-radio-button';
 export * from './simple/alf-radio-button/interfaces/alf-radio-button.interface';
 export * from './simple/alf-radio-button/predefined/alf-radio-button.predefined';
+export * from './simple/alf-input/alf-input';
+export * from './simple/alf-input/interfaces/alf-input.interface';
+export * from './simple/alf-input/predefined/alf-input.predefined';
 
 // Standar Components
 export * from './standar/alf-code/alf-code';

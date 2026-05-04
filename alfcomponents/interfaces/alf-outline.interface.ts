@@ -57,4 +57,9 @@ export interface AlfOutlineInterface {
    * Estilos aplicados cuando el componente se encuentra en estado deshabilitado.
    */
   disabled?: AlfOutlineBaseInterface;
+
+  /**
+   * Estilos aplicados cuando el elemento está activo (click).
+   */
+  active?: AlfOutlineBaseInterface;
 }

@@ -1,31 +1,40 @@
-import { AlfBaseCommonConfigInterface } from '@alfcomponents/base/alf-base-configuration';
-import { AlfCheckboxVariantEnum, AlfIconsUnicodeIconEnum, AlfSizeEnum } from '@alfcomponents/enums';
+import {
+  AlfCheckboxVariantEnum,
+  AlfSizeEnum,
+  AlfColorVariantEnum,
+} from '@alfcomponents/enums';
+import {
+  AlfBackgroundsInterface,
+  AlfBorderInterface,
+  AlfDisplayAndLayoutInterface,
+  AlfMarginInterface,
+  AlfPaddingInterface,
+  AlfShadowsInterface,
+  AlfTextStyleInterface,
+  AlfTypographyInterface,
+  AlfAnimateCssInterface,
+} from '@alfcomponents/interfaces';
 
-export interface AlfCheckboxInterface extends AlfBaseCommonConfigInterface {
-  /** Estilo visual del checkbox (Elegant, Standard, Moving) */
+export interface AlfCheckboxInterface {
   readonly checkboxStyle?: AlfCheckboxVariantEnum;
-
-  /** Texto de la etiqueta */
   readonly label?: string;
-
-  /** Posición de la etiqueta respecto al checkbox */
   readonly labelPosition?: 'before' | 'after';
-
-  /** Tamaño del checkbox (Sm, Md, Lg, Xl) */
+  readonly checked?: boolean;
+  readonly disabled?: boolean;
   readonly size?: AlfSizeEnum;
-
-  /** Icono personalizado cuando está seleccionado */
-  readonly iconSelected?: AlfIconsUnicodeIconEnum;
-
-  /** Mensaje de error */
-  readonly error?: string;
-
-  /** Texto de ayuda debajo del checkbox */
-  readonly helperText?: string;
-
-  /** ID para accesibilidad */
-  readonly id?: string;
-
-  /** Valor asociado al checkbox */
-  readonly value?: unknown;
+  readonly colorVariant?: AlfColorVariantEnum;
+  readonly value?: any;
+  readonly name?: string;
+  readonly iconSelected?: string;
+  
+  // Overrides visuales
+  readonly backgrounds?: AlfBackgroundsInterface;
+  readonly border?: AlfBorderInterface;
+  readonly displayAndLayout?: AlfDisplayAndLayoutInterface;
+  readonly margin?: AlfMarginInterface;
+  readonly padding?: AlfPaddingInterface;
+  readonly shadows?: AlfShadowsInterface;
+  readonly textStyle?: AlfTextStyleInterface;
+  readonly typography?: AlfTypographyInterface;
+  readonly animations?: AlfAnimateCssInterface;
 }

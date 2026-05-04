@@ -29,16 +29,7 @@ export const BASIC_IDENTITIES: Record<AlfThemeEnum, Record<string, AlfVariantIde
     [AlfColorVariantEnum.Dark]:      { brand: AlfColorEnum.Black,     hover: AlfColorEnum.Gray900,      ripple: AlfColorEnum.Gray600,   contrast: AlfColorEnum.White },
 
     // --- Especiales / Friki Mode (Keys directas) ---
-    [AlfColorVariantEnum.Accept]:  { brand: AlfColorEnum.Primary,   hover: AlfColorEnum.PrimaryHover, ripple: AlfColorEnum.Blue900,   contrast: AlfColorEnum.White, icon: AlfIconsUnicodeIconEnum.Check },
-    [AlfColorVariantEnum.Cancel]:  { brand: AlfColorEnum.Secondary, hover: AlfColorEnum.SecondaryHover, ripple: AlfColorEnum.Gray800,  contrast: AlfColorEnum.White, icon: AlfIconsUnicodeIconEnum.Cross },
-    [AlfColorVariantEnum.Cyber]:   { brand: AlfColorEnum.Yellow400, hover: AlfColorEnum.Yellow500,    ripple: AlfColorEnum.Orange600, contrast: AlfColorEnum.Black, icon: AlfIconsUnicodeIconEnum.Zap },
-    [AlfColorVariantEnum.Matrix]:  { brand: AlfColorEnum.Black,     hover: AlfColorEnum.Gray950,      ripple: AlfColorEnum.Green600,  contrast: AlfColorEnum.Green400, icon: AlfIconsUnicodeIconEnum.Laptop },
-    [AlfColorVariantEnum.Jedi]:    { brand: AlfColorEnum.Blue400,   hover: AlfColorEnum.Blue500,      ripple: AlfColorEnum.Blue300,   contrast: AlfColorEnum.White, icon: AlfIconsUnicodeIconEnum.Sparkles },
-    [AlfColorVariantEnum.Sith]:    { brand: AlfColorEnum.Black,     hover: AlfColorEnum.Red950,       ripple: AlfColorEnum.Red600,    contrast: AlfColorEnum.Red500, icon: AlfIconsUnicodeIconEnum.Skull },
-    [AlfColorVariantEnum.Fire]:    { brand: AlfColorEnum.Orange500, hover: AlfColorEnum.Red600,       ripple: AlfColorEnum.Orange900, contrast: AlfColorEnum.White, icon: AlfIconsUnicodeIconEnum.Collision },
-    [AlfColorVariantEnum.Frost]:   { brand: AlfColorEnum.Cyan400,   hover: AlfColorEnum.Blue500,      ripple: AlfColorEnum.Blue200,   contrast: AlfColorEnum.Black, icon: AlfIconsUnicodeIconEnum.Snowflake },
-    [AlfColorVariantEnum.Lava]:    { brand: AlfColorEnum.Gray900,   hover: AlfColorEnum.Black,        ripple: AlfColorEnum.Orange600, contrast: AlfColorEnum.Orange500, icon: AlfIconsUnicodeIconEnum.Volcano },
-    [AlfColorVariantEnum.Zen]:     { brand: AlfColorEnum.Gray100,   hover: AlfColorEnum.White,        ripple: AlfColorEnum.Green200,  contrast: AlfColorEnum.Gray600, icon: AlfIconsUnicodeIconEnum.FallenLeaf }
+  
   },
 
   [AlfThemeEnum.Dark]: {
@@ -52,18 +43,7 @@ export const BASIC_IDENTITIES: Record<AlfThemeEnum, Record<string, AlfVariantIde
     [AlfColorVariantEnum.Light]:     { brand: AlfColorEnum.Gray700,   hover: AlfColorEnum.Gray600,      ripple: AlfColorEnum.Gray500,   contrast: AlfColorEnum.White },
     [AlfColorVariantEnum.Dark]:      { brand: AlfColorEnum.White,     hover: AlfColorEnum.Gray100,      ripple: AlfColorEnum.Gray300,   contrast: AlfColorEnum.Black },
 
-    // --- Especiales / Friki Mode (Dark Optimized) ---
-    [AlfColorVariantEnum.Accept]:  { brand: AlfColorEnum.Blue500,   hover: AlfColorEnum.Blue400,      ripple: AlfColorEnum.Blue200,   contrast: AlfColorEnum.White, icon: AlfIconsUnicodeIconEnum.Check },
-    [AlfColorVariantEnum.Cancel]:  { brand: AlfColorEnum.Gray500,   hover: AlfColorEnum.Gray400,      ripple: AlfColorEnum.Gray300,   contrast: AlfColorEnum.White, icon: AlfIconsUnicodeIconEnum.Cross },
-    [AlfColorVariantEnum.Cyber]:   { brand: AlfColorEnum.Yellow400, hover: AlfColorEnum.Yellow300,    ripple: AlfColorEnum.White,     contrast: AlfColorEnum.Black, icon: AlfIconsUnicodeIconEnum.Zap },
-    [AlfColorVariantEnum.Matrix]:  { brand: AlfColorEnum.Black,     hover: AlfColorEnum.Gray900,      ripple: AlfColorEnum.Green400,  contrast: AlfColorEnum.Green500, icon: AlfIconsUnicodeIconEnum.Laptop },
-    [AlfColorVariantEnum.Jedi]:    { brand: AlfColorEnum.Blue200,   hover: AlfColorEnum.White,        ripple: AlfColorEnum.Blue100,   contrast: AlfColorEnum.Black, icon: AlfIconsUnicodeIconEnum.Sparkles },
-    [AlfColorVariantEnum.Sith]:    { brand: AlfColorEnum.Black,     hover: AlfColorEnum.Red950,       ripple: AlfColorEnum.Red500,    contrast: AlfColorEnum.Red600, icon: AlfIconsUnicodeIconEnum.Skull },
-    [AlfColorVariantEnum.Fire]:    { brand: AlfColorEnum.Red500,    hover: AlfColorEnum.Orange600,    ripple: AlfColorEnum.Yellow500, contrast: AlfColorEnum.White, icon: AlfIconsUnicodeIconEnum.Collision },
-    [AlfColorVariantEnum.Frost]:   { brand: AlfColorEnum.Blue300,   hover: AlfColorEnum.Cyan200,      ripple: AlfColorEnum.White,     contrast: AlfColorEnum.Black, icon: AlfIconsUnicodeIconEnum.Snowflake },
-    [AlfColorVariantEnum.Lava]:    { brand: AlfColorEnum.Black,     hover: AlfColorEnum.Gray900,      ripple: AlfColorEnum.Red600,    contrast: AlfColorEnum.Orange600, icon: AlfIconsUnicodeIconEnum.Volcano },
-    [AlfColorVariantEnum.Zen]:     { brand: AlfColorEnum.Gray800,   hover: AlfColorEnum.Gray700,      ripple: AlfColorEnum.Green400,  contrast: AlfColorEnum.Green200, icon: AlfIconsUnicodeIconEnum.FallenLeaf }
-  },
+   },
 
   // --- Temas Adicionales (Mapeados a fallbacks optimizados) ---
   

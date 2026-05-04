@@ -3,7 +3,6 @@ import { AlfTabComponent } from './components/alf-tab/alf-tab';
 import { AlfButtons } from '../../simple/alf-buttons/alf-buttons';
 import { visualprefixEnum } from '@alfcomponents/shared';
 import {
-  AlfButtonVisualTypeEnum,
   AlfColorVariantEnum,
   AlfColorEnum,
   AlfDisplayEnum,
@@ -43,8 +42,20 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
    * Configuración predefinida basada en la variante elegida.
    */
   protected readonly predefinedConfig = computed(() => {
-    const variant = this.variant();
-    return variant ? getAlfTabDefaultConfig(variant) : ALF_TABS_CONTAINER_DEFAULT;
+    const v = this.variant();
+    if (!v) return ALF_TABS_CONTAINER_DEFAULT;
+
+    // Resolución segura del Enum si llega un string
+    let variantEnum = AlfColorVariantEnum.Transparent;
+    if (typeof v === 'string') {
+      const normalized = v.toLowerCase().replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+      const key = normalized.charAt(0).toUpperCase() + normalized.slice(1);
+      variantEnum = (AlfColorVariantEnum as any)[key] ?? AlfColorVariantEnum.Secondary;
+    } else {
+      variantEnum = v;
+    }
+
+    return getAlfTabDefaultConfig(variantEnum);
   });
 
   /**
@@ -55,30 +66,24 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
   /**
    * Configuración FINAL (Prioridad absoluta a la variante si existe).
    */
-  protected readonly finalConfig = computed(() => {
+  public readonly finalConfig = computed(() => {
     const variant = this.variant();
     const input = this.inputConfig();
 
-    // Si el usuario elige una variante, esa manda sobre todo lo demás
     if (variant) {
       return this.predefinedConfig();
     }
 
-    // Si no hay variante, usamos la configuración manual o el default
     return input ?? ALF_TABS_CONTAINER_DEFAULT;
   });
 
-  // --- SOBREESCRITURA DE COMPUTEDS DE LA CLASE BASE ---
-  // Sobrescribimos el resolvedConfig de la clase base para que todo el motor (colores, fondos, bordes, etc.)
-  // lea directamente de nuestra configuración final (que combina la variante elegida con la manual).
-  protected override readonly resolvedConfig = this.finalConfig;
+  public override readonly resolvedConfig = this.finalConfig;
 
   /**
-   * Estilos custom adicionales (Sincroniza el color del slider con el borde o variante)
+   * Estilos custom adicionales
    */
-  protected override readonly customStyleComputed = computed(() => {
+  public readonly customStyleComputed = computed(() => {
     let styles = '';
-    const visual = this.visualTypeComputed();
     
     // 1. Lógica del color del slider
     const explicitBorder = this.borderComputed()?.default?.borderColor;
@@ -102,7 +107,7 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
     styles += `--alf-tabs-slider-color: ${sliderColor};`;
 
     // 2. Lógica para variante Crystal (Glassmorphism)
-    if (visual === AlfButtonVisualTypeEnum.Crystal) {
+    if (this.colorVariantComputed().toString().toLowerCase().includes('crystal')) {
       styles += 'backdrop-filter: blur(12px) saturate(180%); background-color: rgba(255, 255, 255, 0.3) !important;';
     }
 
@@ -125,76 +130,31 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
   /**
    * Propiedad computada que combina el input directo, la configuración y la auto-detección.
    */
-  protected readonly isFluidHeight = computed(() => {
+  public readonly isFluidHeight = computed(() => {
     const fromInput = this.fluidHeightInput();
     const config = this.finalConfig();
-    const fromConfig = config?.fluidHeight || (config as any)?.fluid;
+    const fromConfig = config?.fluidHeight;
 
     if (fromInput || fromConfig) return true;
 
     return this.nestedContainers().length === 0;
   });
 
-  /**
-   * Referencia a la pestaña padre si este contenedor está anidado.
-   */
   private readonly parentTab = inject(AlfTabComponent, { optional: true });
-
-  /**
-   * Prefijo para las variables CSS.
-   */
   protected readonly visualPrefix = visualprefixEnum.TabsContainer;
-
-  /**
-   * Listado de pestañas proyectadas.
-   */
   protected readonly tabs = contentChildren(AlfTabComponent, { descendants: false });
-
-  /**
-   * Referencia al contenedor de scroll de la cabecera.
-   */
   protected readonly headerScrollRef = viewChild<ElementRef<HTMLDivElement>>('headerScroll');
-
-  /**
-   * Métricas de scroll para mostrar/ocultar flechas.
-   */
   protected readonly headerMetrics = signal({ canLeft: false, canRight: false });
-
-  /**
-   * Índice de la pestaña activa.
-   */
   public readonly activeIndex = signal<number>(0);
-
-  /**
-   * Referencias a los botones de navegación para cálculos del slider.
-   */
   protected readonly buttonRefs = viewChildren(AlfButtons, { read: ElementRef });
-
-  /**
-   * Referencia al elemento del slider.
-   */
   protected readonly sliderRef = viewChild<ElementRef<HTMLDivElement>>('slider');
-
-  /**
-   * Observer para actualizar métricas de scroll.
-   */
   private resizeObserver?: ResizeObserver;
-
-  /**
-   * Indica si el contenedor está en medio de una transición de altura.
-   */
-  protected readonly isAnimating = signal<boolean>(false);
-
-  /**
-   * Altura actual del contenedor en píxeles.
-   * Se inicia en 'auto' para el primer renderizado, pero luego siempre será un valor fijo.
-   */
+  public readonly isAnimating = signal<boolean>(false);
   public readonly containerHeight = signal<string>('auto');
 
   constructor() {
     super();
 
-    // Efecto para inicializar el ResizeObserver cuando el scrollRef esté disponible
     effect((onCleanup) => {
       const scrollEl = this.headerScrollRef()?.nativeElement;
       if (!scrollEl) return;
@@ -211,26 +171,15 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
       });
     });
 
-    // Asegurar medición inicial estable
     afterNextRender(() => {
       const activeTab = this.tabs()[this.activeIndex()];
       if (activeTab) activeTab.reportHeight();
     });
   }
 
-  /**
-   * Referencia al elemento contenedor del contenido.
-   */
-  protected readonly contentContainer = viewChild<ElementRef<HTMLDivElement>>('contentContainer');
+  public readonly contentContainer = viewChild<ElementRef<HTMLDivElement>>('contentContainer');
+  public readonly ghostRef = viewChild<ElementRef<HTMLDivElement>>('ghost');
 
-  /**
-   * Referencia al elemento "fantasma" que empuja la altura.
-   */
-  protected readonly ghostRef = viewChild<ElementRef<HTMLDivElement>>('ghost');
-
-  /**
-   * Maneja el reporte de altura y ejecuta la transición usando el truco del "Fantasma".
-   */
   public readonly onTabHeightMeasured = (height: number, startHeightOverride?: number): void => {
     if (!this.isFluidHeight()) {
       this.containerHeight.set('auto');
@@ -238,8 +187,6 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
     }
 
     const ghost = this.ghostRef()?.nativeElement;
-
-    // La altura que llega ya incluye los paddings internos calculados por el hijo
     const endHeight = height;
 
     if (!ghost) {
@@ -247,7 +194,6 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
       return;
     }
 
-    // El startHeight es la altura actual del fantasma (o la override)
     const startHeight = startHeightOverride ?? ghost.offsetHeight;
 
     if (startHeight === 0 || this.containerHeight() === 'auto' || Math.abs(startHeight - endHeight) < 1) {
@@ -257,7 +203,6 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
 
     this.isAnimating.set(true);
 
-    // Animamos el FANTASMA. Como el padre es auto, seguirá al fantasma.
     const anim = ghost.animate([
       { height: `${startHeight}px` },
       { height: `${endHeight}px` }
@@ -271,60 +216,42 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
       this.containerHeight.set(`${endHeight}px`);
       this.isAnimating.set(false);
 
-      // PROPAGACIÓN: Si estamos anidados, avisamos al padre para que el abuelo se ajuste
       if (this.parentTab) {
         this.parentTab.reportHeight();
       }
     };
   };
 
-  /**
-   * Actualiza las métricas de scroll (canLeft, canRight).
-   */
   protected updateScrollMetrics(): void {
     const el = this.headerScrollRef()?.nativeElement;
     if (!el) return;
 
     const { scrollLeft, scrollWidth, clientWidth } = el;
 
-    // Tolerancia de 1px para redondeos
     this.headerMetrics.set({
       canLeft: scrollLeft > 1,
       canRight: scrollLeft + clientWidth < scrollWidth - 1
     });
 
-    // Aprovechamos para actualizar el slider si ha cambiado la visibilidad
     this.updateSlider(false);
   }
 
-  /**
-   * Desplaza el scroll hacia la izquierda.
-   */
   public scrollLeft(): void {
     const el = this.headerScrollRef()?.nativeElement;
     if (!el) return;
     el.scrollBy({ left: -200, behavior: 'smooth' });
   }
 
-  /**
-   * Desplaza el scroll hacia la derecha.
-   */
   public scrollRight(): void {
     const el = this.headerScrollRef()?.nativeElement;
     if (!el) return;
     el.scrollBy({ left: 200, behavior: 'smooth' });
   }
 
-  /**
-   * Manejador del evento de scroll.
-   */
   protected onScroll(): void {
     this.updateScrollMetrics();
   }
 
-  /**
-   * Actualiza la posición y ancho del slider.
-   */
   public updateSlider(animate: boolean = true): void {
     const active = this.activeIndex();
     const buttons = this.buttonRefs();
@@ -338,7 +265,6 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
     const width = targetButton.offsetWidth;
     const left = targetButton.offsetLeft;
 
-    // Si no hay dimensiones (ej: está oculto), no hacemos nada
     if (width === 0) return;
 
     if (animate) {
@@ -356,11 +282,7 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
     slider.style.left = `${left}px`;
   }
 
-  /**
-   * Efecto para animar el slider cuando cambia la pestaña activa.
-   */
   protected readonly animateSlider = effect(() => {
-    // Suscribimos a cambios de pestaña o botones
     this.activeIndex();
     this.buttonRefs();
 
@@ -369,45 +291,37 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
     });
   });
 
-  /**
-   * Datos de navegación derivados de las pestañas proyectadas.
-   * Es vital que sea estable y NO dependa de activeIndex para evitar re-renders innecesarios.
-   */
-  protected readonly navigationTabs = computed(() => {
-    const containerConfig = this.finalConfig();
-    const containerVisualType = this.visualTypeComputed() ?? containerConfig.visualType;
-    const containerColorVariant = this.colorVariantComputed() ?? containerConfig.colorVariant;
+  public readonly navigationTabs = computed(() => {
+    const containerColorVariant = this.colorVariantComputed();
 
     return this.tabs().map((tabInstance) => {
       const tab = tabInstance as any;
       const tabLabel = tab.finalLabel();
       const tabInputConfig = tab.inputConfig() ?? {};
 
-      // Resolvemos el tipo visual prioritariamente (Ghost para que tenga hover suave, en vez de Text)
-      const visualType = tab.visualType() ?? tabInputConfig.visualType ?? AlfButtonVisualTypeEnum.Ghost;
-
-      // Color muy clarito para el hover de las pestañas
       const resolvedVariant = tab.colorVariant() ?? tabInputConfig.colorVariant ?? containerColorVariant ?? AlfColorVariantEnum.Secondary;
-      let hoverBg = AlfColorEnum.Gray050;
-      switch (resolvedVariant) {
-        case AlfColorVariantEnum.Primary: hoverBg = AlfColorEnum.Blue050; break;
-        case AlfColorVariantEnum.Secondary: hoverBg = AlfColorEnum.Gray050; break;
-        case AlfColorVariantEnum.Success: hoverBg = AlfColorEnum.Green050; break;
-        case AlfColorVariantEnum.Danger: hoverBg = AlfColorEnum.Red050; break;
-        case AlfColorVariantEnum.Warning: hoverBg = AlfColorEnum.Yellow050; break;
-        case AlfColorVariantEnum.Info: hoverBg = AlfColorEnum.Cyan050; break;
-        case AlfColorVariantEnum.Light: hoverBg = AlfColorEnum.Gray050; break;
-        case AlfColorVariantEnum.Dark: hoverBg = AlfColorEnum.Gray100; break;
-      }
+      
+      const baseColor = resolvedVariant.toString().split('Outline')[0].split('Soft')[0].split('Crystal')[0].split('3D')[0].toLowerCase();
+      
+      const MAP: Record<string, AlfColorEnum> = {
+        'primary': AlfColorEnum.Blue050,
+        'secondary': AlfColorEnum.Gray050,
+        'success': AlfColorEnum.Green050,
+        'danger': AlfColorEnum.Red050,
+        'warning': AlfColorEnum.Yellow050,
+        'info': AlfColorEnum.Cyan050,
+        'light': AlfColorEnum.Gray050,
+        'dark': AlfColorEnum.Gray100
+      };
+
+      const hoverBg = MAP[baseColor] ?? AlfColorEnum.Gray050;
 
       const configuration: AlfButtonInterface = {
         ...tabInputConfig,
         label: tabLabel,
         iconLeft: tab.iconLeft() ?? tabInputConfig.iconLeft,
         iconRight: tab.iconRight() ?? tabInputConfig.iconRight,
-        visualType,
         colorVariant: resolvedVariant,
-        // Forzamos el background para que el hover sea extremadamente clarito (050) y no el 200 de Ghost
         backgrounds: {
           default: { backgroundColor: AlfColorEnum.Transparent },
           hover: { backgroundColor: hoverBg },
@@ -417,24 +331,12 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
           default: {
             ...tabInputConfig.typography?.default,
             fontWeight: tabInputConfig.typography?.default?.fontWeight ?? AlfFontWeightEnum.SemiBold
-          },
-          hover: tabInputConfig.typography?.hover,
-          active: tabInputConfig.typography?.active,
-          focus: tabInputConfig.typography?.focus,
-          disabled: tabInputConfig.typography?.disabled
+          }
         },
         border: {
           default: {
             ...tabInputConfig.border?.default,
             borderRadius: tabInputConfig.border?.default?.borderRadius ?? AlfRadiusEnum.None
-          },
-          hover: {
-            ...tabInputConfig.border?.hover,
-            borderRadius: tabInputConfig.border?.hover?.borderRadius ?? AlfRadiusEnum.None
-          },
-          active: {
-            ...tabInputConfig.border?.active,
-            borderRadius: tabInputConfig.border?.active?.borderRadius ?? AlfRadiusEnum.None
           }
         },
         displayAndLayout: {
@@ -455,9 +357,6 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
     });
   });
 
-  /**
-   * Efecto para sincronizar la pestaña activa con los componentes hijos.
-   */
   protected readonly syncActiveTab = effect(() => {
     const active = this.activeIndex();
     const currentTabs = this.tabs();
@@ -474,30 +373,21 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
 
   });
 
-  /**
-   * Cambia la pestaña activa.
-   * @param index Nuevo índice
-   */
   public readonly setActiveTab = (index: number): void => {
     const oldIndex = this.activeIndex();
     if (oldIndex !== index) {
       const tabs = this.tabs();
       const oldTab = tabs[oldIndex];
 
-      // Disparamos el efecto de salida en la pestaña actual (no bloqueante)
       if (oldTab) {
         oldTab.playExitAnimation();
       }
 
-      // Cambiamos a la nueva inmediatamente para permitir el cross-fade (superposición)
       this.activeIndex.set(index);
     }
   };
 
-  /**
-   * Estilos de animación para el contenido.
-   */
-  protected readonly contentAnimationsStyle = computed(() => {
+  public readonly contentAnimationsStyle = computed(() => {
     const anim = this.finalConfig()?.contentAnimations;
     if (!anim) return '';
     const declarations: string[] = [];
@@ -506,10 +396,7 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
     return declarations.join(' ');
   });
 
-  /**
-   * Clases de animación para el contenido.
-   */
-  protected readonly contentAnimationsClass = computed(() => {
+  public readonly contentAnimationsClass = computed(() => {
     const anim = this.finalConfig()?.contentAnimations?.enterStage ?? '';
     if (!anim) return '';
 
@@ -517,23 +404,14 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
     return anim;
   });
 
-  /**
-   * Coordenadas iniciales para el gesto de swipe en móviles.
-   */
   private _touchStartX = 0;
   private _touchStartY = 0;
 
-  /**
-   * Maneja el inicio del toque para gestos de navegación.
-   */
   public readonly onTouchStart = (event: TouchEvent): void => {
     this._touchStartX = event.touches[0].clientX;
     this._touchStartY = event.touches[0].clientY;
   };
 
-  /**
-   * Maneja el fin del toque y ejecuta el cambio de pestaña si el swipe es válido.
-   */
   public readonly onTouchEnd = (event: TouchEvent): void => {
     const touchEndX = event.changedTouches[0].clientX;
     const touchEndY = event.changedTouches[0].clientY;
@@ -541,17 +419,13 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
     const deltaX = touchEndX - this._touchStartX;
     const deltaY = touchEndY - this._touchStartY;
 
-    // Solo disparamos si el movimiento es predominantemente horizontal
-    // y supera un umbral mínimo de 60px para evitar toques accidentales
     if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 60) {
       const active = this.activeIndex();
       const total = this.tabs().length;
 
       if (deltaX > 0 && active > 0) {
-        // Swipe Derecha -> Anterior
         this.setActiveTab(active - 1);
       } else if (deltaX < 0 && active < total - 1) {
-        // Swipe Izquierda -> Siguiente
         this.setActiveTab(active + 1);
       }
     }

@@ -1,42 +1,63 @@
-import { AlfButtonInterface } from "@alfcomponents/components/simple/alf-buttons/interfaces/alf-button.interface";
+import { 
+  AlfButtonTypeEnum, 
+  AlfColorVariantEnum,
+  AlfIconsUnicodeIconEnum 
+} from "@alfcomponents/enums";
+import { 
+  AlfBackgroundsInterface, 
+  AlfBorderInterface, 
+  AlfDisplayAndLayoutInterface, 
+  AlfMarginInterface, 
+  AlfPaddingInterface, 
+  AlfShadowsInterface, 
+  AlfTextStyleInterface, 
+  AlfTypographyInterface, 
+  AlfAnimateCssInterface 
+} from "@alfcomponents/interfaces";
 import { AlfTabsStyleEnum } from "../enums/alf-tabs.enum";
-import { AlfBaseCommonConfigInterface } from "@alfcomponents/base";
-import { AlfAnimateCssInterface } from "@alfcomponents/interfaces";
 import { InjectionToken } from "@angular/core";
-import { AlfButtonTypeEnum, AlfButtonVisualTypeEnum } from "@alfcomponents/enums";
 
 /**
- * Interfaz para el contrato de comunicación Padre-Hijo.
+ * Interfaz para el componente padre (contenedor) accesible desde los hijos.
  */
 export interface AlfTabsParentInterface {
-  onTabHeightMeasured(height: number): void;
+  onTabHeightMeasured(height: number, startHeightOverride?: number): void;
 }
 
-/**
- * Token de inyección para evitar dependencias circulares.
- */
 export const ALF_TABS_CONTAINER_TOKEN = new InjectionToken<AlfTabsParentInterface>('ALF_TABS_CONTAINER_TOKEN');
 
-/**
- * AlfTabsContainerInterface
- * Configuración para el contenedor de pestañas.
- */
-export interface AlfTabsContainerConfigInterface extends AlfBaseCommonConfigInterface {
-  readonly tab?: AlfSingleTabInterface[];
-  readonly tabsStyle?: AlfTabsStyleEnum;
-  readonly contentAnimations?: AlfAnimateCssInterface;
-  readonly fluidHeight?: boolean;
-  readonly fluid?: boolean;
+export interface AlfSingleTabInterface {
+    readonly id: string;
+    readonly label: string;
+    readonly tabName?: string;
+    readonly icon?: string | AlfIconsUnicodeIconEnum;
+    readonly iconLeft?: string | AlfIconsUnicodeIconEnum;
+    readonly iconRight?: string | AlfIconsUnicodeIconEnum;
+    readonly disabled?: boolean;
+    readonly colorVariant?: AlfColorVariantEnum;
+    readonly backgrounds?: AlfBackgroundsInterface;
+    readonly border?: AlfBorderInterface;
+    readonly margin?: AlfMarginInterface;
+    readonly padding?: AlfPaddingInterface;
+    readonly shadows?: AlfShadowsInterface;
+    readonly textStyle?: AlfTextStyleInterface;
+    readonly typography?: AlfTypographyInterface;
+    readonly animations?: AlfAnimateCssInterface;
 }
 
-export interface AlfSingleTabInterface extends AlfButtonInterface {
-  /**
-   * Nombre de la pestaña (alias de label para retrocompatibilidad).
-   */
-  readonly tabName?: string;
-
-  /**
-   * Indica si se debe aplicar un efecto de agrandamiento al entrar.
-   */
-  readonly expandHeight?: boolean;
+export interface AlfTabsContainerConfigInterface {
+    readonly tabsStyle?: AlfTabsStyleEnum;
+    readonly tab?: AlfSingleTabInterface[];
+    readonly colorVariant?: AlfColorVariantEnum;
+    readonly backgrounds?: AlfBackgroundsInterface;
+    readonly border?: AlfBorderInterface;
+    readonly displayAndLayout?: AlfDisplayAndLayoutInterface;
+    readonly margin?: AlfMarginInterface;
+    readonly padding?: AlfPaddingInterface;
+    readonly shadows?: AlfShadowsInterface;
+    readonly textStyle?: AlfTextStyleInterface;
+    readonly typography?: AlfTypographyInterface;
+    readonly animations?: AlfAnimateCssInterface;
+    readonly contentAnimations?: AlfAnimateCssInterface;
+    readonly fluidHeight?: boolean;
 }

@@ -1,0 +1,118 @@
+<div class="demo-container">
+  <h1 class="demo-title">📻 AlfRadioButton Elite Demo</h1>
+
+  <div class="demo-card">
+    <h3>Radio Button Variants</h3>
+    
+    @for (style of radioStyles; track style.value) {
+      <div class="style-section">
+        <h4 class="style-title">{{ style.name }} Style</h4>
+        
+        <div class="color-grid">
+          @for (variant of solidVariants; track variant) {
+            @let rbSignal = getChecked('radio-' + style.name, variant);
+            <div class="color-item">
+              <span class="variant-name">{{ variant }}</span>
+              <alf-radio-button 
+                [checked]="rbSignal()"
+                (checkedChange)="rbSignal.set($event)"
+                [label]="style.name" 
+                [variant]="variant"
+                [radioButtonStyle]="style.value">
+              </alf-radio-button>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="demo-card">
+    <h3>Sizing Options</h3>
+    <div class="size-row">
+      @for (size of sizes; track size) {
+        @let rbSignal = getChecked('radio-size', size);
+        <div class="size-item">
+          <alf-radio-button 
+            [checked]="rbSignal()"
+            (checkedChange)="rbSignal.set($event)"
+            [label]="size" 
+            [size]="size"
+            variant="Primary">
+          </alf-radio-button>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="demo-card">
+    <h3>Radio Group Simulation</h3>
+    <div class="color-grid">
+      @let groupVal = demoGroupValue();
+      <div class="color-item">
+        <alf-radio-button 
+          [checked]="groupVal === 'opt1'"
+          (change)="demoGroupValue.set('opt1')"
+          [label]="'Option 1'" 
+          variant="Primary">
+        </alf-radio-button>
+      </div>
+      <div class="color-item">
+        <alf-radio-button 
+          [checked]="groupVal === 'opt2'"
+          (change)="demoGroupValue.set('opt2')"
+          [label]="'Option 2'" 
+          variant="Secondary">
+        </alf-radio-button>
+      </div>
+      <div class="color-item">
+        <alf-radio-button 
+          [checked]="groupVal === 'opt3'"
+          (change)="demoGroupValue.set('opt3')"
+          [label]="'Option 3'" 
+          variant="Success">
+        </alf-radio-button>
+      </div>
+    </div>
+    <p style="margin-top: 1rem; font-weight: bold;">Selected: {{ groupVal }}</p>
+  </div>
+
+  <div class="demo-card">
+    <h3>States & Validation</h3>
+    
+    <div class="color-grid">
+      <div class="color-item">
+        <span class="variant-name">Disabled State</span>
+        <alf-radio-button 
+          [label]="'Disabled'" 
+          [variant]="AlfColorVariantEnum.Primary"
+          [config]="{ disabled: true }">
+        </alf-radio-button>
+      </div>
+
+      <div class="color-item">
+        @let helperChecked = getChecked('state-rb', 'helper');
+        <span class="variant-name">Helper Text</span>
+        <alf-radio-button 
+          [checked]="helperChecked()"
+          (checkedChange)="helperChecked.set($event)"
+          [label]="'Option with info'" 
+          [variant]="AlfColorVariantEnum.Success"
+          [config]="{ helperText: 'This option has extra context.' }">
+        </alf-radio-button>
+      </div>
+
+      <div class="color-item">
+        @let errorChecked = getChecked('state-rb', 'error');
+        <span class="variant-name">Error State</span>
+        <alf-radio-button 
+          [checked]="errorChecked()"
+          (checkedChange)="errorChecked.set($event)"
+          [label]="'Invalid selection'" 
+          [variant]="AlfColorVariantEnum.Danger"
+          [config]="{ error: 'You cannot select this option right now.' }">
+        </alf-radio-button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -16,6 +16,7 @@ export enum AlfOpacityEnum {
   Opacity30 = '0.3',
   Opacity40 = '0.4',
   Opacity50 = '0.5',
+  Opacity55 = '0.55',
   Opacity60 = '0.6',
   Opacity70 = '0.7',
   Opacity75 = '0.75',

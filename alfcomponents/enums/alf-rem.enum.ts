@@ -20,6 +20,7 @@ export enum AlfRemEnum {
   Rem225 = '2.25rem',   // 36px
   Rem25 = '2.5rem',     // 40px
   Rem3 = '3rem',        // 48px
+  Rem325 = '3.25rem',   // 52px
   Rem35 = '3.5rem',     // 56px
   Rem4 = '4rem',        // 64px
   Rem5 = '5rem',        // 80px

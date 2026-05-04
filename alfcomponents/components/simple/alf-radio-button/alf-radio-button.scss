@@ -7,16 +7,16 @@
 
 .alf-rb {
   // Configuración de variables base heredas del motor visual
-  @include alf-border-css-vars('--alf-rb', 50%, '&.alf-rb--disabled');
+  @include alf-border-css-vars('--alf-rb', '&.alf-rb--disabled');
   @include alf-background-css-vars('--alf-rb', '&.alf-rb--disabled');
   @include alf-margin-css-vars('--alf-rb', '&.alf-rb--disabled');
   @include alf-outline-css-vars('--alf-rb', '&.alf-rb--disabled');
-  @include alf-padding-css-vars('--alf-rb', 0.25rem, 0.25rem, '&.alf-rb--disabled');
+  @include alf-padding-css-vars('--alf-rb', '&.alf-rb--disabled');
   @include alf-shadows-css-vars('--alf-rb', '&.alf-rb--disabled');
   @include alf-typography-css-vars('--alf-rb', '&.alf-rb--disabled');
-  @include alf-text-style-css-vars('--alf-rb', #374151, '&.alf-rb--disabled');
+  @include alf-text-style-css-vars('--alf-rb', '&.alf-rb--disabled');
   @include alf-transform-css-vars('--alf-rb', '&.alf-rb--disabled');
-  @include alf-display-layout-css-vars('--alf-rb', flex, center, flex-start, 0.5rem, '&.alf-rb--disabled');
+  @include alf-display-layout-css-vars('--alf-rb', '&.alf-rb--disabled');
 
   // ============================================
   // LAYOUT & TRANSPARENCY

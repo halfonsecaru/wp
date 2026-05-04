@@ -38,17 +38,28 @@ export class AlfCheckbox extends AlfBaseConfiguration<AlfCheckboxInterface> {
   public readonly size = input<AlfSizeEnum>();
 
   // **** Computed Properties **** //
-  /** Predefined configuration based on the chosen variant. */
+  /**
+   * Configuración predefinida basada en la variante elegida.
+   */
   protected readonly predefinedConfig = computed(() => {
-    const variant = this.variant();
-    return variant ? getAlfCheckboxDefaultConfig(variant) : ALF_CHECKBOX_DEFAULT;
+    const v = this.variant();
+    if (!v) return ALF_CHECKBOX_DEFAULT;
+
+    let variantEnum = AlfColorVariantEnum.Transparent;
+    if (typeof v === 'string') {
+      const normalized = v.toLowerCase().replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+      const key = normalized.charAt(0).toUpperCase() + normalized.slice(1);
+      variantEnum = (AlfColorVariantEnum as any)[key] ?? AlfColorVariantEnum.Secondary;
+    } else {
+      variantEnum = v;
+    }
+
+    return getAlfCheckboxDefaultConfig(variantEnum);
   });
 
   protected readonly finalConfig = computed(() => {
-    const variant = this.variant();
+    const variantConfig = this.predefinedConfig();
     const input = this.inputConfig();
-    
-    const variantConfig = variant ? getAlfCheckboxDefaultConfig(variant) : ALF_CHECKBOX_DEFAULT;
     
     // Si no hay input manual o el input es el default sin cambios (shallow check)
     if (!input || input === ALF_CHECKBOX_DEFAULT) return variantConfig;
@@ -61,35 +72,35 @@ export class AlfCheckbox extends AlfBaseConfiguration<AlfCheckboxInterface> {
   });
 
   // Override the resolvedConfig of the base class to use our finalConfig.
-  protected override readonly resolvedConfig = this.finalConfig;
+  public override readonly resolvedConfig = this.finalConfig;
 
   /** Resolves the visual style */
-  protected readonly checkboxStyleComputed = computed(() => 
+  public readonly checkboxStyleComputed = computed(() => 
     this.checkboxStyle() ?? this.resolvedConfig()?.checkboxStyle ?? AlfCheckboxVariantEnum.Elegant
   );
 
   /** Resolves the label text */
-  protected readonly labelComputed = computed(() => 
+  public readonly labelComputed = computed(() => 
     this.label() ?? this.resolvedConfig()?.label ?? ''
   );
 
   /** Resolves the label position */
-  protected readonly labelPositionComputed = computed(() => 
+  public readonly labelPositionComputed = computed(() => 
     this.resolvedConfig()?.labelPosition ?? 'after'
   );
 
   /** Resolves the size */
-  protected readonly sizeComputed = computed(() => 
+  public readonly sizeComputed = computed(() => 
     this.size() ?? this.resolvedConfig()?.size ?? AlfSizeEnum.MD
   );
 
   /** Resolves if it's disabled */
-  protected readonly isDisabled = computed(() => 
+  public readonly isDisabled = computed(() => 
     this.disabledComputed()
   );
 
   /** Icon to display inside the box */
-  protected readonly displayIcon = computed(() => {
+  public readonly displayIcon = computed(() => {
     if (this.indeterminate()) return '−';
     return this.resolvedConfig()?.iconSelected || AlfIconsUnicodeIconEnum.CheckMark;
   });
@@ -100,24 +111,24 @@ export class AlfCheckbox extends AlfBaseConfiguration<AlfCheckboxInterface> {
 
   // **** Handlers **** //
   @HostListener('click', ['$event'])
-  protected onHostClick = (event: Event): void => {
+  public onHostClick = (event: Event): void => {
     if (this.isDisabled()) return;
     event.preventDefault();
     this.toggle();
   };
 
   /** Toggles the checked state */
-  public toggle(): void {
+  public readonly toggle = (): void => {
     if (this.isDisabled()) return;
     
     const newValue = !this.checked();
     this.checked.set(newValue);
     this.indeterminate.set(false);
     this.onCheckedChange.emit(newValue);
-  }
+  };
 
   /** Accessibility keyboard handler */
-  protected onInputKeydown = (event: KeyboardEvent): void => {
+  public readonly onInputKeydown = (event: KeyboardEvent): void => {
     if (this.isDisabled()) return;
     if (event.key === ' ' || event.key === 'Enter') {
       event.preventDefault();

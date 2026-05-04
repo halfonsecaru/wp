@@ -1,0 +1,174 @@
+<div class="viewer-container">
+  <h1>AlfInput Showcase</h1>
+
+  <!-- Basic Examples -->
+  <section class="viewer-section">
+    <h2>Basic / Default</h2>
+    <div class="viewer-grid">
+      <div class="viewer-item">
+        <label>Default (No variant)</label>
+        <alf-input
+          label="Usuario"
+          placeholder="Escribe tu usuario..."
+          [value]="val0()"
+          (valueChange)="val0.set($event)"
+        ></alf-input>
+      </div>
+    </div>
+  </section>
+
+  <!-- Outlined Variants -->
+  <section class="viewer-section">
+    <h2>Outlined Variants</h2>
+    <div class="viewer-grid">
+      <div class="viewer-item">
+        <label>Primary (with Icon)</label>
+        <alf-input
+          [variant]="AlfColorVariantEnum.PrimaryOutline"
+          label="Nombre Completo"
+          placeholder="Ej. Juan Pérez"
+          [value]="val1()"
+          (valueChange)="val1.set($event)"
+          [config]="{ prefix: '👤', required: true, clearable: true }"
+        ></alf-input>
+      </div>
+
+      <div class="viewer-item">
+        <label>Secondary (with Suffix)</label>
+        <alf-input
+          [variant]="AlfColorVariantEnum.SecondaryOutline"
+          label="Email"
+          placeholder="tu@email.com"
+          [value]="val2()"
+          (valueChange)="val2.set($event)"
+          [config]="{ suffix: '@gmail.com', type: 'email' }"
+        ></alf-input>
+      </div>
+    </div>
+  </section>
+
+  <!-- Solid Variants -->
+  <section class="viewer-section">
+    <h2>Solid Variants</h2>
+    <div class="viewer-grid">
+      <div class="viewer-item">
+        <label>Solid Primary</label>
+        <alf-input
+          [variant]="AlfColorVariantEnum.Primary"
+          label="Nombre"
+          [value]="s1()"
+          (valueChange)="s1.set($event)"
+          [config]="{ prefix: '👤' }"
+        ></alf-input>
+      </div>
+
+      <div class="viewer-item">
+        <label>Solid Secondary</label>
+        <alf-input
+          [variant]="AlfColorVariantEnum.Secondary"
+          label="Teléfono"
+          [value]="s2()"
+          (valueChange)="s2.set($event)"
+          [config]="{ prefix: '📞' }"
+        ></alf-input>
+      </div>
+
+      <div class="viewer-item">
+        <label>Solid Success</label>
+        <alf-input
+          [variant]="AlfColorVariantEnum.Success"
+          label="Aprobado"
+          [value]="s3()"
+          (valueChange)="s3.set($event)"
+          [config]="{ prefix: '✅' }"
+        ></alf-input>
+      </div>
+
+      <div class="viewer-item">
+        <label>Solid Danger</label>
+        <alf-input
+          [variant]="AlfColorVariantEnum.Danger"
+          label="Error Crítico"
+          [value]="s4()"
+          (valueChange)="s4.set($event)"
+          [config]="{ prefix: '❌' }"
+        ></alf-input>
+      </div>
+
+      <div class="viewer-item">
+        <label>Solid Warning</label>
+        <alf-input
+          [variant]="AlfColorVariantEnum.Warning"
+          label="Alerta"
+          [value]="s5()"
+          (valueChange)="s5.set($event)"
+          [config]="{ prefix: '⚠️' }"
+        ></alf-input>
+      </div>
+
+      <div class="viewer-item">
+        <label>Solid Info</label>
+        <alf-input
+          [variant]="AlfColorVariantEnum.Info"
+          label="Información"
+          [value]="s6()"
+          (valueChange)="s6.set($event)"
+          [config]="{ prefix: 'ℹ️' }"
+        ></alf-input>
+      </div>
+
+      <div class="viewer-item">
+        <label>Solid Dark</label>
+        <alf-input
+          [variant]="AlfColorVariantEnum.Dark"
+          label="Noche"
+          [value]="s7()"
+          (valueChange)="s7.set($event)"
+          [config]="{ prefix: '🌙' }"
+        ></alf-input>
+      </div>
+
+      <div class="viewer-item">
+        <label>Solid Light</label>
+        <alf-input
+          [variant]="AlfColorVariantEnum.Light"
+          label="Día"
+          [value]="s8()"
+          (valueChange)="s8.set($event)"
+          [config]="{ prefix: '☀️' }"
+        ></alf-input>
+      </div>
+    </div>
+  </section>
+
+  <!-- Crystal Variants -->
+  <section class="viewer-section">
+    <h2>Crystal Variants</h2>
+    <div class="viewer-grid">
+      <div class="viewer-item">
+        <label>Warning</label>
+        <alf-input
+          [variant]="AlfColorVariantEnum.WarningCrystal"
+          label="Búsqueda"
+          placeholder="Buscar algo..."
+          [value]="val5()"
+          (valueChange)="val5.set($event)"
+          [config]="{ prefix: '🔍', clearable: true }"
+        ></alf-input>
+      </div>
+
+      <div class="viewer-item">
+        <label>Info (Textarea)</label>
+        <alf-input
+          [variant]="AlfColorVariantEnum.InfoCrystal"
+          label="Observaciones"
+          placeholder="Escribe aquí..."
+          [value]="val6()"
+          (valueChange)="val6.set($event)"
+          inputType="textarea"
+          [config]="{ rows: 2, autoResize: true }"
+        ></alf-input>
+      </div>
+    </div>
+  </section>
+</div>

@@ -33,22 +33,6 @@
     border-width: var(--alf-brd-width-focus, var(--alf-brd-width, revert));
     border-radius: var(--alf-brd-radius-focus, var(--alf-brd-radius, revert));
     border-style: var(--alf-brd-style-focus, var(--alf-brd-style, revert));
-
-    // Individuales Focus
-    border-top-width:    var(--alf-brd-border-top-width-focus,    var(--alf-brd-width-focus, var(--alf-brd-border-top-width, revert)));
-    border-right-width:  var(--alf-brd-border-right-width-focus,  var(--alf-brd-width-focus, var(--alf-brd-border-right-width, revert)));
-    border-bottom-width: var(--alf-brd-border-bottom-width-focus, var(--alf-brd-width-focus, var(--alf-brd-border-bottom-width, revert)));
-    border-left-width:   var(--alf-brd-border-left-width-focus,   var(--alf-brd-width-focus, var(--alf-brd-border-left-width, revert)));
-
-    border-top-color:    var(--alf-brd-border-top-color-focus,    var(--alf-brd-color-focus, var(--alf-brd-border-top-color, revert)));
-    border-right-color:  var(--alf-brd-border-right-color-focus,  var(--alf-brd-color-focus, var(--alf-brd-border-right-color, revert)));
-    border-bottom-color: var(--alf-brd-border-bottom-color-focus, var(--alf-brd-color-focus, var(--alf-brd-border-bottom-color, revert)));
-    border-left-color:   var(--alf-brd-border-left-color-focus,   var(--alf-brd-color-focus, var(--alf-brd-border-left-color, revert)));
-
-    border-top-left-radius:     var(--alf-brd-border-top-left-radius-focus,     var(--alf-brd-radius-focus, var(--alf-brd-border-top-left-radius, revert)));
-    border-top-right-radius:    var(--alf-brd-border-top-right-radius-focus,    var(--alf-brd-radius-focus, var(--alf-brd-border-top-right-radius, revert)));
-    border-bottom-right-radius: var(--alf-brd-border-bottom-right-radius-focus, var(--alf-brd-radius-focus, var(--alf-brd-border-bottom-right-radius, revert)));
-    border-bottom-left-radius:  var(--alf-brd-border-bottom-left-radius-focus,  var(--alf-brd-radius-focus, var(--alf-brd-border-bottom-left-radius, revert)));
   }
 
   &:hover {
@@ -56,22 +40,6 @@
     border-width: var(--alf-brd-width-hover, var(--alf-brd-width, revert));
     border-radius: var(--alf-brd-radius-hover, var(--alf-brd-radius, revert));
     border-style: var(--alf-brd-style-hover, var(--alf-brd-style, revert));
-
-    // Individuales Hover
-    border-top-width:    var(--alf-brd-border-top-width-hover,    var(--alf-brd-width-hover, var(--alf-brd-border-top-width, revert)));
-    border-right-width:  var(--alf-brd-border-right-width-hover,  var(--alf-brd-width-hover, var(--alf-brd-border-right-width, revert)));
-    border-bottom-width: var(--alf-brd-border-bottom-width-hover, var(--alf-brd-width-hover, var(--alf-brd-border-bottom-width, revert)));
-    border-left-width:   var(--alf-brd-border-left-width-hover,   var(--alf-brd-width-hover, var(--alf-brd-border-left-width, revert)));
-
-    border-top-color:    var(--alf-brd-border-top-color-hover,    var(--alf-brd-color-hover, var(--alf-brd-border-top-color, revert)));
-    border-right-color:  var(--alf-brd-border-right-color-hover,  var(--alf-brd-color-hover, var(--alf-brd-border-right-color, revert)));
-    border-bottom-color: var(--alf-brd-border-bottom-color-hover, var(--alf-brd-color-hover, var(--alf-brd-border-bottom-color, revert)));
-    border-left-color:   var(--alf-brd-border-left-color-hover,   var(--alf-brd-color-hover, var(--alf-brd-border-left-color, revert)));
-
-    border-top-left-radius:     var(--alf-brd-border-top-left-radius-hover,     var(--alf-brd-radius-hover, var(--alf-brd-border-top-left-radius, revert)));
-    border-top-right-radius:    var(--alf-brd-border-top-right-radius-hover,    var(--alf-brd-radius-hover, var(--alf-brd-border-top-right-radius, revert)));
-    border-bottom-right-radius: var(--alf-brd-border-bottom-right-radius-hover, var(--alf-brd-radius-hover, var(--alf-brd-border-bottom-right-radius, revert)));
-    border-bottom-left-radius:  var(--alf-brd-border-bottom-left-radius-hover,  var(--alf-brd-radius-hover, var(--alf-brd-border-bottom-left-radius, revert)));
   }
 
   &:active {
@@ -79,22 +47,6 @@
     border-width: var(--alf-brd-width-active, var(--alf-brd-width-hover, var(--alf-brd-width, revert)));
     border-radius: var(--alf-brd-radius-active, var(--alf-brd-radius-hover, var(--alf-brd-radius, revert)));
     border-style: var(--alf-brd-style-active, var(--alf-brd-style-hover, var(--alf-brd-style, revert)));
-
-    // Individuales Active
-    border-top-width:    var(--alf-brd-border-top-width-active,    var(--alf-brd-width-active, var(--alf-brd-border-top-width, revert)));
-    border-right-width:  var(--alf-brd-border-right-width-active,  var(--alf-brd-width-active, var(--alf-brd-border-right-width, revert)));
-    border-bottom-width: var(--alf-brd-border-bottom-width-active, var(--alf-brd-width-active, var(--alf-brd-border-bottom-width, revert)));
-    border-left-width:   var(--alf-brd-border-left-width-active,   var(--alf-brd-width-active, var(--alf-brd-border-left-width, revert)));
-
-    border-top-color:    var(--alf-brd-border-top-color-active,    var(--alf-brd-color-active, var(--alf-brd-border-top-color, revert)));
-    border-right-color:  var(--alf-brd-border-right-color-active,  var(--alf-brd-color-active, var(--alf-brd-border-right-color, revert)));
-    border-bottom-color: var(--alf-brd-border-bottom-color-active, var(--alf-brd-color-active, var(--alf-brd-border-bottom-color, revert)));
-    border-left-color:   var(--alf-brd-border-left-color-active,   var(--alf-brd-color-active, var(--alf-brd-border-left-color, revert)));
-
-    border-top-left-radius:     var(--alf-brd-border-top-left-radius-active,     var(--alf-brd-radius-active, var(--alf-brd-border-top-left-radius, revert)));
-    border-top-right-radius:    var(--alf-brd-border-top-right-radius-active,    var(--alf-brd-radius-active, var(--alf-brd-border-top-right-radius, revert)));
-    border-bottom-right-radius: var(--alf-brd-border-bottom-right-radius-active, var(--alf-brd-radius-active, var(--alf-brd-border-bottom-right-radius, revert)));
-    border-bottom-left-radius:  var(--alf-brd-border-bottom-left-radius-active,  var(--alf-brd-radius-active, var(--alf-brd-border-bottom-left-radius, revert)));
   }
 
   &[disabled],
@@ -104,22 +56,6 @@
     border-width: var(--alf-brd-width-disabled, var(--alf-brd-width, revert));
     border-radius: var(--alf-brd-radius-disabled, var(--alf-brd-radius, revert));
     border-style: var(--alf-brd-style-disabled, var(--alf-brd-style, revert));
-
-    // Individuales Disabled
-    border-top-width:    var(--alf-brd-border-top-width-disabled,    var(--alf-brd-width-disabled, var(--alf-brd-border-top-width, revert)));
-    border-right-width:  var(--alf-brd-border-right-width-disabled,  var(--alf-brd-width-disabled, var(--alf-brd-border-right-width, revert)));
-    border-bottom-width: var(--alf-brd-border-bottom-width-disabled, var(--alf-brd-width-disabled, var(--alf-brd-border-bottom-width, revert)));
-    border-left-width:   var(--alf-brd-border-left-width-disabled,   var(--alf-brd-width-disabled, var(--alf-brd-border-left-width, revert)));
-
-    border-top-color:    var(--alf-brd-border-top-color-disabled,    var(--alf-brd-color-disabled, var(--alf-brd-border-top-color, revert)));
-    border-right-color:  var(--alf-brd-border-right-color-disabled,  var(--alf-brd-color-disabled, var(--alf-brd-border-right-color, revert)));
-    border-bottom-color: var(--alf-brd-border-bottom-color-disabled, var(--alf-brd-color-disabled, var(--alf-brd-border-bottom-color, revert)));
-    border-left-color:   var(--alf-brd-border-left-color-disabled,   var(--alf-brd-color-disabled, var(--alf-brd-border-left-color, revert)));
-
-    border-top-left-radius:     var(--alf-brd-border-top-left-radius-disabled,     var(--alf-brd-radius-disabled, var(--alf-brd-border-top-left-radius, revert)));
-    border-top-right-radius:    var(--alf-brd-border-top-right-radius-disabled,    var(--alf-brd-radius-disabled, var(--alf-brd-border-top-right-radius, revert)));
-    border-bottom-right-radius: var(--alf-brd-border-bottom-right-radius-disabled, var(--alf-brd-radius-disabled, var(--alf-brd-border-bottom-right-radius, revert)));
-    border-bottom-left-radius:  var(--alf-brd-border-bottom-left-radius-disabled,  var(--alf-brd-radius-disabled, var(--alf-brd-border-bottom-left-radius, revert)));
   }
 }
 
@@ -129,7 +65,6 @@
  */
 @mixin alf-border-css-vars(
   $prefix,
-  $radius-fallback: revert,
   $disabled-selectors: '&[disabled], &:disabled, &.disabled'
 ) {
   border-width: var(#{$prefix}-border-width, revert);
@@ -147,11 +82,11 @@
   border-right-color: var(#{$prefix}-border-right-color, var(#{$prefix}-border-color, revert));
   border-bottom-color: var(#{$prefix}-border-bottom-color, var(#{$prefix}-border-color, revert));
   border-left-color: var(#{$prefix}-border-left-color, var(#{$prefix}-border-color, revert));
-  border-radius: var(#{$prefix}-border-radius, #{$radius-fallback});
-  border-top-left-radius: var(#{$prefix}-border-top-left-radius, var(#{$prefix}-border-radius, #{$radius-fallback}));
-  border-top-right-radius: var(#{$prefix}-border-top-right-radius, var(#{$prefix}-border-radius, #{$radius-fallback}));
-  border-bottom-right-radius: var(#{$prefix}-border-bottom-right-radius, var(#{$prefix}-border-radius, #{$radius-fallback}));
-  border-bottom-left-radius: var(#{$prefix}-border-bottom-left-radius, var(#{$prefix}-border-radius, #{$radius-fallback}));
+  border-radius: var(#{$prefix}-border-radius, revert);
+  border-top-left-radius: var(#{$prefix}-border-top-left-radius, var(#{$prefix}-border-radius, revert));
+  border-top-right-radius: var(#{$prefix}-border-top-right-radius, var(#{$prefix}-border-radius, revert));
+  border-bottom-right-radius: var(#{$prefix}-border-bottom-right-radius, var(#{$prefix}-border-radius, revert));
+  border-bottom-left-radius: var(#{$prefix}-border-bottom-left-radius, var(#{$prefix}-border-radius, revert));
   outline-width: var(#{$prefix}-border-outline-width, revert);
   outline-style: var(#{$prefix}-border-outline-style, revert);
   outline-color: var(#{$prefix}-border-outline-color, revert);
@@ -160,113 +95,29 @@
 
   &:hover {
     border-width: var(#{$prefix}-border-hover-width, var(#{$prefix}-border-width, revert));
-    border-top-width: var(#{$prefix}-border-hover-top-width, var(#{$prefix}-border-hover-width, var(#{$prefix}-border-top-width, var(#{$prefix}-border-width, revert))));
-    border-right-width: var(#{$prefix}-border-hover-right-width, var(#{$prefix}-border-hover-width, var(#{$prefix}-border-right-width, var(#{$prefix}-border-width, revert))));
-    border-bottom-width: var(#{$prefix}-border-hover-bottom-width, var(#{$prefix}-border-hover-width, var(#{$prefix}-border-bottom-width, var(#{$prefix}-border-width, revert))));
-    border-left-width: var(#{$prefix}-border-hover-left-width, var(#{$prefix}-border-hover-width, var(#{$prefix}-border-left-width, var(#{$prefix}-border-width, revert))));
     border-style: var(#{$prefix}-border-hover-style, var(#{$prefix}-border-style, revert));
-    border-top-style: var(#{$prefix}-border-hover-top-style, var(#{$prefix}-border-hover-style, var(#{$prefix}-border-top-style, var(#{$prefix}-border-style, revert))));
-    border-right-style: var(#{$prefix}-border-hover-right-style, var(#{$prefix}-border-hover-style, var(#{$prefix}-border-right-style, var(#{$prefix}-border-style, revert))));
-    border-bottom-style: var(#{$prefix}-border-hover-bottom-style, var(#{$prefix}-border-hover-style, var(#{$prefix}-border-bottom-style, var(#{$prefix}-border-style, revert))));
-    border-left-style: var(#{$prefix}-border-hover-left-style, var(#{$prefix}-border-hover-style, var(#{$prefix}-border-left-style, var(#{$prefix}-border-style, revert))));
     border-color: var(#{$prefix}-border-hover-color, var(#{$prefix}-border-color, revert));
-    border-top-color: var(#{$prefix}-border-hover-top-color, var(#{$prefix}-border-hover-color, var(#{$prefix}-border-top-color, var(#{$prefix}-border-color, revert))));
-    border-right-color: var(#{$prefix}-border-hover-right-color, var(#{$prefix}-border-hover-color, var(#{$prefix}-border-right-color, var(#{$prefix}-border-color, revert))));
-    border-bottom-color: var(#{$prefix}-border-hover-bottom-color, var(#{$prefix}-border-hover-color, var(#{$prefix}-border-bottom-color, var(#{$prefix}-border-color, revert))));
-    border-left-color: var(#{$prefix}-border-hover-left-color, var(#{$prefix}-border-hover-color, var(#{$prefix}-border-left-color, var(#{$prefix}-border-color, revert))));
-    border-radius: var(#{$prefix}-border-hover-radius, var(#{$prefix}-border-radius, #{$radius-fallback}));
-    border-top-left-radius: var(#{$prefix}-border-hover-top-left-radius, var(#{$prefix}-border-hover-radius, var(#{$prefix}-border-top-left-radius, var(#{$prefix}-border-radius, #{$radius-fallback}))));
-    border-top-right-radius: var(#{$prefix}-border-hover-top-right-radius, var(#{$prefix}-border-hover-radius, var(#{$prefix}-border-top-right-radius, var(#{$prefix}-border-radius, #{$radius-fallback}))));
-    border-bottom-right-radius: var(#{$prefix}-border-hover-bottom-right-radius, var(#{$prefix}-border-hover-radius, var(#{$prefix}-border-bottom-right-radius, var(#{$prefix}-border-radius, #{$radius-fallback}))));
-    border-bottom-left-radius: var(#{$prefix}-border-hover-bottom-left-radius, var(#{$prefix}-border-hover-radius, var(#{$prefix}-border-bottom-left-radius, var(#{$prefix}-border-radius, #{$radius-fallback}))));
-    outline-width: var(#{$prefix}-border-hover-outline-width, var(#{$prefix}-border-outline-width, revert));
-    outline-style: var(#{$prefix}-border-hover-outline-style, var(#{$prefix}-border-outline-style, revert));
-    outline-color: var(#{$prefix}-border-hover-outline-color, var(#{$prefix}-border-outline-color, revert));
-    outline-offset: var(#{$prefix}-border-hover-outline-offset, var(#{$prefix}-border-outline-offset, revert));
-    box-sizing: var(#{$prefix}-border-hover-box-sizing, var(#{$prefix}-border-box-sizing, var(#{$prefix}-box-sizing, revert)));
+    border-radius: var(#{$prefix}-border-hover-radius, var(#{$prefix}-border-radius, revert));
   }
 
   &:active {
     border-width: var(#{$prefix}-border-active-width, var(#{$prefix}-border-width, revert));
-    border-top-width: var(#{$prefix}-border-active-top-width, var(#{$prefix}-border-active-width, var(#{$prefix}-border-top-width, var(#{$prefix}-border-width, revert))));
-    border-right-width: var(#{$prefix}-border-active-right-width, var(#{$prefix}-border-active-width, var(#{$prefix}-border-right-width, var(#{$prefix}-border-width, revert))));
-    border-bottom-width: var(#{$prefix}-border-active-bottom-width, var(#{$prefix}-border-active-width, var(#{$prefix}-border-bottom-width, var(#{$prefix}-border-width, revert))));
-    border-left-width: var(#{$prefix}-border-active-left-width, var(#{$prefix}-border-active-width, var(#{$prefix}-border-left-width, var(#{$prefix}-border-width, revert))));
     border-style: var(#{$prefix}-border-active-style, var(#{$prefix}-border-style, revert));
-    border-top-style: var(#{$prefix}-border-active-top-style, var(#{$prefix}-border-active-style, var(#{$prefix}-border-top-style, var(#{$prefix}-border-style, revert))));
-    border-right-style: var(#{$prefix}-border-active-right-style, var(#{$prefix}-border-active-style, var(#{$prefix}-border-right-style, var(#{$prefix}-border-style, revert))));
-    border-bottom-style: var(#{$prefix}-border-active-bottom-style, var(#{$prefix}-border-active-style, var(#{$prefix}-border-bottom-style, var(#{$prefix}-border-style, revert))));
-    border-left-style: var(#{$prefix}-border-active-left-style, var(#{$prefix}-border-active-style, var(#{$prefix}-border-left-style, var(#{$prefix}-border-style, revert))));
     border-color: var(#{$prefix}-border-active-color, var(#{$prefix}-border-color, revert));
-    border-top-color: var(#{$prefix}-border-active-top-color, var(#{$prefix}-border-active-color, var(#{$prefix}-border-top-color, var(#{$prefix}-border-color, revert))));
-    border-right-color: var(#{$prefix}-border-active-right-color, var(#{$prefix}-border-active-color, var(#{$prefix}-border-right-color, var(#{$prefix}-border-color, revert))));
-    border-bottom-color: var(#{$prefix}-border-active-bottom-color, var(#{$prefix}-border-active-color, var(#{$prefix}-border-bottom-color, var(#{$prefix}-border-color, revert))));
-    border-left-color: var(#{$prefix}-border-active-left-color, var(#{$prefix}-border-active-color, var(#{$prefix}-border-left-color, var(#{$prefix}-border-color, revert))));
-    border-radius: var(#{$prefix}-border-active-radius, var(#{$prefix}-border-radius, #{$radius-fallback}));
-    border-top-left-radius: var(#{$prefix}-border-active-top-left-radius, var(#{$prefix}-border-active-radius, var(#{$prefix}-border-top-left-radius, var(#{$prefix}-border-radius, #{$radius-fallback}))));
-    border-top-right-radius: var(#{$prefix}-border-active-top-right-radius, var(#{$prefix}-border-active-radius, var(#{$prefix}-border-top-right-radius, var(#{$prefix}-border-radius, #{$radius-fallback}))));
-    border-bottom-right-radius: var(#{$prefix}-border-active-bottom-right-radius, var(#{$prefix}-border-active-radius, var(#{$prefix}-border-bottom-right-radius, var(#{$prefix}-border-radius, #{$radius-fallback}))));
-    border-bottom-left-radius: var(#{$prefix}-border-active-bottom-left-radius, var(#{$prefix}-border-active-radius, var(#{$prefix}-border-bottom-left-radius, var(#{$prefix}-border-radius, #{$radius-fallback}))));
-    outline-width: var(#{$prefix}-border-active-outline-width, var(#{$prefix}-border-outline-width, revert));
-    outline-style: var(#{$prefix}-border-active-outline-style, var(#{$prefix}-border-outline-style, revert));
-    outline-color: var(#{$prefix}-border-active-outline-color, var(#{$prefix}-border-outline-color, revert));
-    outline-offset: var(#{$prefix}-border-active-outline-offset, var(#{$prefix}-border-outline-offset, revert));
-    box-sizing: var(#{$prefix}-border-active-box-sizing, var(#{$prefix}-border-box-sizing, var(#{$prefix}-box-sizing, revert)));
+    border-radius: var(#{$prefix}-border-active-radius, var(#{$prefix}-border-radius, revert));
   }
 
   &:focus-visible {
     border-width: var(#{$prefix}-border-focus-width, var(#{$prefix}-border-width, revert));
-    border-top-width: var(#{$prefix}-border-focus-top-width, var(#{$prefix}-border-focus-width, var(#{$prefix}-border-top-width, var(#{$prefix}-border-width, revert))));
-    border-right-width: var(#{$prefix}-border-focus-right-width, var(#{$prefix}-border-focus-width, var(#{$prefix}-border-right-width, var(#{$prefix}-border-width, revert))));
-    border-bottom-width: var(#{$prefix}-border-focus-bottom-width, var(#{$prefix}-border-focus-width, var(#{$prefix}-border-bottom-width, var(#{$prefix}-border-width, revert))));
-    border-left-width: var(#{$prefix}-border-focus-left-width, var(#{$prefix}-border-focus-width, var(--alf-brd-border-left-width, revert)));
     border-style: var(#{$prefix}-border-focus-style, var(#{$prefix}-border-style, revert));
-    border-top-style: var(#{$prefix}-border-focus-top-style, var(#{$prefix}-border-focus-style, var(#{$prefix}-border-top-style, var(#{$prefix}-border-style, revert))));
-    border-right-style: var(#{$prefix}-border-focus-right-style, var(#{$prefix}-border-focus-style, var(#{$prefix}-border-right-style, var(#{$prefix}-border-style, revert))));
-    border-bottom-style: var(#{$prefix}-border-focus-bottom-style, var(#{$prefix}-border-focus-style, var(#{$prefix}-border-bottom-style, var(#{$prefix}-border-style, revert))));
-    border-left-style: var(#{$prefix}-border-focus-left-style, var(#{$prefix}-border-focus-style, var(#{$prefix}-border-left-style, var(#{$prefix}-border-style, revert))));
     border-color: var(#{$prefix}-border-focus-color, var(#{$prefix}-border-color, revert));
-    border-top-color: var(#{$prefix}-border-focus-top-color, var(#{$prefix}-border-focus-color, var(#{$prefix}-border-top-color, var(#{$prefix}-border-color, revert))));
-    border-right-color: var(#{$prefix}-border-focus-right-color, var(#{$prefix}-border-focus-color, var(#{$prefix}-border-right-color, var(#{$prefix}-border-color, revert))));
-    border-bottom-color: var(#{$prefix}-border-focus-bottom-color, var(#{$prefix}-border-focus-color, var(#{$prefix}-border-bottom-color, var(#{$prefix}-border-color, revert))));
-    border-left-color: var(#{$prefix}-border-focus-left-color, var(#{$prefix}-border-focus-color, var(#{$prefix}-border-left-color, var(#{$prefix}-border-color, revert))));
-    border-radius: var(#{$prefix}-border-focus-radius, var(#{$prefix}-border-radius, #{$radius-fallback}));
-    border-top-left-radius: var(#{$prefix}-border-focus-top-left-radius, var(#{$prefix}-border-focus-radius, var(#{$prefix}-border-top-left-radius, var(#{$prefix}-border-radius, #{$radius-fallback}))));
-    border-top-right-radius: var(#{$prefix}-border-focus-top-right-radius, var(#{$prefix}-border-focus-radius, var(#{$prefix}-border-top-right-radius, var(#{$prefix}-border-radius, #{$radius-fallback}))));
-    border-bottom-right-radius: var(#{$prefix}-border-focus-bottom-right-radius, var(#{$prefix}-border-focus-radius, var(#{$prefix}-border-bottom-right-radius, var(#{$prefix}-border-radius, #{$radius-fallback}))));
-    border-bottom-left-radius: var(#{$prefix}-border-focus-bottom-left-radius, var(#{$prefix}-border-focus-radius, var(#{$prefix}-border-bottom-left-radius, var(#{$prefix}-border-radius, #{$radius-fallback}))));
-    outline-width: var(#{$prefix}-border-focus-outline-width, var(#{$prefix}-border-outline-width, revert));
-    outline-style: var(#{$prefix}-border-focus-outline-style, var(#{$prefix}-border-outline-style, revert));
-    outline-color: var(#{$prefix}-border-focus-outline-color, var(#{$prefix}-border-outline-color, revert));
-    outline-offset: var(#{$prefix}-border-focus-outline-offset, var(#{$prefix}-border-outline-offset, revert));
-    box-sizing: var(#{$prefix}-border-focus-box-sizing, var(#{$prefix}-border-box-sizing, var(#{$prefix}-box-sizing, revert)));
+    border-radius: var(#{$prefix}-border-focus-radius, var(#{$prefix}-border-radius, revert));
   }
 
   #{$disabled-selectors} {
     border-width: var(#{$prefix}-border-disabled-width, var(#{$prefix}-border-width, revert));
-    border-top-width: var(#{$prefix}-border-disabled-top-width, var(#{$prefix}-border-disabled-width, var(#{$prefix}-border-top-width, var(#{$prefix}-border-width, revert))));
-    border-right-width: var(#{$prefix}-border-disabled-right-width, var(#{$prefix}-border-disabled-width, var(#{$prefix}-border-right-width, var(#{$prefix}-border-width, revert))));
-    border-bottom-width: var(#{$prefix}-border-disabled-bottom-width, var(#{$prefix}-border-disabled-width, var(#{$prefix}-border-bottom-width, var(#{$prefix}-border-width, revert))));
-    border-left-width: var(#{$prefix}-border-disabled-left-width, var(#{$prefix}-border-disabled-width, var(#{$prefix}-border-left-width, var(#{$prefix}-border-width, revert))));
     border-style: var(#{$prefix}-border-disabled-style, var(#{$prefix}-border-style, revert));
-    border-top-style: var(#{$prefix}-border-disabled-top-style, var(#{$prefix}-border-disabled-style, var(#{$prefix}-border-top-style, var(#{$prefix}-border-style, revert))));
-    border-right-style: var(#{$prefix}-border-disabled-right-style, var(#{$prefix}-border-disabled-style, var(#{$prefix}-border-right-style, var(#{$prefix}-border-style, revert))));
-    border-bottom-style: var(#{$prefix}-border-disabled-bottom-style, var(#{$prefix}-border-disabled-style, var(#{$prefix}-border-bottom-style, var(#{$prefix}-border-style, revert))));
-    border-left-style: var(#{$prefix}-border-disabled-left-style, var(#{$prefix}-border-disabled-style, var(#{$prefix}-border-left-style, var(#{$prefix}-border-style, revert))));
     border-color: var(#{$prefix}-border-disabled-color, var(#{$prefix}-border-color, revert));
-    border-top-color: var(#{$prefix}-border-disabled-top-color, var(#{$prefix}-border-disabled-color, var(#{$prefix}-border-top-color, var(#{$prefix}-border-color, revert))));
-    border-right-color: var(#{$prefix}-border-disabled-right-color, var(#{$prefix}-border-disabled-color, var(#{$prefix}-border-right-color, var(#{$prefix}-border-color, revert))));
-    border-bottom-color: var(#{$prefix}-border-disabled-bottom-color, var(#{$prefix}-border-disabled-color, var(#{$prefix}-border-bottom-color, var(#{$prefix}-border-color, revert))));
-    border-left-color: var(--alf-brd-border-left-color-disabled, var(--alf-brd-color-disabled, revert));
-    border-radius: var(#{$prefix}-border-disabled-radius, var(#{$prefix}-border-radius, #{$radius-fallback}));
-    border-top-left-radius: var(#{$prefix}-border-disabled-top-left-radius, var(#{$prefix}-border-disabled-radius, var(#{$prefix}-border-top-left-radius, var(#{$prefix}-border-radius, #{$radius-fallback}))));
-    border-top-right-radius: var(#{$prefix}-border-disabled-top-right-radius, var(#{$prefix}-border-disabled-radius, var(#{$prefix}-border-top-right-radius, var(#{$prefix}-border-radius, #{$radius-fallback}))));
-    border-bottom-right-radius: var(#{$prefix}-border-disabled-bottom-right-radius, var(#{$prefix}-border-disabled-radius, var(--alf-brd-border-bottom-right-radius, #{$radius-fallback})));
-    border-bottom-left-radius: var(#{$prefix}-border-disabled-bottom-left-radius, var(#{$prefix}-border-disabled-radius, var(#{$prefix}-border-bottom-left-radius, var(#{$prefix}-border-radius, #{$radius-fallback}))));
-    outline-width: var(#{$prefix}-border-disabled-outline-width, var(#{$prefix}-border-outline-width, revert));
-    outline-style: var(#{$prefix}-border-disabled-outline-style, var(#{$prefix}-border-outline-style, revert));
-    outline-color: var(#{$prefix}-border-disabled-outline-color, var(#{$prefix}-border-outline-color, revert));
-    outline-offset: var(#{$prefix}-border-disabled-outline-offset, var(#{$prefix}-border-outline-offset, revert));
-    box-sizing: var(#{$prefix}-border-disabled-box-sizing, var(#{$prefix}-border-box-sizing, var(#{$prefix}-box-sizing, revert)));
+    border-radius: var(#{$prefix}-border-disabled-radius, var(#{$prefix}-border-radius, revert));
   }
 }

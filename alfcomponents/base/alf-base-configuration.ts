@@ -1,14 +1,39 @@
 import { computed, Directive, input } from '@angular/core';
 import { AlfTooltipConfig } from '@alfcomponents/directives';
-import { AlfButtonVisualTypeEnum, AlfColorVariantEnum, AlfCursorEnum, AlfVisualPredefinedEnum } from '@alfcomponents/enums';
-import { AlfAnimateCssInterface, AlfBackgroundsInterface, AlfBorderInterface, AlfDisplayAndLayoutInterface, AlfMarginInterface, AlfOutlineInterface, AlfPaddingInterface, AlfRippleInterface, AlfShadowsInterface, AlfTextStyleInterface, AlfTransformInterface, AlfTypographyInterface } from '@alfcomponents/interfaces';
+import { AlfColorVariantEnum, AlfCursorEnum } from '@alfcomponents/enums';
+import { 
+  AlfAnimateCssInterface, 
+  AlfBackgroundsInterface, 
+  AlfBorderInterface, 
+  AlfDisplayAndLayoutInterface, 
+  AlfMarginInterface, 
+  AlfOutlineInterface, 
+  AlfPaddingInterface, 
+  AlfRippleInterface, 
+  AlfShadowsInterface, 
+  AlfTextStyleInterface, 
+  AlfTransformInterface, 
+  AlfTypographyInterface 
+} from '@alfcomponents/interfaces';
 import { AlfAriaBaseInterface } from '@alfcomponents/interfaces/alf-aria.interface';
-import { visualAnimationsBase, visualBackgroundBase, visualBorderBase, visualDisplayAndLayoutBase, visualMarginBase, visualOutlineBase, visualPaddingBase, visualRippleColorBase, visualShadowsBase, visualTextStyleBase, visualTransformBase, visualTypographyBase } from './base-visual';
+import { 
+  visualAnimationsBase, 
+  visualBackgroundBase, 
+  visualBorderBase, 
+  visualDisplayAndLayoutBase, 
+  visualMarginBase, 
+  visualOutlineBase, 
+  visualPaddingBase, 
+  visualRippleColorBase, 
+  visualShadowsBase, 
+  visualTextStyleBase, 
+  visualTransformBase, 
+  visualTypographyBase,
+  visualAnimationsClassBase 
+} from './base-visual';
 
 export interface AlfBaseCommonConfigInterface {
   readonly colorVariant?: AlfColorVariantEnum;
-  readonly visualType?: AlfButtonVisualTypeEnum;
-  readonly predefined?: AlfVisualPredefinedEnum;
   readonly cursor?: AlfCursorEnum;
   readonly disabled?: boolean;
   readonly backgrounds?: AlfBackgroundsInterface;
@@ -30,20 +55,13 @@ export interface AlfBaseCommonConfigInterface {
 export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigInterface> {
   protected abstract readonly visualPrefix: string;
 
-  // Inputs base comunes a la mayoría de componentes interactivos
-  // El input de configuracion principal que engloba todos
+  // Input de configuración principal
   public readonly inputConfig = input<TConfig>();
 
-  // ***************************************************** //
-  // **** CONFIGURACION BASE PARA LOS INPUTS DIRECTOS **** //
-  // ***************************************************** //
-  // Entrados directamente en el componente
-
+  // Inputs directos para sobrescritura
   protected readonly tooltip = input<string | AlfTooltipConfig | undefined>();
   protected readonly ripple = input<boolean | AlfRippleInterface | undefined>();
   protected readonly colorVariant = input<AlfColorVariantEnum>();
-  protected readonly visualType = input<AlfButtonVisualTypeEnum>();
-  protected readonly predefined = input<AlfVisualPredefinedEnum>();
   protected readonly cursor = input<AlfCursorEnum>();
   protected readonly disabled = input<boolean>();
   protected readonly aria = input<AlfAriaBaseInterface | undefined>();
@@ -58,38 +76,21 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
   protected readonly transform = input<AlfTransformInterface | undefined>();
   protected readonly typography = input<AlfTypographyInterface | undefined>();
   protected readonly animations = input<AlfAnimateCssInterface | undefined>();
+  protected readonly customClass = input<string | undefined>();
+  protected readonly customStyle = input<string | undefined>();
 
-  // ******************************************** //
-  // **** CONFIGURACION BASE PARA LOS INPUTS **** //
-  // ******************************************** //
-  
   /**
-   * Configuración resuelta. 
-   * Por defecto es el inputConfig(), pero puede ser sobrescrita en componentes derivados 
-   * (ej: para combinar configuraciones predefinidas de un input [variant]).
+   * Configuración resuelta base.
    */
-  protected readonly resolvedConfig = computed(() => this.inputConfig());
+  public readonly resolvedConfig = computed(() => this.inputConfig());
 
-  // Computeds base (fallback: direct input -> resolvedConfig -> default)
-
-  protected readonly tooltipComputed = computed(() =>
-    this.tooltip() ?? undefined,
-  );
-
+  // Computeds de resolución de estado
   protected readonly colorVariantComputed = computed(() =>
     this.colorVariant() ?? this.resolvedConfig()?.colorVariant ?? AlfColorVariantEnum.Default,
   );
 
   protected readonly cursorComputed = computed(() =>
     this.cursor() ?? this.resolvedConfig()?.cursor ?? AlfCursorEnum.Pointer,
-  );
-
-  protected readonly predefinedComputed = computed(() =>
-    this.predefined() ?? this.resolvedConfig()?.predefined,
-  );
-
-  protected readonly visualTypeComputed = computed(() =>
-    this.visualType() ?? this.resolvedConfig()?.visualType,
   );
 
   protected readonly rippleInputComputed = computed(() =>
@@ -100,188 +101,133 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
     this.disabled() ?? this.resolvedConfig()?.disabled ?? false,
   );
 
-  protected readonly ariaComputed = computed(() =>
-    this.aria() ?? undefined,
+  public readonly tooltipComputed = computed(() => 
+    this.tooltip() ?? (this.resolvedConfig() as any)?.tooltip
   );
 
-  protected readonly backgroundsComputed = computed(() =>
-    this.backgrounds() ?? this.resolvedConfig()?.backgrounds,
+  public readonly ariaComputed = computed(() => 
+    this.aria() ?? (this.resolvedConfig() as any)?.aria
   );
 
-  protected readonly borderComputed = computed(() =>
-    this.border() ?? this.resolvedConfig()?.border,
+  public readonly customClassComputed = computed(() => 
+    this.customClass() ?? this.resolvedConfig()?.customClass ?? ''
   );
 
-  protected readonly displayAndLayoutComputed = computed(() =>
-    this.displayAndLayout() ?? this.resolvedConfig()?.displayAndLayout,
+  public readonly customStyleComputed = computed(() => 
+    this.customStyle() ?? this.resolvedConfig()?.customStyle ?? ''
   );
 
-  protected readonly marginComputed = computed(() =>
-    this.margin() ?? this.resolvedConfig()?.margin,
-  );
+  // Computeds para estilos inyectados
+  protected readonly backgroundsComputed = computed(() => this.backgrounds() ?? this.resolvedConfig()?.backgrounds);
+  protected readonly borderComputed = computed(() => this.border() ?? this.resolvedConfig()?.border);
+  protected readonly displayAndLayoutComputed = computed(() => this.displayAndLayout() ?? this.resolvedConfig()?.displayAndLayout);
+  protected readonly marginComputed = computed(() => this.margin() ?? this.resolvedConfig()?.margin);
+  protected readonly outlineComputed = computed(() => this.outline() ?? this.resolvedConfig()?.outline);
+  protected readonly paddingComputed = computed(() => this.padding() ?? this.resolvedConfig()?.padding);
+  protected readonly shadowsComputed = computed(() => this.shadows() ?? this.resolvedConfig()?.shadows);
+  protected readonly textStyleComputed = computed(() => this.textStyle() ?? this.resolvedConfig()?.textStyle);
+  protected readonly transformComputed = computed(() => this.transform() ?? this.resolvedConfig()?.transform);
+  protected readonly typographyComputed = computed(() => this.typography() ?? this.resolvedConfig()?.typography);
+  protected readonly animationsComputed = computed(() => this.animations() ?? this.resolvedConfig()?.animations);
 
-  protected readonly outlineComputed = computed(() =>
-    this.outline() ?? this.resolvedConfig()?.outline,
-  );
-
-  protected readonly paddingComputed = computed(() =>
-    this.padding() ?? this.resolvedConfig()?.padding,
-  );
-
-  protected readonly shadowsComputed = computed(() =>
-    this.shadows() ?? this.resolvedConfig()?.shadows,
-  );
-
-  protected readonly textStyleComputed = computed(() =>
-    this.textStyle() ?? this.resolvedConfig()?.textStyle,
-  );
-
-  protected readonly transformComputed = computed(() =>
-    this.transform() ?? this.resolvedConfig()?.transform,
-  );
-
-  protected readonly typographyComputed = computed(() =>
-    this.typography() ?? this.resolvedConfig()?.typography,
-  );
-
-  protected readonly animationsComputed = computed(() =>
-    this.animations() ?? this.resolvedConfig()?.animations,
-  );
-
-  protected readonly customClassComputed = computed(() =>
-    this.resolvedConfig()?.customClass ?? '',
-  );
-
-  protected readonly customStyleComputed = computed(() =>
-    this.resolvedConfig()?.customStyle ?? '',
+  public readonly animationsClassComputed = computed(() => 
+    visualAnimationsClassBase({
+      animations: this.animationsComputed(),
+    })
   );
 
   // ****************************************** //
-  // **** CREACION DE LO ESTILOS PARA SCSS **** //
+  // **** CREACION DE LOS ESTILOS PARA SCSS **** //
   // ****************************************** //
-  // Computeds visuales comunes (estilo + ripple)
 
-  protected readonly createBackgroundsStyle = computed(() =>
+  public readonly createBackgroundsStyle = computed(() =>
     visualBackgroundBase(this.visualPrefix, {
-      type: this.colorVariantComputed() ?? AlfColorVariantEnum.Default,
-      predefined: this.predefinedComputed(),
-      visualType: this.visualTypeComputed(),
+      type: this.colorVariantComputed(),
       backgrounds: this.backgroundsComputed(),
     }),
   );
 
-  protected readonly createBorderStyle = computed(() =>
+  public readonly createBorderStyle = computed(() =>
     visualBorderBase(this.visualPrefix, {
-      type: this.colorVariantComputed() ?? AlfColorVariantEnum.Default,
-      predefined: this.predefinedComputed(),
-      visualType: this.visualTypeComputed(),
+      type: this.colorVariantComputed(),
       border: this.borderComputed(),
     }),
   );
 
-  protected readonly createDisplayAndLayoutStyle = computed(() =>
+  public readonly createDisplayAndLayoutStyle = computed(() =>
     visualDisplayAndLayoutBase(this.visualPrefix, {
-      type: this.colorVariantComputed() ?? AlfColorVariantEnum.Default,
-      predefined: this.predefinedComputed(),
-      visualType: this.visualTypeComputed(),
+      type: this.colorVariantComputed(),
       displayAndLayout: this.displayAndLayoutComputed(),
     }),
   );
 
-  protected readonly createMarginStyle = computed(() =>
+  public readonly createMarginStyle = computed(() =>
     visualMarginBase(this.visualPrefix, {
-      type: this.colorVariantComputed() ?? AlfColorVariantEnum.Default,
-      predefined: this.predefinedComputed(),
-      visualType: this.visualTypeComputed(),
+      type: this.colorVariantComputed(),
       margin: this.marginComputed(),
     }),
   );
 
-  protected readonly createOutlineStyle = computed(() =>
+  public readonly createOutlineStyle = computed(() =>
     visualOutlineBase(this.visualPrefix, {
-      type: this.colorVariantComputed() ?? AlfColorVariantEnum.Default,
-      predefined: this.predefinedComputed(),
-      visualType: this.visualTypeComputed(),
+      type: this.colorVariantComputed(),
       outline: this.outlineComputed(),
     }),
   );
 
-  protected readonly createPaddingStyle = computed(() =>
+  public readonly createPaddingStyle = computed(() =>
     visualPaddingBase(this.visualPrefix, {
-      type: this.colorVariantComputed() ?? AlfColorVariantEnum.Default,
-      predefined: this.predefinedComputed(),
-      visualType: this.visualTypeComputed(),
+      type: this.colorVariantComputed(),
       padding: this.paddingComputed(),
     }),
   );
 
-  protected readonly createShadowsStyle = computed(() =>
+  public readonly createShadowsStyle = computed(() =>
     visualShadowsBase(this.visualPrefix, {
-      type: this.colorVariantComputed() ?? AlfColorVariantEnum.Default,
-      predefined: this.predefinedComputed(),
-      visualType: this.visualTypeComputed(),
+      type: this.colorVariantComputed(),
       shadows: this.shadowsComputed(),
     }),
   );
 
-  protected readonly createTextStyle = computed(() =>
+  public readonly createTextStyle = computed(() =>
     visualTextStyleBase(this.visualPrefix, {
-      type: this.colorVariantComputed() ?? AlfColorVariantEnum.Default,
-      predefined: this.predefinedComputed(),
-      visualType: this.visualTypeComputed(),
+      type: this.colorVariantComputed(),
       textStyle: this.textStyleComputed(),
     }),
   );
 
-  protected readonly createTransformStyle = computed(() =>
+  public readonly createTransformStyle = computed(() =>
     visualTransformBase(this.visualPrefix, {
-      type: this.colorVariantComputed() ?? AlfColorVariantEnum.Default,
-      predefined: this.predefinedComputed(),
-      visualType: this.visualTypeComputed(),
+      type: this.colorVariantComputed(),
       transform: this.transformComputed(),
     }),
   );
 
-  protected readonly createTypographyStyle = computed(() =>
+  public readonly createTypographyStyle = computed(() =>
     visualTypographyBase(this.visualPrefix, {
-      type: this.colorVariantComputed() ?? AlfColorVariantEnum.Default,
-      predefined: this.predefinedComputed(),
-      visualType: this.visualTypeComputed(),
+      type: this.colorVariantComputed(),
       typography: this.typographyComputed(),
     }),
   );
 
-  protected readonly createAnimationsStyle = computed(() =>
+  public readonly createAnimationsStyle = computed(() =>
     visualAnimationsBase(this.visualPrefix, {
+      type: this.colorVariantComputed(),
       animations: this.animationsComputed(),
     }),
   );
 
-  protected readonly animationsClassComputed = computed(() => {
-    return this.animationsComputed()?.enterStage ?? '';
-  });
-
-  protected readonly rippleComputed = computed<boolean | AlfRippleInterface>(() => {
+  public readonly rippleComputed = computed<boolean | AlfRippleInterface>(() => {
     const baseRippleConf: AlfRippleInterface = {
       color: visualRippleColorBase({
-        type: this.colorVariantComputed() ?? AlfColorVariantEnum.Default,
-        predefined: this.predefinedComputed(),
-        visualType: this.visualTypeComputed(),
+        type: this.colorVariantComputed(),
       }),
     };
     const rippleInput = this.rippleInputComputed();
 
-    if (rippleInput === undefined || rippleInput === true) {
-      return baseRippleConf;
-    }
+    if (rippleInput === undefined || rippleInput === true) return baseRippleConf;
+    if (rippleInput === false) return false;
 
-    if (rippleInput === false) {
-      return false;
-    }
-
-    return {
-      ...baseRippleConf,
-      ...rippleInput,
-    };
+    return { ...baseRippleConf, ...rippleInput };
   });
 }

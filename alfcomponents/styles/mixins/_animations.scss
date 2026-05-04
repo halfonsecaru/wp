@@ -1,0 +1,15 @@
+/**
+ * Aplica animaciones CSS (Animate.css o personalizadas) mediante variables con prefijo.
+ * Ejemplo de prefijo: '--alf-btn'
+ */
+@mixin alf-animations-css-vars($prefix) {
+  // Las clases de animate.css se suelen aplicar vía HTML, 
+  // pero este mixin permite controlar las propiedades mediante variables inyectadas.
+  
+  animation-duration: var(#{$prefix}-animations-duration, 0s);
+  animation-delay: var(#{$prefix}-animations-delay, 0s);
+  animation-iteration-count: var(#{$prefix}-animations-iteration-count, 1);
+  animation-timing-function: var(#{$prefix}-animations-timing-function, ease);
+  animation-fill-mode: var(#{$prefix}-animations-fill-mode, none);
+  animation-direction: var(#{$prefix}-animations-direction, normal);
+}

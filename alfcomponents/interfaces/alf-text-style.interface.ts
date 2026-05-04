@@ -1,5 +1,10 @@
 import {
     AlfColorEnum,
+    AlfFontSizeEnum,
+    AlfFontWeightEnum,
+    AlfLetterSpacingEnum,
+    AlfLineHeightEnum,
+    AlfOpacityEnum,
     AlfTextDecorationEnum,
     AlfTextShadowEnum,
     AlfTextTransformEnum
@@ -22,6 +27,36 @@ export interface AlfTextStyleStateBaseInterface {
     color?: AlfColorEnum;
 
     /**
+     * Tamaño de la fuente
+     * @example fontSize: AlfFontSizeEnum.Base
+     */
+    fontSize?: AlfFontSizeEnum;
+
+    /**
+     * Peso de la fuente (Grosor)
+     * @example fontWeight: AlfFontWeightEnum.Bold
+     */
+    fontWeight?: AlfFontWeightEnum;
+
+    /**
+     * Altura de línea
+     * @example lineHeight: AlfLineHeightEnum.Normal
+     */
+    lineHeight?: AlfLineHeightEnum;
+
+    /**
+     * Espaciado entre letras
+     * @example letterSpacing: AlfLetterSpacingEnum.Normal
+     */
+    letterSpacing?: AlfLetterSpacingEnum;
+
+    /**
+     * Opacidad del texto
+     * @example opacity: AlfOpacityEnum.Opacity50
+     */
+    opacity?: AlfOpacityEnum;
+
+    /**
      * Sombra del texto (Text Shadow)
      * @example textShadow: AlfTextShadowEnum.Base
      */
@@ -42,7 +77,6 @@ export interface AlfTextStyleStateBaseInterface {
 
 /**
  * Interface para estilos de texto con soporte de estados
- * Permite definir el color y contenido del texto para default, hover y active
  */
 export interface AlfTextStyleInterface {
     /** 
@@ -64,4 +98,9 @@ export interface AlfTextStyleInterface {
      * Configuración para el estado enfocado (focus) 
      */
     focus?: AlfTextStyleStateBaseInterface;
+
+    /** 
+     * Configuración para el estado deshabilitado (disabled) 
+     */
+    disabled?: AlfTextStyleStateBaseInterface;
 }

@@ -4,67 +4,65 @@ import {
 } from '../enums';
 
 /**
- * Propiedades de configuración para animaciones
- * Gestiona el comportamiento de entrada, salida y repetición.
+ * Interface para la configuración de un estado de animación CSS individual.
  */
-export interface AlfAnimationConfigInterface {
-  /**
-   * Animación de entrada (in)
-   * Define el efecto al aparecer el elemento.
-   * @example AlfAnimationTypeEnum.FadeIn 
-   */
-  in?: AlfAnimationTypeEnum;
-
-  /**
-   * Animación de salida (out)
-   * Define el efecto al desaparecer el elemento.
-   * @example AlfAnimationTypeEnum.FadeOut 
-   */
-  out?: AlfAnimationTypeEnum;
-
-  /**
-   * Duración de la animación en milisegundos
-   * @default 300
-   * @example 500 
-   */
-  duration?: number;
-
-  /**
-   * Retraso antes de iniciar la animación en milisegundos
-   * @default 0
-   * @example 100 
-   */
-  delay?: number;
-
-  /**
-   * Función de temporización (easing)
-   * @default AlfTimingFunctionEnum.EaseInOut
-   * @example AlfTimingFunctionEnum.Linear 
-   */
-  timingFunction?: AlfTimingFunctionEnum;
-
-  /**
-   * Número de veces que se repite la animación
-   * @default 1
-   * @example 1 | 'infinite'
-   */
-  iterationCount?: number | 'infinite';
+export interface AlfAnimateCssStateInterface {
+  /** Tipo de animación (Enum o string personalizado) */
+  name?: AlfAnimationTypeEnum | string;
+  /** @deprecated Usar name para consistencia con WAAPI */
+  type?: AlfAnimationTypeEnum | string;
+  /** Duración (ej: '500ms') */
+  duration?: string;
+  /** Retraso (ej: '200ms') */
+  delay?: string;
+  /** Repeticiones (ej: 'infinite' o número) */
+  iterationCount?: string | number;
+  /** Función de tiempo */
+  timingFunction?: AlfTimingFunctionEnum | string;
+  /** Fill mode */
+  fillMode?: 'none' | 'forwards' | 'backwards' | 'both';
+  /** Dirección */
+  direction?: 'normal' | 'reverse' | 'alternate' | 'alternate-reverse';
 }
 
 /**
- * AlfAnimateCssInterface
- * Configuración específica para animaciones de terceros (Animate.css).
+ * Interface principal para animaciones CSS basadas en etapas (Animate.css).
  */
 export interface AlfAnimateCssInterface {
-  /** Efecto de entrada (ej: AlfAnimationTypeEnum.FadeIn) */
-  enterStage?: AlfAnimationTypeEnum | string;
+  /** Configuración para la etapa de entrada (Objeto completo o solo el tipo) */
+  enterStage?: AlfAnimateCssStateInterface | AlfAnimationTypeEnum | string;
   
-  /** Efecto de salida (ej: AlfAnimationTypeEnum.FadeOut) */
-  exitStage?: AlfAnimationTypeEnum | string;
+  /** Configuración para la etapa de salida (Objeto completo o solo el tipo) */
+  exitStage?: AlfAnimateCssStateInterface | AlfAnimationTypeEnum | string;
 
-  /** Duración de la animación (ej: '0.5s', 'fast') */
+  /** 
+   * Propiedades globales opcionales que sobreescriben las de las etapas 
+   * si no se definen en ellas.
+   */
   duration?: string;
-
-  /** Retraso en el inicio */
   delay?: string;
+  iterationCount?: string | number;
+  timingFunction?: AlfTimingFunctionEnum | string;
+  fillMode?: 'none' | 'forwards' | 'backwards' | 'both';
+  direction?: 'normal' | 'reverse' | 'alternate' | 'alternate-reverse';
+  
+  /** Acceso rápido para animación infinita */
+  infinite?: boolean;
+
+  /** 
+   * @deprecated Usar enterStage/exitStage para mayor claridad.
+   */
+  type?: AlfAnimationTypeEnum | string;
+}
+
+/**
+ * @deprecated Usar AlfAnimateCssInterface para mayor control.
+ */
+export interface AlfAnimationConfigInterface {
+  in?: AlfAnimationTypeEnum;
+  out?: AlfAnimationTypeEnum;
+  duration?: number;
+  delay?: number;
+  timingFunction?: AlfTimingFunctionEnum;
+  iterationCount?: number | 'infinite';
 }

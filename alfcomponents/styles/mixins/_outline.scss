@@ -6,30 +6,30 @@
   $prefix,
   $disabled-selectors: '&[disabled], &:disabled, &.disabled'
 ) {
-  outline-width: var(#{$prefix}-outline-width, 0);
-  outline-style: var(#{$prefix}-outline-style, none);
-  outline-color: var(#{$prefix}-outline-color, transparent);
-  outline-offset: var(#{$prefix}-outline-offset, 0);
+  outline-width: var(#{$prefix}-outline-width, revert);
+  outline-style: var(#{$prefix}-outline-style, revert);
+  outline-color: var(#{$prefix}-outline-color, revert);
+  outline-offset: var(#{$prefix}-outline-offset, revert);
 
   &:hover {
-    outline-width: var(#{$prefix}-outline-hover-width, var(#{$prefix}-outline-width, 0));
-    outline-style: var(#{$prefix}-outline-hover-style, var(#{$prefix}-outline-style, none));
-    outline-color: var(#{$prefix}-outline-hover-color, var(#{$prefix}-outline-color, transparent));
-    outline-offset: var(#{$prefix}-outline-hover-offset, var(#{$prefix}-outline-offset, 0));
+    outline-width: var(#{$prefix}-outline-hover-width, var(#{$prefix}-outline-width, revert));
+    outline-style: var(#{$prefix}-outline-hover-style, var(#{$prefix}-outline-style, revert));
+    outline-color: var(#{$prefix}-outline-hover-color, var(#{$prefix}-outline-color, revert));
+    outline-offset: var(#{$prefix}-outline-hover-offset, var(#{$prefix}-outline-offset, revert));
   }
 
   &:focus,
   &:focus-visible {
-    outline-width: var(#{$prefix}-outline-focus-width, var(#{$prefix}-outline-width, 0));
-    outline-style: var(#{$prefix}-outline-focus-style, var(#{$prefix}-outline-style, none));
-    outline-color: var(#{$prefix}-outline-focus-color, var(#{$prefix}-outline-color, transparent));
-    outline-offset: var(#{$prefix}-outline-focus-offset, var(#{$prefix}-outline-offset, 0));
+    outline-width: var(#{$prefix}-outline-focus-width, var(#{$prefix}-outline-width, revert));
+    outline-style: var(#{$prefix}-outline-focus-style, var(#{$prefix}-outline-style, revert));
+    outline-color: var(#{$prefix}-outline-focus-color, var(#{$prefix}-outline-color, revert));
+    outline-offset: var(#{$prefix}-outline-focus-offset, var(#{$prefix}-outline-offset, revert));
   }
 
   #{$disabled-selectors} {
-    outline-width: var(#{$prefix}-outline-disabled-width, var(#{$prefix}-outline-width, 0));
-    outline-style: var(#{$prefix}-outline-disabled-style, var(#{$prefix}-outline-style, none));
-    outline-color: var(#{$prefix}-outline-disabled-color, var(#{$prefix}-outline-color, transparent));
-    outline-offset: var(#{$prefix}-outline-disabled-offset, var(#{$prefix}-outline-offset, 0));
+    outline-width: var(#{$prefix}-outline-disabled-width, var(#{$prefix}-outline-width, revert));
+    outline-style: var(#{$prefix}-outline-disabled-style, var(#{$prefix}-outline-style, revert));
+    outline-color: var(#{$prefix}-outline-disabled-color, var(#{$prefix}-outline-color, revert));
+    outline-offset: var(#{$prefix}-outline-disabled-offset, var(#{$prefix}-outline-offset, revert));
   }
 }

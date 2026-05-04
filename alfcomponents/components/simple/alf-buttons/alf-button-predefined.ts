@@ -1,146 +1,75 @@
 import { DefaultButtonKeys } from './enums/defaultButtonKeys.interface';
 import { AlfButtonInterface } from './interfaces/alf-button.interface';
-import {
-  AlfButtonVisualTypeEnum,
-  AlfColorVariantEnum,
-  AlfVisualPredefinedEnum,
-} from '@alfcomponents/enums';
+import { AlfColorVariantEnum } from '@alfcomponents/enums';
 import { getAlfButtonLabel, AlfButtonI18nLabels } from './i18n/alf-button.i18n';
 import { SupportedLanguage } from '@alfcomponents/i18n/i18n-utils';
 
-interface AlfButtonIdentity {
-  readonly labelKey: keyof AlfButtonI18nLabels;
-  readonly colorVariant: AlfColorVariantEnum;
-}
+/**
+ * Tipos de estilo visual simplificados para la fábrica.
+ * Reemplaza al AlfButtonVisualTypeEnum legacy.
+ */
+export type AlfButtonStyleKind = 'solid' | 'outlined' | 'ghost' | 'soft' | 'crystal' | '3d';
 
 export interface AlfPredefinedButtonOptions {
-  readonly visualType?: AlfButtonVisualTypeEnum;
+  readonly styleKind?: AlfButtonStyleKind;
   readonly hideIcon?: boolean;
   readonly lang?: SupportedLanguage;
 }
 
+interface AlfButtonIdentity {
+  readonly labelKey: keyof AlfButtonI18nLabels;
+  readonly baseVariant: AlfColorVariantEnum;
+}
+
 const BUTTON_IDENTITIES: Readonly<Record<DefaultButtonKeys, AlfButtonIdentity>> = {
-  [DefaultButtonKeys.Accept]: {
-    labelKey: 'accept',
-    colorVariant: AlfColorVariantEnum.Primary,
-  },
-  [DefaultButtonKeys.Cancel]: {
-    labelKey: 'cancel',
-    colorVariant: AlfColorVariantEnum.Secondary,
-  },
-  [DefaultButtonKeys.Success]: {
-    labelKey: 'success',
-    colorVariant: AlfColorVariantEnum.Success,
-  },
-  [DefaultButtonKeys.Danger]: {
-    labelKey: 'danger',
-    colorVariant: AlfColorVariantEnum.Danger,
-  },
-  [DefaultButtonKeys.Warning]: {
-    labelKey: 'warning',
-    colorVariant: AlfColorVariantEnum.Warning,
-  },
-  [DefaultButtonKeys.Info]: {
-    labelKey: 'info',
-    colorVariant: AlfColorVariantEnum.Info,
-  },
-  [DefaultButtonKeys.Dark]: {
-    labelKey: 'dark',
-    colorVariant: AlfColorVariantEnum.Dark,
-  },
-  [DefaultButtonKeys.Light]: {
-    labelKey: 'light',
-    colorVariant: AlfColorVariantEnum.Light,
-  }
+  [DefaultButtonKeys.Accept]: { labelKey: 'accept', baseVariant: AlfColorVariantEnum.Primary },
+  [DefaultButtonKeys.Cancel]: { labelKey: 'cancel', baseVariant: AlfColorVariantEnum.Secondary },
+  [DefaultButtonKeys.Success]: { labelKey: 'success', baseVariant: AlfColorVariantEnum.Success },
+  [DefaultButtonKeys.Danger]: { labelKey: 'danger', baseVariant: AlfColorVariantEnum.Danger },
+  [DefaultButtonKeys.Warning]: { labelKey: 'warning', baseVariant: AlfColorVariantEnum.Warning },
+  [DefaultButtonKeys.Info]: { labelKey: 'info', baseVariant: AlfColorVariantEnum.Info },
+  [DefaultButtonKeys.Dark]: { labelKey: 'dark', baseVariant: AlfColorVariantEnum.Dark },
+  [DefaultButtonKeys.Light]: { labelKey: 'light', baseVariant: AlfColorVariantEnum.Light }
 };
 
-const resolveSolidPredefined = (variant: AlfColorVariantEnum): AlfVisualPredefinedEnum => {
-  switch (variant) {
-    case AlfColorVariantEnum.Primary:
-      return AlfVisualPredefinedEnum.SolidPrimary;
-    case AlfColorVariantEnum.Secondary:
-      return AlfVisualPredefinedEnum.SolidSecondary;
-    case AlfColorVariantEnum.Success:
-      return AlfVisualPredefinedEnum.SolidSuccess;
-    case AlfColorVariantEnum.Danger:
-      return AlfVisualPredefinedEnum.SolidDanger;
-    case AlfColorVariantEnum.Warning:
-      return AlfVisualPredefinedEnum.SolidWarning;
-    case AlfColorVariantEnum.Info:
-      return AlfVisualPredefinedEnum.SolidInfo;
-    case AlfColorVariantEnum.Light:
-      return AlfVisualPredefinedEnum.SolidLight;
-    case AlfColorVariantEnum.Dark:
-      return AlfVisualPredefinedEnum.SolidDark;
-    default:
-      return AlfVisualPredefinedEnum.SolidDefault;
-  }
+/**
+ * Resuelve la variante final combinando el color base con el estilo.
+ */
+const resolveFinalVariant = (base: AlfColorVariantEnum, kind: AlfButtonStyleKind): AlfColorVariantEnum => {
+  if (kind === 'solid') return base;
+
+  // Mapa de sufijos/prefijos según el estilo
+  const MAP: Record<string, string> = {
+    'outlined': 'Outline',
+    'ghost': 'Ghost',
+    'soft': 'Soft',
+    'crystal': 'Crystal',
+    '3d': '3D'
+  };
+
+  const suffix = MAP[kind];
+  const capitalizedBase = base.charAt(0).toUpperCase() + base.slice(1);
+  const variantName = `${capitalizedBase}${suffix}`;
+
+  // Verificamos si la variante existe en el enum (Type Casting seguro)
+  return (AlfColorVariantEnum as any)[variantName] ?? base;
 };
 
-const resolveOutlinedPredefined = (variant: AlfColorVariantEnum): AlfVisualPredefinedEnum => {
-  switch (variant) {
-    case AlfColorVariantEnum.Primary:
-      return AlfVisualPredefinedEnum.OutlinedPrimary;
-    case AlfColorVariantEnum.Secondary:
-      return AlfVisualPredefinedEnum.OutlinedSecondary;
-    case AlfColorVariantEnum.Success:
-      return AlfVisualPredefinedEnum.OutlinedSuccess;
-    case AlfColorVariantEnum.Danger:
-      return AlfVisualPredefinedEnum.OutlinedDanger;
-    case AlfColorVariantEnum.Warning:
-      return AlfVisualPredefinedEnum.OutlinedWarning;
-    case AlfColorVariantEnum.Info:
-      return AlfVisualPredefinedEnum.OutlinedInfo;
-    case AlfColorVariantEnum.Light:
-      return AlfVisualPredefinedEnum.OutlinedLight;
-    case AlfColorVariantEnum.Dark:
-      return AlfVisualPredefinedEnum.OutlinedDark;
-    default:
-      return AlfVisualPredefinedEnum.OutlinedDefault;
-  }
-};
-
-const resolvePredefined = (
-  variant: AlfColorVariantEnum,
-  visualType: AlfButtonVisualTypeEnum,
-): AlfVisualPredefinedEnum => {
-  if (visualType === AlfButtonVisualTypeEnum.Outlined) {
-    return resolveOutlinedPredefined(variant);
-  }
-
-  return resolveSolidPredefined(variant);
-};
-
-const resolveIdentity = (key: DefaultButtonKeys): AlfButtonIdentity =>
-  BUTTON_IDENTITIES[key] ?? BUTTON_IDENTITIES[DefaultButtonKeys.Light];
-
-const resolvePredefinedByVisualType = (
-  identity: AlfButtonIdentity,
-  visualType: AlfButtonVisualTypeEnum,
-): AlfVisualPredefinedEnum | undefined => {
-  if (
-    visualType !== AlfButtonVisualTypeEnum.Solid
-    && visualType !== AlfButtonVisualTypeEnum.Outlined
-  ) {
-    return undefined;
-  }
-
-  return resolvePredefined(identity.colorVariant, visualType);
-};
-
+/**
+ * Fábrica Élite para botones predefinidos.
+ */
 export const getAlfPredefinedButton = (
   key: DefaultButtonKeys,
   options?: AlfPredefinedButtonOptions,
 ): AlfButtonInterface => {
-  const identity = resolveIdentity(key);
-  const visualType = options?.visualType ?? AlfButtonVisualTypeEnum.Solid;
-  const predefined = resolvePredefinedByVisualType(identity, visualType);
+  const identity = BUTTON_IDENTITIES[key] ?? BUTTON_IDENTITIES[DefaultButtonKeys.Light];
+  const styleKind = options?.styleKind ?? 'solid';
+  
+  const finalVariant = resolveFinalVariant(identity.baseVariant, styleKind);
   const label = getAlfButtonLabel(identity.labelKey, options?.lang);
 
   return {
     label,
-    colorVariant: identity.colorVariant,
-    visualType,
-    ...(predefined ? { predefined } : {}),
+    colorVariant: finalVariant
   };
 };

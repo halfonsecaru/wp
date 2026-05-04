@@ -143,4 +143,9 @@ export interface AlfTransformInterface {
    * Transformaciones aplicadas cuando el elemento está activo (en click).
    */
   active?: AlfTransformBaseInterface;
+
+  /**
+   * Transformaciones aplicadas cuando el componente está deshabilitado.
+   */
+  disabled?: AlfTransformBaseInterface;
 }

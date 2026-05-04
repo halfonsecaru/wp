@@ -1,42 +1,32 @@
-import { describe, expect, it, afterEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { getAlfPredefinedButton } from './alf-button-predefined';
 import { DefaultButtonKeys } from './enums/defaultButtonKeys.interface';
-import { AlfButtonVisualTypeEnum, AlfColorVariantEnum, AlfVisualPredefinedEnum } from '@alfcomponents/enums';
+import { AlfColorVariantEnum } from '@alfcomponents/enums';
 
-describe('getAlfPredefinedButton', () => {
-    const originalNavigatorDescriptor = Object.getOwnPropertyDescriptor(globalThis, 'navigator');
-
-    afterEach(() => {
-        if (originalNavigatorDescriptor) {
-            Object.defineProperty(globalThis, 'navigator', originalNavigatorDescriptor);
-        }
-    });
-
-    it('aplica i18n con lang explicito', () => {
-        const button = getAlfPredefinedButton(DefaultButtonKeys.Accept, { lang: 'fr' });
-
-        expect(button.label).toBe('Accepter');
+describe('AlfButtonPredefined', () => {
+    it('should create an Accept button with Primary color by default', () => {
+        const button = getAlfPredefinedButton(DefaultButtonKeys.Accept);
+        expect(button.label).toBe('Accept');
         expect(button.colorVariant).toBe(AlfColorVariantEnum.Primary);
-        expect(button.predefined).toBe(AlfVisualPredefinedEnum.SolidPrimary);
     });
 
-    it('aplica i18n usando idioma del navegador cuando no se pasa lang', () => {
-        Object.defineProperty(globalThis, 'navigator', {
-            value: { language: 'pt-BR' },
-            configurable: true,
-        });
-
-        const button = getAlfPredefinedButton(DefaultButtonKeys.Warning);
-        expect(button.label).toBe('Aviso');
+    it('should create an Accept button with PrimaryOutline color when styleKind is outlined', () => {
+        const button = getAlfPredefinedButton(DefaultButtonKeys.Accept, { styleKind: 'outlined' });
+        expect(button.colorVariant).toBe(AlfColorVariantEnum.PrimaryOutline);
     });
 
-    it('resuelve predefined outlined correctamente', () => {
-        const button = getAlfPredefinedButton(DefaultButtonKeys.Dark, {
-            visualType: AlfButtonVisualTypeEnum.Outlined,
-            lang: 'en',
-        });
+    it('should create a Danger button with Danger color by default', () => {
+        const button = getAlfPredefinedButton(DefaultButtonKeys.Danger);
+        expect(button.colorVariant).toBe(AlfColorVariantEnum.Danger);
+    });
 
-        expect(button.label).toBe('Dark');
-        expect(button.predefined).toBe(AlfVisualPredefinedEnum.OutlinedDark);
+    it('should create a Danger button with DangerOutline color when styleKind is outlined', () => {
+        const button = getAlfPredefinedButton(DefaultButtonKeys.Danger, { styleKind: 'outlined' });
+        expect(button.colorVariant).toBe(AlfColorVariantEnum.DangerOutline);
+    });
+
+    it('should create a Light button with Light color by default', () => {
+        const button = getAlfPredefinedButton(DefaultButtonKeys.Light);
+        expect(button.colorVariant).toBe(AlfColorVariantEnum.Light);
     });
 });

@@ -7,16 +7,16 @@
 
 .alf-cb {
   // Configuración de variables base heredas del motor visual
-  @include alf-border-css-vars('--alf-cb', 0.25rem, '&.alf-cb--disabled');
+  @include alf-border-css-vars('--alf-cb', '&.alf-cb--disabled');
   @include alf-background-css-vars('--alf-cb', '&.alf-cb--disabled');
   @include alf-margin-css-vars('--alf-cb', '&.alf-cb--disabled');
   @include alf-outline-css-vars('--alf-cb', '&.alf-cb--disabled');
-  @include alf-padding-css-vars('--alf-cb', 0.25rem, 0.25rem, '&.alf-cb--disabled');
+  @include alf-padding-css-vars('--alf-cb', '&.alf-cb--disabled');
   @include alf-shadows-css-vars('--alf-cb', '&.alf-cb--disabled');
   @include alf-typography-css-vars('--alf-cb', '&.alf-cb--disabled');
-  @include alf-text-style-css-vars('--alf-cb', #374151, '&.alf-cb--disabled');
+  @include alf-text-style-css-vars('--alf-cb', '&.alf-cb--disabled');
   @include alf-transform-css-vars('--alf-cb', '&.alf-cb--disabled');
-  @include alf-display-layout-css-vars('--alf-cb', flex, center, flex-start, 0.5rem, '&.alf-cb--disabled');
+  @include alf-display-layout-css-vars('--alf-cb', '&.alf-cb--disabled');
 
   --alf-cb-size: 1.5rem;
   --alf-cb-theme-color: var(--alf-cb-text-color, #4f46e5);

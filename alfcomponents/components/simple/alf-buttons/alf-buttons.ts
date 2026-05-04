@@ -14,9 +14,9 @@ import { AlfBaseButtonConfiguration } from '@alfcomponents/components/simple/alf
 export class AlfButtons extends AlfBaseButtonConfiguration<AlfButtonInterface> {
 
     // **** Configuracion general del componente **** //
-    protected readonly visualPrefix = visualprefixEnum.Buttons;
-    protected readonly internalId = generateUniqueId({ prefix: 'button' });
-    protected readonly debounceTime = input<number>(0);
+    public readonly visualPrefix = visualprefixEnum.Buttons;
+    public readonly internalId = generateUniqueId({ prefix: 'button' });
+    public readonly debounceTime = input<number>(0);
 
     private lastClickTime = 0;
 
@@ -25,7 +25,7 @@ export class AlfButtons extends AlfBaseButtonConfiguration<AlfButtonInterface> {
     public readonly onHoverLeave = output<MouseEvent>();
 
     @HostListener('click', ['$event'])
-    protected onHostClick = (event: MouseEvent): void => {
+    public readonly onHostClick = (event: MouseEvent): void => {
         const now = Date.now();
         const threshold = this.debounceTime();
 
@@ -44,16 +44,13 @@ export class AlfButtons extends AlfBaseButtonConfiguration<AlfButtonInterface> {
     };
 
     @HostListener('mouseenter', ['$event'])
-    protected onMouseEnter = (event: MouseEvent): void => {
+    public readonly onMouseEnter = (event: MouseEvent): void => {
         this.onHoverEnter.emit(event);
     };
 
     @HostListener('mouseleave', ['$event'])
-    protected onMouseLeave = (event: MouseEvent): void => {
+    public readonly onMouseLeave = (event: MouseEvent): void => {
         this.onHoverLeave.emit(event);
     };
 
 }
-
-
-// *********************************************************************** //

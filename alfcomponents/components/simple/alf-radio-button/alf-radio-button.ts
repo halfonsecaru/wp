@@ -41,20 +41,36 @@ export class AlfRadioButton extends AlfBaseConfiguration<AlfRadioButtonInterface
   public readonly size = input<AlfSizeEnum>();
 
   // **** State Signals **** //
-  protected readonly focused = signal<boolean>(false);
-  protected readonly hovered = signal<boolean>(false);
+  public readonly focused = signal<boolean>(false);
+  public readonly hovered = signal<boolean>(false);
 
   // **** Computed Properties **** //
+  /** 
+   * Configuración predefinida basada en la variante elegida.
+   */
+  protected readonly predefinedConfig = computed(() => {
+    const v = this.variant();
+    if (!v) return ALF_RADIO_BUTTON_DEFAULT;
+
+    let variantEnum = AlfColorVariantEnum.Transparent;
+    if (typeof v === 'string') {
+      const normalized = v.toLowerCase().replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+      const key = normalized.charAt(0).toUpperCase() + normalized.slice(1);
+      variantEnum = (AlfColorVariantEnum as any)[key] ?? AlfColorVariantEnum.Secondary;
+    } else {
+      variantEnum = v;
+    }
+
+    return getAlfRadioButtonDefaultConfig(variantEnum);
+  });
+
   /** 
    * Single Source of Truth for configuration.
    * Merges: Individual Inputs > inputConfig Object > Predefined Variant > Default Global Config
    */
-  protected override readonly resolvedConfig = computed(() => {
-    const variant = this.variant();
+  public override readonly resolvedConfig = computed(() => {
+    const variantConfig = this.predefinedConfig();
     const config = this.inputConfig();
-    
-    // 1. Get base variant config
-    const variantConfig = variant ? getAlfRadioButtonDefaultConfig(variant) : ALF_RADIO_BUTTON_DEFAULT;
     
     // 2. Merge all sources following priority
     const merged: AlfRadioButtonInterface = {
@@ -73,7 +89,7 @@ export class AlfRadioButton extends AlfBaseConfiguration<AlfRadioButtonInterface
   });
 
   /** Resolves if it's disabled (Bridge with base class) */
-  protected readonly isDisabled = computed(() => 
+  public readonly isDisabled = computed(() => 
     this.disabledComputed() || (this.resolvedConfig()?.disabled ?? false)
   );
 
@@ -83,7 +99,7 @@ export class AlfRadioButton extends AlfBaseConfiguration<AlfRadioButtonInterface
 
   // **** Handlers **** //
   /** Handles the change event from the native input */
-  protected onInputChange = (event: Event): void => {
+  public readonly onInputChange = (event: Event): void => {
     if (this.isDisabled()) return;
     
     // In a radio button, change only fires when it becomes checked
@@ -92,15 +108,15 @@ export class AlfRadioButton extends AlfBaseConfiguration<AlfRadioButtonInterface
   };
 
   /** Selects the radio button programmatically */
-  public select(): void {
+  public readonly select = (): void => {
     if (this.isDisabled() || this.checked()) return;
     
     this.checked.set(true);
     this.change.emit(this.value() ?? this.resolvedConfig()?.value);
-  }
+  };
 
   /** Accessibility keyboard handler */
-  protected onInputKeydown = (event: KeyboardEvent): void => {
+  public readonly onInputKeydown = (event: KeyboardEvent): void => {
     if (this.isDisabled()) return;
     if (event.key === ' ' || event.key === 'Enter') {
       event.preventDefault();

@@ -11,7 +11,9 @@ import {
   AlfFlexDirectionEnum,
   AlfJustifyContentEnum,
   AlfAlignItemsEnum,
-  AlfFlexWrapEnum
+  AlfFlexWrapEnum,
+  AlfOpacityEnum,
+  AlfPointerEventsEnum
 } from '../enums';
 
 /**
@@ -127,6 +129,19 @@ export interface AlfDisplayAndLayoutBaseInterface {
    */
   flexWrap?: AlfFlexWrapEnum;
 
+  // ===== INTERACTION & VISUAL =====
+  /**
+   * Opacidad del elemento
+   * @example AlfOpacityEnum.Opacity50 
+   */
+  opacity?: AlfOpacityEnum;
+
+  /**
+   * Control de eventos del ratón
+   * @example AlfPointerEventsEnum.None 
+   */
+  pointerEvents?: AlfPointerEventsEnum;
+
 }
 
 /**
@@ -144,4 +159,7 @@ export interface AlfDisplayAndLayoutInterface {
 
   /** Estilos aplicados en estado deshabilitado */
   disabled?: AlfDisplayAndLayoutBaseInterface;
+
+  /** Estilos aplicados en estado activo (click) */
+  active?: AlfDisplayAndLayoutBaseInterface;
 }

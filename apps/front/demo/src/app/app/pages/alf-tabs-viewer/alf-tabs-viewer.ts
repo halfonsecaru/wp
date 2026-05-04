@@ -4,7 +4,6 @@ import {
   AlfTabComponent, 
   AlfTabsContainerConfigInterface, 
   AlfTabsStyleEnum,
-  AlfButtonVisualTypeEnum,
   AlfColorVariantEnum,
   AlfColorEnum
 } from '@alfcomponents';

@@ -1,11 +1,10 @@
 import { Component, computed, signal } from '@angular/core';
 import { AlfButtons } from '@alfcomponents/components/simple/alf-buttons/alf-buttons';
-import { getAlfPredefinedButton } from '@alfcomponents/components/simple/alf-buttons/alf-button-predefined';
+import { getAlfPredefinedButton, AlfButtonStyleKind } from '@alfcomponents/components/simple/alf-buttons/alf-button-predefined';
 import { DefaultButtonKeys } from '@alfcomponents/components/simple/alf-buttons/enums/defaultButtonKeys.interface';
 import { AlfButtonInterface } from '@alfcomponents/components/simple/alf-buttons/interfaces/alf-button.interface';
 import {
   AlfAnimationTypeEnum,
-  AlfButtonVisualTypeEnum,
   AlfColorVariantEnum,
   AlfIconsUnicodeIconEnum,
   AlfLinkTargetEnum,
@@ -30,40 +29,42 @@ export class AlfButtonsViewer {
   protected readonly animationPanelExitingSignal = signal(false);
 
   private readonly panelAnimations: AlfAnimateCssInterface = {
-    enterStage: AlfAnimationTypeEnum.FadeIn,
-    exitStage: AlfAnimationTypeEnum.FadeOut,
-    duration: '350ms',
+    enterStage: { name: AlfAnimationTypeEnum.FadeIn, duration: '350ms' },
+    exitStage: { name: AlfAnimationTypeEnum.FadeOut, duration: '350ms' },
   };
 
   protected readonly animationPanelClass = computed(() => {
     if (!this.animationsEnabledSignal()) {
       return '';
     }
-    return this.animationPanelExitingSignal()
-      ? (this.panelAnimations.exitStage ?? '')
-      : (this.panelAnimations.enterStage ?? '');
+    const stage = this.animationPanelExitingSignal()
+      ? this.panelAnimations.exitStage
+      : this.panelAnimations.enterStage;
+
+    if (!stage) return '';
+    return typeof stage === 'string' ? stage : (stage.name ?? '');
   });
 
-  protected readonly animationPanelStyle = computed<Record<string, string>>(() => {
+  protected readonly animationPanelStyle = computed<string>(() => {
     if (!this.animationsEnabledSignal()) {
-      return {};
+      return '';
     }
-    return {
-      '--animate-duration': this.panelAnimations.duration ?? '350ms',
-      '--animate-delay': this.panelAnimations.delay ?? '0ms',
-    };
+    const declarations: string[] = [];
+    if (this.panelAnimations.duration) declarations.push(`--animate-duration: ${this.panelAnimations.duration}`);
+    if (this.panelAnimations.delay) declarations.push(`--animate-delay: ${this.panelAnimations.delay}`);
+    return declarations.join('; ');
   });
 
   protected readonly liveButtonConfig = computed<AlfButtonInterface>(() => {
-    const visualType = this.useOutlineSignal()
-      ? AlfButtonVisualTypeEnum.Outlined
-      : AlfButtonVisualTypeEnum.Solid;
+    const styleKind: AlfButtonStyleKind = this.useOutlineSignal()
+      ? 'outlined'
+      : 'solid';
     const key = this.useDangerSignal()
       ? DefaultButtonKeys.Danger
       : DefaultButtonKeys.Accept;
 
     return {
-      ...getAlfPredefinedButton(key, { visualType }),
+      ...getAlfPredefinedButton(key, { styleKind }),
       label: this.useDangerSignal() ? 'Eliminar' : 'Guardar',
       iconLeft: this.useDangerSignal()
         ? AlfIconsUnicodeIconEnum.Delete
@@ -100,20 +101,17 @@ export class AlfButtonsViewer {
       readonly config: AlfButtonInterface;
     }>;
   }> = [
-      { title: 'Predefined Solid', buttons: this.buildPaletteButtons(undefined, 'Solid') },
-      { title: 'Predefined Outline', buttons: this.buildPaletteButtons(AlfButtonVisualTypeEnum.Outlined, 'Outline') },
-      { title: 'Ghost (All Palettes)', buttons: this.buildPaletteButtons(AlfButtonVisualTypeEnum.Ghost, 'Ghost') },
-      { title: 'Soft (All Palettes)', buttons: this.buildPaletteButtons(AlfButtonVisualTypeEnum.Soft, 'Soft') },
-      { title: 'Crystal (All Palettes)', buttons: this.buildPaletteButtons(AlfButtonVisualTypeEnum.Crystal, 'Crystal') },
-      { title: '3D (All Palettes)', buttons: this.buildPaletteButtons(AlfButtonVisualTypeEnum.ThreeD, '3D') },
-      { title: 'Glossy (All Palettes)', buttons: this.buildPaletteButtons(AlfButtonVisualTypeEnum.Glossy, 'Glossy') },
-      { title: 'Gradient (All Palettes)', buttons: this.buildPaletteButtons(AlfButtonVisualTypeEnum.Gradient, 'Gradient') },
-      { title: 'Raised (All Palettes)', buttons: this.buildPaletteButtons(AlfButtonVisualTypeEnum.Raised, 'Raised') },
+      { title: 'Predefined Solid', buttons: this.buildPaletteButtons('solid', 'Solid') },
+      { title: 'Predefined Outline', buttons: this.buildPaletteButtons('outlined', 'Outline') },
+      { title: 'Ghost (All Palettes)', buttons: this.buildPaletteButtons('ghost', 'Ghost') },
+      { title: 'Soft (All Palettes)', buttons: this.buildPaletteButtons('soft', 'Soft') },
+      { title: 'Crystal (All Palettes)', buttons: this.buildPaletteButtons('crystal', 'Crystal') },
+      { title: '3D (All Palettes)', buttons: this.buildPaletteButtons('3d', '3D') },
       { title: 'Practical Examples', buttons: this.buildPracticalExamples() },
     ];
 
   private buildPaletteButtons(
-    visualType: AlfButtonVisualTypeEnum | undefined,
+    styleKind: AlfButtonStyleKind,
     visualLabel: string,
   ): ReadonlyArray<{
     readonly title: string;
@@ -121,9 +119,7 @@ export class AlfButtonsViewer {
     readonly config: AlfButtonInterface;
   }> {
     return this.palettes.map((palette) => {
-      const baseConfig = visualType
-        ? getAlfPredefinedButton(palette.key, { visualType })
-        : getAlfPredefinedButton(palette.key);
+      const baseConfig = getAlfPredefinedButton(palette.key, { styleKind });
 
       return {
         title: palette.title,
@@ -177,7 +173,7 @@ export class AlfButtonsViewer {
         title: 'Ghost Warning',
         tooltip: 'Ghost variant warning',
         config: {
-          ...getAlfPredefinedButton(DefaultButtonKeys.Warning, { visualType: AlfButtonVisualTypeEnum.Ghost }),
+          ...getAlfPredefinedButton(DefaultButtonKeys.Warning, { styleKind: 'ghost' }),
           label: 'Revisar',
           iconLeft: AlfIconsUnicodeIconEnum.Warning,
         },
@@ -186,17 +182,16 @@ export class AlfButtonsViewer {
         title: 'Custom Soft',
         tooltip: 'Soft custom color variant',
         config: {
-          visualType: AlfButtonVisualTypeEnum.Soft,
-          colorVariant: AlfColorVariantEnum.Success,
+          colorVariant: AlfColorVariantEnum.SuccessSoft,
           label: 'Completado',
-          iconLeft: AlfIconsUnicodeIconEnum.Check,
+          iconLeft: AlfIconsUnicodeIconEnum.CheckMark,
         },
       },
       {
         title: 'Full Width',
         tooltip: 'Display and layout override',
         config: {
-          ...getAlfPredefinedButton(DefaultButtonKeys.Dark, { visualType: AlfButtonVisualTypeEnum.Raised }),
+          ...getAlfPredefinedButton(DefaultButtonKeys.Dark, { styleKind: '3d' }),
           label: 'Continuar',
           displayAndLayout: {
             default: {
@@ -250,7 +245,7 @@ export class AlfButtonsViewer {
     if (!this.animationPanelRenderedSignal()) {
       return;
     }
-    if (!this.animationsEnabledSignal() || !this.panelAnimations.exitStage) {
+    if (!this.animationsEnabledSignal()) {
       this.animationPanelExitingSignal.set(false);
       this.animationPanelRenderedSignal.set(false);
       return;

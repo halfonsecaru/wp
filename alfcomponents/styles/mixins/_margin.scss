@@ -1,43 +1,53 @@
 /**
  * Aplica margin reactivo basado en variables CSS con prefijo.
- * Ejemplo de prefijo: '--alf-tabs'
+ * Estructura simplificada siguiendo el patrón Élite.
+ * 
+ * @param {String} $prefix - Prefijo de las variables CSS (ej: '--alf-mar')
+ * @param {String} $disabled-selectors - Selectores para el estado deshabilitado
  */
 @mixin alf-margin-css-vars(
   $prefix,
-  $margin-fallback: revert,
   $disabled-selectors: '&[disabled], &:disabled, &.disabled'
 ) {
   // BASE PROPERTIES
-  margin: var(#{$prefix}-margin, #{$margin-fallback});
-  margin-top: var(#{$prefix}-margin-top, var(#{$prefix}-margin, #{$margin-fallback}));
-  margin-right: var(#{$prefix}-margin-right, var(#{$prefix}-margin, #{$margin-fallback}));
-  margin-bottom: var(#{$prefix}-margin-bottom, var(#{$prefix}-margin, #{$margin-fallback}));
-  margin-left: var(#{$prefix}-margin-left, var(#{$prefix}-margin, #{$margin-fallback}));
+  margin: var(#{$prefix}-margin, revert);
+  margin-top: var(#{$prefix}-margin-top, var(#{$prefix}-margin, revert));
+  margin-right: var(#{$prefix}-margin-right, var(#{$prefix}-margin, revert));
+  margin-bottom: var(#{$prefix}-margin-bottom, var(#{$prefix}-margin, revert));
+  margin-left: var(#{$prefix}-margin-left, var(#{$prefix}-margin, revert));
 
   // ESTADOS REACTIVOS
   &:hover {
-    margin: var(#{$prefix}-margin-hover, var(#{$prefix}-margin, #{$margin-fallback}));
-    margin-top: var(#{$prefix}-margin-hover-top, var(#{$prefix}-margin-hover, var(#{$prefix}-margin-top, #{$margin-fallback})));
-    margin-right: var(#{$prefix}-margin-hover-right, var(#{$prefix}-margin-hover, var(#{$prefix}-margin-right, #{$margin-fallback})));
-    margin-bottom: var(#{$prefix}-margin-hover-bottom, var(#{$prefix}-margin-hover, var(#{$prefix}-margin-bottom, #{$margin-fallback})));
-    margin-left: var(#{$prefix}-margin-hover-left, var(#{$prefix}-margin-hover, var(#{$prefix}-margin-left, #{$margin-fallback})));
+    margin: var(#{$prefix}-margin-hover, var(#{$prefix}-margin, revert));
+    margin-top: var(#{$prefix}-margin-hover-top, var(#{$prefix}-margin-hover, var(#{$prefix}-margin-top, revert)));
+    margin-right: var(#{$prefix}-margin-hover-right, var(#{$prefix}-margin-hover, var(#{$prefix}-margin-right, revert)));
+    margin-bottom: var(#{$prefix}-margin-hover-bottom, var(#{$prefix}-margin-hover, var(#{$prefix}-margin-bottom, revert)));
+    margin-left: var(#{$prefix}-margin-hover-left, var(#{$prefix}-margin-hover, var(#{$prefix}-margin-left, revert)));
+  }
+
+  &:active {
+    margin: var(#{$prefix}-margin-active, var(#{$prefix}-margin-hover, var(#{$prefix}-margin, revert)));
+    margin-top: var(#{$prefix}-margin-active-top, var(#{$prefix}-margin-active, var(#{$prefix}-margin-hover-top, var(#{$prefix}-margin-top, revert))));
+    margin-right: var(#{$prefix}-margin-active-right, var(#{$prefix}-margin-active, var(#{$prefix}-margin-hover-right, var(#{$prefix}-margin-right, revert))));
+    margin-bottom: var(#{$prefix}-margin-active-bottom, var(#{$prefix}-margin-active, var(#{$prefix}-margin-hover-bottom, var(#{$prefix}-margin-bottom, revert))));
+    margin-left: var(#{$prefix}-margin-active-left, var(#{$prefix}-margin-active, var(#{$prefix}-margin-hover-left, var(#{$prefix}-margin-left, revert))));
   }
 
   &:focus,
   &:focus-visible {
-    margin: var(#{$prefix}-margin-focus, var(#{$prefix}-margin, #{$margin-fallback}));
-    margin-top: var(#{$prefix}-margin-focus-top, var(#{$prefix}-margin-focus, var(#{$prefix}-margin-top, #{$margin-fallback})));
-    margin-right: var(#{$prefix}-margin-focus-right, var(#{$prefix}-margin-focus, var(#{$prefix}-margin-right, #{$margin-fallback})));
-    margin-bottom: var(#{$prefix}-margin-focus-bottom, var(#{$prefix}-margin-focus, var(#{$prefix}-margin-bottom, #{$margin-fallback})));
-    margin-left: var(#{$prefix}-margin-focus-left, var(#{$prefix}-margin-focus, var(#{$prefix}-margin-left, #{$margin-fallback})));
+    margin: var(#{$prefix}-margin-focus, var(#{$prefix}-margin, revert));
+    margin-top: var(#{$prefix}-margin-focus-top, var(#{$prefix}-margin-focus, var(#{$prefix}-margin-top, revert)));
+    margin-right: var(#{$prefix}-margin-focus-right, var(#{$prefix}-margin-focus, var(#{$prefix}-margin-right, revert)));
+    margin-bottom: var(#{$prefix}-margin-focus-bottom, var(#{$prefix}-margin-focus, var(--alf-mar-margin-bottom, revert)));
+    margin-left: var(#{$prefix}-margin-focus-left, var(#{$prefix}-margin-focus, var(#{$prefix}-margin-left, revert)));
   }
 
   #{$disabled-selectors} {
-    margin: var(#{$prefix}-margin-disabled, var(#{$prefix}-margin, #{$margin-fallback}));
-    margin-top: var(#{$prefix}-margin-disabled-top, var(#{$prefix}-margin-disabled, var(#{$prefix}-margin-top, #{$margin-fallback})));
-    margin-right: var(#{$prefix}-margin-disabled-right, var(#{$prefix}-margin-disabled, var(#{$prefix}-margin-right, #{$margin-fallback})));
-    margin-bottom: var(#{$prefix}-margin-disabled-bottom, var(#{$prefix}-margin-disabled, var(#{$prefix}-margin-bottom, #{$margin-fallback})));
-    margin-left: var(#{$prefix}-margin-disabled-left, var(#{$prefix}-margin-disabled, var(#{$prefix}-margin-left, #{$margin-fallback})));
+    margin: var(#{$prefix}-margin-disabled, var(#{$prefix}-margin, revert));
+    margin-top: var(#{$prefix}-margin-disabled-top, var(#{$prefix}-margin-disabled, var(#{$prefix}-margin-top, revert)));
+    margin-right: var(#{$prefix}-margin-disabled-right, var(#{$prefix}-margin-disabled, var(#{$prefix}-margin-right, revert)));
+    margin-bottom: var(#{$prefix}-margin-disabled-bottom, var(#{$prefix}-margin-disabled, var(#{$prefix}-margin-bottom, revert)));
+    margin-left: var(#{$prefix}-margin-disabled-left, var(#{$prefix}-margin-disabled, var(#{$prefix}-margin-left, revert)));
   }
 }
 

@@ -1,0 +1,304 @@
+@let tooltip       = tooltipComputed();
+@let ripple        = rippleComputed();
+@let id            = inputId();
+@let disabled      = isDisabled();
+@let readonly      = isReadonly();
+@let loading       = isLoading();
+@let textarea      = isTextarea();
+@let floating      = shouldFloat();
+@let inputType     = inputTypeAttr();
+@let outlined      = isOutlined();
+@let val           = value();
+@let labelText     = labelComputed();
+@let placeholderText = placeholderComputed();
+@let errorText     = errorComputed();
+@let helperTxt     = helperTextComputed();
+@let showClearBtn  = showClear();
+@let showPwd       = showPasswordToggle();
+@let showCounter   = showCharCounter();
+@let hasSfx        = hasSuffix();
+@let pwdVisible    = isPasswordVisible();
+@let clearLbl      = clearLabel();
+@let showPwdLbl    = showPwdLabel();
+@let hidePwdLbl    = hidePwdLabel();
+@let loadingLbl    = loadingLabel();
+@let cfg           = resolvedConfig();
+@let bgStyle       = createBackgroundsStyle();
+@let borderStyle   = createBorderStyle();
+@let paddingStyle  = createPaddingStyle();
+@let shadowStyle   = createShadowsStyle();
+@let typographyStyle = createTypographyStyle();
+@let animClass       = animationsClassComputed();
+@let customClass     = customClassComputed();
+@let customStyle     = customStyleComputed();
+@let marginStyle     = createMarginStyle();
+@let displayStyle    = createDisplayAndLayoutStyle();
+@let transformStyle  = createTransformStyle();
+@let textStyle       = createTextStyle();
+
+@if (outlined) {
+<fieldset
+  [attr.id]="id + '-wrapper'"
+  [alfTooltipText]="tooltip"
+  [style]="bgStyle + borderStyle + paddingStyle + shadowStyle + typographyStyle + textStyle + displayStyle + marginStyle + transformStyle + customStyle"
+  [class]="'alf-input ' + animClass + ' ' + customClass"
+  [class.alf-input--focused]="isFocused()"
+  [class.alf-input--disabled]="disabled"
+  [class.alf-input--readonly]="readonly"
+  [class.alf-input--error]="errorText"
+  [class.alf-input--loading]="loading"
+  (click)="focusInput()"
+>
+  <legend
+    class="alf-input__legend"
+    [class.alf-input__legend--float]="floating && labelText"
+    [class.alf-input__legend--has-prefix]="!!cfg?.prefix"
+  >
+    <span>{{ labelText }}@if (cfg?.required) { * }</span>
+  </legend>
+
+  <div class="alf-input__inner">
+    @if (cfg?.prefix) {
+      <span class="alf-input__prefix" aria-hidden="true">{{ cfg.prefix }}</span>
+    }
+
+    @if (textarea) {
+      <textarea
+        #inputRef
+        [id]="id"
+        [name]="cfg?.name ?? ''"
+        [value]="val"
+        [disabled]="disabled"
+        [readonly]="readonly"
+        [required]="cfg?.required ?? false"
+        [attr.maxlength]="cfg?.maxLength ?? null"
+        [attr.minlength]="cfg?.minLength ?? null"
+        [rows]="cfg?.rows ?? 3"
+        [placeholder]="floating ? placeholderText : ''"
+        [style.resize]="cfg?.autoResize ? 'none' : 'both'"
+        class="alf-input__field alf-input__field--textarea"
+        [class.alf-input__field--has-suffix]="hasSfx"
+        [attr.aria-label]="labelText || null"
+        [attr.aria-invalid]="errorText ? 'true' : null"
+        [attr.aria-required]="cfg?.required ?? null"
+        [attr.aria-describedby]="errorText || helperTxt ? id + '-desc' : null"
+        (input)="handleInput($event)"
+        (focus)="handleFocus($event)"
+        (blur)="handleBlur($event)"
+      ></textarea>
+    } @else {
+      <input
+        #inputRef
+        [id]="id"
+        [type]="inputType"
+        [name]="cfg?.name ?? ''"
+        [value]="val"
+        [disabled]="disabled"
+        [readonly]="readonly"
+        [required]="cfg?.required ?? false"
+        [attr.maxlength]="cfg?.maxLength ?? null"
+        [attr.minlength]="cfg?.minLength ?? null"
+        [attr.min]="cfg?.min ?? null"
+        [attr.max]="cfg?.max ?? null"
+        [attr.step]="cfg?.step ?? null"
+        [attr.pattern]="cfg?.pattern ?? null"
+        [attr.autocomplete]="cfg?.autocomplete ?? 'off'"
+        [placeholder]="floating ? placeholderText : ''"
+        class="alf-input__field"
+        [class.alf-input__field--has-suffix]="hasSfx"
+        [attr.aria-label]="labelText || null"
+        [attr.aria-invalid]="errorText ? 'true' : null"
+        [attr.aria-required]="cfg?.required ?? null"
+        [attr.aria-describedby]="errorText || helperTxt ? id + '-desc' : null"
+        (input)="handleInput($event)"
+        (focus)="handleFocus($event)"
+        (blur)="handleBlur($event)"
+      />
+    }
+
+    <div class="alf-input__suffix-area">
+      @if (loading) {
+        <span class="alf-input__spinner" role="status" [attr.aria-label]="loadingLbl">
+          <span class="alf-input__spinner-circle"></span>
+        </span>
+      } @else {
+        @if (showClearBtn) {
+          <button
+            class="alf-input__suffix-btn alf-input__clear-btn"
+            [alfRipple]="ripple"
+            type="button"
+            tabindex="-1"
+            [attr.aria-label]="clearLbl"
+            (click)="clear($event)"
+          >✕</button>
+        }
+        @if (showPwd) {
+          <button
+            class="alf-input__suffix-btn alf-input__pwd-toggle"
+            [alfRipple]="ripple"
+            type="button"
+            tabindex="-1"
+            [attr.aria-label]="pwdVisible ? hidePwdLbl : showPwdLbl"
+            (click)="togglePassword($event)"
+          >{{ pwdVisible ? '🙈' : '👁' }}</button>
+        } @else if (cfg?.suffix && !showClearBtn) {
+          <span class="alf-input__suffix-icon" aria-hidden="true">{{ cfg.suffix }}</span>
+        }
+      }
+    </div>
+  </div>
+
+  @if (labelText) {
+    <label
+      [for]="id"
+      class="alf-input__label"
+      [class.alf-input__label--float]="floating"
+      [class.alf-input__label--has-prefix]="!!cfg?.prefix"
+    >
+      {{ labelText }}
+      @if (cfg?.required) {
+        <span class="alf-input__required" aria-hidden="true">*</span>
+      }
+    </label>
+  }
+</fieldset>
+} @else {
+<div
+  [attr.id]="id + '-wrapper'"
+  [alfTooltipText]="tooltip"
+  [style]="bgStyle + borderStyle + paddingStyle + shadowStyle + typographyStyle + textStyle + displayStyle + marginStyle + transformStyle + customStyle"
+  [class]="'alf-input ' + animClass + ' ' + customClass"
+  [class.alf-input--focused]="isFocused()"
+  [class.alf-input--disabled]="disabled"
+  [class.alf-input--readonly]="readonly"
+  [class.alf-input--error]="errorText"
+  [class.alf-input--loading]="loading"
+  (click)="focusInput()"
+>
+  <div class="alf-input__inner">
+    @if (cfg?.prefix) {
+      <span class="alf-input__prefix" aria-hidden="true">{{ cfg.prefix }}</span>
+    }
+
+    @if (textarea) {
+      <textarea
+        #inputRef
+        [id]="id"
+        [name]="cfg?.name ?? ''"
+        [value]="val"
+        [disabled]="disabled"
+        [readonly]="readonly"
+        [required]="cfg?.required ?? false"
+        [attr.maxlength]="cfg?.maxLength ?? null"
+        [attr.minlength]="cfg?.minLength ?? null"
+        [rows]="cfg?.rows ?? 3"
+        [placeholder]="floating ? placeholderText : ''"
+        [style.resize]="cfg?.autoResize ? 'none' : 'both'"
+        class="alf-input__field alf-input__field--textarea"
+        [class.alf-input__field--has-suffix]="hasSfx"
+        [attr.aria-label]="labelText || null"
+        [attr.aria-invalid]="errorText ? 'true' : null"
+        [attr.aria-required]="cfg?.required ?? null"
+        [attr.aria-describedby]="errorText || helperTxt ? id + '-desc' : null"
+        (input)="handleInput($event)"
+        (focus)="handleFocus($event)"
+        (blur)="handleBlur($event)"
+      ></textarea>
+    } @else {
+      <input
+        #inputRef
+        [id]="id"
+        [type]="inputType"
+        [name]="cfg?.name ?? ''"
+        [value]="val"
+        [disabled]="disabled"
+        [readonly]="readonly"
+        [required]="cfg?.required ?? false"
+        [attr.maxlength]="cfg?.maxLength ?? null"
+        [attr.minlength]="cfg?.minLength ?? null"
+        [attr.min]="cfg?.min ?? null"
+        [attr.max]="cfg?.max ?? null"
+        [attr.step]="cfg?.step ?? null"
+        [attr.pattern]="cfg?.pattern ?? null"
+        [attr.autocomplete]="cfg?.autocomplete ?? 'off'"
+        [placeholder]="floating ? placeholderText : ''"
+        class="alf-input__field"
+        [class.alf-input__field--has-suffix]="hasSfx"
+        [attr.aria-label]="labelText || null"
+        [attr.aria-invalid]="errorText ? 'true' : null"
+        [attr.aria-required]="cfg?.required ?? null"
+        [attr.aria-describedby]="errorText || helperTxt ? id + '-desc' : null"
+        (input)="handleInput($event)"
+        (focus)="handleFocus($event)"
+        (blur)="handleBlur($event)"
+      />
+    }
+
+    <div class="alf-input__suffix-area">
+      @if (loading) {
+        <span class="alf-input__spinner" role="status" [attr.aria-label]="loadingLbl">
+          <span class="alf-input__spinner-circle"></span>
+        </span>
+      } @else {
+        @if (showClearBtn) {
+          <button
+            class="alf-input__suffix-btn alf-input__clear-btn"
+            [alfRipple]="ripple"
+            type="button"
+            tabindex="-1"
+            [attr.aria-label]="clearLbl"
+            (click)="clear($event)"
+          >✕</button>
+        }
+        @if (showPwd) {
+          <button
+            class="alf-input__suffix-btn alf-input__pwd-toggle"
+            [alfRipple]="ripple"
+            type="button"
+            tabindex="-1"
+            [attr.aria-label]="pwdVisible ? hidePwdLbl : showPwdLbl"
+            (click)="togglePassword($event)"
+          >{{ pwdVisible ? '🙈' : '👁' }}</button>
+        } @else if (cfg?.suffix && !showClearBtn) {
+          <span class="alf-input__suffix-icon" aria-hidden="true">{{ cfg.suffix }}</span>
+        }
+      }
+    </div>
+  </div>
+
+  @if (labelText) {
+    <label
+      [for]="id"
+      class="alf-input__label"
+      [class.alf-input__label--float]="floating"
+      [class.alf-input__label--has-prefix]="!!cfg?.prefix"
+    >
+      {{ labelText }}
+      @if (cfg?.required) {
+        <span class="alf-input__required" aria-hidden="true">*</span>
+      }
+    </label>
+  }
+</div>
+}
+
+<!-- Footer: error / helperText / contador -->
+@if (errorText || helperTxt || showCounter) {
+  <div class="alf-input__footer">
+    @if (errorText || helperTxt) {
+      <span
+        [id]="id + '-desc'"
+        class="alf-input__helper"
+        [class.alf-input__helper--error]="errorText"
+        role="alert"
+      >{{ errorText || helperTxt }}</span>
+    }
+    @if (showCounter) {
+      <span
+        class="alf-input__counter"
+        [class.alf-input__counter--error]="cfg?.maxLength && val.length > (cfg?.maxLength ?? 0)"
+        aria-live="polite"
+      >{{ val.length }}/{{ cfg?.maxLength }}</span>
+    }
+  </div>
+}

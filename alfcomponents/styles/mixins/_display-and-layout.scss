@@ -1,22 +1,21 @@
+@use 'sass:meta';
+
 /**
  * Aplica display/layout reactivo con variables CSS por prefijo.
- * Ejemplo de prefijo: '--alf-tabs'
+ * Estructura simplificada siguiendo el patrón Élite de border/background.
+ * 
+ * @param {String} $prefix - Prefijo de las variables CSS (ej: '--alf-inp')
+ * @param {String} $disabled-selectors - Selectores para el estado deshabilitado
  */
 @mixin alf-display-layout-css-vars(
   $prefix,
-  $display-fallback: revert,
-  $align-items-fallback: revert,
-  $justify-content-fallback: revert,
-  $gap-fallback: revert,
   $disabled-selectors: '&[disabled], &:disabled, &.disabled'
 ) {
-  // PROPIEDADES BASE
-  // Usamos revert para que el mixin sea "transparente" si no hay variables definidas.
-  
-  display: var(#{$prefix}-layout-display, #{$display-fallback});
-  justify-content: var(#{$prefix}-layout-justify-content, #{$justify-content-fallback});
-  align-items: var(#{$prefix}-layout-align-items, #{$align-items-fallback});
-  gap: var(#{$prefix}-layout-gap, #{$gap-fallback});
+  // 1. BASE PROPERTIES
+  display: var(#{$prefix}-layout-display, revert);
+  justify-content: var(#{$prefix}-layout-justify-content, revert);
+  align-items: var(#{$prefix}-layout-align-items, revert);
+  gap: var(#{$prefix}-layout-gap, revert);
 
   position: var(#{$prefix}-layout-position, revert);
   top: var(#{$prefix}-layout-top, revert);
@@ -33,32 +32,64 @@
   max-height: var(#{$prefix}-layout-max-height, revert);
   
   overflow: var(#{$prefix}-layout-overflow, revert);
+  overflow-x: var(#{$prefix}-layout-overflow-x, var(#{$prefix}-layout-overflow, revert));
+  overflow-y: var(#{$prefix}-layout-overflow-y, var(#{$prefix}-layout-overflow, revert));
+  visibility: var(#{$prefix}-layout-visibility, revert);
+  object-fit: var(#{$prefix}-layout-object-fit, revert);
+
   flex-direction: var(#{$prefix}-layout-flex-direction, revert);
   flex-wrap: var(#{$prefix}-layout-flex-wrap, revert);
 
-  // ESTADOS REACTIVOS
+  // Interaction & Visual
+  opacity: var(#{$prefix}-layout-opacity, revert);
+  pointer-events: var(#{$prefix}-layout-pointer-events, revert);
+
+  // 2. REACTIVE STATES
+  
   &:hover {
-    display: var(#{$prefix}-layout-hover-display, var(#{$prefix}-layout-display, #{$display-fallback}));
-    justify-content: var(#{$prefix}-layout-hover-justify-content, var(#{$prefix}-layout-justify-content, #{$justify-content-fallback}));
-    align-items: var(#{$prefix}-layout-hover-align-items, var(#{$prefix}-layout-align-items, #{$align-items-fallback}));
-    gap: var(#{$prefix}-layout-hover-gap, var(#{$prefix}-layout-gap, #{$gap-fallback}));
+    display: var(#{$prefix}-layout-hover-display, var(#{$prefix}-layout-display, revert));
+    justify-content: var(#{$prefix}-layout-hover-justify-content, var(#{$prefix}-layout-justify-content, revert));
+    align-items: var(#{$prefix}-layout-hover-align-items, var(#{$prefix}-layout-align-items, revert));
+    gap: var(#{$prefix}-layout-hover-gap, var(#{$prefix}-layout-gap, revert));
     flex-direction: var(#{$prefix}-layout-hover-flex-direction, var(#{$prefix}-layout-flex-direction, revert));
+    flex-wrap: var(#{$prefix}-layout-hover-flex-wrap, var(#{$prefix}-layout-flex-wrap, revert));
+    overflow: var(#{$prefix}-layout-hover-overflow, var(#{$prefix}-layout-overflow, revert));
+    visibility: var(#{$prefix}-layout-hover-visibility, var(#{$prefix}-layout-visibility, revert));
+    width: var(#{$prefix}-layout-hover-width, var(#{$prefix}-layout-width, revert));
+    height: var(#{$prefix}-layout-hover-height, var(#{$prefix}-layout-height, revert));
+    opacity: var(#{$prefix}-layout-hover-opacity, var(#{$prefix}-layout-opacity, revert));
+    pointer-events: var(#{$prefix}-layout-hover-pointer-events, var(#{$prefix}-layout-pointer-events, revert));
+  }
+
+  &:active {
+    display: var(#{$prefix}-layout-active-display, var(#{$prefix}-layout-hover-display, var(#{$prefix}-layout-display, revert)));
+    justify-content: var(#{$prefix}-layout-active-justify-content, var(#{$prefix}-layout-hover-justify-content, var(#{$prefix}-layout-justify-content, revert)));
+    align-items: var(#{$prefix}-layout-active-align-items, var(#{$prefix}-layout-hover-align-items, var(#{$prefix}-layout-align-items, revert)));
+    gap: var(#{$prefix}-layout-active-gap, var(#{$prefix}-layout-hover-gap, var(#{$prefix}-layout-gap, revert)));
+    opacity: var(#{$prefix}-layout-active-opacity, var(#{$prefix}-layout-hover-opacity, var(#{$prefix}-layout-opacity, revert)));
   }
 
   &:focus,
   &:focus-visible {
-    display: var(#{$prefix}-layout-focus-display, var(#{$prefix}-layout-display, #{$display-fallback}));
-    justify-content: var(#{$prefix}-layout-focus-justify-content, var(#{$prefix}-layout-justify-content, #{$justify-content-fallback}));
-    align-items: var(#{$prefix}-layout-focus-align-items, var(#{$prefix}-layout-align-items, #{$align-items-fallback}));
-    gap: var(#{$prefix}-layout-focus-gap, var(#{$prefix}-layout-gap, #{$gap-fallback}));
+    display: var(#{$prefix}-layout-focus-display, var(#{$prefix}-layout-display, revert));
+    justify-content: var(#{$prefix}-layout-focus-justify-content, var(#{$prefix}-layout-justify-content, revert));
+    align-items: var(#{$prefix}-layout-focus-align-items, var(#{$prefix}-layout-align-items, revert));
+    gap: var(#{$prefix}-layout-focus-gap, var(#{$prefix}-layout-gap, revert));
     flex-direction: var(#{$prefix}-layout-focus-flex-direction, var(#{$prefix}-layout-flex-direction, revert));
+    opacity: var(#{$prefix}-layout-focus-opacity, var(#{$prefix}-layout-opacity, revert));
+    pointer-events: var(#{$prefix}-layout-focus-pointer-events, var(#{$prefix}-layout-pointer-events, revert));
   }
 
   #{$disabled-selectors} {
-    display: var(#{$prefix}-layout-disabled-display, var(#{$prefix}-layout-display, #{$display-fallback}));
-    justify-content: var(#{$prefix}-layout-disabled-justify-content, var(#{$prefix}-layout-justify-content, #{$justify-content-fallback}));
-    align-items: var(#{$prefix}-layout-disabled-align-items, var(#{$prefix}-layout-align-items, #{$align-items-fallback}));
-    gap: var(#{$prefix}-layout-disabled-gap, var(#{$prefix}-layout-gap, #{$gap-fallback}));
+    display: var(#{$prefix}-layout-disabled-display, var(#{$prefix}-layout-display, revert));
+    justify-content: var(#{$prefix}-layout-disabled-justify-content, var(#{$prefix}-layout-justify-content, revert));
+    align-items: var(#{$prefix}-layout-disabled-align-items, var(#{$prefix}-layout-align-items, revert));
+    gap: var(#{$prefix}-layout-disabled-gap, var(#{$prefix}-layout-gap, revert));
     flex-direction: var(#{$prefix}-layout-disabled-flex-direction, var(#{$prefix}-layout-flex-direction, revert));
+    visibility: var(#{$prefix}-layout-disabled-visibility, var(#{$prefix}-layout-visibility, revert));
+    width: var(#{$prefix}-layout-disabled-width, var(#{$prefix}-layout-width, revert));
+    height: var(#{$prefix}-layout-disabled-height, var(#{$prefix}-layout-height, revert));
+    opacity: var(#{$prefix}-layout-disabled-opacity, var(#{$prefix}-layout-opacity, revert));
+    pointer-events: var(#{$prefix}-layout-disabled-pointer-events, var(#{$prefix}-layout-pointer-events, revert));
   }
 }

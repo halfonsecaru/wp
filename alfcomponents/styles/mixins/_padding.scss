@@ -1,53 +1,53 @@
 /**
  * Aplica padding reactivo basado en variables CSS con prefijo.
- * Ejemplo de prefijo: '--alf-tabs'
+ * Estructura simplificada siguiendo el patrón Élite.
+ * 
+ * @param {String} $prefix - Prefijo de las variables CSS (ej: '--alf-inp')
+ * @param {String} $disabled-selectors - Selectores para el estado deshabilitado
  */
 @mixin alf-padding-css-vars(
   $prefix,
-  $padding-y-fallback: revert,
-  $padding-x-fallback: revert,
   $disabled-selectors: '&[disabled], &:disabled, &.disabled'
 ) {
   // BASE PROPERTIES
-  // Usamos revert por defecto para que, si no hay variables, el navegador 
-  // ignore esta línea y use lo que el desarrollador puso manualmente en el .scss
-  
-  $final-fallback: #{$padding-y-fallback} #{$padding-x-fallback};
-  @if $padding-y-fallback == revert and $padding-x-fallback == revert {
-    $final-fallback: revert;
-  }
-
-  padding: var(#{$prefix}-padding, #{$final-fallback});
-
-  padding-top: var(#{$prefix}-padding-top, var(#{$prefix}-padding-y, #{$padding-y-fallback}));
-  padding-right: var(#{$prefix}-padding-right, var(#{$prefix}-padding-x, #{$padding-x-fallback}));
-  padding-bottom: var(#{$prefix}-padding-bottom, var(#{$prefix}-padding-y, #{$padding-y-fallback}));
-  padding-left: var(#{$prefix}-padding-left, var(#{$prefix}-padding-x, #{$padding-x-fallback}));
+  padding: var(#{$prefix}-padding, revert);
+  padding-top: var(#{$prefix}-padding-top, var(#{$prefix}-padding-y, revert));
+  padding-right: var(#{$prefix}-padding-right, var(#{$prefix}-padding-x, revert));
+  padding-bottom: var(#{$prefix}-padding-bottom, var(#{$prefix}-padding-y, revert));
+  padding-left: var(#{$prefix}-padding-left, var(#{$prefix}-padding-x, revert));
 
   // ESTADOS REACTIVOS
   &:hover {
-    padding: var(#{$prefix}-padding-hover, var(#{$prefix}-padding, #{$final-fallback}));
-    padding-top: var(#{$prefix}-padding-hover-top, var(#{$prefix}-padding-hover, var(#{$prefix}-padding-top, #{$padding-y-fallback})));
-    padding-right: var(#{$prefix}-padding-hover-right, var(#{$prefix}-padding-hover, var(#{$prefix}-padding-right, #{$padding-x-fallback})));
-    padding-bottom: var(#{$prefix}-padding-hover-bottom, var(#{$prefix}-padding-hover, var(#{$prefix}-padding-bottom, #{$padding-y-fallback})));
-    padding-left: var(#{$prefix}-padding-hover-left, var(#{$prefix}-padding-hover, var(#{$prefix}-padding-left, #{$padding-x-fallback})));
+    padding: var(#{$prefix}-padding-hover, var(#{$prefix}-padding, revert));
+    padding-top: var(#{$prefix}-padding-hover-top, var(#{$prefix}-padding-hover, var(#{$prefix}-padding-top, revert)));
+    padding-right: var(#{$prefix}-padding-hover-right, var(#{$prefix}-padding-hover, var(#{$prefix}-padding-right, revert)));
+    padding-bottom: var(#{$prefix}-padding-hover-bottom, var(#{$prefix}-padding-hover, var(#{$prefix}-padding-bottom, revert)));
+    padding-left: var(#{$prefix}-padding-hover-left, var(#{$prefix}-padding-hover, var(#{$prefix}-padding-left, revert)));
+  }
+
+  &:active {
+    padding: var(#{$prefix}-padding-active, var(#{$prefix}-padding-hover, var(#{$prefix}-padding, revert)));
+    padding-top: var(#{$prefix}-padding-active-top, var(#{$prefix}-padding-active, var(#{$prefix}-padding-hover-top, var(#{$prefix}-padding-top, revert))));
+    padding-right: var(#{$prefix}-padding-active-right, var(#{$prefix}-padding-active, var(#{$prefix}-padding-hover-right, var(#{$prefix}-padding-right, revert))));
+    padding-bottom: var(#{$prefix}-padding-active-bottom, var(#{$prefix}-padding-active, var(#{$prefix}-padding-hover-bottom, var(#{$prefix}-padding-bottom, revert))));
+    padding-left: var(#{$prefix}-padding-active-left, var(#{$prefix}-padding-active, var(#{$prefix}-padding-hover-left, var(#{$prefix}-padding-left, revert))));
   }
 
   &:focus,
   &:focus-visible {
-    padding: var(#{$prefix}-padding-focus, var(#{$prefix}-padding, #{$final-fallback}));
-    padding-top: var(#{$prefix}-padding-focus-top, var(#{$prefix}-padding-focus, var(#{$prefix}-padding-top, #{$padding-y-fallback})));
-    padding-right: var(#{$prefix}-padding-focus-right, var(#{$prefix}-padding-focus, var(#{$prefix}-padding-right, #{$padding-x-fallback})));
-    padding-bottom: var(#{$prefix}-padding-focus-bottom, var(#{$prefix}-padding-focus, var(#{$prefix}-padding-bottom, #{$padding-y-fallback})));
-    padding-left: var(#{$prefix}-padding-focus-left, var(#{$prefix}-padding-focus, var(#{$prefix}-padding-left, #{$padding-x-fallback})));
+    padding: var(#{$prefix}-padding-focus, var(#{$prefix}-padding, revert));
+    padding-top: var(#{$prefix}-padding-focus-top, var(#{$prefix}-padding-focus, var(#{$prefix}-padding-top, revert)));
+    padding-right: var(#{$prefix}-padding-focus-right, var(#{$prefix}-padding-focus, var(#{$prefix}-padding-right, revert)));
+    padding-bottom: var(#{$prefix}-padding-focus-bottom, var(#{$prefix}-padding-focus, var(#{$prefix}-padding-bottom, revert)));
+    padding-left: var(#{$prefix}-padding-focus-left, var(#{$prefix}-padding-focus, var(#{$prefix}-padding-left, revert)));
   }
 
   #{$disabled-selectors} {
-    padding: var(#{$prefix}-padding-disabled, var(#{$prefix}-padding, #{$final-fallback}));
-    padding-top: var(#{$prefix}-padding-disabled-top, var(#{$prefix}-padding-disabled, var(#{$prefix}-padding-top, #{$padding-y-fallback})));
-    padding-right: var(#{$prefix}-padding-disabled-right, var(#{$prefix}-padding-disabled, var(#{$prefix}-padding-right, #{$padding-x-fallback})));
-    padding-bottom: var(#{$prefix}-padding-disabled-bottom, var(#{$prefix}-padding-disabled, var(#{$prefix}-padding-bottom, #{$padding-y-fallback})));
-    padding-left: var(#{$prefix}-padding-disabled-left, var(#{$prefix}-padding-disabled, var(#{$prefix}-padding-left, #{$padding-x-fallback})));
+    padding: var(#{$prefix}-padding-disabled, var(#{$prefix}-padding, revert));
+    padding-top: var(#{$prefix}-padding-disabled-top, var(#{$prefix}-padding-disabled, var(#{$prefix}-padding-top, revert)));
+    padding-right: var(#{$prefix}-padding-disabled-right, var(#{$prefix}-padding-disabled, var(#{$prefix}-padding-right, revert)));
+    padding-bottom: var(#{$prefix}-padding-disabled-bottom, var(#{$prefix}-padding-disabled, var(#{$prefix}-padding-bottom, revert)));
+    padding-left: var(#{$prefix}-padding-disabled-left, var(#{$prefix}-padding-disabled, var(#{$prefix}-padding-left, revert)));
   }
 }
 

@@ -7,6 +7,7 @@ export enum visualprefixEnum {
     TabsSlider = '--alf-tabs-slider',
     Checkbox = '--alf-cb',
     RadioButton = '--alf-rb',
+    Input = '--alf-inp',
 
     // Directivas
     Ripple = '--alf-ripple',

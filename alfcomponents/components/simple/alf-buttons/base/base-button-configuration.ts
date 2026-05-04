@@ -6,29 +6,29 @@ import { AlfBaseConfiguration } from "../../../../base/alf-base-configuration";
 @Directive()
 export abstract class AlfBaseButtonConfiguration<TConfig extends AlfButtonInterface> extends AlfBaseConfiguration<TConfig> {
 
-    protected readonly type = input<AlfButtonTypeEnum>();
-    protected readonly label = input<string>();
-    protected readonly iconLeft = input<AlfIconsUnicodeIconEnum>();
-    protected readonly iconRight = input<AlfIconsUnicodeIconEnum>();
-    protected readonly link = input<ButtonLink | undefined>();
+    public readonly type = input<AlfButtonTypeEnum>();
+    public readonly label = input<string>();
+    public readonly iconLeft = input<AlfIconsUnicodeIconEnum>();
+    public readonly iconRight = input<AlfIconsUnicodeIconEnum>();
+    public readonly link = input<ButtonLink | undefined>();
 
-    protected readonly typeComputed = computed(() =>
+    public readonly typeComputed = computed(() =>
         this.type() ?? this.inputConfig()?.type ?? AlfButtonTypeEnum.Button,
     );
 
-    protected readonly iconLeftComputed = computed(() =>
+    public readonly iconLeftComputed = computed(() =>
         this.iconLeft() ?? this.inputConfig()?.iconLeft,
     );
 
-    protected readonly labelComputed = computed(() =>
+    public readonly labelComputed = computed(() =>
         this.label() ?? this.inputConfig()?.label ?? this.textStyleComputed()?.default?.text ?? 'Boton',
     );
 
-    protected readonly iconRightComputed = computed(() =>
+    public readonly iconRightComputed = computed(() =>
         this.iconRight() ?? this.inputConfig()?.iconRight,
     );
 
-    protected readonly linkComputed = computed(() =>
+    public readonly linkComputed = computed(() =>
         this.link() ?? this.inputConfig()?.link,
     );
 
