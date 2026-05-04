@@ -23,7 +23,7 @@ import { AlfInputInterface } from '../interfaces/alf-input.interface';
  */
 export const ALF_INPUT_DEFAULT: AlfInputInterface = {
   cursor: AlfCursorEnum.Text,
-  appearance: AlfInputAppearanceEnum.Outline,
+  //appearance: AlfInputAppearanceEnum.Outline,
   // displayAndLayout: {
     // default: {
     //   display: AlfDisplayEnum.Flex,
@@ -60,15 +60,6 @@ export const ALF_INPUT_DEFAULT: AlfInputInterface = {
   //   focus: { backgroundColor: AlfColorEnum.Transparent },
   //   disabled: { backgroundColor: AlfColorEnum.Transparent }
   // },
-  customStyle: `
-    --alf-inp-label-color: var(--alf-inp-text-color, revert);
-    --alf-inp-label-float-scale: 0.75;
-    --alf-inp-label-top: 50%;
-    --alf-inp-label-float-top: 0.375rem;
-    --alf-inp-content-inline-start: var(--alf-inp-padding-left, var(--alf-inp-padding-x, 0.75rem));
-    --alf-inp-prefix-width: 2.25rem;
-    --alf-inp-prefix-font-size: var(--alf-inp-typography-font-size, 1rem);
-  `
 };
 
 /**
@@ -79,7 +70,7 @@ export const getAlfInputDefaultConfig = (
   variant: AlfColorVariantEnum = AlfColorVariantEnum.Default,
   appearance: AlfInputAppearanceEnum = AlfInputAppearanceEnum.Outline
 ): AlfInputInterface => {
-  return ;
+  return ALF_INPUT_DEFAULT;
   const visualBase = resolveVariantDefinitions(variant);
   
   // Determinamos si es Outline (ya sea por enum explícito o por nombre de variante)
@@ -94,8 +85,8 @@ export const getAlfInputDefaultConfig = (
   const isStandard = appearance === AlfInputAppearanceEnum.Standard;
 
   return {
-    ...visualBase,
     ...ALF_INPUT_DEFAULT,
+    ...visualBase,
     colorVariant: variant,
     appearance: appearance,
     
