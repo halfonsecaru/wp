@@ -24,42 +24,42 @@ import { AlfInputInterface } from '../interfaces/alf-input.interface';
 export const ALF_INPUT_DEFAULT: AlfInputInterface = {
   cursor: AlfCursorEnum.Text,
   appearance: AlfInputAppearanceEnum.Outline,
-  displayAndLayout: {
-    default: {
-      display: AlfDisplayEnum.Flex,
-      position: AlfCssPositionEnum.Relative,
-      alignItems: AlfAlignItemsEnum.Center,
-      minHeight: AlfRemEnum.Rem35,
-      overflow: AlfOverflowEnum.Visible,
-      overflowX: AlfOverflowEnum.Visible,
-      overflowY: AlfOverflowEnum.Visible
-    },
-    disabled: {
-      opacity: AlfOpacityEnum.Opacity55,
-      pointerEvents: AlfPointerEventsEnum.None
-    }
-  },
-  padding: {
-    default: { paddingLeft: AlfRemEnum.Rem075, paddingRight: AlfRemEnum.Rem075 },
-    hover:   { paddingLeft: AlfRemEnum.Rem075, paddingRight: AlfRemEnum.Rem075 },
-    focus:   { paddingLeft: AlfRemEnum.Rem075, paddingRight: AlfRemEnum.Rem075 },
-    active:  { paddingLeft: AlfRemEnum.Rem075, paddingRight: AlfRemEnum.Rem075 },
-    disabled:{ paddingLeft: AlfRemEnum.Rem075, paddingRight: AlfRemEnum.Rem075 }
-  },
-  border: {
-    default:  { borderRadius: AlfRadiusEnum.Md },
-    hover:    { borderRadius: AlfRadiusEnum.Md },
-    focus:    { borderRadius: AlfRadiusEnum.Md },
-    active:   { borderRadius: AlfRadiusEnum.Md },
-    disabled: { borderRadius: AlfRadiusEnum.Md }
-  },
-  backgrounds: {
-    default: { backgroundColor: AlfColorEnum.Transparent },
-    hover: { backgroundColor: AlfColorEnum.Transparent },
-    active: { backgroundColor: AlfColorEnum.Transparent },
-    focus: { backgroundColor: AlfColorEnum.Transparent },
-    disabled: { backgroundColor: AlfColorEnum.Transparent }
-  },
+  // displayAndLayout: {
+    // default: {
+    //   display: AlfDisplayEnum.Flex,
+    //   position: AlfCssPositionEnum.Relative,
+    //   alignItems: AlfAlignItemsEnum.Center,
+    //   minHeight: AlfRemEnum.Rem35,
+    //   overflow: AlfOverflowEnum.Visible,
+    //   overflowX: AlfOverflowEnum.Visible,
+    //   overflowY: AlfOverflowEnum.Visible
+    // },
+  //   disabled: {
+  //     opacity: AlfOpacityEnum.Opacity55,
+  //     pointerEvents: AlfPointerEventsEnum.None
+  //   }
+  // },
+  // padding: {
+  //   default: { paddingLeft: AlfRemEnum.Rem075, paddingRight: AlfRemEnum.Rem075 },
+  //   hover:   { paddingLeft: AlfRemEnum.Rem075, paddingRight: AlfRemEnum.Rem075 },
+  //   focus:   { paddingLeft: AlfRemEnum.Rem075, paddingRight: AlfRemEnum.Rem075 },
+  //   active:  { paddingLeft: AlfRemEnum.Rem075, paddingRight: AlfRemEnum.Rem075 },
+  //   disabled:{ paddingLeft: AlfRemEnum.Rem075, paddingRight: AlfRemEnum.Rem075 }
+  // },
+  // border: {
+  //   default:  { borderRadius: AlfRadiusEnum.Md },
+  //   hover:    { borderRadius: AlfRadiusEnum.Md },
+  //   focus:    { borderRadius: AlfRadiusEnum.Md },
+  //   active:   { borderRadius: AlfRadiusEnum.Md },
+  //   disabled: { borderRadius: AlfRadiusEnum.Md }
+  // },
+  // backgrounds: {
+  //   default: { backgroundColor: AlfColorEnum.Transparent },
+  //   hover: { backgroundColor: AlfColorEnum.Transparent },
+  //   active: { backgroundColor: AlfColorEnum.Transparent },
+  //   focus: { backgroundColor: AlfColorEnum.Transparent },
+  //   disabled: { backgroundColor: AlfColorEnum.Transparent }
+  // },
   customStyle: `
     --alf-inp-label-color: var(--alf-inp-text-color, revert);
     --alf-inp-label-float-scale: 0.75;
@@ -79,6 +79,7 @@ export const getAlfInputDefaultConfig = (
   variant: AlfColorVariantEnum = AlfColorVariantEnum.Default,
   appearance: AlfInputAppearanceEnum = AlfInputAppearanceEnum.Outline
 ): AlfInputInterface => {
+  return ;
   const visualBase = resolveVariantDefinitions(variant);
   
   // Determinamos si es Outline (ya sea por enum explícito o por nombre de variante)
