@@ -18,7 +18,6 @@ import { AlfRippleDirective, AlfTooltipTextDirective } from '@alfcomponents/dire
 import { AlfInputInterface } from './interfaces/alf-input.interface';
 import { ALF_INPUT_DEFAULT, getAlfInputDefaultConfig } from './predefined/alf-input.predefined';
 import { getAlfInputLabel } from './i18n/alf-input.i18n';
-import { resolveInputTypeAttr, shouldLabelFloat } from './utils/alf-input.utils';
 
 @Component({
   selector: 'alf-input',
@@ -194,11 +193,11 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
   public readonly inputTypeAttr = computed(() => {
     const type = this.inputType() ?? this.resolvedConfig()?.inputType;
     if (type === AlfInputTypeEnum.Password && this.isPasswordVisible()) return 'text';
-    return resolveInputTypeAttr(type);
+    return this.resolveInputTypeAttr(type);
   });
 
   public readonly shouldFloat = computed(() =>
-    shouldLabelFloat(
+    this.shouldLabelFloat(
       this.isFocused(),
       this.value(),
       this.inputType() ?? this.resolvedConfig()?.inputType,
@@ -302,4 +301,24 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
     textarea.style.height = 'auto';
     textarea.style.height = `${textarea.scrollHeight}px`;
   };
+
+  /**
+   * Determina si el label debe flotar hacia arriba.
+   * Flota cuando hay foco, cuando hay valor, o cuando el tipo es number (siempre muestra placeholder).
+   */
+  private shouldLabelFloat = (
+    focused: boolean,
+    value: string,
+    type?: AlfInputTypeEnum,
+  ): boolean => focused || value.length > 0 || type === AlfInputTypeEnum.Number;
+
+  /**
+   * Resuelve el atributo type HTML real para el elemento input nativo.
+   * El tipo 'textarea' no es un type HTML válido, se trata como elemento separado.
+   */
+  private resolveInputTypeAttr = (type?: AlfInputTypeEnum): string => {
+    if (!type || type === AlfInputTypeEnum.Textarea) return 'text';
+    return type;
+  };
+
 }

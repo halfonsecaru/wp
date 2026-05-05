@@ -96,19 +96,19 @@ export const resolveVariantDefinitions = (variant: AlfColorVariantEnum): Partial
   });
 
   const buildTypo = (color: AlfColorEnum, hover: AlfColorEnum = color) => ({
-    default: { ...defaultTypographyBase, color: color, lineHeight: AlfLineHeightEnum.None },
-    hover: { ...defaultTypographyBase, color: hover, lineHeight: AlfLineHeightEnum.None },
-    active: { ...defaultTypographyBase, color: hover, lineHeight: AlfLineHeightEnum.None },
-    focus: { ...defaultTypographyBase, color: color, lineHeight: AlfLineHeightEnum.None },
-    disabled: { ...defaultTypographyBase, color: color, lineHeight: AlfLineHeightEnum.None },
+    default: { },
+    hover: { },
+    active: { },
+    focus: { },
+    disabled: { },
   });
 
   const buildShad = (shadow: AlfShadowEnum, hoverShadow: AlfShadowEnum = shadow) => ({
-    default: { ...defaultShadowsBase, boxShadow: shadow },
-    hover: { ...defaultShadowsBase, boxShadow: hoverShadow },
-    active: { ...defaultShadowsBase, boxShadow: shadow },
-    focus: { ...defaultShadowsBase, boxShadow: hoverShadow },
-    disabled: { ...defaultShadowsBase, boxShadow: AlfShadowEnum.None },
+    default: { },
+    hover: { },
+    active: { },
+    focus: { },
+    disabled: { },
   });
 
   // RECETAS SINTONIZADAS CON DEFAULT-VISUAL.TS
@@ -149,52 +149,53 @@ export const resolveVariantDefinitions = (variant: AlfColorVariantEnum): Partial
     ripple: { backgroundColor: hover }
   });
 
-  switch (variant) {
-    // ===== PRIMARY =====
-    case AlfColorVariantEnum.Primary: return solid(AlfColorEnum.Primary, AlfColorEnum.PrimaryHover, AlfColorEnum.PrimaryHover, AlfColorEnum.White);
-    case AlfColorVariantEnum.PrimaryOutline: return outline(AlfColorEnum.Primary, AlfColorEnum.PrimaryHover, AlfColorEnum.PrimaryHover, AlfColorEnum.Blue050, AlfColorEnum.Blue200, AlfColorEnum.Blue150);
-    case AlfColorVariantEnum.PrimaryGhost: return soft(AlfColorEnum.Transparent, AlfColorEnum.Blue050, AlfColorEnum.Blue150, AlfColorEnum.Primary);
-    case AlfColorVariantEnum.PrimarySoft: return soft(AlfColorEnum.Blue050, AlfColorEnum.Blue200, AlfColorEnum.Blue150, AlfColorEnum.Primary);
-    case AlfColorVariantEnum.PrimaryCrystal: return soft(AlfColorEnum.Blue050, AlfColorEnum.Blue200, AlfColorEnum.Blue150, AlfColorEnum.Primary);
-    case AlfColorVariantEnum.Primary3D: return depth(AlfColorEnum.Primary, AlfColorEnum.PrimaryHover, AlfColorEnum.PrimaryHover, AlfColorEnum.White);
+  // switch (variant) {
+  //   // ===== PRIMARY =====
+  //   case AlfColorVariantEnum.Primary: return solid(AlfColorEnum.Primary, AlfColorEnum.PrimaryHover, AlfColorEnum.PrimaryHover, AlfColorEnum.White);
+  //   case AlfColorVariantEnum.PrimaryOutline: return outline(AlfColorEnum.Primary, AlfColorEnum.PrimaryHover, AlfColorEnum.PrimaryHover, AlfColorEnum.Blue050, AlfColorEnum.Blue200, AlfColorEnum.Blue150);
+  //   case AlfColorVariantEnum.PrimaryGhost: return soft(AlfColorEnum.Transparent, AlfColorEnum.Blue050, AlfColorEnum.Blue150, AlfColorEnum.Primary);
+  //   case AlfColorVariantEnum.PrimarySoft: return soft(AlfColorEnum.Blue050, AlfColorEnum.Blue200, AlfColorEnum.Blue150, AlfColorEnum.Primary);
+  //   case AlfColorVariantEnum.PrimaryCrystal: return soft(AlfColorEnum.Blue050, AlfColorEnum.Blue200, AlfColorEnum.Blue150, AlfColorEnum.Primary);
+  //   case AlfColorVariantEnum.Primary3D: return depth(AlfColorEnum.Primary, AlfColorEnum.PrimaryHover, AlfColorEnum.PrimaryHover, AlfColorEnum.White);
 
-    // ===== SECONDARY =====
-    case AlfColorVariantEnum.Secondary: return solid(AlfColorEnum.Secondary, AlfColorEnum.SecondaryHover, AlfColorEnum.SecondaryHover, AlfColorEnum.White);
-    case AlfColorVariantEnum.SecondaryOutline: return outline(AlfColorEnum.Secondary, AlfColorEnum.SecondaryHover, AlfColorEnum.SecondaryHover, AlfColorEnum.Gray050, AlfColorEnum.Gray200, AlfColorEnum.Gray150);
-    case AlfColorVariantEnum.SecondaryGhost: return soft(AlfColorEnum.Transparent, AlfColorEnum.Gray050, AlfColorEnum.Gray150, AlfColorEnum.Secondary);
-    case AlfColorVariantEnum.SecondarySoft: return soft(AlfColorEnum.Gray050, AlfColorEnum.Gray200, AlfColorEnum.Gray150, AlfColorEnum.Secondary);
-    case AlfColorVariantEnum.Secondary3D: return depth(AlfColorEnum.Secondary, AlfColorEnum.SecondaryHover, AlfColorEnum.SecondaryHover, AlfColorEnum.White);
+  //   // ===== SECONDARY =====
+  //   case AlfColorVariantEnum.Secondary: return solid(AlfColorEnum.Secondary, AlfColorEnum.SecondaryHover, AlfColorEnum.SecondaryHover, AlfColorEnum.White);
+  //   case AlfColorVariantEnum.SecondaryOutline: return outline(AlfColorEnum.Secondary, AlfColorEnum.SecondaryHover, AlfColorEnum.SecondaryHover, AlfColorEnum.Gray050, AlfColorEnum.Gray200, AlfColorEnum.Gray150);
+  //   case AlfColorVariantEnum.SecondaryGhost: return soft(AlfColorEnum.Transparent, AlfColorEnum.Gray050, AlfColorEnum.Gray150, AlfColorEnum.Secondary);
+  //   case AlfColorVariantEnum.SecondarySoft: return soft(AlfColorEnum.Gray050, AlfColorEnum.Gray200, AlfColorEnum.Gray150, AlfColorEnum.Secondary);
+  //   case AlfColorVariantEnum.Secondary3D: return depth(AlfColorEnum.Secondary, AlfColorEnum.SecondaryHover, AlfColorEnum.SecondaryHover, AlfColorEnum.White);
 
-    // ===== SUCCESS =====
-    case AlfColorVariantEnum.Success: return solid(AlfColorEnum.Success, AlfColorEnum.SuccessHover, AlfColorEnum.SuccessHover, AlfColorEnum.White);
-    case AlfColorVariantEnum.SuccessOutline: return outline(AlfColorEnum.Success, AlfColorEnum.SuccessHover, AlfColorEnum.SuccessHover, AlfColorEnum.Green050, AlfColorEnum.Green200, AlfColorEnum.Green150);
-    case AlfColorVariantEnum.SuccessGhost: return soft(AlfColorEnum.Transparent, AlfColorEnum.Green050, AlfColorEnum.Green150, AlfColorEnum.Success);
-    case AlfColorVariantEnum.SuccessSoft: return soft(AlfColorEnum.Green050, AlfColorEnum.Green200, AlfColorEnum.Green150, AlfColorEnum.Success);
-    case AlfColorVariantEnum.Success3D: return depth(AlfColorEnum.Success, AlfColorEnum.SuccessHover, AlfColorEnum.SuccessHover, AlfColorEnum.White);
+  //   // ===== SUCCESS =====
+  //   case AlfColorVariantEnum.Success: return solid(AlfColorEnum.Success, AlfColorEnum.SuccessHover, AlfColorEnum.SuccessHover, AlfColorEnum.White);
+  //   case AlfColorVariantEnum.SuccessOutline: return outline(AlfColorEnum.Success, AlfColorEnum.SuccessHover, AlfColorEnum.SuccessHover, AlfColorEnum.Green050, AlfColorEnum.Green200, AlfColorEnum.Green150);
+  //   case AlfColorVariantEnum.SuccessGhost: return soft(AlfColorEnum.Transparent, AlfColorEnum.Green050, AlfColorEnum.Green150, AlfColorEnum.Success);
+  //   case AlfColorVariantEnum.SuccessSoft: return soft(AlfColorEnum.Green050, AlfColorEnum.Green200, AlfColorEnum.Green150, AlfColorEnum.Success);
+  //   case AlfColorVariantEnum.Success3D: return depth(AlfColorEnum.Success, AlfColorEnum.SuccessHover, AlfColorEnum.SuccessHover, AlfColorEnum.White);
 
-    // ===== DANGER =====
-    case AlfColorVariantEnum.Danger: return solid(AlfColorEnum.Danger, AlfColorEnum.DangerHover, AlfColorEnum.DangerHover, AlfColorEnum.White);
-    case AlfColorVariantEnum.DangerOutline: return outline(AlfColorEnum.Danger, AlfColorEnum.DangerHover, AlfColorEnum.DangerHover, AlfColorEnum.Red050, AlfColorEnum.Red200, AlfColorEnum.Red150);
-    case AlfColorVariantEnum.DangerGhost: return soft(AlfColorEnum.Transparent, AlfColorEnum.Red050, AlfColorEnum.Red150, AlfColorEnum.Danger);
-    case AlfColorVariantEnum.DangerSoft: return soft(AlfColorEnum.Red050, AlfColorEnum.Red200, AlfColorEnum.Red150, AlfColorEnum.Danger);
-    case AlfColorVariantEnum.Danger3D: return depth(AlfColorEnum.Danger, AlfColorEnum.DangerHover, AlfColorEnum.DangerHover, AlfColorEnum.White);
+  //   // ===== DANGER =====
+  //   case AlfColorVariantEnum.Danger: return solid(AlfColorEnum.Danger, AlfColorEnum.DangerHover, AlfColorEnum.DangerHover, AlfColorEnum.White);
+  //   case AlfColorVariantEnum.DangerOutline: return outline(AlfColorEnum.Danger, AlfColorEnum.DangerHover, AlfColorEnum.DangerHover, AlfColorEnum.Red050, AlfColorEnum.Red200, AlfColorEnum.Red150);
+  //   case AlfColorVariantEnum.DangerGhost: return soft(AlfColorEnum.Transparent, AlfColorEnum.Red050, AlfColorEnum.Red150, AlfColorEnum.Danger);
+  //   case AlfColorVariantEnum.DangerSoft: return soft(AlfColorEnum.Red050, AlfColorEnum.Red200, AlfColorEnum.Red150, AlfColorEnum.Danger);
+  //   case AlfColorVariantEnum.Danger3D: return depth(AlfColorEnum.Danger, AlfColorEnum.DangerHover, AlfColorEnum.DangerHover, AlfColorEnum.White);
 
-    // ===== WARNING =====
-    case AlfColorVariantEnum.Warning: return solid(AlfColorEnum.Warning, AlfColorEnum.WarningHover, AlfColorEnum.WarningHover, AlfColorEnum.Gray900);
-    case AlfColorVariantEnum.WarningOutline: return outline(AlfColorEnum.Warning, AlfColorEnum.WarningHover, AlfColorEnum.WarningHover, AlfColorEnum.Yellow050, AlfColorEnum.Yellow200, AlfColorEnum.Yellow150);
-    case AlfColorVariantEnum.WarningGhost: return soft(AlfColorEnum.Transparent, AlfColorEnum.Yellow050, AlfColorEnum.Yellow150, AlfColorEnum.Warning);
-    case AlfColorVariantEnum.WarningSoft: return soft(AlfColorEnum.Yellow050, AlfColorEnum.Yellow200, AlfColorEnum.Yellow150, AlfColorEnum.Warning);
+  //   // ===== WARNING =====
+  //   case AlfColorVariantEnum.Warning: return solid(AlfColorEnum.Warning, AlfColorEnum.WarningHover, AlfColorEnum.WarningHover, AlfColorEnum.Gray900);
+  //   case AlfColorVariantEnum.WarningOutline: return outline(AlfColorEnum.Warning, AlfColorEnum.WarningHover, AlfColorEnum.WarningHover, AlfColorEnum.Yellow050, AlfColorEnum.Yellow200, AlfColorEnum.Yellow150);
+  //   case AlfColorVariantEnum.WarningGhost: return soft(AlfColorEnum.Transparent, AlfColorEnum.Yellow050, AlfColorEnum.Yellow150, AlfColorEnum.Warning);
+  //   case AlfColorVariantEnum.WarningSoft: return soft(AlfColorEnum.Yellow050, AlfColorEnum.Yellow200, AlfColorEnum.Yellow150, AlfColorEnum.Warning);
 
-    // ===== LIGHT / DARK =====
-    case AlfColorVariantEnum.Light: return solid(AlfColorEnum.Gray100, AlfColorEnum.Gray200, AlfColorEnum.Gray300, AlfColorEnum.Gray450);
-    case AlfColorVariantEnum.Dark: return solid(AlfColorEnum.Gray900, AlfColorEnum.Gray800, AlfColorEnum.Gray700, AlfColorEnum.White);
+  //   // ===== LIGHT / DARK =====
+  //   case AlfColorVariantEnum.Light: return solid(AlfColorEnum.Gray100, AlfColorEnum.Gray200, AlfColorEnum.Gray300, AlfColorEnum.Gray450);
+  //   case AlfColorVariantEnum.Dark: return solid(AlfColorEnum.Gray900, AlfColorEnum.Gray800, AlfColorEnum.Gray700, AlfColorEnum.White);
 
-    // ===== GRADIENTS =====
-    case AlfColorVariantEnum.GradientPrimary: return solid(AlfColorEnum.Primary, AlfColorEnum.PrimaryHover, AlfColorEnum.PrimaryHover, AlfColorEnum.White);
+  //   // ===== GRADIENTS =====
+  //   case AlfColorVariantEnum.GradientPrimary: return solid(AlfColorEnum.Primary, AlfColorEnum.PrimaryHover, AlfColorEnum.PrimaryHover, AlfColorEnum.White);
 
-    // ===== DEFAULT =====
-    case AlfColorVariantEnum.Default:
-    default:
-      return solid(AlfColorEnum.Gray100, AlfColorEnum.Gray200, AlfColorEnum.Gray300, AlfColorEnum.Gray900);
-  }
+  //   // ===== DEFAULT =====
+  //   case AlfColorVariantEnum.Default:
+  //   default:
+    //  return solid(AlfColorEnum.Gray100, AlfColorEnum.Gray200, AlfColorEnum.Gray300, AlfColorEnum.Gray900);
+  //}
+  return BASE_IDENTITY;
 };

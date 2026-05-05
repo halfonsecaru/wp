@@ -5,6 +5,8 @@
   width: 100%;
 }
 
+// Se han eliminado las variables del wrapper, ahora todo depende de .alf-input
+
 .alf-input {
   @include alf-margin-css-vars('--alf-inp', '&.alf-input--disabled');
   @include alf-border-css-vars('--alf-inp', '&.alf-input--disabled');
@@ -19,21 +21,16 @@
 
   position: relative;
   box-sizing: border-box;
+  width: 100%;
 
+  // Variables de configuración de etiquetas (movidas desde el wrapper)
   --alf-inp-label-color: var(--alf-inp-text-color, revert);
   --alf-inp-label-float-scale: 0.75;
-  --alf-inp-label-top: 50%;
-  --alf-inp-label-float-top: 0.375rem;
-  
-  // Posición del label siempre coordinada con el padding de seguridad (10px + var)
-  --alf-inp-content-inline-start: calc(10px + var(--alf-inp-padding-left, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px))));
-  
-  --alf-inp-prefix-width: 2.25rem;
+  --alf-inp-content-inline-start: var(--alf-inp-padding-left, var(--alf-inp-padding, 12px));
+  --alf-inp-prefix-width: 16px;
   --alf-inp-prefix-font-size: var(--alf-inp-typography-font-size, 1rem);
-
-  // Variables para el legend (el "corte")
-  --alf-inp-legend-margin: calc(var(--alf-inp-content-inline-start) - 5px);
-
+  --alf-inp-legend-padding: 3px;
+  --alf-inp-legend-margin: calc(var(--alf-inp-padding-left) * -1 + 5px);
 
   &--error {
     --alf-inp-label-color: #dc2626;
@@ -44,65 +41,25 @@
   }
 
   &--has-prefix {
-    --alf-inp-legend-margin: 8px; // Sincronizado con la posición de 5px del label con prefijo
+    --alf-inp-legend-margin: calc(var(--alf-inp-padding-left) * -1 + 8px)
   }
 
   &__inner {
-  //  @include alf-padding-css-vars('--alf-inp', '&.alf-input--disabled');
     display: inline-flex;
     align-items: center;
-    width: 100%;
-    height: 100%;
-    min-height: 30px;
+    width: -webkit-fill-available;
+    height: -webkit-fill-available;
     box-sizing: border-box;
-
-    // --- PADDING DE SEGURIDAD RECURSIVO ---
-    
-    // 1. Base
-    // padding-left: calc(10px + var(--alf-inp-padding-left, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px))));
-    // padding-right: calc(12px + var(--alf-inp-padding-right, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px))));
-
-    // // 2. Hover
-    // &:hover {
-    //   padding-left: calc(10px + var(--alf-inp-padding-hover-left, var(--alf-inp-padding-hover, var(--alf-inp-padding-left, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px))))));
-    //   padding-right: calc(10px + var(--alf-inp-padding-hover-right, var(--alf-inp-padding-hover, var(--alf-inp-padding-right, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px))))));
-    // }
-
-    // // 3. Active
-    // &:active {
-    //   padding-left: calc(10px + var(--alf-inp-padding-active-left, var(--alf-inp-padding-active, var(--alf-inp-padding-hover-left, var(--alf-inp-padding-left, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px)))))));
-    //   padding-right: calc(10px + var(--alf-inp-padding-active-right, var(--alf-inp-padding-active, var(--alf-inp-padding-hover-right, var(--alf-inp-padding-right, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px)))))));
-    // }
-
-    // // 4. Focus
-    // &:focus, &:focus-visible {
-    //   padding-left: calc(10px + var(--alf-inp-padding-focus-left, var(--alf-inp-padding-focus, var(--alf-inp-padding-left, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px))))));
-    //   padding-right: calc(10px + var(--alf-inp-padding-focus-right, var(--alf-inp-padding-focus, var(--alf-inp-padding-right, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px))))));
-    // }
-
-    // --- CASO ESPECIAL: CON PREFIJO ---
-    // .alf-input--has-prefix & {
-    //   padding-left: var(--alf-inp-padding-left, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px)));
-      
-    //   &:hover {
-    //     padding-left: var(--alf-inp-padding-hover-left, var(--alf-inp-padding-hover, var(--alf-inp-padding-left, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px)))));
-    //   }
-    //   &:active {
-    //     padding-left: var(--alf-inp-padding-active-left, var(--alf-inp-padding-active, var(--alf-inp-padding-hover-left, var(--alf-inp-padding-left, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px))))));
-    //   }
-    //   &:focus, &:focus-visible {
-    //     padding-left: var(--alf-inp-padding-focus-left, var(--alf-inp-padding-focus, var(--alf-inp-padding-left, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px)))));
-    //   }
-    // }
+    z-index: 1;
   }
 
   &__prefix {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: var(--alf-inp-prefix-width);
+    width: auto; // Se adapta al texto
+    padding-right: 8px; // Separación con el input
     height: 100%;
-    padding: 0;
     color: var(--alf-inp-text-color);
     font-size: var(--alf-inp-prefix-font-size);
     flex-shrink: 0;
@@ -151,10 +108,15 @@
 
   &__label {
     position: absolute;
-    top: var(--alf-inp-label-top, 50%);
+
+    // Al estar dentro del fieldset, top 0 equivale a empezar justo después del padding-top
+
+    top: calc(var(--alf-inp-padding-top, var(--alf-inp-padding)) + 13px);
     left: var(--alf-inp-content-inline-start);
     --alf-inp-label-float-x: 0;
-    transform: translate(0, -50%);
+    // translateY(-50%) para que el centro del label coincida con el centro de la primera línea de texto
+    transform: translateY(-50%);
+    transform-origin: left center; // Fija el origen para que el scale() no haga efectos raros
     pointer-events: none;
     z-index: 3;
 
@@ -164,22 +126,25 @@
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: calc(100% - 1.5rem);
+    background: transparent;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
     &--float {
-      top: var(--alf-inp-label-float-top, 0);
-      left: 10px; 
-      transform: translate(var(--alf-inp-label-float-x), -138%) scale(var(--alf-inp-label-float-scale, 0.75));
+      // Para flotar hacia el borde, subimos exactamente la cantidad de padding-top que tiene el fieldset
+      top: -10px;
+      left: 12px;
+      transform: translate(var(--alf-inp-label-float-x), -50%) scale(var(--alf-inp-label-float-scale, 0.75));
       transform-origin: left center;
       font-weight: 600;
+      background: transparent;
     }
 
     &--has-prefix {
-      left: calc(var(--alf-inp-prefix-width) + var(--alf-inp-content-inline-start));
+      left: calc(var(--alf-inp-prefix-width) + var(--alf-inp-content-inline-start) + 8px);
       max-width: calc(100% - (var(--alf-inp-prefix-width) + 1.5rem + var(--alf-inp-content-inline-start)));
 
       &.alf-input__label--float {
-        left: 15px; 
+        left: 12px;
       }
     }
   }
@@ -195,6 +160,7 @@
     padding: 0;
     font-size: var(--alf-inp-label-float-scale, 0.75em);
     white-space: nowrap;
+    background: transparent;
     max-width: 0.01px;
     transition: max-width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     margin-left: var(--alf-inp-legend-margin, 0.5rem);
@@ -202,15 +168,15 @@
     span {
       display: inline-block;
       opacity: 0;
-      padding-right: 2px;
+      padding: 0 var(--alf-inp-legend-padding);
+      background: transparent;
+      font-size: 14px;
     }
 
     &--float {
+      background: transparent;
       max-width: 100%;
-    }
-
-    &--has-prefix {
-      // El margin-left ya se hereda de la variable --alf-inp-legend-margin definida arriba
+      width: max-content;
     }
   }
 

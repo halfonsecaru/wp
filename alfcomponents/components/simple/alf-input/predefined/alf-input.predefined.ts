@@ -24,10 +24,15 @@ import { AlfInputInterface } from '../interfaces/alf-input.interface';
 export const ALF_INPUT_DEFAULT: AlfInputInterface = {
   cursor: AlfCursorEnum.Text,
   padding: {
-    default: { paddingTop: AlfPxEnum.Px4, paddingBottom: AlfPxEnum.Px4 },
+    default: { 
+      paddingTop: AlfPxEnum.Px5,
+      paddingBottom: AlfPxEnum.Px15,
+      paddingLeft: AlfPxEnum.Px12,
+      paddingRight: AlfPxEnum.Px6
+    },
   },
   border: {
-    default: { borderColor: AlfColorEnum.Black, borderWidth: AlfPxEnum.Px1, borderStyle: AlfBorderStyleEnum.Solid },
+    default: { borderRadius: AlfRadiusEnum.Md, borderColor: AlfColorEnum.Black, borderWidth: AlfPxEnum.Px1, borderStyle: AlfBorderStyleEnum.Solid },
   }
   //appearance: AlfInputAppearanceEnum.Outline,
   // displayAndLayout: {
