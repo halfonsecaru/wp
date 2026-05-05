@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   computed,
   effect,
@@ -12,7 +13,7 @@ import {
 } from '@angular/core';
 import { AlfBaseConfiguration } from '@alfcomponents/base/alf-base-configuration';
 import { generateUniqueId, visualprefixEnum } from '@alfcomponents/shared';
-import { AlfColorVariantEnum, AlfInputTypeEnum, AlfInputAppearanceEnum } from '@alfcomponents/enums';
+import { AlfColorVariantEnum, AlfInputTypeEnum, AlfInputAppearanceEnum, AlfInputAdornmentEnum } from '@alfcomponents/enums';
 import { AlfRippleDirective, AlfTooltipTextDirective } from '@alfcomponents/directives';
 import { AlfInputInterface } from './interfaces/alf-input.interface';
 import { ALF_INPUT_DEFAULT, getAlfInputDefaultConfig } from './predefined/alf-input.predefined';
@@ -25,6 +26,7 @@ import { resolveInputTypeAttr, shouldLabelFloat } from './utils/alf-input.utils'
   imports: [AlfTooltipTextDirective, AlfRippleDirective],
   templateUrl: './alf-input.html',
   styleUrl: './alf-input.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
 
@@ -78,8 +80,8 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
 
   // ── Inputs de variante / config ───────────────────────────────────────────
 
-  public readonly variant = input<string | AlfColorVariantEnum>(undefined, { alias: 'variant' });
-  public override readonly inputConfig = input<AlfInputInterface>(ALF_INPUT_DEFAULT, { alias: 'config' });
+  public readonly variant = input<AlfColorVariantEnum>(undefined);
+  public override readonly inputConfig = input<AlfInputInterface>();
 
   // ── Inputs directos ───────────────────────────────────────────────────────
 
@@ -89,6 +91,15 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
   public readonly error = input<string>();
   public readonly helperText = input<string>();
   public readonly appearance = input<AlfInputAppearanceEnum>();
+  public readonly prefix = input<string | AlfInputAdornmentEnum>();
+  public readonly suffix = input<string | AlfInputAdornmentEnum>();
+  public readonly required = input<boolean>();
+  public readonly readonly = input<boolean>();
+  public readonly loading = input<boolean>();
+  public readonly maxLength = input<number>();
+  public readonly clearable = input<boolean>();
+  public readonly showPasswordToggleInput = input<boolean>(undefined, { alias: 'showPasswordToggle' });
+  public readonly showCharCounterInput = input<boolean>(undefined, { alias: 'showCharCounter' });
 
   // ── Model two-way ─────────────────────────────────────────────────────────
 
@@ -98,7 +109,10 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
 
   public readonly finalConfig = computed(() => {
     const v = this.variant();
-    const cfg = this.inputConfig();
+    const cfg = {
+      ...ALF_INPUT_DEFAULT,
+      ...this.inputConfig(),
+    }
     
     // Si v es string, intentamos resolver el enum (ej: "outlined-primary" -> AlfColorVariantEnum.PrimaryOutline)
     let variantEnum = AlfColorVariantEnum.Default;
@@ -122,6 +136,19 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
       // Los inputs directos tienen prioridad máxima
       label: this.label() ?? cfg?.label ?? base.label,
       placeholder: this.placeholder() ?? cfg?.placeholder ?? base.placeholder,
+      value: this.value() ?? cfg?.value ?? base.value,
+      required: this.required() ?? cfg?.required ?? base.required,
+      disabled: this.disabled() ?? cfg?.disabled ?? base.disabled,
+      readonly: this.readonly() ?? cfg?.readonly ?? base.readonly,
+      loading: this.loading() ?? cfg?.loading ?? base.loading,
+      error: this.error() ?? cfg?.error ?? base.error,
+      helperText: this.helperText() ?? cfg?.helperText ?? base.helperText,
+      prefix: this.prefix() ?? cfg?.prefix ?? base.prefix,
+      suffix: this.suffix() ?? cfg?.suffix ?? base.suffix,
+      maxLength: this.maxLength() ?? cfg?.maxLength ?? base.maxLength,
+      clearable: this.clearable() ?? cfg?.clearable ?? base.clearable,
+      showPasswordToggle: this.showPasswordToggleInput() ?? cfg?.showPasswordToggle ?? base.showPasswordToggle,
+      showCharCounter: this.showCharCounterInput() ?? cfg?.showCharCounter ?? base.showCharCounter,
     };
   });
 
@@ -130,8 +157,8 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
   // ── Computed derivados ────────────────────────────────────────────────────
 
   public readonly isDisabled = computed(() => this.disabledComputed());
-  public readonly isReadonly = computed(() => this.resolvedConfig()?.readonly ?? false);
-  public readonly isLoading = computed(() => this.resolvedConfig()?.loading ?? false);
+  public readonly isReadonly = computed(() => this.readonly() ?? this.resolvedConfig()?.readonly ?? false);
+  public readonly isLoading = computed(() => this.loading() ?? this.resolvedConfig()?.loading ?? false);
   public readonly isTextarea = computed(() =>
     (this.inputType() ?? this.resolvedConfig()?.inputType) === AlfInputTypeEnum.Textarea
   );
@@ -178,6 +205,7 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
     )
   );
 
+  // Variable usada en el template (line 16)
   public readonly showClear = computed(() => {
     const cfg = this.resolvedConfig();
     return cfg?.clearable &&
@@ -187,12 +215,14 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
       !this.isLoading();
   });
 
+  // Variable usada en el template (line 17)
   public readonly showPasswordToggle = computed(() => {
     const type = this.inputType() ?? this.resolvedConfig()?.inputType;
     return type === AlfInputTypeEnum.Password &&
       this.resolvedConfig()?.showPasswordToggle !== false;
   });
 
+  // Variable usada en el template (line 18)
   public readonly showCharCounter = computed(() => {
     const cfg = this.resolvedConfig();
     return cfg?.showCharCounter && cfg?.maxLength !== undefined;

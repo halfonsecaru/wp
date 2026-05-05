@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { AlfInput } from '@alfcomponents/components/simple/alf-input/alf-input';
 import { AlfInputInterface } from '@alfcomponents/components/simple/alf-input/interfaces/alf-input.interface';
-import { AlfColorVariantEnum } from '@alfcomponents/enums';
+import { AlfColorVariantEnum, AlfInputAdornmentEnum } from '@alfcomponents/enums';
 
 @Component({
   selector: 'app-alf-input-viewer',
@@ -13,6 +13,7 @@ import { AlfColorVariantEnum } from '@alfcomponents/enums';
 })
 export class AlfInputViewer {
   public readonly AlfColorVariantEnum = AlfColorVariantEnum;
+  public readonly AlfInputAdornmentEnum = AlfInputAdornmentEnum;
 
   protected readonly val0 = signal('');
   protected readonly val1 = signal('Juan Pérez');

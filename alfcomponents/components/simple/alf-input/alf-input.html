@@ -47,6 +47,7 @@
   [class.alf-input--readonly]="readonly"
   [class.alf-input--error]="errorText"
   [class.alf-input--loading]="loading"
+  [class.alf-input--has-prefix]="!!cfg?.prefix"
   (click)="focusInput()"
 >
   <legend
@@ -173,6 +174,7 @@
   [class.alf-input--readonly]="readonly"
   [class.alf-input--error]="errorText"
   [class.alf-input--loading]="loading"
+  [class.alf-input--has-prefix]="!!cfg?.prefix"
   (click)="focusInput()"
 >
   <div class="alf-input__inner">

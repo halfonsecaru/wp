@@ -22,10 +22,8 @@
   }
 
   &:active {
-    background-color: var(
-      #{$prefix}-bg-active-color,
-      var(#{$prefix}-bg-active, var(#{$prefix}-bg-hover, var(#{$prefix}-bg-color, var(#{$prefix}-bg, revert))))
-    );
+    background-color: var(#{$prefix}-bg-active-color,
+      var(#{$prefix}-bg-active, var(#{$prefix}-bg-hover, var(#{$prefix}-bg-color, var(#{$prefix}-bg, revert)))));
     background-image: var(#{$prefix}-bg-active-img, var(#{$prefix}-bg-img, revert));
     background-size: var(#{$prefix}-bg-active-size, var(#{$prefix}-bg-size, revert));
     background-position: var(#{$prefix}-bg-active-pos, var(#{$prefix}-bg-pos, revert));

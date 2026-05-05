@@ -23,17 +23,27 @@ import { AlfInputInterface } from '../interfaces/alf-input.interface';
  */
 export const ALF_INPUT_DEFAULT: AlfInputInterface = {
   cursor: AlfCursorEnum.Text,
+  padding: {
+    default: { paddingTop: AlfPxEnum.Px10, paddingBottom: AlfPxEnum.Px10 },
+  },
+  border: {
+    default: { borderColor: AlfColorEnum.Black, borderWidth: AlfPxEnum.Px1, borderStyle: AlfBorderStyleEnum.Solid },
+    hover: {},
+    focus: {},
+    active: {},
+    disabled: {}
+  }
   //appearance: AlfInputAppearanceEnum.Outline,
   // displayAndLayout: {
-    // default: {
-    //   display: AlfDisplayEnum.Flex,
-    //   position: AlfCssPositionEnum.Relative,
-    //   alignItems: AlfAlignItemsEnum.Center,
-    //   minHeight: AlfRemEnum.Rem35,
-    //   overflow: AlfOverflowEnum.Visible,
-    //   overflowX: AlfOverflowEnum.Visible,
-    //   overflowY: AlfOverflowEnum.Visible
-    // },
+  // default: {
+  //   display: AlfDisplayEnum.Flex,
+  //   position: AlfCssPositionEnum.Relative,
+  //   alignItems: AlfAlignItemsEnum.Center,
+  //   minHeight: AlfRemEnum.Rem35,
+  //   overflow: AlfOverflowEnum.Visible,
+  //   overflowX: AlfOverflowEnum.Visible,
+  //   overflowY: AlfOverflowEnum.Visible
+  // },
   //   disabled: {
   //     opacity: AlfOpacityEnum.Opacity55,
   //     pointerEvents: AlfPointerEventsEnum.None
@@ -72,14 +82,15 @@ export const getAlfInputDefaultConfig = (
 ): AlfInputInterface => {
   return ALF_INPUT_DEFAULT;
   const visualBase = resolveVariantDefinitions(variant);
-  
+
+
   // Determinamos si es Outline (ya sea por enum explícito o por nombre de variante)
-  const isOutline = appearance === AlfInputAppearanceEnum.Outline || 
-                    (appearance === undefined && (
-                      variant.toString().toLowerCase().includes('outline') || 
-                      variant.toString().toLowerCase().includes('ghost') ||
-                      variant === AlfColorVariantEnum.Default
-                    ));
+  const isOutline = appearance === AlfInputAppearanceEnum.Outline ||
+    (appearance === undefined && (
+      variant.toString().toLowerCase().includes('outline') ||
+      variant.toString().toLowerCase().includes('ghost') ||
+      variant === AlfColorVariantEnum.Default
+    ));
 
   const isFill = appearance === AlfInputAppearanceEnum.Fill;
   const isStandard = appearance === AlfInputAppearanceEnum.Standard;
@@ -89,7 +100,7 @@ export const getAlfInputDefaultConfig = (
     ...visualBase,
     colorVariant: variant,
     appearance: appearance,
-    
+
     // 1. GESTIÓN DE FONDOS
     backgrounds: {
       ...visualBase.backgrounds,
@@ -109,7 +120,7 @@ export const getAlfInputDefaultConfig = (
     // 2. GESTIÓN DE BORDES Y RADIOS
     border: {
       ...visualBase.border,
-      default:  { 
+      default: {
         ...visualBase.border?.default,
         ...(isStandard ? {
           borderWidth: AlfPxEnum.None,
@@ -130,7 +141,7 @@ export const getAlfInputDefaultConfig = (
           ...ALF_INPUT_DEFAULT.border?.default
         })
       },
-      hover: { 
+      hover: {
         ...visualBase.border?.hover,
         ...(isStandard || isFill ? {
           borderBottomWidth: AlfPxEnum.Px2,

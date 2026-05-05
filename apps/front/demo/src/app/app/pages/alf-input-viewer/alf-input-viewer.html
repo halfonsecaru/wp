@@ -14,6 +14,17 @@
           (valueChange)="val0.set($event)"
         ></alf-input>
       </div>
+
+      <div class="viewer-item">
+        <label>With Icon (Prefix)</label>
+        <alf-input
+          label="Usuario"
+          placeholder="Nombre de usuario..."
+          [prefix]="AlfInputAdornmentEnum.At"
+          [value]="val2()"
+          (valueChange)="val2.set($event)"
+        ></alf-input>
+      </div>
     </div>
   </section>
 
@@ -29,7 +40,6 @@
           placeholder="Ej. Juan Pérez"
           [value]="val1()"
           (valueChange)="val1.set($event)"
-          [config]="{ prefix: '👤', required: true, clearable: true }"
         ></alf-input>
       </div>
 
@@ -41,7 +51,6 @@
           placeholder="tu@email.com"
           [value]="val2()"
           (valueChange)="val2.set($event)"
-          [config]="{ suffix: '@gmail.com', type: 'email' }"
         ></alf-input>
       </div>
     </div>
@@ -58,7 +67,6 @@
           label="Nombre"
           [value]="s1()"
           (valueChange)="s1.set($event)"
-          [config]="{ prefix: '👤' }"
         ></alf-input>
       </div>
 
@@ -69,7 +77,6 @@
           label="Teléfono"
           [value]="s2()"
           (valueChange)="s2.set($event)"
-          [config]="{ prefix: '📞' }"
         ></alf-input>
       </div>
 
@@ -80,7 +87,6 @@
           label="Aprobado"
           [value]="s3()"
           (valueChange)="s3.set($event)"
-          [config]="{ prefix: '✅' }"
         ></alf-input>
       </div>
 
@@ -91,7 +97,6 @@
           label="Error Crítico"
           [value]="s4()"
           (valueChange)="s4.set($event)"
-          [config]="{ prefix: '❌' }"
         ></alf-input>
       </div>
 
@@ -102,7 +107,6 @@
           label="Alerta"
           [value]="s5()"
           (valueChange)="s5.set($event)"
-          [config]="{ prefix: '⚠️' }"
         ></alf-input>
       </div>
 
@@ -113,7 +117,6 @@
           label="Información"
           [value]="s6()"
           (valueChange)="s6.set($event)"
-          [config]="{ prefix: 'ℹ️' }"
         ></alf-input>
       </div>
 
@@ -124,7 +127,6 @@
           label="Noche"
           [value]="s7()"
           (valueChange)="s7.set($event)"
-          [config]="{ prefix: '🌙' }"
         ></alf-input>
       </div>
 
@@ -135,7 +137,6 @@
           label="Día"
           [value]="s8()"
           (valueChange)="s8.set($event)"
-          [config]="{ prefix: '☀️' }"
         ></alf-input>
       </div>
     </div>
@@ -153,7 +154,6 @@
           placeholder="Buscar algo..."
           [value]="val5()"
           (valueChange)="val5.set($event)"
-          [config]="{ prefix: '🔍', clearable: true }"
         ></alf-input>
       </div>
 
@@ -166,7 +166,6 @@
           [value]="val6()"
           (valueChange)="val6.set($event)"
           inputType="textarea"
-          [config]="{ rows: 2, autoResize: true }"
         ></alf-input>
       </div>
     </div>
