@@ -24,14 +24,10 @@ import { AlfInputInterface } from '../interfaces/alf-input.interface';
 export const ALF_INPUT_DEFAULT: AlfInputInterface = {
   cursor: AlfCursorEnum.Text,
   padding: {
-    default: { paddingTop: AlfPxEnum.Px10, paddingBottom: AlfPxEnum.Px10 },
+    default: { paddingTop: AlfPxEnum.Px4, paddingBottom: AlfPxEnum.Px4 },
   },
   border: {
     default: { borderColor: AlfColorEnum.Black, borderWidth: AlfPxEnum.Px1, borderStyle: AlfBorderStyleEnum.Solid },
-    hover: {},
-    focus: {},
-    active: {},
-    disabled: {}
   }
   //appearance: AlfInputAppearanceEnum.Outline,
   // displayAndLayout: {
@@ -80,6 +76,8 @@ export const getAlfInputDefaultConfig = (
   variant: AlfColorVariantEnum = AlfColorVariantEnum.Default,
   appearance: AlfInputAppearanceEnum = AlfInputAppearanceEnum.Outline
 ): AlfInputInterface => {
+  console.log("El variante es: ", variant);
+  console.log("La apariencia es: ", appearance);
   return ALF_INPUT_DEFAULT;
   const visualBase = resolveVariantDefinitions(variant);
 

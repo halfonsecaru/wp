@@ -12,12 +12,7 @@ import { MainVisualStyleInterface } from "@alfcomponents/interfaces";
 import { 
   defaultAnimationsBase,
   defaultBackgroundBase, 
-  defaultBorderBase, 
-  defaultDisplayAndLayout,
-  defaultMarginBase,
-  defaultOutlineBase,
   defaultShadowsBase,
-  defaultTextStyleBase, 
   defaultTransformBase,
   defaultTypographyBase 
 } from "../predefined";
@@ -85,19 +80,19 @@ export const resolveVariantDefinitions = (variant: AlfColorVariantEnum): Partial
   
   // Helpers de construcción de estados (Sintonizados con los valores exactos del legacy)
   const buildBg = (color: AlfColorEnum, hover: AlfColorEnum, active: AlfColorEnum) => ({
-    default: { ...defaultBackgroundBase, backgroundColor: color },
-    hover: { ...defaultBackgroundBase, backgroundColor: hover },
-    active: { ...defaultBackgroundBase, backgroundColor: active },
-    focus: { ...defaultBackgroundBase, backgroundColor: color },
-    disabled: { ...defaultBackgroundBase, backgroundColor: color },
+    default: {},
+    hover: {},
+    active: {},
+    focus: {},
+    disabled: {},
   });
 
   const buildBord = (color: AlfColorEnum, hover: AlfColorEnum, active: AlfColorEnum, width: AlfPxEnum = AlfPxEnum.Px015) => ({
-    default: { ...defaultBorderBase, borderColor: color, borderWidth: width, borderStyle: AlfBorderStyleEnum.Solid, borderRadius: AlfRadiusEnum.Base },
-    hover: { ...defaultBorderBase, borderColor: hover, borderWidth: width, borderStyle: AlfBorderStyleEnum.Solid },
-    active: { ...defaultBorderBase, borderColor: active, borderWidth: width, borderStyle: AlfBorderStyleEnum.Solid },
-    focus: { ...defaultBorderBase, borderColor: color, borderWidth: width, borderStyle: AlfBorderStyleEnum.Solid },
-    disabled: { ...defaultBorderBase, borderColor: color, borderWidth: width, borderStyle: AlfBorderStyleEnum.Solid },
+    default: {},
+    hover: {},
+    active: {},
+    focus: {},
+    disabled: {},
   });
 
   const buildTypo = (color: AlfColorEnum, hover: AlfColorEnum = color) => ({

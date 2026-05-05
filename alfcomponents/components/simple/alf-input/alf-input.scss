@@ -15,6 +15,7 @@
   @include alf-text-style-css-vars('--alf-inp', '&.alf-input--disabled');
   @include alf-outline-css-vars('--alf-inp', '&.alf-input--disabled');
   @include alf-transform-css-vars('--alf-inp', '&.alf-input--disabled');
+  @include alf-padding-css-vars('--alf-inp', '&.alf-input--disabled');
 
   position: relative;
   box-sizing: border-box;
@@ -31,9 +32,8 @@
   --alf-inp-prefix-font-size: var(--alf-inp-typography-font-size, 1rem);
 
   // Variables para el legend (el "corte")
-  --alf-inp-legend-margin: calc(var(--alf-inp-content-inline-start) - 8px);
+  --alf-inp-legend-margin: calc(var(--alf-inp-content-inline-start) - 5px);
 
-  padding: 0; // La raíz NO debe tener padding para no romper el posicionamiento absoluto
 
   &--error {
     --alf-inp-label-color: #dc2626;
@@ -44,11 +44,11 @@
   }
 
   &--has-prefix {
-    --alf-inp-legend-margin: calc(5px - 8px); // Sincronizado con la posición de 5px del label con prefijo
+    --alf-inp-legend-margin: 8px; // Sincronizado con la posición de 5px del label con prefijo
   }
 
   &__inner {
-    @include alf-padding-css-vars('--alf-inp', '&.alf-input--disabled');
+  //  @include alf-padding-css-vars('--alf-inp', '&.alf-input--disabled');
     display: inline-flex;
     align-items: center;
     width: 100%;
@@ -59,41 +59,41 @@
     // --- PADDING DE SEGURIDAD RECURSIVO ---
     
     // 1. Base
-    padding-left: calc(10px + var(--alf-inp-padding-left, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px))));
-    padding-right: calc(10px + var(--alf-inp-padding-right, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px))));
+    // padding-left: calc(10px + var(--alf-inp-padding-left, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px))));
+    // padding-right: calc(12px + var(--alf-inp-padding-right, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px))));
 
-    // 2. Hover
-    &:hover {
-      padding-left: calc(10px + var(--alf-inp-padding-hover-left, var(--alf-inp-padding-hover, var(--alf-inp-padding-left, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px))))));
-      padding-right: calc(10px + var(--alf-inp-padding-hover-right, var(--alf-inp-padding-hover, var(--alf-inp-padding-right, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px))))));
-    }
+    // // 2. Hover
+    // &:hover {
+    //   padding-left: calc(10px + var(--alf-inp-padding-hover-left, var(--alf-inp-padding-hover, var(--alf-inp-padding-left, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px))))));
+    //   padding-right: calc(10px + var(--alf-inp-padding-hover-right, var(--alf-inp-padding-hover, var(--alf-inp-padding-right, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px))))));
+    // }
 
-    // 3. Active
-    &:active {
-      padding-left: calc(10px + var(--alf-inp-padding-active-left, var(--alf-inp-padding-active, var(--alf-inp-padding-hover-left, var(--alf-inp-padding-left, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px)))))));
-      padding-right: calc(10px + var(--alf-inp-padding-active-right, var(--alf-inp-padding-active, var(--alf-inp-padding-hover-right, var(--alf-inp-padding-right, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px)))))));
-    }
+    // // 3. Active
+    // &:active {
+    //   padding-left: calc(10px + var(--alf-inp-padding-active-left, var(--alf-inp-padding-active, var(--alf-inp-padding-hover-left, var(--alf-inp-padding-left, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px)))))));
+    //   padding-right: calc(10px + var(--alf-inp-padding-active-right, var(--alf-inp-padding-active, var(--alf-inp-padding-hover-right, var(--alf-inp-padding-right, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px)))))));
+    // }
 
-    // 4. Focus
-    &:focus, &:focus-visible {
-      padding-left: calc(10px + var(--alf-inp-padding-focus-left, var(--alf-inp-padding-focus, var(--alf-inp-padding-left, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px))))));
-      padding-right: calc(10px + var(--alf-inp-padding-focus-right, var(--alf-inp-padding-focus, var(--alf-inp-padding-right, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px))))));
-    }
+    // // 4. Focus
+    // &:focus, &:focus-visible {
+    //   padding-left: calc(10px + var(--alf-inp-padding-focus-left, var(--alf-inp-padding-focus, var(--alf-inp-padding-left, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px))))));
+    //   padding-right: calc(10px + var(--alf-inp-padding-focus-right, var(--alf-inp-padding-focus, var(--alf-inp-padding-right, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px))))));
+    // }
 
     // --- CASO ESPECIAL: CON PREFIJO ---
-    .alf-input--has-prefix & {
-      padding-left: var(--alf-inp-padding-left, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px)));
+    // .alf-input--has-prefix & {
+    //   padding-left: var(--alf-inp-padding-left, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px)));
       
-      &:hover {
-        padding-left: var(--alf-inp-padding-hover-left, var(--alf-inp-padding-hover, var(--alf-inp-padding-left, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px)))));
-      }
-      &:active {
-        padding-left: var(--alf-inp-padding-active-left, var(--alf-inp-padding-active, var(--alf-inp-padding-hover-left, var(--alf-inp-padding-left, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px))))));
-      }
-      &:focus, &:focus-visible {
-        padding-left: var(--alf-inp-padding-focus-left, var(--alf-inp-padding-focus, var(--alf-inp-padding-left, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px)))));
-      }
-    }
+    //   &:hover {
+    //     padding-left: var(--alf-inp-padding-hover-left, var(--alf-inp-padding-hover, var(--alf-inp-padding-left, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px)))));
+    //   }
+    //   &:active {
+    //     padding-left: var(--alf-inp-padding-active-left, var(--alf-inp-padding-active, var(--alf-inp-padding-hover-left, var(--alf-inp-padding-left, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px))))));
+    //   }
+    //   &:focus, &:focus-visible {
+    //     padding-left: var(--alf-inp-padding-focus-left, var(--alf-inp-padding-focus, var(--alf-inp-padding-left, var(--alf-inp-padding-x, var(--alf-inp-padding, 0px)))));
+    //   }
+    // }
   }
 
   &__prefix {
@@ -179,7 +179,7 @@
       max-width: calc(100% - (var(--alf-inp-prefix-width) + 1.5rem + var(--alf-inp-content-inline-start)));
 
       &.alf-input__label--float {
-        left: 5px; 
+        left: 15px; 
       }
     }
   }
@@ -202,7 +202,7 @@
     span {
       display: inline-block;
       opacity: 0;
-      padding: 0 8px;
+      padding-right: 2px;
     }
 
     &--float {

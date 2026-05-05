@@ -11,10 +11,10 @@
 ) {
   // --- 1. BASE / DEFAULT ---
   $p: var(#{$prefix}-padding, 0);
-  $pt: var(#{$prefix}-padding-top, $p);
-  $pr: var(#{$prefix}-padding-right, $p);
-  $pb: var(#{$prefix}-padding-bottom, $p);
-  $pl: var(#{$prefix}-padding-left, $p);
+  $pt: var(#{$prefix}-padding-top, revert);
+  $pr: var(#{$prefix}-padding-right, revert);
+  $pb: var(#{$prefix}-padding-bottom, revert);
+  $pl: var(#{$prefix}-padding-left, revert);
 
   padding: $p;
   padding-top: $pt;
