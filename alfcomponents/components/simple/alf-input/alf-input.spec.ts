@@ -37,17 +37,7 @@ describe('AlfInput', () => {
     expect(inputEl).toBeTruthy();
   });
 
-  it('debe renderizar un textarea cuando el tipo es Textarea', async () => {
-    fixture.componentRef.setInput('inputType', AlfInputTypeEnum.Textarea);
-    fixture.detectChanges();
-    await fixture.whenStable();
 
-    const textareaEl = fixture.debugElement.query(By.css('textarea.alf-input__field'));
-    const inputEl = fixture.debugElement.query(By.css('input.alf-input__field'));
-
-    expect(textareaEl).toBeTruthy();
-    expect(inputEl).toBeFalsy();
-  });
 
   it('debe emitir onInput cuando cambia el valor', () => {
     fixture.detectChanges();

@@ -36,16 +36,7 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
 
   // ── Effects ───────────────────────────────────────────────────────────────
 
-  /** Sincroniza el auto-resize del textarea cuando el valor cambia */
-  private readonly autoResizeEffect = effect(() => {
-    const val = this.value();
-    const cfg = this.resolvedConfig();
-    const inputEl = this.inputElement();
 
-    if (cfg?.autoResize && cfg?.inputType === AlfInputTypeEnum.Textarea && inputEl) {
-      this.applyAutoResize(inputEl.nativeElement);
-    }
-  });
 
   /** Efecto de debounce — aplica el valor pendiente tras el tiempo configurado */
   private readonly debounceEffect = effect((onCleanup) => {
@@ -86,7 +77,8 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
 
   public readonly label = input<string>();
   public readonly placeholder = input<string>();
-  public readonly inputType = input<AlfInputTypeEnum>();
+  public readonly type = input<AlfInputTypeEnum>(AlfInputTypeEnum.Text);
+
   public readonly error = input<string>();
   public readonly helperText = input<string>();
   public readonly appearance = input<AlfInputAppearanceEnum>();
@@ -107,15 +99,19 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
   // ── Computed: cadena de configuración ────────────────────────────────────
 
   public readonly finalConfig = computed(() => {
-    const v = this.variant();
+    const v = this.colorVariant() ?? this.variant();
     const cfg = {
       ...ALF_INPUT_DEFAULT,
       ...this.inputConfig(),
     }
-    
-    // Si v es string, intentamos resolver el enum (ej: "outlined-primary" -> AlfColorVariantEnum.PrimaryOutline)
+
+    // Si hay un error real, forzamos la variante Danger para el feedback visual
     let variantEnum = AlfColorVariantEnum.Default;
-    if (v) {
+    const errorVal = this.error() || cfg?.error;
+
+    if (errorVal && errorVal.toString().trim() !== '') {
+      variantEnum = AlfColorVariantEnum.Danger;
+    } else if (v) {
       if (typeof v === 'string') {
         const normalized = v.toLowerCase().replace(/-([a-z])/g, (g) => g[1].toUpperCase());
         variantEnum = (AlfColorVariantEnum as any)[normalized.charAt(0).toUpperCase() + normalized.slice(1)] ?? AlfColorVariantEnum.Default;
@@ -125,10 +121,10 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
     }
 
     const base = getAlfInputDefaultConfig(
-      variantEnum, 
+      variantEnum,
       this.appearance() ?? cfg?.appearance ?? AlfInputAppearanceEnum.Outline
     );
-    
+
     return {
       ...base,
       ...cfg,
@@ -148,6 +144,8 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
       clearable: this.clearable() ?? cfg?.clearable ?? base.clearable,
       showPasswordToggle: this.showPasswordToggleInput() ?? cfg?.showPasswordToggle ?? base.showPasswordToggle,
       showCharCounter: this.showCharCounterInput() ?? cfg?.showCharCounter ?? base.showCharCounter,
+      type: this.type() ?? cfg?.inputType ?? base.inputType,
+      colorVariant: variantEnum,
     };
   });
 
@@ -158,9 +156,7 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
   public readonly isDisabled = computed(() => this.disabledComputed());
   public readonly isReadonly = computed(() => this.readonly() ?? this.resolvedConfig()?.readonly ?? false);
   public readonly isLoading = computed(() => this.loading() ?? this.resolvedConfig()?.loading ?? false);
-  public readonly isTextarea = computed(() =>
-    (this.inputType() ?? this.resolvedConfig()?.inputType) === AlfInputTypeEnum.Textarea
-  );
+
 
   public readonly inputId = computed(() =>
     this.resolvedConfig()?.id ?? this.internalId
@@ -170,8 +166,8 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
   public readonly isOutlined = computed(() => {
     const app = this.appearance() ?? this.resolvedConfig()?.appearance;
     if (app) return app === AlfInputAppearanceEnum.Outline;
-    return this.colorVariantComputed().toString().toLowerCase().includes('outline') || 
-           this.colorVariantComputed() === AlfColorVariantEnum.Default;
+    return this.colorVariantComputed().toString().toLowerCase().includes('outline') ||
+      this.colorVariantComputed() === AlfColorVariantEnum.Default;
   });
 
   public readonly labelComputed = computed(() =>
@@ -191,7 +187,7 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
   );
 
   public readonly inputTypeAttr = computed(() => {
-    const type = this.inputType() ?? this.resolvedConfig()?.inputType;
+    const type = this.type() ?? this.resolvedConfig()?.inputType;
     if (type === AlfInputTypeEnum.Password && this.isPasswordVisible()) return 'text';
     return this.resolveInputTypeAttr(type);
   });
@@ -200,7 +196,7 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
     this.shouldLabelFloat(
       this.isFocused(),
       this.value(),
-      this.inputType() ?? this.resolvedConfig()?.inputType,
+      this.type() ?? this.resolvedConfig()?.inputType,
     )
   );
 
@@ -216,7 +212,7 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
 
   // Variable usada en el template (line 17)
   public readonly showPasswordToggle = computed(() => {
-    const type = this.inputType() ?? this.resolvedConfig()?.inputType;
+    const type = this.type() ?? this.resolvedConfig()?.inputType;
     return type === AlfInputTypeEnum.Password &&
       this.resolvedConfig()?.showPasswordToggle !== false;
   });
@@ -254,9 +250,7 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
     const val = (event.target as HTMLInputElement).value;
     const time = this.resolvedConfig()?.debounceTime ?? 0;
 
-    if (this.resolvedConfig()?.autoResize && this.isTextarea()) {
-      this.applyAutoResize(event.target as HTMLElement);
-    }
+
 
     if (time > 0) {
       this.pendingValue.set(val);
@@ -296,11 +290,7 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
   // ── WAAPI ─────────────────────────────────────────────────────────────────
 
 
-  private readonly applyAutoResize = (el: HTMLElement): void => {
-    const textarea = el as HTMLTextAreaElement;
-    textarea.style.height = 'auto';
-    textarea.style.height = `${textarea.scrollHeight}px`;
-  };
+
 
   /**
    * Determina si el label debe flotar hacia arriba.
@@ -317,7 +307,7 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
    * El tipo 'textarea' no es un type HTML válido, se trata como elemento separado.
    */
   private resolveInputTypeAttr = (type?: AlfInputTypeEnum): string => {
-    if (!type || type === AlfInputTypeEnum.Textarea) return 'text';
+    if (!type) return 'text';
     return type;
   };
 

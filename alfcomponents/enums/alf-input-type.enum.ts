@@ -1,6 +1,6 @@
 /**
  * Enum para tipos de input nativos
- * Define el atributo 'type' y comportamientos especiales como 'textarea'.
+ * Define el atributo 'type' y comportamientos especiales.
  * 
  * @example
  * ```typescript
@@ -17,5 +17,4 @@ export enum AlfInputTypeEnum {
   Url = 'url',
   Search = 'search',
   File = 'file',
-  Textarea = 'textarea',
 }

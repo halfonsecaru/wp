@@ -103,4 +103,12 @@ export enum AlfInputAdornmentEnum {
   DotEs = '.es',
   /** Dominio .org */
   DotOrg = '.org',
+
+  // ===== SEGURIDAD (Emojis/Símbolos) =====
+  /** Candado (🔒) */
+  Lock = '🔒',
+  /** Llave (🔑) */
+  Key = '🔑',
+  /** Escudo (🛡️) */
+  Shield = '🛡️',
 }

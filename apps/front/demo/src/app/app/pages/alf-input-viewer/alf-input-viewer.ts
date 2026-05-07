@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 import { AlfInput } from '@alfcomponents/components/simple/alf-input/alf-input';
 import { AlfInputInterface } from '@alfcomponents/components/simple/alf-input/interfaces/alf-input.interface';
-import { AlfColorVariantEnum, AlfInputAdornmentEnum } from '@alfcomponents/enums';
+import { AlfColorVariantEnum, AlfInputAdornmentEnum, AlfInputAppearanceEnum, AlfInputTypeEnum } from '@alfcomponents/enums';
 
 @Component({
   selector: 'app-alf-input-viewer',
@@ -14,6 +14,8 @@ import { AlfColorVariantEnum, AlfInputAdornmentEnum } from '@alfcomponents/enums
 export class AlfInputViewer {
   public readonly AlfColorVariantEnum = AlfColorVariantEnum;
   public readonly AlfInputAdornmentEnum = AlfInputAdornmentEnum;
+  public readonly AlfInputAppearanceEnum = AlfInputAppearanceEnum;
+  public readonly AlfInputTypeEnum = AlfInputTypeEnum;
 
   protected readonly val0 = signal('');
   protected readonly val1 = signal('Juan Pérez');
@@ -21,7 +23,7 @@ export class AlfInputViewer {
   protected readonly val3 = signal('1234');
   protected readonly val4 = signal('secret');
   protected readonly val5 = signal('');
-  protected readonly val6 = signal('Estas son unas notas de prueba para el textarea con auto-resize habilitado.');
+
 
   // Solid Signals
   protected readonly s1 = signal('Juan');
@@ -32,4 +34,5 @@ export class AlfInputViewer {
   protected readonly s6 = signal('Info');
   protected readonly s7 = signal('Dark Mode');
   protected readonly s8 = signal('Light Mode');
+
 }

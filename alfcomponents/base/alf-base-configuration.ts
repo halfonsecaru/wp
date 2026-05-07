@@ -1,36 +1,37 @@
 import { computed, Directive, input } from '@angular/core';
 import { AlfTooltipConfig } from '@alfcomponents/directives';
 import { AlfColorVariantEnum, AlfCursorEnum } from '@alfcomponents/enums';
-import { 
-  AlfAnimateCssInterface, 
-  AlfBackgroundsInterface, 
-  AlfBorderInterface, 
-  AlfDisplayAndLayoutInterface, 
-  AlfMarginInterface, 
-  AlfOutlineInterface, 
-  AlfPaddingInterface, 
-  AlfRippleInterface, 
-  AlfShadowsInterface, 
-  AlfTextStyleInterface, 
-  AlfTransformInterface, 
-  AlfTypographyInterface 
+import {
+  AlfAnimateCssInterface,
+  AlfBackgroundsInterface,
+  AlfBorderInterface,
+  AlfDisplayAndLayoutInterface,
+  AlfMarginInterface,
+  AlfOutlineInterface,
+  AlfPaddingInterface,
+  AlfRippleInterface,
+  AlfShadowsInterface,
+  AlfTextStyleInterface,
+  AlfTransformInterface,
+  AlfTypographyInterface
 } from '@alfcomponents/interfaces';
 import { AlfAriaBaseInterface } from '@alfcomponents/interfaces/alf-aria.interface';
-import { 
-  visualAnimationsBase, 
-  visualBackgroundBase, 
-  visualBorderBase, 
-  visualDisplayAndLayoutBase, 
-  visualMarginBase, 
-  visualOutlineBase, 
-  visualPaddingBase, 
-  visualRippleColorBase, 
-  visualShadowsBase, 
-  visualTextStyleBase, 
-  visualTransformBase, 
+import {
+  visualAnimationsBase,
+  visualBackgroundBase,
+  visualBorderBase,
+  visualDisplayAndLayoutBase,
+  visualMarginBase,
+  visualOutlineBase,
+  visualPaddingBase,
+  visualRippleColorBase,
+  visualShadowsBase,
+  visualTextStyleBase,
+  visualTransformBase,
   visualTypographyBase,
-  visualAnimationsClassBase 
+  visualAnimationsClassBase
 } from './base-visual';
+import { buildBorderColor, buildBackgroundColor } from './predefined';
 
 export interface AlfBaseCommonConfigInterface {
   readonly colorVariant?: AlfColorVariantEnum;
@@ -101,25 +102,37 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
     this.disabled() ?? this.resolvedConfig()?.disabled ?? false,
   );
 
-  public readonly tooltipComputed = computed(() => 
+  public readonly tooltipComputed = computed(() =>
     this.tooltip() ?? (this.resolvedConfig() as any)?.tooltip
   );
 
-  public readonly ariaComputed = computed(() => 
+  public readonly ariaComputed = computed(() =>
     this.aria() ?? (this.resolvedConfig() as any)?.aria
   );
 
-  public readonly customClassComputed = computed(() => 
+  public readonly customClassComputed = computed(() =>
     this.customClass() ?? this.resolvedConfig()?.customClass ?? ''
   );
 
-  public readonly customStyleComputed = computed(() => 
+  public readonly customStyleComputed = computed(() =>
     this.customStyle() ?? this.resolvedConfig()?.customStyle ?? ''
   );
 
   // Computeds para estilos inyectados
-  protected readonly backgroundsComputed = computed(() => this.backgrounds() ?? this.resolvedConfig()?.backgrounds);
-  protected readonly borderComputed = computed(() => this.border() ?? this.resolvedConfig()?.border);
+  protected readonly backgroundsComputed = computed(() => {
+    const resolved = this.resolvedConfig()?.backgrounds || {};
+    const user = this.backgrounds() || {};
+    return buildBackgroundColor(
+      this.colorVariantComputed() ? this.colorVariantComputed() : undefined,
+      {
+        default: { ...resolved.default, ...user.default },
+        hover: { ...resolved.hover, ...user.hover },
+        focus: { ...resolved.focus, ...user.focus },
+        active: { ...resolved.active, ...user.active },
+        disabled: { ...resolved.disabled, ...user.disabled },
+      }
+    );
+  });
   protected readonly displayAndLayoutComputed = computed(() => this.displayAndLayout() ?? this.resolvedConfig()?.displayAndLayout);
   protected readonly marginComputed = computed(() => this.margin() ?? this.resolvedConfig()?.margin);
   protected readonly outlineComputed = computed(() => this.outline() ?? this.resolvedConfig()?.outline);
@@ -130,7 +143,24 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
   protected readonly typographyComputed = computed(() => this.typography() ?? this.resolvedConfig()?.typography);
   protected readonly animationsComputed = computed(() => this.animations() ?? this.resolvedConfig()?.animations);
 
-  public readonly animationsClassComputed = computed(() => 
+  protected readonly borderComputed = computed(() => {
+    const resolved = this.resolvedConfig()?.border || {};
+    const user = this.border() || {};
+    return buildBorderColor(
+      this.colorVariantComputed() ? this.colorVariantComputed() : undefined,
+      {
+        default: { ...resolved.default, ...user.default },
+        hover: { ...resolved.hover, ...user.hover },
+        focus: { ...resolved.focus, ...user.focus },
+        active: { ...resolved.active, ...user.active },
+        disabled: { ...resolved.disabled, ...user.disabled },
+      }
+    );
+  });
+
+
+
+  public readonly animationsClassComputed = computed(() =>
     visualAnimationsClassBase({
       animations: this.animationsComputed(),
     })
@@ -140,6 +170,13 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
   // **** CREACION DE LOS ESTILOS PARA SCSS **** //
   // ****************************************** //
 
+  public readonly createBorderStyle = computed(() =>
+    visualBorderBase(this.visualPrefix, {
+      type: this.colorVariantComputed(),
+      border: this.borderComputed(),
+    }),
+  );
+
   public readonly createBackgroundsStyle = computed(() =>
     visualBackgroundBase(this.visualPrefix, {
       type: this.colorVariantComputed(),
@@ -147,12 +184,7 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
     }),
   );
 
-  public readonly createBorderStyle = computed(() =>
-    visualBorderBase(this.visualPrefix, {
-      type: this.colorVariantComputed(),
-      border: this.borderComputed(),
-    }),
-  );
+
 
   public readonly createDisplayAndLayoutStyle = computed(() =>
     visualDisplayAndLayoutBase(this.visualPrefix, {

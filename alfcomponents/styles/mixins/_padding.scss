@@ -4,10 +4,11 @@
  * 
  * @param {String} $prefix - Prefijo de las variables CSS (ej: '--alf-inp')
  * @param {String} $disabled-selectors - Selectores para el estado deshabilitado
+ * @param {String} $focus-selectors - Selectores para el estado focus
  */
 @mixin alf-padding-css-vars($prefix,
-  $disabled-selectors: '&[disabled], &:disabled, &.disabled'
-
+  $disabled-selectors: '&[disabled], &:disabled, &.disabled',
+  $focus-selectors: '&:focus, &:focus-visible'
 ) {
   // --- 1. BASE / DEFAULT ---
   $p: var(#{$prefix}-padding, 0);
@@ -45,8 +46,7 @@
   }
 
   // --- 4. FOCUS STATE ---
-  &:focus,
-  &:focus-visible {
+  #{$focus-selectors} {
     $f: var(#{$prefix}-padding-focus, $p);
     
     padding: $f;

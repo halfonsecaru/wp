@@ -15,7 +15,7 @@ export interface AlfInputInterface extends AlfBaseCommonConfigInterface {
   readonly appearance?: AlfInputAppearanceEnum;
   readonly inputType?: AlfInputTypeEnum;
   readonly loading?: boolean;
-  
+
   // Propiedades Funcionales
   readonly name?: string;
   readonly required?: boolean;
@@ -27,17 +27,15 @@ export interface AlfInputInterface extends AlfBaseCommonConfigInterface {
   readonly step?: number;
   readonly pattern?: string;
   readonly autocomplete?: string;
-  readonly rows?: number;
-  readonly autoResize?: boolean;
   readonly debounceTime?: number;
   readonly prefix?: string;
   readonly suffix?: string;
-  
+
   // Toggles Funcionales
   readonly clearable?: boolean;
   readonly showPasswordToggle?: boolean;
   readonly showCharCounter?: boolean;
-  
+
   // I18n
   readonly clearLabel?: string;
   readonly showPwdLabel?: string;

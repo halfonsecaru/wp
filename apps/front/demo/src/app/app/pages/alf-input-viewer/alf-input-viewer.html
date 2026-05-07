@@ -1,171 +1,236 @@
 <div class="viewer-container">
-  <h1>AlfInput Showcase</h1>
+  <h1>Input</h1>
 
-  <!-- Basic Examples -->
+  <!-- Input Types -->
   <section class="viewer-section">
-    <h2>Basic / Default</h2>
-    <div class="viewer-grid">
-      <div class="viewer-item">
-        <label>Default (No variant)</label>
-        <alf-input
-          label="Usuario de postureo guapo"
-          placeholder="Escribe tu usuario..."
-          [value]="val0()"
-          (valueChange)="val0.set($event)"
-        ></alf-input>
+    <h2>Input Types</h2>
+    <div class="card viewer-grid">
+      <div class="flex flex-col gap-2">
+        <label>Text</label>
+        <alf-input label="Nombre" [type]="AlfInputTypeEnum.Text" placeholder="Tu nombre..."></alf-input>
       </div>
 
-      <div class="viewer-item">
-        <label>With Icon (Prefix)</label>
+      <div class="flex flex-col gap-2">
+        <label>Email</label>
+        <alf-input label="Email" [type]="AlfInputTypeEnum.Email" placeholder="usuario@ejemplo.com"></alf-input>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label>Password</label>
+        <alf-input label="Contraseña" [type]="AlfInputTypeEnum.Password" placeholder="********"></alf-input>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label>Number</label>
+        <alf-input label="Edad" [type]="AlfInputTypeEnum.Number" placeholder="0"></alf-input>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label>Tel</label>
+        <alf-input label="Teléfono" [type]="AlfInputTypeEnum.Tel" placeholder="+34 000 000 000"></alf-input>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label>Url</label>
+        <alf-input label="Sitio Web" [type]="AlfInputTypeEnum.Url" placeholder="https://..."></alf-input>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label>Search</label>
+        <alf-input label="Buscar" [type]="AlfInputTypeEnum.Search" placeholder="Escribe para buscar..."></alf-input>
+      </div>
+
+
+    </div>
+  </section>
+
+  <!-- Basic Appearance -->
+  <section class="viewer-section">
+    <div class="card viewer-grid">
+      <div class="flex flex-col gap-2">
         <alf-input
-          label="Usuario"
-          placeholder="Nombre de usuario..."
+          id="basic-input"
+          label="Outline"
+          placeholder="Escribe algo..."
+          [appearance]="AlfInputAppearanceEnum.Outline"
           [prefix]="AlfInputAdornmentEnum.At"
-          [value]="val2()"
-          (valueChange)="val2.set($event)"
+        ></alf-input>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <alf-input
+          id="fill-input"
+          label="Fill"
+          placeholder="Escribe algo..."
+          [appearance]="AlfInputAppearanceEnum.Fill"
+          [prefix]="AlfInputAdornmentEnum.At"
+        ></alf-input>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <alf-input
+          id="standard-input"
+          label="Standard"
+          placeholder="Escribe algo..."
+          [appearance]="AlfInputAppearanceEnum.Standard"
+          [prefix]="AlfInputAdornmentEnum.At"
         ></alf-input>
       </div>
     </div>
   </section>
 
-  <!-- Outlined Variants -->
+  <!-- Outline Variants -->
   <section class="viewer-section">
-    <h2>Outlined Variants</h2>
-    <div class="viewer-grid">
-      <div class="viewer-item">
-        <label>Primary (with Icon)</label>
-        <alf-input
-          [variant]="AlfColorVariantEnum.PrimaryOutline"
-          label="NombreCompleto"
-          placeholder="Ej. Juan Pérez"
-          [value]="val1()"
-          (valueChange)="val1.set($event)"
-        ></alf-input>
+    <h2>Outline Variants</h2>
+    <div class="card viewer-grid">
+      <div class="flex flex-col gap-2">
+        <alf-input label="Default" [appearance]="AlfInputAppearanceEnum.Outline" [colorVariant]="AlfColorVariantEnum.Default"></alf-input>
       </div>
-
-      <div class="viewer-item">
-        <label>Secondary (with Suffix)</label>
-        <alf-input
-          [variant]="AlfColorVariantEnum.SecondaryOutline"
-          label="Email"
-          placeholder="tu@email.com"
-          [value]="val2()"
-          (valueChange)="val2.set($event)"
-        ></alf-input>
+      <div class="flex flex-col gap-2">
+        <alf-input label="Primary" [appearance]="AlfInputAppearanceEnum.Outline" [colorVariant]="AlfColorVariantEnum.Primary"></alf-input>
+      </div>
+      <div class="flex flex-col gap-2">
+        <alf-input label="Secondary" [appearance]="AlfInputAppearanceEnum.Outline" [colorVariant]="AlfColorVariantEnum.Secondary"></alf-input>
+      </div>
+      <div class="flex flex-col gap-2">
+        <alf-input label="Success" [appearance]="AlfInputAppearanceEnum.Outline" [colorVariant]="AlfColorVariantEnum.Success"></alf-input>
+      </div>
+      <div class="flex flex-col gap-2">
+        <alf-input label="Danger" [appearance]="AlfInputAppearanceEnum.Outline" [colorVariant]="AlfColorVariantEnum.Danger"></alf-input>
+      </div>
+      <div class="flex flex-col gap-2">
+        <alf-input label="Warning" [appearance]="AlfInputAppearanceEnum.Outline" [colorVariant]="AlfColorVariantEnum.Warning"></alf-input>
+      </div>
+      <div class="flex flex-col gap-2">
+        <alf-input label="Info" [appearance]="AlfInputAppearanceEnum.Outline" [colorVariant]="AlfColorVariantEnum.Info"></alf-input>
+      </div>
+      <div class="flex flex-col gap-2">
+        <alf-input label="Light" [appearance]="AlfInputAppearanceEnum.Outline" [colorVariant]="AlfColorVariantEnum.Light"></alf-input>
+      </div>
+      <div class="flex flex-col gap-2">
+        <alf-input label="Dark" [appearance]="AlfInputAppearanceEnum.Outline" [colorVariant]="AlfColorVariantEnum.Dark"></alf-input>
       </div>
     </div>
   </section>
 
-  <!-- Solid Variants -->
+  <!-- Fill Variants -->
   <section class="viewer-section">
-    <h2>Solid Variants</h2>
-    <div class="viewer-grid">
-      <div class="viewer-item">
-        <label>Solid Primary</label>
-        <alf-input
-          [variant]="AlfColorVariantEnum.Primary"
-          label="Nombre"
-          [value]="s1()"
-          (valueChange)="s1.set($event)"
-        ></alf-input>
+    <h2>Fill Variants</h2>
+    <div class="card viewer-grid">
+      <div class="flex flex-col gap-2">
+        <alf-input label="Default" [appearance]="AlfInputAppearanceEnum.Fill" [colorVariant]="AlfColorVariantEnum.Default"></alf-input>
       </div>
-
-      <div class="viewer-item">
-        <label>Solid Secondary</label>
-        <alf-input
-          [variant]="AlfColorVariantEnum.Secondary"
-          label="Teléfono"
-          [value]="s2()"
-          (valueChange)="s2.set($event)"
-        ></alf-input>
+      <div class="flex flex-col gap-2">
+        <alf-input label="Primary" [appearance]="AlfInputAppearanceEnum.Fill" [colorVariant]="AlfColorVariantEnum.Primary"></alf-input>
       </div>
-
-      <div class="viewer-item">
-        <label>Solid Success</label>
-        <alf-input
-          [variant]="AlfColorVariantEnum.Success"
-          label="Aprobado"
-          [value]="s3()"
-          (valueChange)="s3.set($event)"
-        ></alf-input>
+      <div class="flex flex-col gap-2">
+        <alf-input label="Secondary" [appearance]="AlfInputAppearanceEnum.Fill" [colorVariant]="AlfColorVariantEnum.Secondary"></alf-input>
       </div>
-
-      <div class="viewer-item">
-        <label>Solid Danger</label>
-        <alf-input
-          [variant]="AlfColorVariantEnum.Danger"
-          label="Error Crítico"
-          [value]="s4()"
-          (valueChange)="s4.set($event)"
-        ></alf-input>
+      <div class="flex flex-col gap-2">
+        <alf-input label="Success" [appearance]="AlfInputAppearanceEnum.Fill" [colorVariant]="AlfColorVariantEnum.Success"></alf-input>
       </div>
-
-      <div class="viewer-item">
-        <label>Solid Warning</label>
-        <alf-input
-          [variant]="AlfColorVariantEnum.Warning"
-          label="Alerta"
-          [value]="s5()"
-          (valueChange)="s5.set($event)"
-        ></alf-input>
+      <div class="flex flex-col gap-2">
+        <alf-input label="Danger" [appearance]="AlfInputAppearanceEnum.Fill" [colorVariant]="AlfColorVariantEnum.Danger"></alf-input>
       </div>
-
-      <div class="viewer-item">
-        <label>Solid Info</label>
-        <alf-input
-          [variant]="AlfColorVariantEnum.Info"
-          label="Información"
-          [value]="s6()"
-          (valueChange)="s6.set($event)"
-        ></alf-input>
+      <div class="flex flex-col gap-2">
+        <alf-input label="Warning" [appearance]="AlfInputAppearanceEnum.Fill" [colorVariant]="AlfColorVariantEnum.Warning"></alf-input>
       </div>
-
-      <div class="viewer-item">
-        <label>Solid Dark</label>
-        <alf-input
-          [variant]="AlfColorVariantEnum.Dark"
-          label="Noche"
-          [value]="s7()"
-          (valueChange)="s7.set($event)"
-        ></alf-input>
+      <div class="flex flex-col gap-2">
+        <alf-input label="Info" [appearance]="AlfInputAppearanceEnum.Fill" [colorVariant]="AlfColorVariantEnum.Info"></alf-input>
       </div>
-
-      <div class="viewer-item">
-        <label>Solid Light</label>
-        <alf-input
-          [variant]="AlfColorVariantEnum.Light"
-          label="Día"
-          [value]="s8()"
-          (valueChange)="s8.set($event)"
-        ></alf-input>
+      <div class="flex flex-col gap-2">
+        <alf-input label="Light" [appearance]="AlfInputAppearanceEnum.Fill" [colorVariant]="AlfColorVariantEnum.Light"></alf-input>
+      </div>
+      <div class="flex flex-col gap-2">
+        <alf-input label="Dark" [appearance]="AlfInputAppearanceEnum.Fill" [colorVariant]="AlfColorVariantEnum.Dark"></alf-input>
       </div>
     </div>
   </section>
 
-  <!-- Crystal Variants -->
+  <!-- Standard Variants -->
   <section class="viewer-section">
-    <h2>Crystal Variants</h2>
-    <div class="viewer-grid">
-      <div class="viewer-item">
-        <label>Warning</label>
+    <h2>Standard Variants</h2>
+    <div class="card viewer-grid">
+      <div class="flex flex-col gap-2">
+        <alf-input label="Default" [appearance]="AlfInputAppearanceEnum.Standard" [colorVariant]="AlfColorVariantEnum.Default"></alf-input>
+      </div>
+      <div class="flex flex-col gap-2">
+        <alf-input label="Primary" [appearance]="AlfInputAppearanceEnum.Standard" [colorVariant]="AlfColorVariantEnum.Primary"></alf-input>
+      </div>
+      <div class="flex flex-col gap-2">
+        <alf-input label="Secondary" [appearance]="AlfInputAppearanceEnum.Standard" [colorVariant]="AlfColorVariantEnum.Secondary"></alf-input>
+      </div>
+      <div class="flex flex-col gap-2">
+        <alf-input label="Success" [appearance]="AlfInputAppearanceEnum.Standard" [colorVariant]="AlfColorVariantEnum.Success"></alf-input>
+      </div>
+      <div class="flex flex-col gap-2">
+        <alf-input label="Danger" [appearance]="AlfInputAppearanceEnum.Standard" [colorVariant]="AlfColorVariantEnum.Danger"></alf-input>
+      </div>
+      <div class="flex flex-col gap-2">
+        <alf-input label="Warning" [appearance]="AlfInputAppearanceEnum.Standard" [colorVariant]="AlfColorVariantEnum.Warning"></alf-input>
+      </div>
+      <div class="flex flex-col gap-2">
+        <alf-input label="Info" [appearance]="AlfInputAppearanceEnum.Standard" [colorVariant]="AlfColorVariantEnum.Info"></alf-input>
+      </div>
+      <div class="flex flex-col gap-2">
+        <alf-input label="Light" [appearance]="AlfInputAppearanceEnum.Standard" [colorVariant]="AlfColorVariantEnum.Light"></alf-input>
+      </div>
+      <div class="flex flex-col gap-2">
+        <alf-input label="Dark" [appearance]="AlfInputAppearanceEnum.Standard" [colorVariant]="AlfColorVariantEnum.Dark"></alf-input>
+      </div>
+    </div>
+  </section>
+
+  <!-- States & Validation -->
+  <section class="viewer-section">
+    <h2>States & Validation</h2>
+    <div class="card viewer-grid">
+  
+
+      <div class="flex flex-col gap-2">
+        <label>Helper Text</label>
         <alf-input
-          [variant]="AlfColorVariantEnum.WarningCrystal"
-          label="Búsqueda"
-          placeholder="Buscar algo..."
-          [value]="val5()"
-          (valueChange)="val5.set($event)"
+          label="Contraseña"
+          type="password"
+          helperText="Mínimo 8 caracteres"
+          [prefix]="AlfInputAdornmentEnum.Lock"
         ></alf-input>
       </div>
 
-      <div class="viewer-item">
-        <label>Info (Textarea)</label>
+      <div class="flex flex-col gap-2">
+        <label>Loading State</label>
         <alf-input
-          [variant]="AlfColorVariantEnum.InfoCrystal"
-          label="Observaciones"
-          placeholder="Escribe aquí..."
-          [value]="val6()"
-          (valueChange)="val6.set($event)"
-          inputType="textarea"
+          label="Buscando..."
+          [loading]="true"
+          placeholder="Espere por favor"
+        ></alf-input>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label>Character Counter</label>
+        <alf-input
+          label="Biografía"
+          [maxLength]="50"
+          value="Hola, soy un desarrollador Élite"
+          [showCharCounter]="true"
+        ></alf-input>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label>Required Field</label>
+        <alf-input
+          label="Nombre Obligatorio"
+          [required]="true"
+          placeholder="Este campo es necesario"
+        ></alf-input>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label>Readonly State</label>
+        <alf-input
+          label="ID de Usuario"
+          value="USR-123456"
+          [readonly]="true"
         ></alf-input>
       </div>
     </div>

@@ -6,6 +6,5 @@ export * from './shadows-base';
 export * from './transform-base';
 export * from './animations-base';
 export * from './background-base';
-export * from './display-and-layout';
 export * from './text-style-base';
 export * from './typography-base';
