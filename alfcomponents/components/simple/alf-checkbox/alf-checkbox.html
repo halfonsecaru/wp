@@ -36,15 +36,11 @@
   [style]="
     backgroundsStyle + 
     borderStyle + 
-    displayAndLayoutStyle + 
     marginStyle + 
-    outlineStyle + 
-    paddingStyle + 
-    shadowsStyle + 
+    displayAndLayoutStyle + 
     typographyStyle + 
     textStyle + 
-    transformStyle +
-    animationsStyle +
+    animationsStyle + 
     customStyle
   "
 >
@@ -71,26 +67,26 @@
       class="alf-cb-box"
       [alfRipple]="ripple"
       [alfTooltipText]="tooltip"
+      [style]="paddingStyle + shadowsStyle + transformStyle"
     >
       @if (isIndeterminate || (isChecked && resolvedConfig()?.iconSelected)) {
         <span class="alf-cb-icon">{{ icon }}</span>
       } @else if (isChecked) {
-        @switch (styleVariant) {
-          @case ('moving') {
-            <!-- Pure CSS expansion, no SVG -->
+        <div>
+          @switch (styleVariant) {
+            @case ('standard') {
+              <svg class="std-svg" viewBox="0 0 24 24">
+                <path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+              </svg>
+            }
+  
+            @default {
+              <svg class="elegant-svg" viewBox="0 0 24 24">
+                <path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+              </svg>
+            }
           }
-          @case ('standard') {
-            <svg class="std-svg" viewBox="0 0 24 24">
-              <path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
-            </svg>
-          }
-
-          @default {
-            <svg class="elegant-svg" viewBox="0 0 24 24">
-              <path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
-            </svg>
-          }
-        }
+        </div>
       }
     </div>
 

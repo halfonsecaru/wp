@@ -4,8 +4,8 @@ import { AlfSingleTabInterface, ALF_TABS_CONTAINER_TOKEN, AlfTabsParentInterface
 import { visualprefixEnum } from '@alfcomponents/shared';
 import { AlfAnimateCssInterface } from '@alfcomponents/interfaces';
 import { ALF_TAB_CONTENT_DEFAULT } from '../../predefined/alf-tabs-container.predefined';
-import { AlfBaseButtonConfiguration } from '../../../../simple/alf-buttons/base/base-button-configuration';
-import { AlfButtonInterface } from '../../../../simple/alf-buttons/interfaces/alf-button.interface';
+import { AlfBaseButtonConfiguration } from '../../../../simple/alf-button/base/alf-base-button-configuration';
+import { AlfButtonInterface } from '../../../../simple/alf-button/interfaces/alf-button.interface';
 
 @Component({
   selector: 'alf-tab',

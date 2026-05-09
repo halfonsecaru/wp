@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, getTestBed } from '@angular/core/testing';
 import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
 import { By } from '@angular/platform-browser';
 
-import { AlfButtons } from './alf-buttons';
+import { AlfButton } from './alf-button';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 try {
@@ -12,16 +12,16 @@ try {
   }
 } catch (e) { }
 
-describe('AlfButtons', () => {
-  let component: AlfButtons;
-  let fixture: ComponentFixture<AlfButtons>;
+describe('AlfButton', () => {
+  let component: AlfButton;
+  let fixture: ComponentFixture<AlfButton>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AlfButtons],
+      imports: [AlfButton],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AlfButtons);
+    fixture = TestBed.createComponent(AlfButton);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
@@ -33,8 +33,8 @@ describe('AlfButtons', () => {
   it('renderiza como button por defecto', () => {
     fixture.detectChanges();
 
-    const buttonEl = fixture.debugElement.query(By.css('button.alf-buttons-main'));
-    const anchorEl = fixture.debugElement.query(By.css('a.alf-buttons-main'));
+    const buttonEl = fixture.debugElement.query(By.css('button.alf-button'));
+    const anchorEl = fixture.debugElement.query(By.css('a.alf-button'));
 
     expect(buttonEl).toBeTruthy();
     expect(anchorEl).toBeFalsy();
@@ -44,8 +44,8 @@ describe('AlfButtons', () => {
     fixture.componentRef.setInput('link', { url: 'https://angular.dev', target: '_blank' });
     fixture.detectChanges();
 
-    const anchorEl = fixture.debugElement.query(By.css('a.alf-buttons-main'));
-    const buttonEl = fixture.debugElement.query(By.css('button.alf-buttons-main'));
+    const anchorEl = fixture.debugElement.query(By.css('a.alf-button'));
+    const buttonEl = fixture.debugElement.query(By.css('button.alf-button'));
 
     expect(anchorEl).toBeTruthy();
     expect(anchorEl.nativeElement.getAttribute('href')).toBe('https://angular.dev');
@@ -58,7 +58,7 @@ describe('AlfButtons', () => {
     const onClickSpy = vi.fn();
     (component.onClick as any).subscribe(onClickSpy);
 
-    const buttonEl = fixture.debugElement.query(By.css('button.alf-buttons-main'));
+    const buttonEl = fixture.debugElement.query(By.css('button.alf-button'));
     buttonEl.nativeElement.click();
 
     expect(onClickSpy).toHaveBeenCalledTimes(1);
@@ -90,7 +90,7 @@ describe('AlfButtons', () => {
     nowSpy.mockReturnValueOnce(1100);
     nowSpy.mockReturnValueOnce(1300);
 
-    const buttonEl = fixture.debugElement.query(By.css('button.alf-buttons-main'));
+    const buttonEl = fixture.debugElement.query(By.css('button.alf-button'));
     buttonEl.nativeElement.click();
     buttonEl.nativeElement.click();
     buttonEl.nativeElement.click();
@@ -106,7 +106,7 @@ describe('AlfButtons', () => {
     const onClickSpy = vi.fn();
     (component.onClick as any).subscribe(onClickSpy);
 
-    const buttonEl = fixture.debugElement.query(By.css('button.alf-buttons-main'));
+    const buttonEl = fixture.debugElement.query(By.css('button.alf-button'));
     buttonEl.nativeElement.click();
     buttonEl.nativeElement.click();
 

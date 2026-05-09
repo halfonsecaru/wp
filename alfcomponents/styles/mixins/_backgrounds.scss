@@ -1,55 +1,64 @@
 /**
  * Aplica background reactivo con variables CSS por prefijo.
- * Ejemplo de prefijo: '--alf-btn'
+ * Estructura Élite: Fallbacks encadenados para máxima estabilidad visual.
+ * Sincronizado con el patrón de _border.scss.
+ * 
+ * @param {String} $prefix - Prefijo de las variables CSS (ej: '--alf-btn')
+ * @param {String} $disabled-selectors - Selectores para el estado deshabilitado
+ * @param {String} $focus-selectors - Selectores para el estado focus
  */
-@mixin alf-background-css-vars($prefix, $disabled-selectors: '&[disabled], &:disabled, &.disabled') {
-  background-color: var(#{$prefix}-bg-color, var(#{$prefix}-bg, revert));
-  background-image: var(#{$prefix}-bg-img, revert);
-  background-size: var(#{$prefix}-bg-size, revert);
-  background-position: var(#{$prefix}-bg-pos, revert);
-  background-repeat: var(#{$prefix}-bg-repeat, revert);
-  background-attachment: var(#{$prefix}-bg-attachment, revert);
-  background-clip: var(#{$prefix}-bg-clip, revert);
+@mixin alf-background-css-vars(
+  $prefix, 
+  $disabled-selectors: '&[disabled], &:disabled, &.disabled',
+  $focus-selectors: '&:focus, &:focus-visible'
+) {
+  // --- 1. BASE / DEFAULT ---
+  $bgc: var(#{$prefix}-bg-color, var(#{$prefix}-bg, revert));
+  $bgi: var(#{$prefix}-bg-img, revert);
+  $bgs: var(#{$prefix}-bg-size, revert);
+  $bgp: var(#{$prefix}-bg-pos, revert);
+  $bgr: var(#{$prefix}-bg-repeat, revert);
+  $bga: var(#{$prefix}-bg-attachment, revert);
+  $bgcl: var(#{$prefix}-bg-clip, revert);
 
+  background-color: $bgc;
+  background-image: $bgi;
+  background-size: $bgs;
+  background-position: $bgp;
+  background-repeat: $bgr;
+  background-attachment: $bga;
+  background-clip: $bgcl;
+
+  // --- 2. HOVER STATE ---
   &:hover {
-    background-color: var(#{$prefix}-bg-hover-color, var(#{$prefix}-bg-hover, var(#{$prefix}-bg-color, var(#{$prefix}-bg, revert))));
-    background-image: var(#{$prefix}-bg-hover-img, var(#{$prefix}-bg-img, revert));
-    background-size: var(#{$prefix}-bg-hover-size, var(#{$prefix}-bg-size, revert));
-    background-position: var(#{$prefix}-bg-hover-pos, var(#{$prefix}-bg-pos, revert));
-    background-repeat: var(#{$prefix}-bg-hover-repeat, var(#{$prefix}-bg-repeat, revert));
-    background-attachment: var(#{$prefix}-bg-hover-attachment, var(#{$prefix}-bg-attachment, revert));
-    background-clip: var(#{$prefix}-bg-hover-clip, var(#{$prefix}-bg-clip, revert));
+    background-color: var(#{$prefix}-bg-hover-color, var(#{$prefix}-bg-hover, $bgc));
+    background-image: var(#{$prefix}-bg-hover-img, $bgi);
+    background-size: var(#{$prefix}-bg-hover-size, $bgs);
+    background-position: var(#{$prefix}-bg-hover-pos, $bgp);
+    background-repeat: var(#{$prefix}-bg-hover-repeat, $bgr);
+    background-attachment: var(#{$prefix}-bg-hover-attachment, $bga);
+    background-clip: var(#{$prefix}-bg-hover-clip, $bgcl);
   }
 
+  // --- 3. ACTIVE STATE ---
   &:active {
-    background-color: var(#{$prefix}-bg-active-color,
-      var(#{$prefix}-bg-active, var(#{$prefix}-bg-hover, var(#{$prefix}-bg-color, var(#{$prefix}-bg, revert)))));
-    background-image: var(#{$prefix}-bg-active-img, var(#{$prefix}-bg-img, revert));
-    background-size: var(#{$prefix}-bg-active-size, var(#{$prefix}-bg-size, revert));
-    background-position: var(#{$prefix}-bg-active-pos, var(#{$prefix}-bg-pos, revert));
-    background-repeat: var(#{$prefix}-bg-active-repeat, var(#{$prefix}-bg-repeat, revert));
-    background-attachment: var(#{$prefix}-bg-active-attachment, var(#{$prefix}-bg-attachment, revert));
-    background-clip: var(#{$prefix}-bg-active-clip, var(#{$prefix}-bg-clip, revert));
+    $hbgc: var(#{$prefix}-bg-hover-color, var(#{$prefix}-bg-hover, $bgc));
+    $hbgi: var(#{$prefix}-bg-hover-img, $bgi);
+
+    background-color: var(#{$prefix}-bg-active-color, var(#{$prefix}-bg-active, $hbgc));
+    background-image: var(#{$prefix}-bg-active-img, $hbgi);
   }
 
-  &:focus,
-  &:focus-visible {
-    background-color: var(#{$prefix}-bg-focus-color, var(#{$prefix}-bg-focus, var(#{$prefix}-bg-color, var(#{$prefix}-bg, revert))));
-    background-image: var(#{$prefix}-bg-focus-img, var(#{$prefix}-bg-img, revert));
-    background-size: var(#{$prefix}-bg-focus-size, var(#{$prefix}-bg-size, revert));
-    background-position: var(#{$prefix}-bg-focus-pos, var(#{$prefix}-bg-pos, revert));
-    background-repeat: var(#{$prefix}-bg-focus-repeat, var(#{$prefix}-bg-repeat, revert));
-    background-attachment: var(#{$prefix}-bg-focus-attachment, var(#{$prefix}-bg-attachment, revert));
-    background-clip: var(#{$prefix}-bg-focus-clip, var(#{$prefix}-bg-clip, revert));
+  // --- 4. FOCUS STATE ---
+  #{$focus-selectors} {
+    background-color: var(#{$prefix}-bg-focus-color, var(#{$prefix}-bg-focus, $bgc));
+    background-image: var(#{$prefix}-bg-focus-img, $bgi);
   }
 
+  // --- 5. DISABLED STATE ---
   #{$disabled-selectors} {
-    background-color: var(#{$prefix}-bg-disabled-color, var(#{$prefix}-bg-disabled, var(#{$prefix}-bg-color, var(#{$prefix}-bg, revert))));
-    background-image: var(#{$prefix}-bg-disabled-img, var(#{$prefix}-bg-img, revert));
-    background-size: var(#{$prefix}-bg-disabled-size, var(#{$prefix}-bg-size, revert));
-    background-position: var(#{$prefix}-bg-disabled-pos, var(#{$prefix}-bg-pos, revert));
-    background-repeat: var(#{$prefix}-bg-disabled-repeat, var(#{$prefix}-bg-repeat, revert));
-    background-attachment: var(#{$prefix}-bg-disabled-attachment, var(#{$prefix}-bg-attachment, revert));
-    background-clip: var(#{$prefix}-bg-disabled-clip, var(#{$prefix}-bg-clip, revert));
+    background-color: var(#{$prefix}-bg-disabled-color, var(#{$prefix}-bg-disabled, $bgc));
+    background-image: var(#{$prefix}-bg-disabled-img, $bgi);
+    opacity: 0.6;
   }
 }

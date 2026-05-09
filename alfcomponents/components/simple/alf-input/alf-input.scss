@@ -5,8 +5,6 @@
   width: 100%;
 }
 
-// Se han eliminado las variables del wrapper, ahora todo depende de .alf-input
-
 .alf-input {
   margin: 0;
   padding: 0;
@@ -17,7 +15,6 @@
   align-items: center;
   width: 100%;
   box-sizing: border-box;
-  cursor: text;
   transition: all 0.2s ease;
   padding-left: 0.5rem;
 
@@ -45,6 +42,14 @@
     cursor: wait;
   }
 
+  cursor: var(--alf-inp-layout-cursor, pointer);
+
+  &__inner,
+  &__prefix,
+  &__suffix-area {
+    cursor: var(--alf-inp-layout-cursor, pointer);
+  }
+
   &__inner {
     display: flex;
     align-items: var(--alf-inner-align, center);
@@ -57,6 +62,7 @@
   &__field {
     flex: 1;
     min-width: 0;
+    cursor: inherit;
     border: none;
     outline: none;
     background: transparent;
@@ -173,5 +179,12 @@
     display: flex;
     justify-content: space-between;
     font-size: 0.75rem;
+  }
+
+  &__helper,
+  &__counter {
+    padding-top: 5px;
+    color: inherit;
+    padding-left: 10px
   }
 }

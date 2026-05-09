@@ -1,46 +1,77 @@
 <div class="viewer-container">
   <h1>Input</h1>
 
-  <!-- Input Types -->
+  <!-- Validators -->
   <section class="viewer-section">
-    <h2>Input Types</h2>
+    <h2>Validators & Debounce</h2>
     <div class="card viewer-grid">
       <div class="flex flex-col gap-2">
-        <label>Text</label>
-        <alf-input label="Nombre" [type]="AlfInputTypeEnum.Text" placeholder="Tu nombre..."></alf-input>
+        <alf-input 
+          label="Email Validator" 
+          [type]="AlfInputTypeEnum.Email" 
+          placeholder="ejemplo@correo.com"
+          [autofocus]="true"
+        ></alf-input>
       </div>
 
       <div class="flex flex-col gap-2">
-        <label>Email</label>
-        <alf-input label="Email" [type]="AlfInputTypeEnum.Email" placeholder="usuario@ejemplo.com"></alf-input>
+        <alf-input 
+          label="Required Validator" 
+          [required]="true" 
+          placeholder="Campo obligatorio"
+        ></alf-input>
       </div>
 
       <div class="flex flex-col gap-2">
-        <label>Password</label>
-        <alf-input label="Contraseña" [type]="AlfInputTypeEnum.Password" placeholder="********"></alf-input>
+        <alf-input 
+          label="Max Length Validator (5)" 
+          [maxLength]="5" 
+          placeholder="Máximo 5 caracteres"
+          [showCharCounter]="true"
+        ></alf-input>
       </div>
 
       <div class="flex flex-col gap-2">
-        <label>Number</label>
-        <alf-input label="Edad" [type]="AlfInputTypeEnum.Number" placeholder="0"></alf-input>
+        <alf-input 
+          label="Min Length Validator (3)" 
+          [minLength]="3" 
+          placeholder="Mínimo 3 caracteres"
+        ></alf-input>
       </div>
 
       <div class="flex flex-col gap-2">
-        <label>Tel</label>
-        <alf-input label="Teléfono" [type]="AlfInputTypeEnum.Tel" placeholder="+34 000 000 000"></alf-input>
+        <alf-input 
+          label="Min Value Validator (10)" 
+          [type]="AlfInputTypeEnum.Number" 
+          [min]="10" 
+          placeholder="Número >= 10"
+        ></alf-input>
       </div>
 
       <div class="flex flex-col gap-2">
-        <label>Url</label>
-        <alf-input label="Sitio Web" [type]="AlfInputTypeEnum.Url" placeholder="https://..."></alf-input>
+        <alf-input 
+          label="Max Value Validator (50)" 
+          [type]="AlfInputTypeEnum.Number" 
+          [max]="50" 
+          placeholder="Número <= 50"
+        ></alf-input>
       </div>
 
       <div class="flex flex-col gap-2">
-        <label>Search</label>
-        <alf-input label="Buscar" [type]="AlfInputTypeEnum.Search" placeholder="Escribe para buscar..."></alf-input>
+        <alf-input 
+          label="URL Validator" 
+          [type]="AlfInputTypeEnum.Url" 
+          placeholder="https://..."
+        ></alf-input>
       </div>
 
-
+      <div class="flex flex-col gap-2">
+        <alf-input 
+          label="Pattern Validator (Letras)" 
+          pattern="^[a-zA-Z]+$" 
+          placeholder="Solo a-z, A-Z"
+        ></alf-input>
+      </div>
     </div>
   </section>
 
@@ -84,31 +115,31 @@
     <h2>Outline Variants</h2>
     <div class="card viewer-grid">
       <div class="flex flex-col gap-2">
-        <alf-input label="Default" [appearance]="AlfInputAppearanceEnum.Outline" [colorVariant]="AlfColorVariantEnum.Default"></alf-input>
+        <alf-input label="Default" [appearance]="AlfInputAppearanceEnum.Outline" [colorVariant]="AlfInputColorVariantEnum.Default"></alf-input>
       </div>
       <div class="flex flex-col gap-2">
-        <alf-input label="Primary" [appearance]="AlfInputAppearanceEnum.Outline" [colorVariant]="AlfColorVariantEnum.Primary"></alf-input>
+        <alf-input label="Primary" [appearance]="AlfInputAppearanceEnum.Outline" [colorVariant]="AlfInputColorVariantEnum.Primary"></alf-input>
       </div>
       <div class="flex flex-col gap-2">
-        <alf-input label="Secondary" [appearance]="AlfInputAppearanceEnum.Outline" [colorVariant]="AlfColorVariantEnum.Secondary"></alf-input>
+        <alf-input label="Secondary" [appearance]="AlfInputAppearanceEnum.Outline" [colorVariant]="AlfInputColorVariantEnum.Secondary"></alf-input>
       </div>
       <div class="flex flex-col gap-2">
-        <alf-input label="Success" [appearance]="AlfInputAppearanceEnum.Outline" [colorVariant]="AlfColorVariantEnum.Success"></alf-input>
+        <alf-input label="Success" [appearance]="AlfInputAppearanceEnum.Outline" [colorVariant]="AlfInputColorVariantEnum.Success"></alf-input>
       </div>
       <div class="flex flex-col gap-2">
-        <alf-input label="Danger" [appearance]="AlfInputAppearanceEnum.Outline" [colorVariant]="AlfColorVariantEnum.Danger"></alf-input>
+        <alf-input label="Danger" [appearance]="AlfInputAppearanceEnum.Outline" [colorVariant]="AlfInputColorVariantEnum.Danger"></alf-input>
       </div>
       <div class="flex flex-col gap-2">
-        <alf-input label="Warning" [appearance]="AlfInputAppearanceEnum.Outline" [colorVariant]="AlfColorVariantEnum.Warning"></alf-input>
+        <alf-input label="Warning" [appearance]="AlfInputAppearanceEnum.Outline" [colorVariant]="AlfInputColorVariantEnum.Warning"></alf-input>
       </div>
       <div class="flex flex-col gap-2">
-        <alf-input label="Info" [appearance]="AlfInputAppearanceEnum.Outline" [colorVariant]="AlfColorVariantEnum.Info"></alf-input>
+        <alf-input label="Info" [appearance]="AlfInputAppearanceEnum.Outline" [colorVariant]="AlfInputColorVariantEnum.Info"></alf-input>
       </div>
       <div class="flex flex-col gap-2">
-        <alf-input label="Light" [appearance]="AlfInputAppearanceEnum.Outline" [colorVariant]="AlfColorVariantEnum.Light"></alf-input>
+        <alf-input label="Light" [appearance]="AlfInputAppearanceEnum.Outline" [colorVariant]="AlfInputColorVariantEnum.Light"></alf-input>
       </div>
       <div class="flex flex-col gap-2">
-        <alf-input label="Dark" [appearance]="AlfInputAppearanceEnum.Outline" [colorVariant]="AlfColorVariantEnum.Dark"></alf-input>
+        <alf-input label="Dark" [appearance]="AlfInputAppearanceEnum.Outline" [colorVariant]="AlfInputColorVariantEnum.Dark"></alf-input>
       </div>
     </div>
   </section>
@@ -118,31 +149,31 @@
     <h2>Fill Variants</h2>
     <div class="card viewer-grid">
       <div class="flex flex-col gap-2">
-        <alf-input label="Default" [appearance]="AlfInputAppearanceEnum.Fill" [colorVariant]="AlfColorVariantEnum.Default"></alf-input>
+        <alf-input label="Default" [appearance]="AlfInputAppearanceEnum.Fill" [colorVariant]="AlfInputColorVariantEnum.Default"></alf-input>
       </div>
       <div class="flex flex-col gap-2">
-        <alf-input label="Primary" [appearance]="AlfInputAppearanceEnum.Fill" [colorVariant]="AlfColorVariantEnum.Primary"></alf-input>
+        <alf-input label="Primary" [appearance]="AlfInputAppearanceEnum.Fill" [colorVariant]="AlfInputColorVariantEnum.Primary"></alf-input>
       </div>
       <div class="flex flex-col gap-2">
-        <alf-input label="Secondary" [appearance]="AlfInputAppearanceEnum.Fill" [colorVariant]="AlfColorVariantEnum.Secondary"></alf-input>
+        <alf-input label="Secondary" [appearance]="AlfInputAppearanceEnum.Fill" [colorVariant]="AlfInputColorVariantEnum.Secondary"></alf-input>
       </div>
       <div class="flex flex-col gap-2">
-        <alf-input label="Success" [appearance]="AlfInputAppearanceEnum.Fill" [colorVariant]="AlfColorVariantEnum.Success"></alf-input>
+        <alf-input label="Success" [appearance]="AlfInputAppearanceEnum.Fill" [colorVariant]="AlfInputColorVariantEnum.Success"></alf-input>
       </div>
       <div class="flex flex-col gap-2">
-        <alf-input label="Danger" [appearance]="AlfInputAppearanceEnum.Fill" [colorVariant]="AlfColorVariantEnum.Danger"></alf-input>
+        <alf-input label="Danger" [appearance]="AlfInputAppearanceEnum.Fill" [colorVariant]="AlfInputColorVariantEnum.Danger"></alf-input>
       </div>
       <div class="flex flex-col gap-2">
-        <alf-input label="Warning" [appearance]="AlfInputAppearanceEnum.Fill" [colorVariant]="AlfColorVariantEnum.Warning"></alf-input>
+        <alf-input label="Warning" [appearance]="AlfInputAppearanceEnum.Fill" [colorVariant]="AlfInputColorVariantEnum.Warning"></alf-input>
       </div>
       <div class="flex flex-col gap-2">
-        <alf-input label="Info" [appearance]="AlfInputAppearanceEnum.Fill" [colorVariant]="AlfColorVariantEnum.Info"></alf-input>
+        <alf-input label="Info" [appearance]="AlfInputAppearanceEnum.Fill" [colorVariant]="AlfInputColorVariantEnum.Info"></alf-input>
       </div>
       <div class="flex flex-col gap-2">
-        <alf-input label="Light" [appearance]="AlfInputAppearanceEnum.Fill" [colorVariant]="AlfColorVariantEnum.Light"></alf-input>
+        <alf-input label="Light" [appearance]="AlfInputAppearanceEnum.Fill" [colorVariant]="AlfInputColorVariantEnum.Light"></alf-input>
       </div>
       <div class="flex flex-col gap-2">
-        <alf-input label="Dark" [appearance]="AlfInputAppearanceEnum.Fill" [colorVariant]="AlfColorVariantEnum.Dark"></alf-input>
+        <alf-input label="Dark" [appearance]="AlfInputAppearanceEnum.Fill" [colorVariant]="AlfInputColorVariantEnum.Dark"></alf-input>
       </div>
     </div>
   </section>
@@ -152,31 +183,31 @@
     <h2>Standard Variants</h2>
     <div class="card viewer-grid">
       <div class="flex flex-col gap-2">
-        <alf-input label="Default" [appearance]="AlfInputAppearanceEnum.Standard" [colorVariant]="AlfColorVariantEnum.Default"></alf-input>
+        <alf-input label="Default" [appearance]="AlfInputAppearanceEnum.Standard" [colorVariant]="AlfInputColorVariantEnum.Default"></alf-input>
       </div>
       <div class="flex flex-col gap-2">
-        <alf-input label="Primary" [appearance]="AlfInputAppearanceEnum.Standard" [colorVariant]="AlfColorVariantEnum.Primary"></alf-input>
+        <alf-input label="Primary" [appearance]="AlfInputAppearanceEnum.Standard" [colorVariant]="AlfInputColorVariantEnum.Primary"></alf-input>
       </div>
       <div class="flex flex-col gap-2">
-        <alf-input label="Secondary" [appearance]="AlfInputAppearanceEnum.Standard" [colorVariant]="AlfColorVariantEnum.Secondary"></alf-input>
+        <alf-input label="Secondary" [appearance]="AlfInputAppearanceEnum.Standard" [colorVariant]="AlfInputColorVariantEnum.Secondary"></alf-input>
       </div>
       <div class="flex flex-col gap-2">
-        <alf-input label="Success" [appearance]="AlfInputAppearanceEnum.Standard" [colorVariant]="AlfColorVariantEnum.Success"></alf-input>
+        <alf-input label="Success" [appearance]="AlfInputAppearanceEnum.Standard" [colorVariant]="AlfInputColorVariantEnum.Success"></alf-input>
       </div>
       <div class="flex flex-col gap-2">
-        <alf-input label="Danger" [appearance]="AlfInputAppearanceEnum.Standard" [colorVariant]="AlfColorVariantEnum.Danger"></alf-input>
+        <alf-input label="Danger" [appearance]="AlfInputAppearanceEnum.Standard" [colorVariant]="AlfInputColorVariantEnum.Danger"></alf-input>
       </div>
       <div class="flex flex-col gap-2">
-        <alf-input label="Warning" [appearance]="AlfInputAppearanceEnum.Standard" [colorVariant]="AlfColorVariantEnum.Warning"></alf-input>
+        <alf-input label="Warning" [appearance]="AlfInputAppearanceEnum.Standard" [colorVariant]="AlfInputColorVariantEnum.Warning"></alf-input>
       </div>
       <div class="flex flex-col gap-2">
-        <alf-input label="Info" [appearance]="AlfInputAppearanceEnum.Standard" [colorVariant]="AlfColorVariantEnum.Info"></alf-input>
+        <alf-input label="Info" [appearance]="AlfInputAppearanceEnum.Standard" [colorVariant]="AlfInputColorVariantEnum.Info"></alf-input>
       </div>
       <div class="flex flex-col gap-2">
-        <alf-input label="Light" [appearance]="AlfInputAppearanceEnum.Standard" [colorVariant]="AlfColorVariantEnum.Light"></alf-input>
+        <alf-input label="Light" [appearance]="AlfInputAppearanceEnum.Standard" [colorVariant]="AlfInputColorVariantEnum.Light"></alf-input>
       </div>
       <div class="flex flex-col gap-2">
-        <alf-input label="Dark" [appearance]="AlfInputAppearanceEnum.Standard" [colorVariant]="AlfColorVariantEnum.Dark"></alf-input>
+        <alf-input label="Dark" [appearance]="AlfInputAppearanceEnum.Standard" [colorVariant]="AlfInputColorVariantEnum.Dark"></alf-input>
       </div>
     </div>
   </section>
@@ -186,7 +217,6 @@
     <h2>States & Validation</h2>
     <div class="card viewer-grid">
   
-
       <div class="flex flex-col gap-2">
         <label>Helper Text</label>
         <alf-input
@@ -233,6 +263,117 @@
           [readonly]="true"
         ></alf-input>
       </div>
+    </div>
+  </section>
+
+  <!-- BORDER INTERFACE PLAYGROUND (NO TABS) -->
+  <section class="viewer-section">
+    @let p = playgroundBorder();
+    <h2 class="text-primary font-bold">🛠️ Border Interface Playground</h2>
+    <p class="mb-4 opacity-70 font-medium">Configura el objeto <code>AlfBorderInterface</code> estado por estado (Sin Tabs).</p>
+    
+    <div class="card grid grid-cols-1 lg:grid-cols-12 gap-8 items-start bg-white/50 backdrop-blur-sm shadow-xl border-black/5">
+      
+      <!-- Configuration Panel (Vertical Groups) -->
+      <div class="lg:col-span-7 flex flex-col gap-6 max-h-[600px] overflow-y-auto pr-4">
+        
+        <!-- Default State -->
+        <div class="p-4 bg-black/5 rounded-2xl border-l-4 border-primary">
+          <h3 class="text-xs font-bold uppercase tracking-widest mb-4 opacity-60">Default State</h3>
+          <div class="grid grid-cols-2 gap-4">
+            <alf-input label="Color" [value]="p.default?.borderColor ?? ''" (onInput)="updateBorder('default', 'borderColor', $event)"></alf-input>
+            <alf-input label="Width" [value]="p.default?.borderWidth ?? ''" (onInput)="updateBorder('default', 'borderWidth', $event)"></alf-input>
+            <alf-input label="Style" [value]="p.default?.borderStyle ?? ''" (onInput)="updateBorder('default', 'borderStyle', $event)"></alf-input>
+            <alf-input label="Radius" [value]="p.default?.borderRadius ?? ''" (onInput)="updateBorder('default', 'borderRadius', $event)"></alf-input>
+          </div>
+        </div>
+
+        <!-- Hover State -->
+        <div class="p-4 bg-black/5 rounded-2xl border-l-4 border-info">
+          <h3 class="text-xs font-bold uppercase tracking-widest mb-4 opacity-60">Hover State</h3>
+          <div class="grid grid-cols-2 gap-4">
+            <alf-input label="Color" [value]="p.hover?.borderColor ?? ''" (onInput)="updateBorder('hover', 'borderColor', $event)"></alf-input>
+            <alf-input label="Width" [value]="p.hover?.borderWidth ?? ''" (onInput)="updateBorder('hover', 'borderWidth', $event)"></alf-input>
+            <alf-input label="Style" [value]="p.hover?.borderStyle ?? ''" (onInput)="updateBorder('hover', 'borderStyle', $event)"></alf-input>
+            <alf-input label="Radius" [value]="p.hover?.borderRadius ?? ''" (onInput)="updateBorder('hover', 'borderRadius', $event)"></alf-input>
+          </div>
+        </div>
+
+        <!-- Focus State -->
+        <div class="p-4 bg-black/5 rounded-2xl border-l-4 border-danger">
+          <h3 class="text-xs font-bold uppercase tracking-widest mb-4 opacity-60">Focus State</h3>
+          <div class="grid grid-cols-2 gap-4">
+            <alf-input label="Color" [value]="p.focus?.borderColor ?? ''" (onInput)="updateBorder('focus', 'borderColor', $event)"></alf-input>
+            <alf-input label="Width" [value]="p.focus?.borderWidth ?? ''" (onInput)="updateBorder('focus', 'borderWidth', $event)"></alf-input>
+            <alf-input label="Style" [value]="p.focus?.borderStyle ?? ''" (onInput)="updateBorder('focus', 'borderStyle', $event)"></alf-input>
+            <alf-input label="Radius" [value]="p.focus?.borderRadius ?? ''" (onInput)="updateBorder('focus', 'borderRadius', $event)"></alf-input>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Live Preview & JSON -->
+      <div class="lg:col-span-5 flex flex-col gap-6 items-center lg:sticky lg:top-4">
+        <h3 class="text-xs font-black uppercase tracking-[0.2em] opacity-40">Live Reactive Preview</h3>
+        
+        <div class="p-12 bg-white rounded-3xl shadow-inner border border-black/5 w-full flex items-center justify-center min-h-[200px]">
+          <alf-input
+            label="Elite Playground"
+            placeholder="Interactúa con los estados..."
+            [border]="p"
+            class="w-full max-w-sm"
+          ></alf-input>
+        </div>
+
+        <div class="bg-gray-900 text-info-soft p-6 rounded-2xl font-mono text-xs w-full shadow-2xl relative overflow-hidden group">
+          <div class="absolute top-0 left-0 w-1 h-full bg-info shadow-[0_0_15px_rgba(var(--info-rgb),0.5)]"></div>
+          <pre class="overflow-x-auto"><code>{{ p | json }}</code></pre>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CUSTOM BORDER CONFIGURATION -->
+  <section class="viewer-section">
+    <h2 class="text-primary font-bold">💎 Custom Border Configuration</h2>
+    <p class="mb-4 opacity-70">Inyección directa de objetos <code>AlfBorderInterface</code> en el input <code>[border]</code>.</p>
+    
+    <div class="card grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      
+      <!-- Example 1 -->
+      <div class="flex flex-col gap-3 p-4 bg-black/5 rounded-2xl">
+        <alf-input
+          label="Dashed Primary"
+          [border]="{
+            default: { borderColor: AlfColorEnum.Primary, borderWidth: AlfPxEnum.Px2, borderStyle: AlfBorderStyleEnum.Dashed, borderRadius: AlfRadiusEnum.Lg },
+            hover: { borderColor: AlfColorEnum.Primary, borderStyle: AlfBorderStyleEnum.Solid }
+          }"
+        ></alf-input>
+      </div>
+
+      <!-- Example 2 -->
+      <div class="flex flex-col gap-3 p-4 bg-black/5 rounded-2xl">
+        <alf-input
+          label="Thick Success Bottom"
+          [border]="{
+            default: { borderBottomWidth: AlfPxEnum.Px4, borderBottomColor: AlfColorEnum.Success, borderStyle: AlfBorderStyleEnum.Solid, borderRadius: AlfRadiusEnum.None },
+            focus: { borderBottomColor: AlfColorEnum.Primary, borderBottomWidth: AlfPxEnum.Px6 }
+          }"
+        ></alf-input>
+      </div>
+
+      <!-- Example 3 -->
+      <div class="flex flex-col gap-3 p-4 bg-black/5 rounded-2xl">
+        <alf-input
+          label="Danger on Focus"
+          [border]="{
+            default: { borderColor: AlfColorEnum.Gray300, borderWidth: AlfPxEnum.Px1 },
+            focus: { borderColor: AlfColorEnum.Danger, borderWidth: AlfPxEnum.Px3 }
+          }"
+        ></alf-input>
+      </div>
+
     </div>
   </section>
 </div>

@@ -1,0 +1,75 @@
+@use '../../../styles/mixins' as *;
+
+:host {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.alf-button {
+  // --- 1. CONFIGURACIÓN ÉLITE ---
+  // Los mixins controlan todo reactivamente vía CSS variables.
+  // No poner propiedades estáticas que pisen a los mixins.
+  @include alf-display-layout-css-vars(
+    $prefix: '--alf-btn',
+    $gap: 8px,
+    $disabled-selectors: '&:disabled, &.alf-button--disabled',
+    $focus-selectors: '&:focus, &:focus-visible'
+  );
+  @include alf-background-css-vars('--alf-btn', '&:disabled, &.alf-button--disabled', '&:focus, &:focus-visible');
+  @include alf-border-css-vars('--alf-btn', '&:disabled, &.alf-button--disabled', '&:focus, &:focus-visible');
+  @include alf-padding-css-vars('--alf-btn', '&:disabled, &.alf-button--disabled', '&:focus, &:focus-visible');
+  @include alf-margin-css-vars('--alf-btn', '&:disabled, &.alf-button--disabled', '&:focus, &:focus-visible');
+  @include alf-shadows-css-vars('--alf-btn', '&:disabled, &.alf-button--disabled');
+  @include alf-typography-css-vars('--alf-btn', '&:disabled, &.alf-button--disabled', '&:focus, &:focus-visible');
+  @include alf-text-style-css-vars('--alf-btn', '&:disabled, &.alf-button--disabled', '&:focus, &:focus-visible');
+  @include alf-outline-css-vars('--alf-btn', '&:disabled, &.alf-button--disabled');
+  @include alf-transform-css-vars('--alf-btn', '&:disabled, &.alf-button--disabled');
+
+  // --- 2. PROPIEDADES EXCLUSIVAS DEL COMPONENTE ---
+  // Solo lo que los mixins NO controlan
+  box-sizing: border-box;
+  outline: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+
+  * {
+    box-sizing: border-box;
+  }
+
+  // --- 3. ESTADOS ---
+  &--loading {
+    cursor: wait !important;
+  }
+
+  // --- 4. ELEMENTOS INTERNOS ---
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    pointer-events: none;
+    font-size: 1.2em;
+    flex-shrink: 0;
+  }
+
+  &__label {
+    line-height: inherit;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  &__spinner {
+    width: 1.25em;
+    height: 1.25em;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: alf-spin 0.6s linear infinite;
+  }
+}
+
+@keyframes alf-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

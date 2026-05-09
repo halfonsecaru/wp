@@ -1,139 +1,109 @@
-// =============================================================
-// MIXIN: alf-typography
-// Mapea las CSS vars generadas por AlfBaseComponent (resolver)
-// a propiedades CSS reales para todos los estados.
-//
-// Uso: @include alf-typography();
-// =============================================================
-
-@mixin alf-typography() {
-
-  // --- DEFAULT ---
-  color:           var(--alf-txt-color);
-  font-size:       var(--alf-txt-size);
-  font-weight:     var(--alf-txt-weight);
-  font-family:     var(--alf-txt-family);
-  font-style:      var(--alf-txt-style);
-  line-height:     var(--alf-txt-line-height);
-  letter-spacing:  var(--alf-txt-letter-spacing);
-  text-align:      var(--alf-txt-align);
-  text-decoration: var(--alf-txt-decoration);
-  text-transform:  var(--alf-txt-transform);
-  white-space:     var(--alf-txt-white-space);
-  word-break:      var(--alf-txt-word-break);
-  overflow-wrap:   var(--alf-txt-overflow-wrap);
-  vertical-align:  var(--alf-txt-vertical-align);
-  text-overflow:   var(--alf-txt-overflow);
-  text-shadow:     var(--alf-txt-shadow);
-  opacity:         var(--alf-txt-opacity);
-
-  // --- FOCUS ---
-  &:focus,
-  &:focus-visible {
-    color:           var(--alf-txt-color-focus,      var(--alf-txt-color));
-    text-decoration: var(--alf-txt-decoration-focus, var(--alf-txt-decoration));
-  }
-
-  // --- HOVER ---
-  &:hover {
-    color:           var(--alf-txt-color-hover,          var(--alf-txt-color));
-    font-size:       var(--alf-txt-size-hover,           var(--alf-txt-size));
-    font-weight:     var(--alf-txt-weight-hover,         var(--alf-txt-weight));
-    text-decoration: var(--alf-txt-decoration-hover,     var(--alf-txt-decoration));
-    text-shadow:     var(--alf-txt-shadow-hover,         var(--alf-txt-shadow));
-    opacity:         var(--alf-txt-opacity-hover,        var(--alf-txt-opacity));
-    letter-spacing:  var(--alf-txt-letter-spacing-hover, var(--alf-txt-letter-spacing));
-  }
-
-  // --- ACTIVE ---
-  &:active {
-    color:       var(--alf-txt-color-active,   var(--alf-txt-color));
-    font-weight: var(--alf-txt-weight-active,  var(--alf-txt-weight));
-    opacity:     var(--alf-txt-opacity-active, var(--alf-txt-opacity));
-  }
-
-  // --- DISABLED ---
-  &[disabled],
-  &:disabled {
-    color:   var(--alf-txt-color-disabled,   var(--alf-txt-color));
-    opacity: var(--alf-txt-opacity-disabled, var(--alf-txt-opacity));
-  }
-}
+@use 'sass:meta';
 
 /**
  * Aplica typography reactiva basada en variables CSS con prefijo.
- * Ejemplo de prefijo: '--alf-btn'
+ * Estructura Élite: Fallbacks encadenados para máxima estabilidad visual.
+ * Sincronizado con el patrón de _border.scss.
+ * 
+ * @param {String} $prefix - Prefijo de las variables CSS (ej: '--alf-btn')
+ * @param {String} $disabled-selectors - Selectores para el estado deshabilitado
+ * @param {String} $focus-selectors - Selectores para el estado focus
  */
 @mixin alf-typography-css-vars(
   $prefix,
-  $disabled-selectors: '&[disabled], &:disabled, &.disabled'
+  $disabled-selectors: '&[disabled], &:disabled, &.disabled',
+  $focus-selectors: '&:focus, &:focus-visible'
 ) {
-  color: var(#{$prefix}-typography-color, inherit);
-  font-size: var(#{$prefix}-typography-font-size, inherit);
-  font-weight: var(#{$prefix}-typography-font-weight, inherit);
-  font-family: var(#{$prefix}-typography-font-family, inherit);
-  line-height: var(#{$prefix}-typography-line-height, inherit);
-  letter-spacing: var(#{$prefix}-typography-letter-spacing, inherit);
-  text-align: var(#{$prefix}-typography-text-align, inherit);
-  text-decoration: var(#{$prefix}-typography-text-decoration, inherit);
-  text-transform: var(#{$prefix}-typography-text-transform, inherit);
-  white-space: var(#{$prefix}-typography-white-space, inherit);
-  word-break: var(#{$prefix}-typography-word-break, normal);
-  overflow-wrap: var(#{$prefix}-typography-overflow-wrap, normal);
-  vertical-align: var(#{$prefix}-typography-vertical-align, baseline);
-  font-style: var(#{$prefix}-typography-font-style, normal);
-  text-overflow: var(#{$prefix}-typography-text-overflow, clip);
-  opacity: var(#{$prefix}-typography-opacity, 1);
-  text-shadow: var(#{$prefix}-typography-text-shadow, none);
+  // --- 1. BASE / DEFAULT ---
+  $c:   var(#{$prefix}-typography-color, inherit);
+  $fs:  var(#{$prefix}-typography-font-size, inherit);
+  $fw:  var(#{$prefix}-typography-font-weight, inherit);
+  $ff:  var(#{$prefix}-typography-font-family, inherit);
+  $lh:  var(#{$prefix}-typography-line-height, inherit);
+  $ls:  var(#{$prefix}-typography-letter-spacing, inherit);
+  $ta:  var(#{$prefix}-typography-text-align, inherit);
+  $td:  var(#{$prefix}-typography-text-decoration, inherit);
+  $tt:  var(#{$prefix}-typography-text-transform, inherit);
+  $ws:  var(#{$prefix}-typography-white-space, inherit);
+  $wb:  var(#{$prefix}-typography-word-break, normal);
+  $ow:  var(#{$prefix}-typography-overflow-wrap, normal);
+  $va:  var(#{$prefix}-typography-vertical-align, baseline);
+  $fst: var(#{$prefix}-typography-font-style, normal);
+  $to:  var(#{$prefix}-typography-text-overflow, clip);
+  $op:  var(#{$prefix}-typography-opacity, 1);
+  $ts:  var(#{$prefix}-typography-text-shadow, none);
 
+  color: $c;
+  font-size: $fs;
+  font-weight: $fw;
+  font-family: $ff;
+  line-height: $lh;
+  letter-spacing: $ls;
+  text-align: $ta;
+  text-decoration: $td;
+  text-transform: $tt;
+  white-space: $ws;
+  word-break: $wb;
+  overflow-wrap: $ow;
+  vertical-align: $va;
+  font-style: $fst;
+  text-overflow: $to;
+  opacity: $op;
+  text-shadow: $ts;
+
+  // --- 2. HOVER STATE ---
   &:hover {
-    color: var(#{$prefix}-typography-hover-color, var(#{$prefix}-typography-color, inherit));
-    font-size: var(#{$prefix}-typography-hover-font-size, var(#{$prefix}-typography-font-size, inherit));
-    font-weight: var(#{$prefix}-typography-hover-font-weight, var(#{$prefix}-typography-font-weight, inherit));
-    font-family: var(#{$prefix}-typography-hover-font-family, var(#{$prefix}-typography-font-family, inherit));
-    line-height: var(#{$prefix}-typography-hover-line-height, var(#{$prefix}-typography-line-height));
-    letter-spacing: var(#{$prefix}-typography-hover-letter-spacing, var(#{$prefix}-typography-letter-spacing, inherit));
-    text-align: var(#{$prefix}-typography-hover-text-align, var(#{$prefix}-typography-text-align, inherit));
-    text-decoration: var(#{$prefix}-typography-hover-text-decoration, var(#{$prefix}-typography-text-decoration, inherit));
-    text-transform: var(#{$prefix}-typography-hover-text-transform, var(#{$prefix}-typography-text-transform, inherit));
-    white-space: var(#{$prefix}-typography-hover-white-space, var(#{$prefix}-typography-white-space, inherit));
-    word-break: var(#{$prefix}-typography-hover-word-break, var(#{$prefix}-typography-word-break, normal));
-    overflow-wrap: var(#{$prefix}-typography-hover-overflow-wrap, var(#{$prefix}-typography-overflow-wrap, normal));
-    vertical-align: var(#{$prefix}-typography-hover-vertical-align, var(#{$prefix}-typography-vertical-align, baseline));
-    font-style: var(#{$prefix}-typography-hover-font-style, var(#{$prefix}-typography-font-style, normal));
-    text-overflow: var(#{$prefix}-typography-hover-text-overflow, var(#{$prefix}-typography-text-overflow, clip));
-    opacity: var(#{$prefix}-typography-hover-opacity, var(#{$prefix}-typography-opacity, 1));
-    text-shadow: var(#{$prefix}-typography-hover-text-shadow, var(#{$prefix}-typography-text-shadow, none));
+    $hc:   var(#{$prefix}-typography-hover-color, $c);
+    $hfs:  var(#{$prefix}-typography-hover-font-size, $fs);
+    $hfw:  var(#{$prefix}-typography-hover-font-weight, $fw);
+    $hlh:  var(#{$prefix}-typography-hover-line-height, $lh);
+    $hls:  var(#{$prefix}-typography-hover-letter-spacing, $ls);
+    $hta:  var(#{$prefix}-typography-hover-text-align, $ta);
+
+    color: $hc;
+    font-size: $hfs;
+    font-weight: $hfw;
+    line-height: $hlh;
+    letter-spacing: $hls;
+    text-align: $hta;
+    
+    text-decoration: var(#{$prefix}-typography-hover-text-decoration, $td);
+    opacity: var(#{$prefix}-typography-hover-opacity, $op);
+    text-shadow: var(#{$prefix}-typography-hover-text-shadow, $ts);
   }
 
+  // --- 3. ACTIVE STATE ---
   &:active {
-    color: var(#{$prefix}-typography-active-color, var(#{$prefix}-typography-hover-color, var(#{$prefix}-typography-color, inherit)));
-    font-size: var(#{$prefix}-typography-active-font-size, var(#{$prefix}-typography-hover-font-size, var(#{$prefix}-typography-font-size, inherit)));
-    font-weight: var(#{$prefix}-typography-active-font-weight, var(#{$prefix}-typography-hover-font-weight, var(#{$prefix}-typography-font-weight, inherit)));
-    text-decoration: var(#{$prefix}-typography-active-text-decoration, var(#{$prefix}-typography-hover-text-decoration, var(#{$prefix}-typography-text-decoration, inherit)));
-    text-transform: var(#{$prefix}-typography-active-text-transform, var(#{$prefix}-typography-hover-text-transform, var(#{$prefix}-typography-text-transform, inherit)));
-    opacity: var(#{$prefix}-typography-active-opacity, var(#{$prefix}-typography-hover-opacity, var(#{$prefix}-typography-opacity, 1)));
-    text-shadow: var(#{$prefix}-typography-active-text-shadow, var(#{$prefix}-typography-hover-text-shadow, var(#{$prefix}-typography-text-shadow, none)));
+    $hc:   var(#{$prefix}-typography-hover-color, $c);
+    $hfs:  var(#{$prefix}-typography-hover-font-size, $fs);
+    $hfw:  var(#{$prefix}-typography-hover-font-weight, $fw);
+    $hlh:  var(#{$prefix}-typography-hover-line-height, $lh);
+    $hls:  var(#{$prefix}-typography-hover-letter-spacing, $ls);
+    $hta:  var(#{$prefix}-typography-hover-text-align, $ta);
+
+    color: var(#{$prefix}-typography-active-color, $hc);
+    font-size: var(#{$prefix}-typography-active-font-size, $hfs);
+    font-weight: var(#{$prefix}-typography-active-font-weight, $hfw);
+    line-height: var(#{$prefix}-typography-active-line-height, $hlh);
+    letter-spacing: var(#{$prefix}-typography-active-letter-spacing, $hls);
+    text-align: var(#{$prefix}-typography-active-text-align, $hta);
+    opacity: var(#{$prefix}-typography-active-opacity, var(#{$prefix}-typography-hover-opacity, $op));
   }
 
-  &:focus,
-  &:focus-visible {
-    color: var(#{$prefix}-typography-focus-color, var(#{$prefix}-typography-color, inherit));
-    font-size: var(#{$prefix}-typography-focus-font-size, var(#{$prefix}-typography-font-size, inherit));
-    font-weight: var(#{$prefix}-typography-focus-font-weight, var(#{$prefix}-typography-font-weight, inherit));
-    text-decoration: var(#{$prefix}-typography-focus-text-decoration, var(#{$prefix}-typography-text-decoration, inherit));
-    text-transform: var(#{$prefix}-typography-focus-text-transform, var(#{$prefix}-typography-text-transform, inherit));
-    opacity: var(#{$prefix}-typography-focus-opacity, var(#{$prefix}-typography-opacity, 1));
-    text-shadow: var(#{$prefix}-typography-focus-text-shadow, var(#{$prefix}-typography-text-shadow, none));
+  // --- 4. FOCUS STATE ---
+  #{$focus-selectors} {
+    color: var(#{$prefix}-typography-focus-color, $c);
+    font-size: var(#{$prefix}-typography-focus-font-size, $fs);
+    font-weight: var(#{$prefix}-typography-focus-font-weight, $fw);
+    line-height: var(#{$prefix}-typography-focus-line-height, $lh);
+    text-align: var(#{$prefix}-typography-focus-text-align, $ta);
+    text-decoration: var(#{$prefix}-typography-focus-text-decoration, $td);
+    opacity: var(#{$prefix}-typography-focus-opacity, $op);
   }
 
+  // --- 5. DISABLED STATE ---
   #{$disabled-selectors} {
-    color: var(#{$prefix}-typography-disabled-color, var(#{$prefix}-typography-color, inherit));
-    font-size: var(#{$prefix}-typography-disabled-font-size, var(#{$prefix}-typography-font-size, inherit));
-    font-weight: var(#{$prefix}-typography-disabled-font-weight, var(#{$prefix}-typography-font-weight, inherit));
-    text-decoration: var(#{$prefix}-typography-disabled-text-decoration, var(#{$prefix}-typography-text-decoration, inherit));
-    text-transform: var(#{$prefix}-typography-disabled-text-transform, var(#{$prefix}-typography-text-transform, inherit));
-    opacity: var(#{$prefix}-typography-disabled-opacity, var(#{$prefix}-typography-opacity, 1));
-    text-shadow: var(#{$prefix}-typography-disabled-text-shadow, var(#{$prefix}-typography-text-shadow, none));
+    color: var(#{$prefix}-typography-disabled-color, $c);
+    opacity: var(#{$prefix}-typography-disabled-opacity, $op);
   }
 }

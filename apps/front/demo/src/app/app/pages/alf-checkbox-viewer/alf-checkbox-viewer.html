@@ -14,70 +14,94 @@
   </section>
 
   <section class="demo-section">
-    <h2 class="section-title">Estilos Visuales (checkboxStyle)</h2>
-    <div class="demo-grid">
-      <div class="demo-card">
-        <h3>Elegant (Neumorphic)</h3>
-        <alf-checkbox [(checked)]="checkedElegant" label="Elegant Design" checkboxStyle="elegant"></alf-checkbox>
-        <p class="demo-hint">Default premium circular design with soft shadows.</p>
-      </div>
-      <div class="demo-card">
-        <h3>Standard (Material)</h3>
-        <alf-checkbox [(checked)]="checkedStandard" label="Standard Design" checkboxStyle="standard"></alf-checkbox>
-        <p class="demo-hint">Classic square design with solid fill and animations.</p>
-      </div>
-      <div class="demo-card">
-        <h3>Moving (Expansion)</h3>
-        <alf-checkbox [(checked)]="checkedMoving" label="Moving Design" checkboxStyle="moving"></alf-checkbox>
-        <p class="demo-hint">Interactive expansion that wraps the whole label.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="demo-section">
-    <h2 class="section-title">Variantes de Color (via Factory)</h2>
-    <div class="demo-flex">
+    <h2 class="section-title">Paleta de Colores Élite (Core Variants)</h2>
+    <div class="demo-flex" style="flex-wrap: wrap; gap: 2rem;">
       <alf-checkbox variant="Primary" label="Primary" [checked]="true"></alf-checkbox>
+      <alf-checkbox variant="Secondary" label="Secondary" [checked]="true"></alf-checkbox>
       <alf-checkbox variant="Success" label="Success" [checked]="true"></alf-checkbox>
       <alf-checkbox variant="Danger" label="Danger" [checked]="true"></alf-checkbox>
       <alf-checkbox variant="Warning" label="Warning" [checked]="true"></alf-checkbox>
-      <alf-checkbox variant="InfoOutline" label="Outline Info" [checked]="true"></alf-checkbox>
-      <alf-checkbox variant="PrimaryCrystal" label="Crystal Primary" [checked]="true"></alf-checkbox>
+      <alf-checkbox variant="Info" label="Info" [checked]="true"></alf-checkbox>
+      <alf-checkbox variant="Light" label="Light" [checked]="true"></alf-checkbox>
+      <alf-checkbox variant="Dark" label="Dark" [checked]="true"></alf-checkbox>
     </div>
   </section>
 
   <section class="demo-section">
-    <h2 class="section-title">Tamaños (size)</h2>
-    <div class="demo-flex demo-flex--align-center">
-      <alf-checkbox size="sm" label="Small (sm)"></alf-checkbox>
-      <alf-checkbox size="md" label="Medium (md)"></alf-checkbox>
-      <alf-checkbox size="lg" label="Large (lg)"></alf-checkbox>
-      <alf-checkbox size="xl" label="Extra Large (xl)"></alf-checkbox>
+    <h2 class="section-title">Variantes Avanzadas (Theming Pro)</h2>
+    <div class="demo-grid">
+      <div class="demo-card">
+        <h3>Outline Variants</h3>
+        <div class="demo-flex" style="gap: 1.5rem;">
+          <alf-checkbox variant="PrimaryOutline" label="Primary" [checked]="true"></alf-checkbox>
+          <alf-checkbox variant="SuccessOutline" label="Success" [checked]="true"></alf-checkbox>
+          <alf-checkbox variant="DangerOutline" label="Danger" [checked]="true"></alf-checkbox>
+        </div>
+      </div>
+      <div class="demo-card">
+        <h3>Crystal & Ghost</h3>
+        <div class="demo-flex" style="gap: 1.5rem;">
+          <alf-checkbox variant="PrimaryCrystal" label="Crystal" [checked]="true"></alf-checkbox>
+          <alf-checkbox variant="InfoGhost" label="Ghost Info" [checked]="true"></alf-checkbox>
+        </div>
+      </div>
     </div>
   </section>
 
   <section class="demo-section">
-    <h2 class="section-title">Estados y Etiquetas</h2>
+    <h2 class="section-title">Estilos Visuales (checkboxStyle)</h2>
+    <div class="demo-grid">
+      <div class="demo-card">
+        <h3>Elegant (Circular)</h3>
+        <div class="demo-flex" style="flex-direction: column; gap: 1rem;">
+          <alf-checkbox variant="Primary" label="Elegant Primary" [checked]="true" checkboxStyle="elegant"></alf-checkbox>
+          <alf-checkbox variant="Success" label="Elegant Success" [checked]="true" checkboxStyle="elegant"></alf-checkbox>
+          <alf-checkbox variant="Danger" label="Elegant Danger" [checked]="true" checkboxStyle="elegant"></alf-checkbox>
+        </div>
+      </div>
+      <div class="demo-card">
+        <h3>Standard (Square)</h3>
+        <div class="demo-flex" style="flex-direction: column; gap: 1rem;">
+          <alf-checkbox variant="Primary" label="Standard Primary" [checked]="true" checkboxStyle="standard"></alf-checkbox>
+          <alf-checkbox variant="Success" label="Standard Success" [checked]="true" checkboxStyle="standard"></alf-checkbox>
+          <alf-checkbox variant="Danger" label="Standard Danger" [checked]="true" checkboxStyle="standard"></alf-checkbox>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2 class="section-title">Tamaños (AlfSizeEnum)</h2>
+    <div class="demo-flex demo-flex--align-center" style="gap: 2rem;">
+      <alf-checkbox size="sm" label="Small (sm)" [checked]="true"></alf-checkbox>
+      <alf-checkbox size="md" label="Medium (md)" [checked]="true"></alf-checkbox>
+      <alf-checkbox size="lg" label="Large (lg)" [checked]="true"></alf-checkbox>
+      <alf-checkbox size="xl" label="Extra Large (xl)" [checked]="true"></alf-checkbox>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2 class="section-title">Estados y Mensajes</h2>
     <div class="demo-grid">
       <div class="demo-card">
         <h3>Indeterminado</h3>
-        <alf-checkbox [(indeterminate)]="indeterminate2" label="Estado Parcial"></alf-checkbox>
+        <alf-checkbox [(indeterminate)]="indeterminate2" label="Estado Parcial" variant="Info"></alf-checkbox>
       </div>
       <div class="demo-card">
-        <h3>Etiqueta a la Izquierda</h3>
-        <alf-checkbox [config]="{ labelPosition: 'before' }" label="Label Before"></alf-checkbox>
+        <h3>Etiqueta (Position)</h3>
+        <alf-checkbox [config]="{ labelPosition: 'before' }" label="Label Before" [checked]="true"></alf-checkbox>
       </div>
       <div class="demo-card">
         <h3>Deshabilitado</h3>
         <div style="display: flex; gap: 1rem; flex-direction: column;">
           <alf-checkbox [disabled]="true" label="Disabled Off"></alf-checkbox>
-          <alf-checkbox [disabled]="true" [checked]="true" label="Disabled On"></alf-checkbox>
+          <alf-checkbox [disabled]="true" [checked]="true" label="Disabled On" variant="Primary"></alf-checkbox>
         </div>
       </div>
       <div class="demo-card">
-        <h3>Mensajes</h3>
-        <alf-checkbox [config]="{ helperText: 'Información adicional debajo' }" label="Con Ayuda"></alf-checkbox>
-        <alf-checkbox [config]="{ error: 'Debe aceptar para continuar' }" label="Con Error" style="margin-top: 1rem; display: block;"></alf-checkbox>
+        <h3>Feedback (Helper/Error)</h3>
+        <alf-checkbox [config]="{ helperText: 'Información adicional debajo' }" label="Con Ayuda" [checked]="true"></alf-checkbox>
+        <alf-checkbox [config]="{ error: 'Debe aceptar para continuar' }" label="Con Error" variant="Danger"></alf-checkbox>
       </div>
     </div>
   </section>

@@ -1,118 +1,108 @@
 import {
   AlfColorVariantEnum,
-  AlfColorEnum,
-  AlfDisplayEnum,
-  AlfOverflowEnum,
-  AlfCssPositionEnum,
-  AlfAlignItemsEnum,
-  AlfRemEnum,
-  AlfOpacityEnum,
-  AlfPointerEventsEnum,
-  AlfRadiusEnum,
-  AlfCursorEnum,
-  AlfInputAppearanceEnum,
+  AlfFontSizeEnum,
+  AlfFontWeightEnum,
   AlfPxEnum,
-  AlfBorderStyleEnum,
+  AlfRadiusEnum,
+  AlfTextAlignEnum,
+  AlfShadowEnum,
   AlfPercentageEnum,
+  AlfColorEnum,
 } from '@alfcomponents/enums';
-import { resolveVariantDefinitions } from '@alfcomponents/base/variantes/main-variants-selection';
 import { AlfInputInterface } from '../interfaces/alf-input.interface';
-import { buildBorderColor, buildBackgroundColor, buildSoftBackgroundColor } from '@alfcomponents/base';
-import { AlfBackgroundsInterface, AlfBorderInterface } from '@alfcomponents/interfaces';
+import { AlfBorderInterface, AlfDisplayAndLayoutInterface } from '@alfcomponents/interfaces';
+import { resolveVariantConfig } from '@alfcomponents/base/defaultVariants';
 
 /**
  * Configuración base por defecto para el componente alf-input.
- * Centraliza paddings, radios y comportamientos reactivos.
  */
 export const ALF_INPUT_DEFAULT: AlfInputInterface = {
-  cursor: AlfCursorEnum.Text,
-  // Solo paddings horizontales. La altura se controla por minHeight.
-  displayAndLayout: {
+  disabled: false,
+  typography: {
     default: {
-      display: AlfDisplayEnum.Flex,
-      width: AlfPercentageEnum.Full,
-      height: AlfPxEnum.Px50,
-      position: AlfCssPositionEnum.Relative,
-      alignItems: AlfAlignItemsEnum.Center,
-      overflow: AlfOverflowEnum.Visible,
+      fontWeight: AlfFontWeightEnum.Normal,
+      fontSize: AlfFontSizeEnum.Xl,
+      textAlign: AlfTextAlignEnum.Left,
+    }
+  },
+  padding: {
+    default: {
+      paddingTop: AlfPxEnum.Px10,
+      paddingBottom: AlfPxEnum.Px10,
+      paddingLeft: AlfPxEnum.Px10,
+      paddingRight: AlfPxEnum.Px10,
     },
+  },
+  shadows: {
+    default: {
+      boxShadow: AlfShadowEnum.None
+    },
+    hover: {
+      boxShadow: AlfShadowEnum.None
+    }
+  },
+  backgrounds: {
+    default: {
+      backgroundColor: AlfColorEnum.Gray100,
+    }
+  },
+  border: {
+    default: {
+      borderWidth: AlfPxEnum.Px015,
+      borderRadius: AlfRadiusEnum.Lg,
+      borderColor: AlfColorEnum.Gray300,
+    }
   }
 };
 
 /**
- * 1
- * Factory Élite para Inputs.
- * Resuelve la variante y aplica la apariencia solicitada.
+ * Factory de configuración para AlfInput.
  */
 export const getAlfInputDefaultConfig = (
-  variant: AlfColorVariantEnum = AlfColorVariantEnum.Default,
-  appearance: AlfInputAppearanceEnum = AlfInputAppearanceEnum.Outline
-): AlfInputInterface => {
-
-  const isStandard = appearance === AlfInputAppearanceEnum.Standard;
-  const isFill = appearance === AlfInputAppearanceEnum.Fill;
-
-
-  const defaultConfig = buildAppearanceConfiguration(variant, appearance);
-
-  return {
-    ...defaultConfig
-  }
-};
-
-
-/**
- * 2
- * Genera la configuración unificada para cualquier apariencia de AlfInput.
- * Esto reduce masivamente el código duplicado y centraliza la lógica visual.
- */
-const buildAppearanceConfiguration = (
   variant: AlfColorVariantEnum,
-  appearance: AlfInputAppearanceEnum
+  appearance: 'outline' | 'fill' | 'standard' = 'outline'
 ): AlfInputInterface => {
+  const isStandard = appearance === 'standard';
+  const isFill = appearance === 'fill';
 
-  const isFill = appearance === AlfInputAppearanceEnum.Fill;
-  const isStandard = appearance === AlfInputAppearanceEnum.Standard;
-
+  const variantConfig = resolveVariantConfig(variant);
   return {
     ...ALF_INPUT_DEFAULT,
-
-    displayAndLayout: (isFill || isStandard) ? {
-      default: { ...ALF_INPUT_DEFAULT.displayAndLayout?.default, alignItems: AlfAlignItemsEnum.End },
-      hover: { ...ALF_INPUT_DEFAULT.displayAndLayout?.hover, alignItems: AlfAlignItemsEnum.End },
-      focus: { ...ALF_INPUT_DEFAULT.displayAndLayout?.focus, alignItems: AlfAlignItemsEnum.End },
-      active: { ...ALF_INPUT_DEFAULT.displayAndLayout?.active, alignItems: AlfAlignItemsEnum.End },
-      disabled: { ...ALF_INPUT_DEFAULT.displayAndLayout?.disabled, alignItems: AlfAlignItemsEnum.End },
-    } : ALF_INPUT_DEFAULT.displayAndLayout,
-
-    backgrounds: { ...generateBackgrounds(isStandard, isFill, variant) },
-    border: { ...generateBorders(isStandard, isFill, variant) },
-    customStyle: (isFill || isStandard)
-      ? '--alf-inner-align: flex-end; --alf-inner-pb: 5px; --alf-label-top: 70%; --alf-label-float-top: 12px; --alf-label-float-left: 1rem;'
-      : '--alf-inner-align: center;'
+    displayAndLayout: { ...generateDisplayAndLayout(isStandard, isFill) },
+    ...variantConfig,
+    border: { ...generateBorders(isStandard, isFill, variantConfig.border) },
+    customStyle: generateCustomStyles(isStandard, isFill)
   };
 };
 
-// DEFAULT DEFINITIONS INITIALIZERS
 
-const generateBackgrounds = (isStandard: boolean, isFill: boolean, variant: AlfColorVariantEnum) => {
+/**
+ * Helpers internos para la construcción de la configuración
+ */
 
-  if (isStandard) {
-    return {
-      default: { backgroundColor: AlfColorEnum.Transparent },
-      hover: { backgroundColor: AlfColorEnum.Transparent },
-      focus: { backgroundColor: AlfColorEnum.Transparent },
-      active: { backgroundColor: AlfColorEnum.Transparent },
-      disabled: { backgroundColor: AlfColorEnum.Transparent },
+function generateDisplayAndLayout(isStandard: boolean, isFill: boolean): AlfDisplayAndLayoutInterface {
+  return {
+    default: {
+      width: AlfPercentageEnum.Percent100,
+      height: (isStandard || isFill) ? AlfPxEnum.Px48 : AlfPxEnum.Px44,
     }
-  }
-
-  return buildSoftBackgroundColor(variant);
+  };
 }
 
-const generateBorders = (isStandard: boolean, isFill: boolean, variant: AlfColorVariantEnum) => {
-  const isOutline = !isStandard && !isFill;
+function generateCustomStyles(isStandard: boolean, isFill: boolean): string {
+  let styles = '';
+  if (isStandard) {
+    styles += 'background-color: transparent !important; padding-left: 0 !important; padding-right: 0 !important;';
+  }
+  if (isFill) {
+    styles += 'border-top-left-radius: 8px !important; border-top-right-radius: 8px !important;';
+  }
+  return styles;
+}
 
+
+
+const generateBorders = (isStandard: boolean, isFill: boolean, baseBorder: AlfBorderInterface) => {
   // 1. Geometría base por apariencia
   const geometryBase = (isStandard || isFill) ? {
     borderWidth: AlfPxEnum.None,
@@ -130,36 +120,26 @@ const generateBorders = (isStandard: boolean, isFill: boolean, variant: AlfColor
     borderRadius: AlfRadiusEnum.Lg,
   };
 
-  // 2. Cargamos los colores de la variante
-  let borderColorDefined: AlfBorderInterface = buildBorderColor(variant);
-
-  // 3. Cruzamos colores con geometría y estados reactivos
-  borderColorDefined = {
-    ...borderColorDefined,
-    default: {
-      ...borderColorDefined.default,
-      ...geometryBase
-    },
-    hover: {
-      ...borderColorDefined.hover,
+  // 2. Cruzamos los colores base con la geometría de Input
+  return {
+    ...baseBorder,
+    default: { ...baseBorder.default, ...geometryBase },
+    hover: { 
+      ...baseBorder.hover, 
       ...geometryBase,
       ...((isStandard || isFill) ? { borderBottomWidth: AlfPxEnum.Px015 } : {})
     },
-    focus: {
-      ...borderColorDefined.focus,
+    focus: { 
+      ...baseBorder.focus, 
       ...geometryBase,
       ...((isStandard || isFill) ? { borderBottomWidth: AlfPxEnum.Px015 } : {})
     },
-    active: {
-      ...borderColorDefined.active,
+    active: { 
+      ...baseBorder.active, 
       ...geometryBase,
       ...((isStandard || isFill) ? { borderBottomWidth: AlfPxEnum.Px015 } : {})
     },
-    disabled: {
-      ...borderColorDefined.disabled,
-      ...geometryBase,
-    }
+    disabled: { ...baseBorder.disabled, ...geometryBase }
   };
-
-  return borderColorDefined;
 }
+

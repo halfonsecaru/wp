@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getAlfPredefinedButton } from './alf-button-predefined';
+import { getAlfPredefinedButton } from './predefined/alf-button.predefined';
 import { DefaultButtonKeys } from './enums/defaultButtonKeys.interface';
 import { AlfColorVariantEnum } from '@alfcomponents/enums';
 

@@ -20,12 +20,15 @@ export interface AlfCheckboxInterface {
   readonly label?: string;
   readonly labelPosition?: 'before' | 'after';
   readonly checked?: boolean;
+  readonly indeterminate?: boolean;
   readonly disabled?: boolean;
   readonly size?: AlfSizeEnum;
   readonly colorVariant?: AlfColorVariantEnum;
   readonly value?: any;
   readonly name?: string;
   readonly iconSelected?: string;
+  readonly helperText?: string;
+  readonly error?: string;
   
   // Overrides visuales
   readonly backgrounds?: AlfBackgroundsInterface;

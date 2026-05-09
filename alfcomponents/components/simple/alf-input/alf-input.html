@@ -1,14 +1,12 @@
 @let tooltip = tooltipComputed(); @let ripple = rippleComputed(); @let id = inputId(); @let disabled = isDisabled(); @let readonly = isReadonly();
-@let loading = isLoading(); @let floating = shouldFloat(); @let inputType = inputTypeAttr(); @let outlined =
-isOutlined(); @let val = value(); @let labelText = labelComputed(); @let placeholderText = placeholderComputed(); @let errorText = errorComputed();
-@let helperTxt = helperTextComputed(); @let showClearBtn = showClear(); @let showPwd = showPasswordToggle(); @let showCounter = showCharCounter();
-@let hasSfx = hasSuffix(); @let pwdVisible = isPasswordVisible(); @let clearLbl = clearLabel(); @let showPwdLbl = showPwdLabel(); @let hidePwdLbl =
-hidePwdLabel(); @let loadingLbl = loadingLabel(); @let cfg = resolvedConfig(); @let bgStyle = createBackgroundsStyle(); @let borderStyle =
-createBorderStyle(); @let paddingStyle = createPaddingStyle(); @let shadowStyle = createShadowsStyle(); @let typographyStyle =
-createTypographyStyle(); @let animClass = animationsClassComputed(); @let customClass = customClassComputed(); @let customStyle =
-customStyleComputed(); @let marginStyle = createMarginStyle(); @let displayStyle = createDisplayAndLayoutStyle(); @let transformStyle =
-createTransformStyle(); @let textStyle = createTextStyle(); 
-@if (outlined) {
+@let loading = isLoading(); @let floating = shouldFloat(); @let inputType = inputTypeAttr(); @let outlined = isOutlined(); @let val = value(); @let
+labelText = labelComputed(); @let placeholderText = placeholderComputed(); @let errorText = errorComputed(); @let helperTxt = helperTextComputed();
+@let showClearBtn = showClear(); @let showPwd = showPasswordToggle(); @let showCounter = showCharCounter(); @let hasSfx = hasSuffix(); @let pwdVisible
+= isPasswordVisible(); @let clearLbl = clearLabel(); @let showPwdLbl = showPwdLabel(); @let hidePwdLbl = hidePwdLabel(); @let loadingLbl =
+loadingLabel(); @let cfg = resolvedConfig(); @let bgStyle = createBackgroundsStyle(); @let borderStyle = createBorderStyle(); @let paddingStyle =
+createPaddingStyle(); @let shadowStyle = createShadowsStyle(); @let typographyStyle = createTypographyStyle(); @let animClass =
+animationsClassComputed(); @let customClass = customClassComputed(); @let customStyle = customStyleComputed(); @let marginStyle = createMarginStyle();
+@let displayStyle = createDisplayAndLayoutStyle(); @let transformStyle = createTransformStyle(); @let textStyle = createTextStyle(); @if (outlined) {
 <fieldset
   [attr.id]="id + '-wrapper'"
   [alfTooltipText]="tooltip"
@@ -49,6 +47,7 @@ createTransformStyle(); @let textStyle = createTextStyle();
       [attr.max]="cfg?.max ?? null"
       [attr.step]="cfg?.step ?? null"
       [attr.pattern]="cfg?.pattern ?? null"
+      [autofocus]="cfg?.autofocus ?? false"
       [attr.autocomplete]="cfg?.autocomplete ?? 'off'"
       [placeholder]="floating ? placeholderText : ''"
       class="alf-input__field"
@@ -138,6 +137,7 @@ createTransformStyle(); @let textStyle = createTextStyle();
       [attr.max]="cfg?.max ?? null"
       [attr.step]="cfg?.step ?? null"
       [attr.pattern]="cfg?.pattern ?? null"
+      [autofocus]="cfg?.autofocus ?? false"
       [attr.autocomplete]="cfg?.autocomplete ?? 'off'"
       [placeholder]="floating ? placeholderText : ''"
       class="alf-input__field"
@@ -195,12 +195,23 @@ createTransformStyle(); @let textStyle = createTextStyle();
 }
 
 <!-- Footer: error / helperText / contador -->
-<div class="alf-input__footer">
-  @if (errorText || helperTxt) {
-  <span [id]="id + '-desc'" class="alf-input__helper" [class.alf-input__helper--error]="errorText" role="alert">{{ errorText || helperTxt }}</span>
-  } @if (showCounter) {
-  <span class="alf-input__counter" [class.alf-input__counter--error]="cfg?.maxLength && val.length > (cfg?.maxLength ?? 0)" aria-live="polite"
-    >{{ val.length }}/{{ cfg?.maxLength }}</span
+@let errorColor = errorColorComputed();
+<div class="alf-input__footer" [style.color]="errorColor">
+  <span 
+    [id]="id + '-desc'" 
+    class="alf-input__helper" 
+    [class.alf-input__helper--error]="errorText" 
+    role="alert"
+    [style.visibility]="(errorText || helperTxt) ? 'visible' : 'hidden'"
   >
-  }
+    {{ errorText || helperTxt || '\u00A0' }}
+  </span>
+  <span 
+    class="alf-input__counter" 
+    [class.alf-input__counter--error]="cfg?.maxLength && val.length > (cfg?.maxLength ?? 0)" 
+    aria-live="polite"
+    [style.visibility]="showCounter ? 'visible' : 'hidden'"
+  >
+    {{ val.length }}/{{ cfg?.maxLength || 0 }}
+  </span>
 </div>

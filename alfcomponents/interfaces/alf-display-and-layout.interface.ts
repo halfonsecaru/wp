@@ -13,7 +13,8 @@ import {
   AlfAlignItemsEnum,
   AlfFlexWrapEnum,
   AlfOpacityEnum,
-  AlfPointerEventsEnum
+  AlfPointerEventsEnum,
+  AlfCursorEnum
 } from '../enums';
 
 /**
@@ -141,6 +142,12 @@ export interface AlfDisplayAndLayoutBaseInterface {
    * @example AlfPointerEventsEnum.None 
    */
   pointerEvents?: AlfPointerEventsEnum;
+
+  /**
+   * Tipo de cursor al pasar el ratón
+   * @example AlfCursorEnum.Pointer 
+   */
+  cursor?: AlfCursorEnum;
 
 }
 

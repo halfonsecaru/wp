@@ -12,12 +12,25 @@ import {
   viewChild,
 } from '@angular/core';
 import { AlfBaseConfiguration } from '@alfcomponents/base/alf-base-configuration';
-import { generateUniqueId, visualprefixEnum } from '@alfcomponents/shared';
-import { AlfColorVariantEnum, AlfInputTypeEnum, AlfInputAppearanceEnum, AlfInputAdornmentEnum } from '@alfcomponents/enums';
+import {
+  generateUniqueId,
+  visualprefixEnum,
+  AlfValidationResult,
+  alfEmailValidator,
+  alfRequiredValidator,
+  alfMaxLengthValidator,
+  alfMinLengthValidator,
+  alfMinValidator,
+  alfMaxValidator,
+  alfUrlValidator,
+  alfPatternValidator
+} from '@alfcomponents/shared';
+import { AlfColorVariantEnum, AlfInputTypeEnum, AlfInputAppearanceEnum, AlfInputAdornmentEnum, AlfColorEnum, AlfInputColorVariantEnum } from '@alfcomponents/enums';
 import { AlfRippleDirective, AlfTooltipTextDirective } from '@alfcomponents/directives';
 import { AlfInputInterface } from './interfaces/alf-input.interface';
 import { ALF_INPUT_DEFAULT, getAlfInputDefaultConfig } from './predefined/alf-input.predefined';
-import { getAlfInputLabel } from './i18n/alf-input.i18n';
+import { getAlfInputLabel, AlfInputI18nLabels } from './i18n/alf-input.i18n';
+import { interpolate } from '@alfcomponents/i18n/i18n-utils';
 
 @Component({
   selector: 'alf-input',
@@ -54,11 +67,53 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
     onCleanup(() => clearTimeout(timerId));
   });
 
+  /** Efecto de validación — corre cuando el valor (debounced) cambia */
+  private readonly validationEffect = effect(() => {
+    const val = this.value();
+    const validators = this.resolvedConfig()?.validators || [];
+
+    if (validators.length === 0) {
+      this.validationError.set(null);
+      return;
+    }
+
+    for (const validator of validators) {
+      const result = validator(val);
+      if (!result.isValid) {
+        // Resolver el mensaje de error vía i18n
+        let message = '';
+        if (result.code) {
+          const label = getAlfInputLabel(result.code as keyof AlfInputI18nLabels);
+          const cfg = this.resolvedConfig();
+          if (result.code === 'validatorMaxLength' && cfg?.maxLength !== undefined) {
+            message = interpolate(label, cfg.maxLength);
+          } else if (result.code === 'validatorMinLength' && cfg?.minLength !== undefined) {
+            message = interpolate(label, cfg.minLength);
+          } else if (result.code === 'validatorMin' && cfg?.min !== undefined) {
+            message = interpolate(label, cfg.min);
+          } else if (result.code === 'validatorMax' && cfg?.max !== undefined) {
+            message = interpolate(label, cfg.max);
+          } else {
+            message = label;
+          }
+        } else {
+          message = result.error || 'Error';
+        }
+
+        this.validationError.set(message);
+        return;
+      }
+    }
+
+    this.validationError.set(null);
+  });
+
   // ── Signals internos ──────────────────────────────────────────────────────
 
   public readonly isFocused = signal<boolean>(false);
   public readonly isPasswordVisible = signal<boolean>(false);
   private readonly pendingValue = signal<string | null>(null);
+  private readonly validationError = signal<string | null>(null);
 
   // ── ViewChild ─────────────────────────────────────────────────────────────
 
@@ -70,7 +125,7 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
 
   // ── Inputs de variante / config ───────────────────────────────────────────
 
-  public readonly variant = input<AlfColorVariantEnum>(undefined);
+  public readonly variant = input<AlfInputColorVariantEnum>(undefined);
   public override readonly inputConfig = input<AlfInputInterface>();
 
   // ── Inputs directos ───────────────────────────────────────────────────────
@@ -88,6 +143,13 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
   public readonly readonly = input<boolean>();
   public readonly loading = input<boolean>();
   public readonly maxLength = input<number>();
+  public readonly minLength = input<number>();
+  public readonly min = input<number | string>();
+  public readonly max = input<number | string>();
+  public readonly step = input<number>();
+  public readonly pattern = input<string>();
+  public readonly autofocus = input<boolean>();
+  public readonly validators = input<((v: string) => AlfValidationResult)[]>();
   public readonly clearable = input<boolean>();
   public readonly showPasswordToggleInput = input<boolean>(undefined, { alias: 'showPasswordToggle' });
   public readonly showCharCounterInput = input<boolean>(undefined, { alias: 'showCharCounter' });
@@ -105,30 +167,24 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
       ...this.inputConfig(),
     }
 
-    // Si hay un error real, forzamos la variante Danger para el feedback visual
-    let variantEnum = AlfColorVariantEnum.Default;
-    const errorVal = this.error() || cfg?.error;
-
-    if (errorVal && errorVal.toString().trim() !== '') {
-      variantEnum = AlfColorVariantEnum.Danger;
-    } else if (v) {
+    // Resolución normal de la variante (sin forzar Danger)
+    let variantEnum = AlfInputColorVariantEnum.Default;
+    if (v) {
       if (typeof v === 'string') {
         const normalized = v.toLowerCase().replace(/-([a-z])/g, (g) => g[1].toUpperCase());
-        variantEnum = (AlfColorVariantEnum as any)[normalized.charAt(0).toUpperCase() + normalized.slice(1)] ?? AlfColorVariantEnum.Default;
+        variantEnum = (AlfInputColorVariantEnum as any)[normalized.charAt(0).toUpperCase() + normalized.slice(1)] ?? AlfInputColorVariantEnum.Default;
       } else {
-        variantEnum = v;
+        variantEnum = v as AlfInputColorVariantEnum;
       }
     }
 
     const base = getAlfInputDefaultConfig(
-      variantEnum,
-      this.appearance() ?? cfg?.appearance ?? AlfInputAppearanceEnum.Outline
+      variantEnum as unknown as AlfColorVariantEnum,
+      (this.appearance() ?? cfg?.appearance ?? AlfInputAppearanceEnum.Outline) as any
     );
 
-    return {
+    const final: AlfInputInterface = {
       ...base,
-      ...cfg,
-      // Los inputs directos tienen prioridad máxima
       label: this.label() ?? cfg?.label ?? base.label,
       placeholder: this.placeholder() ?? cfg?.placeholder ?? base.placeholder,
       value: this.value() ?? cfg?.value ?? base.value,
@@ -141,11 +197,47 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
       prefix: this.prefix() ?? cfg?.prefix ?? base.prefix,
       suffix: this.suffix() ?? cfg?.suffix ?? base.suffix,
       maxLength: this.maxLength() ?? cfg?.maxLength ?? base.maxLength,
+      minLength: this.minLength() ?? cfg?.minLength ?? base.minLength,
+      min: this.min() ?? cfg?.min ?? base.min,
+      max: this.max() ?? cfg?.max ?? base.max,
+      step: this.step() ?? cfg?.step ?? base.step,
+      pattern: this.pattern() ?? cfg?.pattern ?? base.pattern,
+      autofocus: this.autofocus() ?? cfg?.autofocus ?? base.autofocus,
+      validators: this.validators() ?? cfg?.validators ?? base.validators,
       clearable: this.clearable() ?? cfg?.clearable ?? base.clearable,
       showPasswordToggle: this.showPasswordToggleInput() ?? cfg?.showPasswordToggle ?? base.showPasswordToggle,
       showCharCounter: this.showCharCounterInput() ?? cfg?.showCharCounter ?? base.showCharCounter,
-      type: this.type() ?? cfg?.inputType ?? base.inputType,
-      colorVariant: variantEnum,
+      inputType: this.type() ?? cfg?.inputType ?? base.inputType,
+      colorVariant: variantEnum as any as AlfColorVariantEnum,
+    };
+
+    // Resolver validadores internos automáticos
+    const resolvedValidators: ((v: string) => AlfValidationResult)[] = [];
+    if (final.required) resolvedValidators.push(alfRequiredValidator);
+    if (final.inputType === AlfInputTypeEnum.Email) resolvedValidators.push(alfEmailValidator);
+    if (final.inputType === AlfInputTypeEnum.Url) resolvedValidators.push(alfUrlValidator);
+    if (final.maxLength) resolvedValidators.push(alfMaxLengthValidator(final.maxLength));
+    if (final.minLength) resolvedValidators.push(alfMinLengthValidator(final.minLength));
+    if (final.min !== undefined && final.min !== null) resolvedValidators.push(alfMinValidator(Number(final.min)));
+    if (final.max !== undefined && final.max !== null) resolvedValidators.push(alfMaxValidator(Number(final.max)));
+    if (final.pattern) resolvedValidators.push(alfPatternValidator(final.pattern));
+    if (final.validators && final.validators.length > 0) resolvedValidators.push(...final.validators);
+
+    // Si hay error de validación, hacemos update quirúrgico solo de colores
+    const errorVal = this.error() ?? this.validationError() ?? cfg?.error;
+    const hasError = !!(errorVal && errorVal.toString().trim() !== '');
+    const dangerBorder = (hasError && final.border) ? {
+      ...final.border,
+      default: { ...final.border.default, borderColor: AlfColorEnum.Danger },
+      hover: { ...final.border.hover, borderColor: AlfColorEnum.Danger },
+      focus: { ...final.border.focus, borderColor: AlfColorEnum.Danger },
+      active: { ...final.border.active, borderColor: AlfColorEnum.Danger },
+    } : final.border;
+
+    return {
+      ...final,
+      border: dangerBorder,
+      validators: resolvedValidators
     };
   });
 
@@ -179,8 +271,14 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
   );
 
   public readonly errorComputed = computed(() =>
-    this.error() ?? this.resolvedConfig()?.error ?? ''
+    this.error() ?? this.validationError() ?? this.resolvedConfig()?.error ?? ''
   );
+
+  public readonly errorColorComputed = computed(() => {
+    const err = this.errorComputed();
+    if (!err) return null;
+    return this.resolvedConfig()?.border?.default?.borderColor ?? AlfColorEnum.Danger;
+  });
 
   public readonly helperTextComputed = computed(() =>
     this.helperText() ?? this.resolvedConfig()?.helperText ?? ''
@@ -193,11 +291,7 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
   });
 
   public readonly shouldFloat = computed(() =>
-    this.shouldLabelFloat(
-      this.isFocused(),
-      this.value(),
-      this.type() ?? this.resolvedConfig()?.inputType,
-    )
+    this.isFocused() || this.value().length > 0
   );
 
   // Variable usada en el template (line 16)
@@ -287,20 +381,6 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
     this.isPasswordVisible.update(v => !v);
   };
 
-  // ── WAAPI ─────────────────────────────────────────────────────────────────
-
-
-
-
-  /**
-   * Determina si el label debe flotar hacia arriba.
-   * Flota cuando hay foco, cuando hay valor, o cuando el tipo es number (siempre muestra placeholder).
-   */
-  private shouldLabelFloat = (
-    focused: boolean,
-    value: string,
-    type?: AlfInputTypeEnum,
-  ): boolean => focused || value.length > 0 || type === AlfInputTypeEnum.Number;
 
   /**
    * Resuelve el atributo type HTML real para el elemento input nativo.

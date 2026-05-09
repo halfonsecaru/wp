@@ -5,6 +5,14 @@ export interface AlfInputI18nLabels {
   readonly showPassword: string;
   readonly hidePassword: string;
   readonly loading: string;
+  readonly validatorEmail: string;
+  readonly validatorRequired: string;
+  readonly validatorMaxLength: string;
+  readonly validatorMinLength: string;
+  readonly validatorMin: string;
+  readonly validatorMax: string;
+  readonly validatorUrl: string;
+  readonly validatorPattern: string;
 }
 
 const LABELS_ES: AlfInputI18nLabels = {
@@ -12,6 +20,14 @@ const LABELS_ES: AlfInputI18nLabels = {
   showPassword: 'Mostrar contraseña',
   hidePassword: 'Ocultar contraseña',
   loading: 'Cargando...',
+  validatorEmail: 'Email no válido',
+  validatorRequired: 'Este campo es obligatorio',
+  validatorMaxLength: 'Máximo {0} caracteres',
+  validatorMinLength: 'Mínimo {0} caracteres',
+  validatorMin: 'El valor mínimo es {0}',
+  validatorMax: 'El valor máximo es {0}',
+  validatorUrl: 'URL no válida',
+  validatorPattern: 'Formato no válido',
 } as const;
 
 const LABELS_EN: AlfInputI18nLabels = {
@@ -19,6 +35,14 @@ const LABELS_EN: AlfInputI18nLabels = {
   showPassword: 'Show password',
   hidePassword: 'Hide password',
   loading: 'Loading...',
+  validatorEmail: 'Invalid email',
+  validatorRequired: 'This field is required',
+  validatorMaxLength: 'Maximum {0} characters',
+  validatorMinLength: 'Minimum {0} characters',
+  validatorMin: 'Minimum value is {0}',
+  validatorMax: 'Maximum value is {0}',
+  validatorUrl: 'Invalid URL',
+  validatorPattern: 'Invalid format',
 } as const;
 
 const LABELS_FR: AlfInputI18nLabels = {
@@ -26,6 +50,14 @@ const LABELS_FR: AlfInputI18nLabels = {
   showPassword: 'Afficher le mot de passe',
   hidePassword: 'Masquer le mot de passe',
   loading: 'Chargement...',
+  validatorEmail: 'Email invalide',
+  validatorRequired: 'Ce champ est obligatoire',
+  validatorMaxLength: 'Maximum {0} caractères',
+  validatorMinLength: 'Minimum {0} caractères',
+  validatorMin: 'La valeur minimale est {0}',
+  validatorMax: 'La valeur maximale est {0}',
+  validatorUrl: 'URL invalide',
+  validatorPattern: 'Format invalide',
 } as const;
 
 const LABELS_DE: AlfInputI18nLabels = {
@@ -33,6 +65,14 @@ const LABELS_DE: AlfInputI18nLabels = {
   showPassword: 'Passwort anzeigen',
   hidePassword: 'Passwort verbergen',
   loading: 'Laden...',
+  validatorEmail: 'Ungültige E-Mail',
+  validatorRequired: 'Dieses Feld ist obligatorisch',
+  validatorMaxLength: 'Maximal {0} Zeichen',
+  validatorMinLength: 'Mindestens {0} Zeichen',
+  validatorMin: 'Mindestwert ist {0}',
+  validatorMax: 'Höchstwert ist {0}',
+  validatorUrl: 'Ungültige URL',
+  validatorPattern: 'Ungültiges Format',
 } as const;
 
 const LABELS_IT: AlfInputI18nLabels = {
@@ -40,6 +80,14 @@ const LABELS_IT: AlfInputI18nLabels = {
   showPassword: 'Mostra password',
   hidePassword: 'Nascondi password',
   loading: 'Caricamento...',
+  validatorEmail: 'Email non valida',
+  validatorRequired: 'Questo campo è obbligatorio',
+  validatorMaxLength: 'Massimo {0} caratteri',
+  validatorMinLength: 'Minimo {0} caratteri',
+  validatorMin: 'Il valore minimo è {0}',
+  validatorMax: 'Il valore massimo è {0}',
+  validatorUrl: 'URL non valida',
+  validatorPattern: 'Formato non valido',
 } as const;
 
 const LABELS_PT: AlfInputI18nLabels = {
@@ -47,6 +95,14 @@ const LABELS_PT: AlfInputI18nLabels = {
   showPassword: 'Mostrar senha',
   hidePassword: 'Ocultar senha',
   loading: 'Carregando...',
+  validatorEmail: 'E-mail inválido',
+  validatorRequired: 'Este campo é obrigatório',
+  validatorMaxLength: 'Máximo {0} caracteres',
+  validatorMinLength: 'Mínimo {0} caracteres',
+  validatorMin: 'O valor mínimo é {0}',
+  validatorMax: 'O valor máximo é {0}',
+  validatorUrl: 'URL inválida',
+  validatorPattern: 'Formato inválido',
 } as const;
 
 const LABELS_RU: AlfInputI18nLabels = {
@@ -54,6 +110,14 @@ const LABELS_RU: AlfInputI18nLabels = {
   showPassword: 'Показать пароль',
   hidePassword: 'Скрыть пароль',
   loading: 'Загрузка...',
+  validatorEmail: 'Неверный email',
+  validatorRequired: 'Это поле обязательно',
+  validatorMaxLength: 'Максимум {0} символов',
+  validatorMinLength: 'Минимум {0} символов',
+  validatorMin: 'Минимальное значение {0}',
+  validatorMax: 'Максимальное значение {0}',
+  validatorUrl: 'Неверный URL',
+  validatorPattern: 'Неверный формат',
 } as const;
 
 const LANGUAGE_MAP = createLanguageMap<AlfInputI18nLabels>({

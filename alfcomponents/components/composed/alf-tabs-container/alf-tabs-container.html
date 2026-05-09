@@ -61,7 +61,7 @@
     <div class="alf-tabs-header-scroll" #headerScroll (scroll)="onScroll()">
       <nav class="alf-tabs-navigation" role="tablist">
         @for (tab of navigationTabs(); track tab.label; let i = $index) {
-        <alf-buttons
+        <alf-button
           [inputConfig]="tab.configuration"
           (click)="setActiveTab(i)"
           [class.is-active]="activeIndex() === i"

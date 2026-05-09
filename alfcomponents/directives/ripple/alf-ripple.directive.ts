@@ -1,6 +1,7 @@
 import { Directive, ElementRef, Renderer2, inject, Input, effect, computed, signal } from '@angular/core';
 import { AlfRippleInterface } from '../../interfaces/alf-ripple.interface';
-import { ALF_RIPPLE_MATERIAL } from '../../predefined/alf-ripple.predefined';
+import { ALF_RIPPLE_DEFAULT } from '../../base/defaultVariants';
+
 
 /**
  * Directiva AlfRipple "Pure Silk"
@@ -28,9 +29,10 @@ export class AlfRippleDirective {
 
   private readonly cfg = computed<AlfRippleInterface>(() => {
     const val = this._config();
-    if (val === true) return ALF_RIPPLE_MATERIAL;
+    if (val === true) return ALF_RIPPLE_DEFAULT;
     if (val === false) return { enabled: false };
-    return { ...ALF_RIPPLE_MATERIAL, ...val };
+    return { ...ALF_RIPPLE_DEFAULT, ...val };
+
   });
 
   private readonly clickEffect = effect((onCleanup) => {

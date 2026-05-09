@@ -109,3 +109,16 @@ export const getLabelsForLanguage = <T>(
 ): T => {
   return languageMap[lang] || languageMap.es;
 };
+
+/**
+ * Interpola valores en una cadena con formato {0}, {1}, etc.
+ * 
+ * @param text Cadena con placeholders
+ * @param params Valores a insertar
+ * @returns Cadena interpolada
+ */
+export const interpolate = (text: string, ...params: any[]): string => {
+  return text.replace(/{(\d+)}/g, (match, number) => {
+    return typeof params[number] !== 'undefined' ? params[number] : match;
+  });
+};

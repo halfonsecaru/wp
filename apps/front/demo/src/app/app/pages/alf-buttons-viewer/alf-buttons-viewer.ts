@@ -1,8 +1,8 @@
 import { Component, computed, signal } from '@angular/core';
-import { AlfButtons } from '@alfcomponents/components/simple/alf-buttons/alf-buttons';
-import { getAlfPredefinedButton, AlfButtonStyleKind } from '@alfcomponents/components/simple/alf-buttons/alf-button-predefined';
-import { DefaultButtonKeys } from '@alfcomponents/components/simple/alf-buttons/enums/defaultButtonKeys.interface';
-import { AlfButtonInterface } from '@alfcomponents/components/simple/alf-buttons/interfaces/alf-button.interface';
+import { AlfButton } from '@alfcomponents/components/simple/alf-button/alf-button';
+import { getAlfButtonDefaultConfig } from '@alfcomponents/components/simple/alf-button/predefined/alf-button.predefined';
+import { DefaultButtonKeys } from '@alfcomponents/components/simple/alf-button/enums/defaultButtonKeys.interface';
+import { AlfButtonInterface } from '@alfcomponents/components/simple/alf-button/interfaces/alf-button.interface';
 import {
   AlfAnimationTypeEnum,
   AlfColorVariantEnum,
@@ -11,17 +11,18 @@ import {
   AlfPxEnum,
 } from '@alfcomponents/enums';
 import { AlfAnimateCssInterface, AlfDisplayAndLayoutInterface } from '@alfcomponents/interfaces';
+import { AlfButtonI18nLabels } from '@alfcomponents/components/simple/alf-button/i18n/alf-button.i18n';
 
 @Component({
   selector: 'app-alf-buttons-viewer',
-  imports: [AlfButtons],
+  imports: [AlfButton],
   templateUrl: './alf-buttons-viewer.html',
   styleUrl: './alf-buttons-viewer.scss',
 })
 export class AlfButtonsViewer {
   protected readonly signalClicks = signal(0);
-  protected readonly signalHovers = signal(0);
   protected readonly useOutlineSignal = signal(false);
+
   protected readonly useDangerSignal = signal(false);
   protected readonly debounceMsSignal = signal(600);
   protected readonly animationsEnabledSignal = signal(true);
@@ -56,28 +57,24 @@ export class AlfButtonsViewer {
   });
 
   protected readonly liveButtonConfig = computed<AlfButtonInterface>(() => {
-    const styleKind: AlfButtonStyleKind = this.useOutlineSignal()
-      ? 'outlined'
-      : 'solid';
-    const key = this.useDangerSignal()
-      ? DefaultButtonKeys.Danger
-      : DefaultButtonKeys.Accept;
+    const isOutline = this.useOutlineSignal();
+    const baseVariant = this.useDangerSignal()
+      ? AlfColorVariantEnum.Danger
+      : AlfColorVariantEnum.Primary;
+
+    const finalVariant = isOutline
+      ? (baseVariant + 'Outline' as AlfColorVariantEnum)
+      : baseVariant;
 
     return {
-      ...getAlfPredefinedButton(key, { styleKind }),
+      ...getAlfButtonDefaultConfig(finalVariant),
       label: this.useDangerSignal() ? 'Eliminar' : 'Guardar',
       iconLeft: this.useDangerSignal()
         ? AlfIconsUnicodeIconEnum.Delete
         : AlfIconsUnicodeIconEnum.Save,
-      displayAndLayout: this.sameWidthButton,
     };
   });
 
-  protected readonly sameWidthButton: AlfDisplayAndLayoutInterface = {
-    default: {
-      width: AlfPxEnum.Px128,
-    },
-  };
 
   private readonly palettes: ReadonlyArray<{
     readonly key: DefaultButtonKeys;
@@ -97,70 +94,70 @@ export class AlfButtonsViewer {
     readonly title: string;
     readonly buttons: ReadonlyArray<{
       readonly title: string;
-      readonly tooltip: string;
       readonly config: AlfButtonInterface;
     }>;
+
   }> = [
-      { title: 'Predefined Solid', buttons: this.buildPaletteButtons('solid', 'Solid') },
-      { title: 'Predefined Outline', buttons: this.buildPaletteButtons('outlined', 'Outline') },
-      { title: 'Ghost (All Palettes)', buttons: this.buildPaletteButtons('ghost', 'Ghost') },
-      { title: 'Soft (All Palettes)', buttons: this.buildPaletteButtons('soft', 'Soft') },
-      { title: 'Crystal (All Palettes)', buttons: this.buildPaletteButtons('crystal', 'Crystal') },
-      { title: '3D (All Palettes)', buttons: this.buildPaletteButtons('3d', '3D') },
+      { title: 'Predefined Solid', buttons: this.buildPaletteButtons('', 'Solid') },
+      { title: 'Predefined Outline', buttons: this.buildPaletteButtons('Outline', 'Outline') },
+      { title: 'Ghost (All Palettes)', buttons: this.buildPaletteButtons('Ghost', 'Ghost') },
+      { title: 'Soft (All Palettes)', buttons: this.buildPaletteButtons('Soft', 'Soft') },
+      { title: 'Crystal (All Palettes)', buttons: this.buildPaletteButtons('Crystal', 'Crystal') },
+      { title: '3D (All Palettes)', buttons: this.buildPaletteButtons('3D', '3D') },
       { title: 'Practical Examples', buttons: this.buildPracticalExamples() },
     ];
 
   private buildPaletteButtons(
-    styleKind: AlfButtonStyleKind,
+    suffix: string,
     visualLabel: string,
   ): ReadonlyArray<{
     readonly title: string;
-    readonly tooltip: string;
     readonly config: AlfButtonInterface;
   }> {
+
     return this.palettes.map((palette) => {
-      const baseConfig = getAlfPredefinedButton(palette.key, { styleKind });
+      // Mapeamos el nombre de la paleta (Primary, etc.) + el sufijo (Outline, Ghost, etc.)
+      const variant = (palette.title + suffix) as AlfColorVariantEnum;
+      const baseConfig = getAlfButtonDefaultConfig(variant);
 
       return {
         title: palette.title,
-        tooltip: `${visualLabel}: ${palette.title}`,
         config: {
           ...baseConfig,
-          displayAndLayout: this.sameWidthButton,
         },
       };
+
     });
   }
 
   private buildPracticalExamples(): ReadonlyArray<{
     readonly title: string;
-    readonly tooltip: string;
     readonly config: AlfButtonInterface;
   }> {
+
     return [
       {
         title: 'Save With Icon',
-        tooltip: 'Solid primary with left icon',
         config: {
-          ...getAlfPredefinedButton(DefaultButtonKeys.Accept),
+          ...getAlfButtonDefaultConfig(AlfColorVariantEnum.Primary),
           label: 'Guardar',
           iconLeft: AlfIconsUnicodeIconEnum.Save,
         },
       },
+
       {
         title: 'Disabled',
-        tooltip: 'Disabled state example',
         config: {
-          ...getAlfPredefinedButton(DefaultButtonKeys.Cancel),
+          ...getAlfButtonDefaultConfig(AlfColorVariantEnum.Secondary),
           label: 'Deshabilitado',
           disabled: true,
         },
       },
+
       {
         title: 'External Link',
-        tooltip: 'Button rendered as anchor',
         config: {
-          ...getAlfPredefinedButton(DefaultButtonKeys.Info),
+          ...getAlfButtonDefaultConfig(AlfColorVariantEnum.Info),
           label: 'Documentacion',
           iconRight: AlfIconsUnicodeIconEnum.ArrowRight,
           link: {
@@ -169,29 +166,29 @@ export class AlfButtonsViewer {
           },
         },
       },
+
       {
         title: 'Ghost Warning',
-        tooltip: 'Ghost variant warning',
         config: {
-          ...getAlfPredefinedButton(DefaultButtonKeys.Warning, { styleKind: 'ghost' }),
+          ...getAlfButtonDefaultConfig(AlfColorVariantEnum.WarningGhost),
           label: 'Revisar',
           iconLeft: AlfIconsUnicodeIconEnum.Warning,
         },
       },
+
       {
         title: 'Custom Soft',
-        tooltip: 'Soft custom color variant',
         config: {
           colorVariant: AlfColorVariantEnum.SuccessSoft,
           label: 'Completado',
           iconLeft: AlfIconsUnicodeIconEnum.CheckMark,
         },
       },
+
       {
         title: 'Full Width',
-        tooltip: 'Display and layout override',
         config: {
-          ...getAlfPredefinedButton(DefaultButtonKeys.Dark, { styleKind: '3d' }),
+          ...getAlfButtonDefaultConfig(AlfColorVariantEnum.Dark3D),
           label: 'Continuar',
           displayAndLayout: {
             default: {
@@ -200,18 +197,17 @@ export class AlfButtonsViewer {
           },
         },
       },
+
     ];
   }
+
 
   protected onLiveClick(): void {
     this.signalClicks.update((current) => current + 1);
   }
 
-  protected onLiveHover(): void {
-    this.signalHovers.update((current) => current + 1);
-  }
-
   protected toggleLiveVisualType(): void {
+
     this.useOutlineSignal.update((current) => !current);
   }
 

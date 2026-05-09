@@ -13,9 +13,11 @@ import {
   AlfShadowsInterface,
   AlfTextStyleInterface,
   AlfTransformInterface,
-  AlfTypographyInterface
+  AlfTypographyInterface,
+  AlfBaseCommonConfigInterface
 } from '@alfcomponents/interfaces';
 import { AlfAriaBaseInterface } from '@alfcomponents/interfaces/alf-aria.interface';
+import { resolveAlfColorVariant } from '@alfcomponents/shared';
 import {
   visualAnimationsBase,
   visualBackgroundBase,
@@ -31,26 +33,9 @@ import {
   visualTypographyBase,
   visualAnimationsClassBase
 } from './base-visual';
-import { buildBorderColor, buildBackgroundColor } from './predefined';
+import { resolveVariantConfig } from './defaultVariants';
 
-export interface AlfBaseCommonConfigInterface {
-  readonly colorVariant?: AlfColorVariantEnum;
-  readonly cursor?: AlfCursorEnum;
-  readonly disabled?: boolean;
-  readonly backgrounds?: AlfBackgroundsInterface;
-  readonly border?: AlfBorderInterface;
-  readonly displayAndLayout?: AlfDisplayAndLayoutInterface;
-  readonly margin?: AlfMarginInterface;
-  readonly outline?: AlfOutlineInterface;
-  readonly padding?: AlfPaddingInterface;
-  readonly shadows?: AlfShadowsInterface;
-  readonly textStyle?: AlfTextStyleInterface;
-  readonly transform?: AlfTransformInterface;
-  readonly typography?: AlfTypographyInterface;
-  readonly animations?: AlfAnimateCssInterface;
-  readonly customClass?: string;
-  readonly customStyle?: string;
-}
+
 
 @Directive()
 export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigInterface> {
@@ -60,25 +45,25 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
   public readonly inputConfig = input<TConfig>();
 
   // Inputs directos para sobrescritura
-  protected readonly tooltip = input<string | AlfTooltipConfig | undefined>();
-  protected readonly ripple = input<boolean | AlfRippleInterface | undefined>();
-  protected readonly colorVariant = input<AlfColorVariantEnum>();
-  protected readonly cursor = input<AlfCursorEnum>();
-  protected readonly disabled = input<boolean>();
-  protected readonly aria = input<AlfAriaBaseInterface | undefined>();
-  protected readonly backgrounds = input<AlfBackgroundsInterface | undefined>();
-  protected readonly border = input<AlfBorderInterface | undefined>();
-  protected readonly displayAndLayout = input<AlfDisplayAndLayoutInterface | undefined>();
-  protected readonly margin = input<AlfMarginInterface | undefined>();
-  protected readonly outline = input<AlfOutlineInterface | undefined>();
-  protected readonly padding = input<AlfPaddingInterface | undefined>();
-  protected readonly shadows = input<AlfShadowsInterface | undefined>();
-  protected readonly textStyle = input<AlfTextStyleInterface | undefined>();
-  protected readonly transform = input<AlfTransformInterface | undefined>();
-  protected readonly typography = input<AlfTypographyInterface | undefined>();
-  protected readonly animations = input<AlfAnimateCssInterface | undefined>();
-  protected readonly customClass = input<string | undefined>();
-  protected readonly customStyle = input<string | undefined>();
+  public readonly tooltip = input<string | AlfTooltipConfig | undefined>();
+  public readonly ripple = input<boolean | AlfRippleInterface | undefined>();
+  public readonly colorVariant = input<AlfColorVariantEnum>();
+  public readonly cursor = input<AlfCursorEnum>();
+  public readonly disabled = input<boolean>();
+  public readonly aria = input<AlfAriaBaseInterface | undefined>();
+  public readonly backgrounds = input<AlfBackgroundsInterface | undefined>();
+  public readonly border = input<AlfBorderInterface | undefined>();
+  public readonly displayAndLayout = input<AlfDisplayAndLayoutInterface | undefined>();
+  public readonly margin = input<AlfMarginInterface | undefined>();
+  public readonly outline = input<AlfOutlineInterface | undefined>();
+  public readonly padding = input<AlfPaddingInterface | undefined>();
+  public readonly shadows = input<AlfShadowsInterface | undefined>();
+  public readonly textStyle = input<AlfTextStyleInterface | undefined>();
+  public readonly transform = input<AlfTransformInterface | undefined>();
+  public readonly typography = input<AlfTypographyInterface | undefined>();
+  public readonly animations = input<AlfAnimateCssInterface | undefined>();
+  public readonly customClass = input<string | undefined>();
+  public readonly customStyle = input<string | undefined>();
 
   /**
    * Configuración resuelta base.
@@ -86,9 +71,12 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
   public readonly resolvedConfig = computed(() => this.inputConfig());
 
   // Computeds de resolución de estado
-  protected readonly colorVariantComputed = computed(() =>
-    this.colorVariant() ?? this.resolvedConfig()?.colorVariant ?? AlfColorVariantEnum.Default,
-  );
+  protected readonly colorVariantComputed = computed(() => {
+    const v = this.colorVariant() ?? this.inputConfig()?.colorVariant;
+    return resolveAlfColorVariant(v);
+  });
+
+
 
   protected readonly cursorComputed = computed(() =>
     this.cursor() ?? this.resolvedConfig()?.cursor ?? AlfCursorEnum.Pointer,
@@ -120,43 +108,182 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
 
   // Computeds para estilos inyectados
   protected readonly backgroundsComputed = computed(() => {
+    const variant = this.colorVariantComputed() ?? AlfColorVariantEnum.Default;
+    const base = resolveVariantConfig(variant).backgrounds;
     const resolved = this.resolvedConfig()?.backgrounds || {};
     const user = this.backgrounds() || {};
-    return buildBackgroundColor(
-      this.colorVariantComputed() ? this.colorVariantComputed() : undefined,
-      {
-        default: { ...resolved.default, ...user.default },
-        hover: { ...resolved.hover, ...user.hover },
-        focus: { ...resolved.focus, ...user.focus },
-        active: { ...resolved.active, ...user.active },
-        disabled: { ...resolved.disabled, ...user.disabled },
-      }
-    );
+
+    return {
+      default: { ...base.default, ...resolved.default, ...user.default },
+      hover: { ...base.hover, ...resolved.hover, ...user.hover },
+      focus: { ...base.focus, ...resolved.focus, ...user.focus },
+      active: { ...base.active, ...resolved.active, ...user.active },
+      disabled: { ...base.disabled, ...resolved.disabled, ...user.disabled },
+    };
   });
-  protected readonly displayAndLayoutComputed = computed(() => this.displayAndLayout() ?? this.resolvedConfig()?.displayAndLayout);
-  protected readonly marginComputed = computed(() => this.margin() ?? this.resolvedConfig()?.margin);
-  protected readonly outlineComputed = computed(() => this.outline() ?? this.resolvedConfig()?.outline);
-  protected readonly paddingComputed = computed(() => this.padding() ?? this.resolvedConfig()?.padding);
-  protected readonly shadowsComputed = computed(() => this.shadows() ?? this.resolvedConfig()?.shadows);
-  protected readonly textStyleComputed = computed(() => this.textStyle() ?? this.resolvedConfig()?.textStyle);
-  protected readonly transformComputed = computed(() => this.transform() ?? this.resolvedConfig()?.transform);
-  protected readonly typographyComputed = computed(() => this.typography() ?? this.resolvedConfig()?.typography);
-  protected readonly animationsComputed = computed(() => this.animations() ?? this.resolvedConfig()?.animations);
+
+  protected readonly displayAndLayoutComputed = computed(() => {
+    const variant = this.colorVariantComputed() ?? AlfColorVariantEnum.Default;
+    const base = resolveVariantConfig(variant).displayAndLayout;
+    const resolved = this.resolvedConfig()?.displayAndLayout || {};
+    const user = this.displayAndLayout() || {};
+
+    return {
+      ...base,
+      ...resolved,
+      ...user,
+      default: { 
+        ...base.default, 
+        ...resolved.default, 
+        ...user.default,
+        cursor: this.cursorComputed()
+      },
+    };
+  });
+
+  protected readonly marginComputed = computed(() => {
+    const variant = this.colorVariantComputed() ?? AlfColorVariantEnum.Default;
+    const base = resolveVariantConfig(variant).margin;
+    const resolved = this.resolvedConfig()?.margin || {};
+    const user = this.margin() || {};
+
+    return {
+      ...base,
+      ...resolved,
+      ...user,
+      default: { ...base.default, ...resolved.default, ...user.default },
+    };
+  });
+  protected readonly outlineComputed = computed(() => {
+    const variant = this.colorVariantComputed() ?? AlfColorVariantEnum.Default;
+    const base = resolveVariantConfig(variant).outline;
+    const resolved = this.resolvedConfig()?.outline || {};
+    const user = this.outline() || {};
+
+    return {
+      ...base,
+      ...resolved,
+      ...user,
+      default: { ...base.default, ...resolved.default, ...user.default },
+      focus: { ...base.focus, ...resolved.focus, ...user.focus },
+    };
+  });
+
+  protected readonly paddingComputed = computed(() => {
+    const variant = this.colorVariantComputed() ?? AlfColorVariantEnum.Default;
+    const base = resolveVariantConfig(variant).padding;
+    const resolved = this.resolvedConfig()?.padding || {};
+    const user = this.padding() || {};
+
+    return {
+      ...base,
+      ...resolved,
+      ...user,
+      default: { ...base.default, ...resolved.default, ...user.default },
+    };
+  });
+
+  protected readonly shadowsComputed = computed(() => {
+    const variant = this.colorVariantComputed() ?? AlfColorVariantEnum.Default;
+    const base = resolveVariantConfig(variant).shadows;
+    const resolved = this.resolvedConfig()?.shadows || {};
+    const user = this.shadows() || {};
+
+    return {
+      ...base,
+      ...resolved,
+      ...user,
+      default: { ...base.default, ...resolved.default, ...user.default },
+      hover: { ...base.hover, ...resolved.hover, ...user.hover },
+      active: { ...base.active, ...resolved.active, ...user.active },
+      focus: { ...base.focus, ...resolved.focus, ...user.focus },
+      disabled: { ...base.disabled, ...resolved.disabled, ...user.disabled },
+    };
+  });
+
+  protected readonly textStyleComputed = computed(() => {
+    const variant = this.colorVariantComputed() ?? AlfColorVariantEnum.Default;
+    const base = resolveVariantConfig(variant).textStyle;
+    const resolved = this.resolvedConfig()?.textStyle || {};
+    const user = this.textStyle() || {};
+
+    return {
+      ...base,
+      ...resolved,
+      ...user,
+      default: { ...base.default, ...resolved.default, ...user.default },
+      hover: { ...base.hover, ...resolved.hover, ...user.hover },
+      active: { ...base.active, ...resolved.active, ...user.active },
+      focus: { ...base.focus, ...resolved.focus, ...user.focus },
+      disabled: { ...base.disabled, ...resolved.disabled, ...user.disabled },
+    };
+  });
+
+  protected readonly typographyComputed = computed(() => {
+    const variant = this.colorVariantComputed() ?? AlfColorVariantEnum.Default;
+    const base = resolveVariantConfig(variant).typography;
+    const resolved = this.resolvedConfig()?.typography || {};
+    const user = this.typography() || {};
+
+    return {
+      ...base,
+      ...resolved,
+      ...user,
+      default: { ...base.default, ...resolved.default, ...user.default },
+      hover: { ...base.hover, ...resolved.hover, ...user.hover },
+      active: { ...base.active, ...resolved.active, ...user.active },
+      focus: { ...base.focus, ...resolved.focus, ...user.focus },
+      disabled: { ...base.disabled, ...resolved.disabled, ...user.disabled },
+    };
+  });
+
+
+  protected readonly transformComputed = computed(() => {
+    const variant = this.colorVariantComputed() ?? AlfColorVariantEnum.Default;
+    const base = resolveVariantConfig(variant).transform;
+    const resolved = this.resolvedConfig()?.transform || {};
+    const user = this.transform() || {};
+
+    return {
+      ...base,
+      ...resolved,
+      ...user,
+      default: { ...base.default, ...resolved.default, ...user.default },
+      hover: { ...base.hover, ...resolved.hover, ...user.hover },
+      active: { ...base.active, ...resolved.active, ...user.active },
+      focus: { ...base.focus, ...resolved.focus, ...user.focus },
+      disabled: { ...base.disabled, ...resolved.disabled, ...user.disabled },
+    };
+  });
+
+  protected readonly animationsComputed = computed(() => {
+    const variant = this.colorVariantComputed() ?? AlfColorVariantEnum.Default;
+    const base = resolveVariantConfig(variant).animations;
+    const resolved = this.resolvedConfig()?.animations || {};
+    const user = this.animations() || {};
+
+    return {
+      ...base,
+      ...resolved,
+      ...user,
+    };
+  });
 
   protected readonly borderComputed = computed(() => {
+    const variant = this.colorVariantComputed() ?? AlfColorVariantEnum.Default;
+    const base = resolveVariantConfig(variant).border;
     const resolved = this.resolvedConfig()?.border || {};
     const user = this.border() || {};
-    return buildBorderColor(
-      this.colorVariantComputed() ? this.colorVariantComputed() : undefined,
-      {
-        default: { ...resolved.default, ...user.default },
-        hover: { ...resolved.hover, ...user.hover },
-        focus: { ...resolved.focus, ...user.focus },
-        active: { ...resolved.active, ...user.active },
-        disabled: { ...resolved.disabled, ...user.disabled },
-      }
-    );
+
+    return {
+      default: { ...base.default, ...resolved.default, ...user.default },
+      hover: { ...base.hover, ...resolved.hover, ...user.hover },
+      focus: { ...base.focus, ...resolved.focus, ...user.focus },
+      active: { ...base.active, ...resolved.active, ...user.active },
+      disabled: { ...base.disabled, ...resolved.disabled, ...user.disabled },
+    };
   });
+
 
 
 

@@ -1,7 +1,6 @@
-import { AlfColorVariantEnum, AlfInputAppearanceEnum, AlfInputTypeEnum } from '@alfcomponents/enums';
-
-
-import { AlfBaseCommonConfigInterface } from '@alfcomponents/base/alf-base-configuration';
+import { AlfInputAppearanceEnum, AlfInputTypeEnum, AlfColorVariantEnum } from '@alfcomponents/enums';
+import { AlfValidationResult } from '@alfcomponents/shared';
+import { AlfBaseCommonConfigInterface } from '@alfcomponents/interfaces';
 
 export interface AlfInputInterface extends AlfBaseCommonConfigInterface {
   readonly id?: string;
@@ -27,9 +26,11 @@ export interface AlfInputInterface extends AlfBaseCommonConfigInterface {
   readonly step?: number;
   readonly pattern?: string;
   readonly autocomplete?: string;
+  readonly autofocus?: boolean;
   readonly debounceTime?: number;
   readonly prefix?: string;
   readonly suffix?: string;
+  readonly validators?: ((v: string) => AlfValidationResult)[];
 
   // Toggles Funcionales
   readonly clearable?: boolean;

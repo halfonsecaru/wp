@@ -1,15 +1,15 @@
-import { AlfButtonInterface, ButtonLink } from "@alfcomponents/components/simple/alf-buttons/interfaces/alf-button.interface";
-import { AlfButtonTypeEnum, AlfIconsUnicodeIconEnum } from "@alfcomponents/enums";
 import { computed, Directive, input } from "@angular/core";
-import { AlfBaseConfiguration } from "../../../../base/alf-base-configuration";
+import { AlfBaseConfiguration } from "@alfcomponents/base/alf-base-configuration";
+import { AlfButtonInterface, ButtonLink } from "../interfaces/alf-button.interface";
+import { AlfButtonTypeEnum, AlfIconsUnicodeIconEnum } from "@alfcomponents/enums";
 
 @Directive()
 export abstract class AlfBaseButtonConfiguration<TConfig extends AlfButtonInterface> extends AlfBaseConfiguration<TConfig> {
 
     public readonly type = input<AlfButtonTypeEnum>();
     public readonly label = input<string>();
-    public readonly iconLeft = input<AlfIconsUnicodeIconEnum>();
-    public readonly iconRight = input<AlfIconsUnicodeIconEnum>();
+    public readonly iconLeft = input<string | AlfIconsUnicodeIconEnum>();
+    public readonly iconRight = input<string | AlfIconsUnicodeIconEnum>();
     public readonly link = input<ButtonLink | undefined>();
 
     public readonly typeComputed = computed(() =>

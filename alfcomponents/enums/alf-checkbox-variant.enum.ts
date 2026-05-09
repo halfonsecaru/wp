@@ -10,6 +10,5 @@
  */
 export enum AlfCheckboxVariantEnum {
   Standard = 'standard',
-  Elegant = 'elegant',
-  Moving = 'moving'
+  Elegant = 'elegant'
 }

@@ -9,6 +9,8 @@ export enum visualprefixEnum {
     RadioButton = '--alf-rb',
     Input = '--alf-inp',
 
+    // InternalIds
+    ButtonsInternalId = '-alf-btn-id',
     // Directivas
     Ripple = '--alf-ripple',
     Tooltip = '--alf-tooltip',

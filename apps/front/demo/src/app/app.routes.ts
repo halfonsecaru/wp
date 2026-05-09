@@ -16,5 +16,9 @@ export const routes: Routes = [
   {
     path: 'input',
     loadComponent: () => import('./app/pages/alf-input-viewer/alf-input-viewer').then(m => m.AlfInputViewer)
+  },
+  {
+    path: 'buttons',
+    loadComponent: () => import('./app/pages/alf-buttons-viewer/alf-buttons-viewer').then(m => m.AlfButtonsViewer)
   }
 ];

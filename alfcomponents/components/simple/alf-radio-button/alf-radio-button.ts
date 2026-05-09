@@ -1,5 +1,6 @@
 import { Component, computed, input, model, output, signal } from '@angular/core';
 import { AlfBaseConfiguration } from '@alfcomponents/base/alf-base-configuration';
+import { AlfBaseCommonConfigInterface } from '@alfcomponents/interfaces';
 import { generateUniqueId, visualprefixEnum } from '@alfcomponents/shared';
 import { AlfRadioButtonInterface } from './interfaces/alf-radio-button.interface';
 import { AlfRadioButtonVariantEnum, AlfColorVariantEnum, AlfSizeEnum } from '@alfcomponents/enums';

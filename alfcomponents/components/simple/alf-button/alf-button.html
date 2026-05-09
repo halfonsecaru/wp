@@ -1,0 +1,81 @@
+@let tooltip = tooltipComputed();
+@let ripple = rippleComputed();
+@let id = buttonId();
+@let disabled = isDisabled();
+@let loading = isLoading();
+@let buttonType = typeComputed();
+@let link = linkComputed();
+@let labelText = labelComputed();
+@let leftIcon = iconLeftComputed();
+@let rightIcon = iconRightComputed();
+
+@let cfg = resolvedConfig();
+@let bgStyle = createBackgroundsStyle();
+@let borderStyle = createBorderStyle();
+@let paddingStyle = createPaddingStyle();
+@let shadowStyle = createShadowsStyle();
+@let typographyStyle = createTypographyStyle();
+@let textStyle = createTextStyle();
+@let displayStyle = createDisplayAndLayoutStyle();
+@let marginStyle = createMarginStyle();
+@let outlineStyle = createOutlineStyle();
+@let transformStyle = createTransformStyle();
+@let animStyle = createAnimationsStyle();
+@let animClass = animationsClassComputed();
+@let customClass = customClassComputed();
+@let customStyle = customStyleComputed();
+@let cursor = cursorComputed();
+
+@if (link) {
+  <a
+    [attr.id]="id"
+    [attr.href]="disabled ? null : link.url"
+    [attr.target]="link.target ?? '_self'"
+    [attr.rel]="(link.target ?? '_self') === '_blank' ? 'noopener noreferrer' : null"
+    [attr.tabindex]="disabled ? -1 : null"
+    [alfTooltipText]="tooltip"
+    [alfRipple]="ripple"
+    [style]="bgStyle + borderStyle + paddingStyle + shadowStyle + typographyStyle + textStyle + displayStyle + marginStyle + outlineStyle + transformStyle + animStyle + customStyle"
+    [style.cursor]="disabled ? 'not-allowed' : cursor"
+    [class]="'alf-button ' + animClass + ' ' + customClass"
+    [class.alf-button--disabled]="disabled"
+    [class.alf-button--loading]="loading"
+  >
+    @if (loading) {
+      <span class="alf-button__spinner"></span>
+    } @else {
+      @if (leftIcon) {
+        <span class="alf-button__icon alf-button__icon--left">{{ leftIcon }}</span>
+      }
+      <span class="alf-button__label">{{ labelText }}</span>
+      @if (rightIcon) {
+        <span class="alf-button__icon alf-button__icon--right">{{ rightIcon }}</span>
+      }
+    }
+  </a>
+} @else {
+  <button
+    [attr.id]="id"
+    [type]="buttonType"
+    [disabled]="disabled"
+    [alfTooltipText]="tooltip"
+    [alfRipple]="ripple"
+    [style]="bgStyle + borderStyle + paddingStyle + shadowStyle + typographyStyle + textStyle + displayStyle + marginStyle + outlineStyle + transformStyle + animStyle + customStyle"
+    [style.cursor]="disabled ? 'not-allowed' : cursor"
+    [class]="'alf-button ' + animClass + ' ' + customClass"
+    [class.alf-button--disabled]="disabled"
+    [class.alf-button--loading]="loading"
+  >
+    @if (loading) {
+      <span class="alf-button__spinner"></span>
+    } @else {
+      @if (leftIcon) {
+        <span class="alf-button__icon alf-button__icon--left">{{ leftIcon }}</span>
+      }
+      <span class="alf-button__label">{{ labelText }}</span>
+      @if (rightIcon) {
+        <span class="alf-button__icon alf-button__icon--right">{{ rightIcon }}</span>
+      }
+    }
+  </button>
+}

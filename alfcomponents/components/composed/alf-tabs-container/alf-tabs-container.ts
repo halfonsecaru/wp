@@ -1,6 +1,6 @@
 import { Component, contentChildren, effect, input, signal, computed, viewChild, ElementRef, viewChildren, untracked, afterNextRender, forwardRef, inject, booleanAttribute } from '@angular/core';
 import { AlfTabComponent } from './components/alf-tab/alf-tab';
-import { AlfButtons } from '../../simple/alf-buttons/alf-buttons';
+import { AlfButton } from '../../simple/alf-button/alf-button';
 import { visualprefixEnum } from '@alfcomponents/shared';
 import {
   AlfColorVariantEnum,
@@ -16,12 +16,12 @@ import {
 import { AlfBaseConfiguration } from '@alfcomponents/base';
 import { AlfTabsContainerConfigInterface, ALF_TABS_CONTAINER_TOKEN } from './interfaces/alf-tabs.interface';
 import { getAlfTabDefaultConfig, ALF_TABS_CONTAINER_DEFAULT } from './predefined/alf-tabs-container.predefined';
-import { AlfButtonInterface } from '../../simple/alf-buttons/interfaces/alf-button.interface';
+import { AlfButtonInterface } from '../../simple/alf-button/interfaces/alf-button.interface';
 
 @Component({
   selector: 'alf-tabs-container',
   standalone: true,
-  imports: [AlfButtons],
+  imports: [AlfButton],
   templateUrl: './alf-tabs-container.html',
   styleUrl: './alf-tabs-container.scss',
   providers: [
@@ -146,7 +146,7 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
   protected readonly headerScrollRef = viewChild<ElementRef<HTMLDivElement>>('headerScroll');
   protected readonly headerMetrics = signal({ canLeft: false, canRight: false });
   public readonly activeIndex = signal<number>(0);
-  protected readonly buttonRefs = viewChildren(AlfButtons, { read: ElementRef });
+  protected readonly buttonRefs = viewChildren(AlfButton, { read: ElementRef });
   protected readonly sliderRef = viewChild<ElementRef<HTMLDivElement>>('slider');
   private resizeObserver?: ResizeObserver;
   public readonly isAnimating = signal<boolean>(false);

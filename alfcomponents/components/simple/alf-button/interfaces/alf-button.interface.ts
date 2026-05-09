@@ -1,7 +1,8 @@
 import { 
   AlfButtonTypeEnum, 
   AlfColorVariantEnum,
-  AlfIconsUnicodeIconEnum 
+  AlfIconsUnicodeIconEnum,
+  AlfCursorEnum 
 } from "@alfcomponents/enums";
 import { 
   AlfBackgroundsInterface, 
@@ -13,7 +14,9 @@ import {
   AlfTextStyleInterface, 
   AlfTypographyInterface, 
   AlfAnimateCssInterface,
-  AlfRippleInterface 
+  AlfRippleInterface,
+  AlfBaseCommonConfigInterface,
+  AlfTransformInterface
 } from "@alfcomponents/interfaces";
 
 export interface ButtonLink {
@@ -21,7 +24,7 @@ export interface ButtonLink {
   target?: '_blank' | '_self' | '_parent' | '_top';
 }
 
-export interface AlfButtonInterface {
+export interface AlfButtonInterface extends AlfBaseCommonConfigInterface {
   readonly id?: string;
   readonly label?: string;
   readonly type?: AlfButtonTypeEnum;
@@ -46,4 +49,7 @@ export interface AlfButtonInterface {
   readonly displayAndLayout?: AlfDisplayAndLayoutInterface;
   readonly animations?: AlfAnimateCssInterface;
   readonly ripple?: boolean | AlfRippleInterface;
+  readonly cursor?: AlfCursorEnum;
+  readonly transform?: AlfTransformInterface;
+  readonly customStyle?: string;
 }

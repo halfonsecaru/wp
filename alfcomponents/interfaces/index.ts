@@ -16,3 +16,4 @@ export * from './alf-loading.interface';
 export * from './alf-ripple.interface';
 export * from './alf-theme.interface';
 export * from './alf-main-visual-style.interface';
+export * from './alf-base-common-config.interface';

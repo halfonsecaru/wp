@@ -5,6 +5,7 @@
 export enum AlfPxEnum {
   None = '0px',
   Px015 = '1.5px',
+  auto = 'auto',
   Px1 = '1px',
   Px2 = '2px',
   Px3 = '3px',

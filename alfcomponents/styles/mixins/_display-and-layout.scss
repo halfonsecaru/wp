@@ -2,94 +2,125 @@
 
 /**
  * Aplica display/layout reactivo con variables CSS por prefijo.
- * Estructura simplificada siguiendo el patrón Élite de border/background.
+ * Estructura Élite: Fallbacks encadenados para máxima estabilidad visual.
+ * Sincronizado con el patrón de _border.scss pero con DEFAULTS explícitos para evitar revert.
  * 
  * @param {String} $prefix - Prefijo de las variables CSS (ej: '--alf-inp')
- * @param {String} $disabled-selectors - Selectores para el estado deshabilitado
+ * @param {String} $display - Valor por defecto para display (evita revert del navegador)
+ * @param {String} $justify - Valor por defecto para justify-content
+ * @param {String} $align - Valor por defecto para align-items
+ * @param {String} $gap - Valor por defecto para gap
  */
 @mixin alf-display-layout-css-vars(
   $prefix,
-  $disabled-selectors: '&[disabled], &:disabled, &.disabled'
+  $display: inline-flex,
+  $justify: center,
+  $align: center,
+  $gap: 0,
+  $disabled-selectors: '&[disabled], &:disabled, &.disabled',
+  $focus-selectors: '&:focus, &:focus-visible'
 ) {
-  // 1. BASE PROPERTIES
-  display: var(#{$prefix}-layout-display, revert);
-  justify-content: var(#{$prefix}-layout-justify-content, revert);
-  align-items: var(#{$prefix}-layout-align-items, revert);
-  gap: var(#{$prefix}-layout-gap, revert);
-
-  position: var(#{$prefix}-layout-position, revert);
-  top: var(#{$prefix}-layout-top, revert);
-  right: var(#{$prefix}-layout-right, revert);
-  bottom: var(#{$prefix}-layout-bottom, revert);
-  left: var(#{$prefix}-layout-left, revert);
-  z-index: var(#{$prefix}-layout-z-index, revert);
+  // --- 1. BASE / DEFAULT ---
+  // Usamos los argumentos del mixin como fallback final en lugar de 'revert'
+  // para que el navegador no resetee el layout si la variable no existe.
+  $d:   var(#{$prefix}-layout-display, $display);
+  $jc:  var(#{$prefix}-layout-justify-content, $justify);
+  $ai:  var(#{$prefix}-layout-align-items, $align);
+  $g:   var(#{$prefix}-layout-gap, $gap);
   
-  width: var(#{$prefix}-layout-width, revert);
-  height: var(#{$prefix}-layout-height, revert);
-  min-width: var(#{$prefix}-layout-min-width, revert);
-  max-width: var(#{$prefix}-layout-max-width, revert);
-  min-height: var(#{$prefix}-layout-min-height, revert);
-  max-height: var(#{$prefix}-layout-max-height, revert);
+  $fd:  var(#{$prefix}-layout-flex-direction, row);
+  $fw:  var(#{$prefix}-layout-flex-wrap, nowrap);
+
+  $pos: var(#{$prefix}-layout-position, relative);
+  $t:   var(#{$prefix}-layout-top, revert);
+  $r:   var(#{$prefix}-layout-right, revert);
+  $b:   var(#{$prefix}-layout-bottom, revert);
+  $l:   var(#{$prefix}-layout-left, revert);
+  $z:   var(#{$prefix}-layout-z-index, revert);
   
-  overflow: var(#{$prefix}-layout-overflow, revert);
-  overflow-x: var(#{$prefix}-layout-overflow-x, var(#{$prefix}-layout-overflow, revert));
-  overflow-y: var(#{$prefix}-layout-overflow-y, var(#{$prefix}-layout-overflow, revert));
-  visibility: var(#{$prefix}-layout-visibility, revert);
-  object-fit: var(#{$prefix}-layout-object-fit, revert);
-
-  flex-direction: var(#{$prefix}-layout-flex-direction, revert);
-  flex-wrap: var(#{$prefix}-layout-flex-wrap, revert);
-
-  // Interaction & Visual
-  opacity: var(#{$prefix}-layout-opacity, revert);
-  pointer-events: var(#{$prefix}-layout-pointer-events, revert);
-
-  // 2. REACTIVE STATES
+  $w:   var(#{$prefix}-layout-width, auto);
+  $h:   var(#{$prefix}-layout-height, auto);
+  $miw: var(#{$prefix}-layout-min-width, revert);
+  $maw: var(#{$prefix}-layout-max-width, revert);
+  $mih: var(#{$prefix}-layout-min-height, revert);
+  $mah: var(#{$prefix}-layout-max-height, revert);
   
+  $o:   var(#{$prefix}-layout-overflow, visible);
+  $ox:  var(#{$prefix}-layout-overflow-x, $o);
+  $oy:  var(#{$prefix}-layout-overflow-y, $o);
+  $v:   var(#{$prefix}-layout-visibility, visible);
+  $of:  var(#{$prefix}-layout-object-fit, revert);
+
+  $op:  var(#{$prefix}-layout-opacity, 1);
+  $pe:  var(#{$prefix}-layout-pointer-events, auto);
+  $cur: var(#{$prefix}-layout-cursor, pointer);
+
+  display: $d;
+  justify-content: $jc;
+  align-items: $ai;
+  gap: $g;
+  flex-direction: $fd;
+  flex-wrap: $fw;
+
+  position: $pos;
+  top: $t;
+  right: $r;
+  bottom: $b;
+  left: $l;
+  z-index: $z;
+
+  width: $w;
+  height: $h;
+  min-width: $miw;
+  max-width: $maw;
+  min-height: $mih;
+  max-height: $mah;
+
+  overflow: $o;
+  overflow-x: $ox;
+  overflow-y: $oy;
+  visibility: $v;
+  object-fit: $of;
+
+  opacity: $op;
+  pointer-events: $pe;
+  cursor: $cur;
+
+  // --- 2. HOVER STATE ---
   &:hover {
-    display: var(#{$prefix}-layout-hover-display, var(#{$prefix}-layout-display, revert));
-    justify-content: var(#{$prefix}-layout-hover-justify-content, var(#{$prefix}-layout-justify-content, revert));
-    align-items: var(#{$prefix}-layout-hover-align-items, var(#{$prefix}-layout-align-items, revert));
-    gap: var(#{$prefix}-layout-hover-gap, var(#{$prefix}-layout-gap, revert));
-    flex-direction: var(#{$prefix}-layout-hover-flex-direction, var(#{$prefix}-layout-flex-direction, revert));
-    flex-wrap: var(#{$prefix}-layout-hover-flex-wrap, var(#{$prefix}-layout-flex-wrap, revert));
-    overflow: var(#{$prefix}-layout-hover-overflow, var(#{$prefix}-layout-overflow, revert));
-    visibility: var(#{$prefix}-layout-hover-visibility, var(#{$prefix}-layout-visibility, revert));
-    width: var(#{$prefix}-layout-hover-width, var(#{$prefix}-layout-width, revert));
-    height: var(#{$prefix}-layout-hover-height, var(#{$prefix}-layout-height, revert));
-    opacity: var(#{$prefix}-layout-hover-opacity, var(#{$prefix}-layout-opacity, revert));
-    pointer-events: var(#{$prefix}-layout-hover-pointer-events, var(#{$prefix}-layout-pointer-events, revert));
+    display: var(#{$prefix}-layout-hover-display, $d);
+    justify-content: var(#{$prefix}-layout-hover-justify-content, $jc);
+    align-items: var(#{$prefix}-layout-hover-align-items, $ai);
+    gap: var(#{$prefix}-layout-hover-gap, $g);
+    opacity: var(#{$prefix}-layout-hover-opacity, $op);
+    cursor: var(#{$prefix}-layout-hover-cursor, $cur);
   }
 
+  // --- 3. ACTIVE STATE ---
   &:active {
-    display: var(#{$prefix}-layout-active-display, var(#{$prefix}-layout-hover-display, var(#{$prefix}-layout-display, revert)));
-    justify-content: var(#{$prefix}-layout-active-justify-content, var(#{$prefix}-layout-hover-justify-content, var(#{$prefix}-layout-justify-content, revert)));
-    align-items: var(#{$prefix}-layout-active-align-items, var(#{$prefix}-layout-hover-align-items, var(#{$prefix}-layout-align-items, revert)));
-    gap: var(#{$prefix}-layout-active-gap, var(#{$prefix}-layout-hover-gap, var(#{$prefix}-layout-gap, revert)));
-    opacity: var(#{$prefix}-layout-active-opacity, var(#{$prefix}-layout-hover-opacity, var(#{$prefix}-layout-opacity, revert)));
+    display: var(#{$prefix}-layout-active-display, $d);
+    justify-content: var(#{$prefix}-layout-active-justify-content, $jc);
+    align-items: var(#{$prefix}-layout-active-align-items, $ai);
+    gap: var(#{$prefix}-layout-active-gap, $g);
+    opacity: var(#{$prefix}-layout-active-opacity, $op);
   }
 
-  &:focus,
-  &:focus-visible {
-    display: var(#{$prefix}-layout-focus-display, var(#{$prefix}-layout-display, revert));
-    justify-content: var(#{$prefix}-layout-focus-justify-content, var(#{$prefix}-layout-justify-content, revert));
-    align-items: var(#{$prefix}-layout-focus-align-items, var(#{$prefix}-layout-align-items, revert));
-    gap: var(#{$prefix}-layout-focus-gap, var(#{$prefix}-layout-gap, revert));
-    flex-direction: var(#{$prefix}-layout-focus-flex-direction, var(#{$prefix}-layout-flex-direction, revert));
-    opacity: var(#{$prefix}-layout-focus-opacity, var(#{$prefix}-layout-opacity, revert));
-    pointer-events: var(#{$prefix}-layout-focus-pointer-events, var(#{$prefix}-layout-pointer-events, revert));
+  // --- 4. FOCUS STATE ---
+  #{$focus-selectors} {
+    display: var(#{$prefix}-layout-focus-display, $d);
+    justify-content: var(#{$prefix}-layout-focus-justify-content, $jc);
+    align-items: var(#{$prefix}-layout-focus-align-items, $ai);
+    gap: var(#{$prefix}-layout-focus-gap, $g);
   }
 
+  // --- 5. DISABLED STATE ---
   #{$disabled-selectors} {
-    display: var(#{$prefix}-layout-disabled-display, var(#{$prefix}-layout-display, revert));
-    justify-content: var(#{$prefix}-layout-disabled-justify-content, var(#{$prefix}-layout-justify-content, revert));
-    align-items: var(#{$prefix}-layout-disabled-align-items, var(#{$prefix}-layout-align-items, revert));
-    gap: var(#{$prefix}-layout-disabled-gap, var(#{$prefix}-layout-gap, revert));
-    flex-direction: var(#{$prefix}-layout-disabled-flex-direction, var(#{$prefix}-layout-flex-direction, revert));
-    visibility: var(#{$prefix}-layout-disabled-visibility, var(#{$prefix}-layout-visibility, revert));
-    width: var(#{$prefix}-layout-disabled-width, var(#{$prefix}-layout-width, revert));
-    height: var(#{$prefix}-layout-disabled-height, var(#{$prefix}-layout-height, revert));
-    opacity: var(#{$prefix}-layout-disabled-opacity, var(#{$prefix}-layout-opacity, revert));
-    pointer-events: var(#{$prefix}-layout-disabled-pointer-events, var(#{$prefix}-layout-pointer-events, revert));
+    display: var(#{$prefix}-layout-disabled-display, $d);
+    justify-content: var(#{$prefix}-layout-disabled-justify-content, $jc);
+    align-items: var(#{$prefix}-layout-disabled-align-items, $ai);
+    gap: var(#{$prefix}-layout-disabled-gap, $g);
+    opacity: var(#{$prefix}-layout-disabled-opacity, $op);
+    cursor: not-allowed;
+    pointer-events: none;
   }
 }

@@ -54,15 +54,3 @@ export interface AlfAnimateCssInterface {
    */
   type?: AlfAnimationTypeEnum | string;
 }
-
-/**
- * @deprecated Usar AlfAnimateCssInterface para mayor control.
- */
-export interface AlfAnimationConfigInterface {
-  in?: AlfAnimationTypeEnum;
-  out?: AlfAnimationTypeEnum;
-  duration?: number;
-  delay?: number;
-  timingFunction?: AlfTimingFunctionEnum;
-  iterationCount?: number | 'infinite';
-}
