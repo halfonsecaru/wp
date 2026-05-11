@@ -120,14 +120,18 @@ export class AlfButtonsViewer {
       const variant = (palette.title + suffix) as AlfColorVariantEnum;
       const baseConfig = getAlfButtonDefaultConfig(variant);
 
+      // Creamos un label descriptivo (ej: "Primary Outline")
+      const descriptiveLabel = suffix ? `${palette.title} ${suffix}` : palette.title;
+
       return {
         title: palette.title,
         config: {
           ...baseConfig,
+          label: descriptiveLabel,
         },
       };
-
     });
+
   }
 
   private buildPracticalExamples(): ReadonlyArray<{

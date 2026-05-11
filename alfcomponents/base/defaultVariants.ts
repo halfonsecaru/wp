@@ -87,15 +87,16 @@ const BASIC_IDENTITIES: Record<AlfThemeEnum, Record<string, AlfVariantIdentity>>
         [AlfColorVariantEnum.Dark]:      { brand: AlfColorEnum.Black,     hover: AlfColorEnum.Gray900,      ripple: AlfColorEnum.Gray600,   contrast: AlfColorEnum.White },
     },
     [AlfThemeEnum.Dark]: {
-        [AlfColorVariantEnum.Primary]:   { brand: AlfColorEnum.Blue400,   hover: AlfColorEnum.Blue300,      ripple: AlfColorEnum.Blue200,   contrast: AlfColorEnum.Black },
-        [AlfColorVariantEnum.Secondary]: { brand: AlfColorEnum.Gray400,   hover: AlfColorEnum.Gray300,      ripple: AlfColorEnum.Gray500,   contrast: AlfColorEnum.Black },
-        [AlfColorVariantEnum.Success]:   { brand: AlfColorEnum.Green400,  hover: AlfColorEnum.Green300,     ripple: AlfColorEnum.Green200,  contrast: AlfColorEnum.Black },
-        [AlfColorVariantEnum.Danger]:    { brand: AlfColorEnum.Red400,    hover: AlfColorEnum.Red300,       ripple: AlfColorEnum.Red200,    contrast: AlfColorEnum.Black },
-        [AlfColorVariantEnum.Warning]:   { brand: AlfColorEnum.Yellow400, hover: AlfColorEnum.Yellow300,    ripple: AlfColorEnum.Orange200, contrast: AlfColorEnum.Black },
-        [AlfColorVariantEnum.Info]:      { brand: AlfColorEnum.Cyan400,   hover: AlfColorEnum.Cyan300,      ripple: AlfColorEnum.Cyan200,   contrast: AlfColorEnum.Black },
-        [AlfColorVariantEnum.Light]:     { brand: AlfColorEnum.Gray700,   hover: AlfColorEnum.Gray600,      ripple: AlfColorEnum.Gray500,   contrast: AlfColorEnum.White },
-        [AlfColorVariantEnum.Dark]:      { brand: AlfColorEnum.White,     hover: AlfColorEnum.Gray100,      ripple: AlfColorEnum.Gray300,   contrast: AlfColorEnum.Black },
+        [AlfColorVariantEnum.Primary]:   { brand: AlfColorEnum.Primary,   hover: AlfColorEnum.PrimaryHover, ripple: AlfColorEnum.Blue200,   contrast: AlfColorEnum.Black },
+        [AlfColorVariantEnum.Secondary]: { brand: AlfColorEnum.Secondary, hover: AlfColorEnum.SecondaryHover, ripple: AlfColorEnum.Gray500,   contrast: AlfColorEnum.Black },
+        [AlfColorVariantEnum.Success]:   { brand: AlfColorEnum.Success,   hover: AlfColorEnum.SuccessHover, ripple: AlfColorEnum.Green200,  contrast: AlfColorEnum.Black },
+        [AlfColorVariantEnum.Danger]:    { brand: AlfColorEnum.Danger,    hover: AlfColorEnum.DangerHover,  ripple: AlfColorEnum.Red200,    contrast: AlfColorEnum.Black },
+        [AlfColorVariantEnum.Warning]:   { brand: AlfColorEnum.Warning,   hover: AlfColorEnum.WarningHover, ripple: AlfColorEnum.Orange200, contrast: AlfColorEnum.Black },
+        [AlfColorVariantEnum.Info]:      { brand: AlfColorEnum.Info,      hover: AlfColorEnum.InfoHover,    ripple: AlfColorEnum.Cyan200,   contrast: AlfColorEnum.Black },
+        [AlfColorVariantEnum.Light]:     { brand: AlfColorEnum.Light,     hover: AlfColorEnum.LightHover,   ripple: AlfColorEnum.Gray500,   contrast: AlfColorEnum.White },
+        [AlfColorVariantEnum.Dark]:      { brand: AlfColorEnum.Dark,      hover: AlfColorEnum.DarkHover,    ripple: AlfColorEnum.Gray300,   contrast: AlfColorEnum.Black },
     },
+
     [AlfThemeEnum.HighContrast]: {
         [AlfColorVariantEnum.Primary]:   { brand: AlfColorEnum.Black,     hover: AlfColorEnum.Gray900,      ripple: AlfColorEnum.White,     contrast: AlfColorEnum.White },
         [AlfColorVariantEnum.Secondary]: { brand: AlfColorEnum.White,     hover: AlfColorEnum.Gray100,      ripple: AlfColorEnum.Black,     contrast: AlfColorEnum.Black },
@@ -397,13 +398,14 @@ const buildPaddingConfig = (): AlfPaddingInterface => ({
  * @param overrideColor Color opcional para forzar el texto (útil en outlines).
  */
 const buildTextStyleConfig = (variant: AlfColorVariantEnum, isSolid: boolean, overrideColor?: AlfColorEnum): AlfTextStyleInterface => {
-    const identity = BASIC_IDENTITIES[AlfThemeEnum.Light][variant];
+    const identity = getVariantIdentity(variant);
     const brandColor = variant === AlfColorVariantEnum.Light || variant === AlfColorVariantEnum.LightOutline ? AlfColorEnum.Gray700 : (identity?.brand ?? AlfColorEnum.Gray600);
     
     // El color final: prioridad override -> (isSolid ? contraste : brand)
     const color = overrideColor ?? (isSolid 
         ? (variant === AlfColorVariantEnum.Light ? AlfColorEnum.Gray900 : (identity?.contrast ?? AlfColorEnum.White)) 
         : brandColor);
+
 
     return {
         default: { ...buildTextStyleBaseConfig(), color },
@@ -421,9 +423,10 @@ const buildTextStyleConfig = (variant: AlfColorVariantEnum, isSolid: boolean, ov
  * @param overrideColor Color opcional para forzar la tipografía (útil en outlines).
  */
 const buildTypographyConfig = (variant: AlfColorVariantEnum, overrideColor?: AlfColorEnum): AlfTypographyInterface => {
-    const identity = BASIC_IDENTITIES[AlfThemeEnum.Light][variant];
+    const identity = getVariantIdentity(variant);
     const isLight = variant === AlfColorVariantEnum.Light || variant === AlfColorVariantEnum.LightOutline;
     const color = overrideColor ?? (isLight ? AlfColorEnum.Gray700 : (identity?.brand ?? AlfColorEnum.Gray600));
+
 
     return {
         default: { ...buildTypographyBaseConfig(), color },
@@ -473,6 +476,41 @@ export const ALF_RIPPLE_DEFAULT: AlfRippleInterface = {
     duration: 1000,
     enabled: true
 };
+
+/**
+ * Extrae la variante base (familia) de una variante decorativa.
+ * Ej: 'outline-primary' -> 'primary'
+ */
+const extractBaseVariant = (variant: AlfColorVariantEnum): AlfColorVariantEnum => {
+    const v = variant as string;
+    if (v.startsWith('outline-')) return v.replace('outline-', '') as any;
+    if (v.startsWith('soft-'))    return v.replace('soft-', '')    as any;
+    if (v.startsWith('ghost-'))   return v.replace('ghost-', '')   as any;
+    if (v.startsWith('crystal-')) return v.replace('crystal-', '') as any;
+    if (v.startsWith('depth-'))   return v.replace('depth-', '')   as any;
+    if (v.startsWith('gradient-')) return v.replace('gradient-', '') as any;
+    return variant;
+};
+
+
+/**
+ * Obtiene la identidad de una variante de forma segura.
+ * Prioriza la variante específica antes de buscar por familia base.
+ */
+const getVariantIdentity = (variant: AlfColorVariantEnum): AlfVariantIdentity => {
+    // 1. Prioridad absoluta: Buscamos si existe la identidad específica (ej: 'outline-success')
+    const specific = BASIC_IDENTITIES[AlfThemeEnum.Light][variant];
+    if (specific) return specific;
+
+    // 2. Fallback inteligente: Buscamos por familia (ej: 'success')
+    const base = extractBaseVariant(variant);
+    const family = BASIC_IDENTITIES[AlfThemeEnum.Light][base];
+    if (family) return family;
+
+    // 3. Fallback de seguridad: Si nada existe, usamos Primary
+    return BASIC_IDENTITIES[AlfThemeEnum.Light][AlfColorVariantEnum.Primary];
+};
+
 
 // ── CONSTRUCTORES BASE: El ADN neutro del sistema ───────────────────────
 
