@@ -1,124 +1,192 @@
-import { Component, computed, input, model, output, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  ElementRef,
+  inject,
+  input,
+  model,
+  output,
+  signal,
+  ViewEncapsulation
+} from '@angular/core';
 import { AlfBaseConfiguration } from '@alfcomponents/base/alf-base-configuration';
-import { AlfBaseCommonConfigInterface } from '@alfcomponents/interfaces';
 import { generateUniqueId, visualprefixEnum } from '@alfcomponents/shared';
-import { AlfRadioButtonInterface } from './interfaces/alf-radio-button.interface';
-import { AlfRadioButtonVariantEnum, AlfColorVariantEnum, AlfSizeEnum } from '@alfcomponents/enums';
-import { ALF_RADIO_BUTTON_DEFAULT, getAlfRadioButtonDefaultConfig } from './predefined/alf-radio-button.predefined';
+import {
+  AlfRadioButtonVariantEnum,
+  AlfColorVariantEnum,
+  AlfSizeEnum
+} from '@alfcomponents/enums';
 import { AlfRippleDirective, AlfTooltipTextDirective } from '@alfcomponents/directives';
+import { AlfRadioButtonInterface } from './interfaces/alf-radio-button.interface';
+import {
+  getAlfRadioButtonDefaultConfig,
+} from './predefined/alf-radio-button.predefined';
 
+/**
+ * AlfRadioButton Component
+ * ✅ Elite Design System Standard.
+ * ✅ Reactive Signals (input, model, computed).
+ * ✅ Centralized Visual Engine Integration.
+ */
 @Component({
   selector: 'alf-radio-button',
   standalone: true,
   imports: [AlfTooltipTextDirective, AlfRippleDirective],
   templateUrl: './alf-radio-button.html',
   styleUrl: './alf-radio-button.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
 export class AlfRadioButton extends AlfBaseConfiguration<AlfRadioButtonInterface> {
-  // **** General Configuration **** //
-  protected override readonly visualPrefix = visualprefixEnum.RadioButton;
-  protected readonly internalId = generateUniqueId({ prefix: 'alf-rb' });
+  // ── 1. Attributes ─────────────────────────────────────────────────────────
 
-  // **** Inputs & Models **** //
-  /** Choosing a predefined style (Primary, Secondary, OutlinePrimary, etc.) */
-  public readonly variant = input<string | AlfColorVariantEnum>(undefined, { alias: 'variant' });
+  protected override readonly visualPrefix: string = visualprefixEnum.RadioButton;
+  protected readonly internalId: string = generateUniqueId({ prefix: 'alf-rb' });
 
-  /** Direct user configuration. */
-  public override readonly inputConfig = input<AlfRadioButtonInterface>(ALF_RADIO_BUTTON_DEFAULT, { alias: 'config' });
+  private readonly el: ElementRef = inject(ElementRef);
+
+  // ── 2. Signals (Inputs & Models) ──────────────────────────────────────────
+
+  /** Choosing a predefined style (Primary, Secondary, etc.) - Supports base and local naming */
+  public readonly variant = input<AlfColorVariantEnum | undefined>(undefined);
+
+  /** Direct user configuration (Elite Standard) */
+  public override readonly inputConfig = input<AlfRadioButtonInterface>(undefined, { alias: 'config' });
 
   /** Two-way binding for the checked state */
   public readonly checked = model<boolean>(false);
 
   /** Associated value */
   public readonly value = input<any>(undefined);
+
   /** Native name attribute for grouping */
   public readonly name = input<string>(undefined);
 
-  /** Visual style (Elegant, Standard) */
+  /** Specific radio style (Elegant vs Standard) */
   public readonly radioButtonStyle = input<AlfRadioButtonVariantEnum>();
-  /** Label text */
+
+  /** Label text for the radio button */
   public readonly label = input<string>();
-  /** Radio size */
+
+  /** Dimension scale (XS to 2XL) */
   public readonly size = input<AlfSizeEnum>();
 
-  // **** State Signals **** //
+  /** Reactive error message */
+  public readonly error = input<string>();
+
+  /** Reactive helper text */
+  public readonly helperText = input<string>();
+
+  // ── 3. State Signals ──────────────────────────────────────────────────────
+
   public readonly focused = signal<boolean>(false);
   public readonly hovered = signal<boolean>(false);
 
-  // **** Computed Properties **** //
-  /** 
-   * Configuración predefinida basada en la variante elegida.
-   */
-  protected readonly predefinedConfig = computed(() => {
-    const v = this.variant();
-    if (!v) return ALF_RADIO_BUTTON_DEFAULT;
+  // ── 4. Computed (Reactive Engine) ─────────────────────────────────────────
 
-    let variantEnum = AlfColorVariantEnum.Transparent;
-    if (typeof v === 'string') {
-      const normalized = v.toLowerCase().replace(/-([a-z])/g, (g) => g[1].toUpperCase());
-      const key = normalized.charAt(0).toUpperCase() + normalized.slice(1);
-      variantEnum = (AlfColorVariantEnum as any)[key] ?? AlfColorVariantEnum.Secondary;
-    } else {
-      variantEnum = v;
+  /**
+   * Final configuration merge.
+   * Resolves hierarchy: Inputs > InputConfig > Design System Defaults.
+   */
+  public readonly finalConfig = computed<AlfRadioButtonInterface>(() => {
+    const rawV = (this.colorVariant() ?? this.variant() ?? this.inputConfig()?.colorVariant) as string;
+    
+    // Mapeo manual ultra-robusto para las variantes core si vienen como string
+    let v: AlfColorVariantEnum | undefined;
+    if (rawV) {
+      const lowerV = rawV.toLowerCase();
+      const coreVariants: Record<string, AlfColorVariantEnum> = {
+        primary: AlfColorVariantEnum.Primary,
+        secondary: AlfColorVariantEnum.Secondary,
+        success: AlfColorVariantEnum.Success,
+        danger: AlfColorVariantEnum.Danger,
+        warning: AlfColorVariantEnum.Warning,
+        info: AlfColorVariantEnum.Info,
+        light: AlfColorVariantEnum.Light,
+        dark: AlfColorVariantEnum.Dark,
+        transparent: AlfColorVariantEnum.Transparent
+      };
+      
+      v = coreVariants[lowerV] ?? (rawV as AlfColorVariantEnum);
     }
 
-    return getAlfRadioButtonDefaultConfig(variantEnum);
-  });
-
-  /** 
-   * Single Source of Truth for configuration.
-   * Merges: Individual Inputs > inputConfig Object > Predefined Variant > Default Global Config
-   */
-  public override readonly resolvedConfig = computed(() => {
-    const variantConfig = this.predefinedConfig();
-    const config = this.inputConfig();
-    
-    // 2. Merge all sources following priority
-    const merged: AlfRadioButtonInterface = {
-      ...variantConfig,
-      ...config,
-      // Direct inputs override everything else
-      radioButtonStyle: this.radioButtonStyle() ?? config?.radioButtonStyle ?? variantConfig.radioButtonStyle,
-      label: this.label() ?? config?.label ?? variantConfig.label,
-      size: this.size() ?? config?.size ?? variantConfig.size,
-      value: this.value() ?? config?.value ?? variantConfig.value,
-      name: this.name() ?? config?.name ?? variantConfig.name,
-      disabled: this.disabled() ?? config?.disabled ?? variantConfig.disabled,
+    const cfg = {
+      ...getAlfRadioButtonDefaultConfig(v),
+      ...this.inputConfig(),
     };
 
-    return merged;
+    return {
+      ...cfg,
+      radioButtonStyle: this.radioButtonStyle() ?? cfg?.radioButtonStyle,
+      label: this.label() ?? cfg?.label,
+      size: this.size() ?? cfg?.size,
+      value: this.value() ?? cfg?.value,
+      name: this.name() ?? cfg?.name,
+      error: this.error() ?? cfg?.error,
+      helperText: this.helperText() ?? cfg?.helperText,
+      disabled: this.disabled() ?? cfg?.disabled,
+      checked: this.checked(),
+    };
   });
 
-  /** Resolves if it's disabled (Bridge with base class) */
-  public readonly isDisabled = computed(() => 
+  /** Syncs with AlfBaseConfiguration resolvedConfig */
+  public override readonly resolvedConfig = this.finalConfig;
+
+  /** Resolves the effective radio style */
+  public readonly radioButtonStyleComputed = computed<AlfRadioButtonVariantEnum>(
+    () => this.resolvedConfig()?.radioButtonStyle ?? AlfRadioButtonVariantEnum.Elegant
+  );
+
+  /** Resolves the visible label */
+  public readonly labelComputed = computed<string>(() => this.resolvedConfig()?.label ?? '');
+
+  /** Resolves the label positioning (before/after) */
+  public readonly labelPositionComputed = computed<'before' | 'after'>(
+    () => this.resolvedConfig()?.labelPosition ?? 'after'
+  );
+
+  /** Resolves the dimension scale */
+  public readonly sizeComputed = computed<AlfSizeEnum>(() => this.resolvedConfig()?.size ?? AlfSizeEnum.MD);
+
+  /** Resolves if it's disabled */
+  public readonly isComponentDisabled = computed(() => 
     this.disabledComputed() || (this.resolvedConfig()?.disabled ?? false)
   );
 
-  // **** Outputs **** //
-  /** Emits when the radio button is selected. Emits its value. */
-  public readonly change = output<any>();
+  // ── 5. Outputs ────────────────────────────────────────────────────────────
 
-  // **** Handlers **** //
+  /** Emits when the radio button is selected. Emits its value. */
+  public readonly onCheckedChange = output<any>();
+
+  // ── 6. Handlers (Arrow Functions) ─────────────────────────────────────────
+
+  /**
+   * Selects the radio button.
+   */
+  public readonly select = (): void => {
+    if (this.isComponentDisabled() || this.checked()) return;
+
+    this.checked.set(true);
+    this.onCheckedChange.emit(this.value() ?? this.resolvedConfig()?.value);
+  };
+
   /** Handles the change event from the native input */
   public readonly onInputChange = (event: Event): void => {
-    if (this.isDisabled()) return;
-    
-    // In a radio button, change only fires when it becomes checked
-    this.checked.set(true);
-    this.change.emit(this.value() ?? this.resolvedConfig()?.value);
+    if (this.isComponentDisabled()) return;
+    this.select();
   };
 
-  /** Selects the radio button programmatically */
-  public readonly select = (): void => {
-    if (this.isDisabled() || this.checked()) return;
-    
-    this.checked.set(true);
-    this.change.emit(this.value() ?? this.resolvedConfig()?.value);
+  /** Click handler for the label wrapper */
+  protected readonly onLabelClick = (event: Event): void => {
+    if (this.isComponentDisabled()) return;
+    event.preventDefault();
+    this.select();
   };
 
-  /** Accessibility keyboard handler */
-  public readonly onInputKeydown = (event: KeyboardEvent): void => {
-    if (this.isDisabled()) return;
+  /** Keyboard support (Space/Enter) */
+  protected readonly onInputKeydown = (event: KeyboardEvent): void => {
+    if (this.isComponentDisabled()) return;
     if (event.key === ' ' || event.key === 'Enter') {
       event.preventDefault();
       this.select();

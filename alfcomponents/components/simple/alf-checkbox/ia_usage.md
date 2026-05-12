@@ -1,47 +1,57 @@
-# AI Usage Guide: AlfCheckbox
+# AI Usage Guide: AlfCheckbox (Elite Standard)
 
-AlfCheckbox is an Elite component designed for high-performance and premium aesthetics. It uses the `AlfBaseConfiguration` pattern for visual consistency.
+This document describes how to use and extend the `alf-checkbox` component safely from an AI assistant, following the project's technical rigor.
 
-## Implementation Details
+## Current Architecture
 
-- **Inheritance**: Extends `AlfBaseConfiguration<AlfCheckboxInterface>`.
-- **State Management**: Uses Angular Signals `model()` for two-way binding (`checked`, `indeterminate`).
-- **Visual Engine**: Uses `visualPrefix = '--alf-cb'` to map CSS variables.
-- **Variants**: Supports `Solid`, `Outlined`, `Standard`, `Soft`, and `Crystal` prefixes in the `variant` input.
-- **Validation**: Built-in support for `helperText` and `error` messages.
+- **Component**: `alfcomponents/components/simple/alf-checkbox/alf-checkbox.ts`
+- **Core Engine**: Fully integrated with `alfcomponents/base/defaultVariants.ts` via `resolveVariantConfig`.
+- **Styling**: Dual strategy using SCSS (layout) and CSS Variables (`AlfColorEnum`) for dynamic theming.
+- **Signals**: Native Angular 21 Signals (`input`, `model`, `computed`) for full reactivity and Zoneless support.
 
+## Recommended Usage
 
-## Style Variants (checkboxStyle)
+### 1. Predefined Configuration
+Always use the factory to get system defaults:
+```ts
+import { getAlfCheckboxDefaultConfig } from './predefined/alf-checkbox.predefined';
 
-- `AlfCheckboxVariantEnum.Elegant`: Default circular neumorphic style.
-- `AlfCheckboxVariantEnum.Standard`: Classic square style.
-- `AlfCheckboxVariantEnum.Moving`: Advanced animation where the box expands into the wrapper.
-
-## Code Snippets for IAs
-
-### Simple Toggle
-```typescript
-@Component({
-  imports: [AlfCheckbox],
-  template: `<alf-checkbox [(checked)]="isActive" label="Status"></alf-checkbox>`
-})
-export class MyComp {
-  isActive = signal(false);
-}
+const config = getAlfCheckboxDefaultConfig(AlfColorVariantEnum.Success);
 ```
 
-### Advanced Config
-```typescript
-const myConfig: AlfCheckboxInterface = {
-  checkboxStyle: AlfCheckboxVariantEnum.Moving,
-  colorVariant: AlfColorVariantEnum.Success,
-  label: 'Accept Terms',
-  error: 'Field required'
-};
+### 2. Implementation Example
+```html
+<alf-checkbox
+  [(checked)]="termsAccepted"
+  [label]="'Accept terms and conditions'"
+  [variant]="AlfColorVariantEnum.Primary"
+/>
 ```
 
-## Internal Structure
-- `div.alf-cb`: Main container, applies layout/margin styles.
-- `label.alf-cb-wrapper`: Clickable area, handles gap and orientation.
-- `div.alf-cb-box`: The visual box, applies background/border/shadow styles.
-- `span.alf-cb-icon`: Displays checkmark or indeterminate symbol.
+## Technical Rules (Mandatory)
+
+- **Modifiers**: NEVER omit access modifiers (`public`, `private`, `protected`).
+- **Readonly**: All signals and injected dependencies MUST be `readonly`.
+- **Arrow Functions**: All class methods MUST be arrow functions to preserve `this`.
+- **Signals**: Use `model()` for two-way bindings like `checked` and `indeterminate`.
+- **Hierarchy**: The component resolves properties using: `Individual Inputs > inputConfig > Factory Defaults`.
+
+## State Management
+
+- `checked`: `model<boolean>` - Controls the checkmark state.
+- `indeterminate`: `model<boolean>` - Displays a "mixed" dash state. Setting `checked` manually resets this to `false`.
+- `disabled`: `input<boolean>` - Inherited from `AlfBaseConfiguration`.
+
+## Events
+
+- `onCheckedChange`: `output<boolean>` - Emits the new state after a toggle.
+
+## Refactoring Status
+- [x] Standardized Directory Structure
+- [x] Inherits from `AlfBaseCommonConfigInterface`
+- [x] Integrated with Elite Visual Engine
+- [x] CSS Variables with fallbacks
+- [x] Readonly signals and arrow functions
+
+---
+*Technical reference for AI agents.*

@@ -1,33 +1,39 @@
+<!-- 1. Comportamiento y Directivas -->
 @let tooltip = tooltipComputed();
 @let ripple = rippleComputed();
-@let backgroundsStyle = createBackgroundsStyle();
 @let cursor = cursorComputed();
-@let isComponentDisabled = isDisabled();
-@let idCheckbox = internalId;
-@let labelText = labelComputed();
-@let labelPos = labelPositionComputed();
-@let aria = ariaComputed();
+
+<!-- 2. Estilos del Motor Élite -->
+@let backgroundsStyle = createBackgroundsStyle();
 @let borderStyle = createBorderStyle();
-@let displayAndLayoutStyle = createDisplayAndLayoutStyle();
-@let marginStyle = createMarginStyle();
-@let outlineStyle = createOutlineStyle();
 @let paddingStyle = createPaddingStyle();
 @let shadowsStyle = createShadowsStyle();
 @let typographyStyle = createTypographyStyle();
 @let textStyle = createTextStyle();
 @let transformStyle = createTransformStyle();
 @let animationsStyle = createAnimationsStyle();
+@let displayAndLayoutStyle = createDisplayAndLayoutStyle();
+@let marginStyle = createMarginStyle();
+@let outlineStyle = createOutlineStyle();
+
+<!-- 3. Metadatos y Personalización -->
 @let animationsClass = animationsClassComputed();
 @let customClass = customClassComputed();
 @let customStyle = customStyleComputed();
 
+<!-- 4. Estado Core del Checkbox -->
+@let isComponentDisabled = disabledComputed();
+@let idCheckbox = internalId;
+@let labelText = labelComputed();
+@let labelPos = labelPositionComputed();
+@let aria = ariaComputed();
 @let isChecked = checked();
 @let isIndeterminate = indeterminate();
 @let size = sizeComputed();
 @let styleVariant = checkboxStyleComputed();
 @let icon = displayIcon();
 
-<div 
+<div
   class="alf-cb"
   [class]="'alf-cb--' + styleVariant + ' alf-cb--' + size + ' ' + customClass + ' ' + animationsClass"
   [class.alf-cb--checked]="isChecked"
@@ -36,21 +42,28 @@
   [style]="
     backgroundsStyle + 
     borderStyle + 
-    marginStyle + 
-    displayAndLayoutStyle + 
+    paddingStyle + 
+    shadowsStyle + 
     typographyStyle + 
     textStyle + 
+    displayAndLayoutStyle + 
+    marginStyle + 
+    outlineStyle + 
+    transformStyle + 
     animationsStyle + 
     customStyle
   "
 >
-  <label 
+  <label
     class="alf-cb-wrapper"
     [class.alf-cb-wrapper--label-before]="labelPos === 'before'"
     [attr.for]="idCheckbox"
     [style.cursor]="isComponentDisabled ? 'not-allowed' : cursor"
+    (click)="onLabelClick($event)"
   >
-    <input 
+
+    <!-- Input oculto para accesibilidad y estado -->
+    <input
       type="checkbox"
       hidden
       [id]="idCheckbox"
@@ -61,28 +74,34 @@
       [attr.aria-checked]="isIndeterminate ? 'mixed' : isChecked"
       [attr.aria-label]="aria?.ariaLabel || labelText"
       [attr.aria-describedby]="aria?.ariaDescribedBy || (idCheckbox + '-description')"
-    >
+    />
 
+    <!-- Contenedor Visual (Box) -->
     <div 
-      class="alf-cb-box"
-      [alfRipple]="ripple"
+      class="alf-cb-box" 
+      [alfRipple]="ripple" 
       [alfTooltipText]="tooltip"
-      [style]="paddingStyle + shadowsStyle + transformStyle"
+      [style]="
+        backgroundsStyle + 
+        borderStyle + 
+        paddingStyle + 
+        shadowsStyle + 
+        transformStyle
+      "
     >
       @if (isIndeterminate || (isChecked && resolvedConfig()?.iconSelected)) {
         <span class="alf-cb-icon">{{ icon }}</span>
       } @else if (isChecked) {
-        <div>
+        <div class="alf-cb-svg-wrapper">
           @switch (styleVariant) {
             @case ('standard') {
               <svg class="std-svg" viewBox="0 0 24 24">
-                <path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                <path d="M5 13l4 4L19 7"></path>
               </svg>
             }
-  
             @default {
               <svg class="elegant-svg" viewBox="0 0 24 24">
-                <path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                <path d="M5 13l4 4L19 7"></path>
               </svg>
             }
           }
@@ -90,20 +109,23 @@
       }
     </div>
 
+    <!-- Texto del Label -->
     @if (labelText) {
-      <span class="alf-cb-label-text">
-        {{ labelText }}
-      </span>
+      <span class="alf-cb-label-text">{{ labelText }}</span>
     }
   </label>
 </div>
 
-@if (resolvedConfig()?.helperText || resolvedConfig()?.error) {
+<!-- Helper y Errores -->
+@let helper = resolvedConfig()?.helperText;
+@let errorMsg = resolvedConfig()?.error;
+
+@if (helper || errorMsg) {
   <div [id]="idCheckbox + '-description'" class="alf-cb-description">
-    @if (resolvedConfig()?.error) {
-      <span class="alf-cb-error">{{ resolvedConfig()?.error }}</span>
+    @if (errorMsg) {
+      <span class="alf-cb-error">{{ errorMsg }}</span>
     } @else {
-      <span class="alf-cb-helper">{{ resolvedConfig()?.helperText }}</span>
+      <span class="alf-cb-helper">{{ helper }}</span>
     }
   </div>
 }

@@ -37,19 +37,16 @@
   $brbr: var(#{$prefix}-border-bottom-right-radius, $br);
   $brbl: var(#{$prefix}-border-bottom-left-radius, $br);
 
-  border-width: $bw;
   border-top-width: $bwt;
   border-right-width: $bwr;
   border-bottom-width: $bwb;
   border-left-width: $bwl;
 
-  border-style: $bs;
   border-top-style: $bst;
   border-right-style: $bsr;
   border-bottom-style: $bsb;
   border-left-style: $bsl;
 
-  border-color: $bc;
   border-top-color: $bct;
   border-right-color: $bcr;
   border-bottom-color: $bcb;

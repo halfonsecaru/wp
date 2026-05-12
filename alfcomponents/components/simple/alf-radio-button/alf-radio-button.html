@@ -1,33 +1,36 @@
+<!-- 1. Comportamiento y Directivas -->
 @let tooltip = tooltipComputed();
 @let ripple = rippleComputed();
-@let backgroundsStyle = createBackgroundsStyle();
 @let cursor = cursorComputed();
-@let isComponentDisabled = isDisabled();
-@let idRadio = internalId;
 
-@let config = resolvedConfig();
-@let labelText = config.label;
-@let labelPos = config.labelPosition || 'after';
-@let isChecked = checked();
-@let size = config.size || 'md';
-@let styleVariant = config.radioButtonStyle || 'elegant';
-@let radioName = config.name;
-
-@let aria = ariaComputed();
+<!-- 2. Estilos del Motor Élite -->
+@let backgroundsStyle = createBackgroundsStyle();
 @let borderStyle = createBorderStyle();
-@let displayAndLayoutStyle = createDisplayAndLayoutStyle();
-@let marginStyle = createMarginStyle();
-@let outlineStyle = createOutlineStyle();
 @let paddingStyle = createPaddingStyle();
 @let shadowsStyle = createShadowsStyle();
 @let typographyStyle = createTypographyStyle();
 @let textStyle = createTextStyle();
 @let transformStyle = createTransformStyle();
 @let animationsStyle = createAnimationsStyle();
+@let displayAndLayoutStyle = createDisplayAndLayoutStyle();
+@let marginStyle = createMarginStyle();
+@let outlineStyle = createOutlineStyle();
+
+<!-- 3. Metadatos y Personalización -->
 @let animationsClass = animationsClassComputed();
 @let customClass = customClassComputed();
 @let customStyle = customStyleComputed();
 
+<!-- 4. Estado Core del Radio -->
+@let isRadioButtonDisabled = isComponentDisabled();
+@let idRadio = internalId;
+@let labelText = labelComputed();
+@let labelPos = labelPositionComputed();
+@let aria = ariaComputed();
+@let isChecked = checked();
+@let size = sizeComputed();
+@let styleVariant = radioButtonStyleComputed();
+@let radioName = name();
 @let isHovered = hovered();
 @let isFocused = focused();
 
@@ -35,7 +38,7 @@
   class="alf-rb"
   [class]="'alf-rb--' + styleVariant + ' alf-rb--' + size + ' ' + customClass + ' ' + animationsClass"
   [class.alf-rb--checked]="isChecked"
-  [class.alf-rb--disabled]="isComponentDisabled"
+  [class.alf-rb--disabled]="isRadioButtonDisabled"
   [class.alf-rb--hovered]="isHovered"
   [class.alf-rb--focused]="isFocused"
   (mouseenter)="hovered.set(true)"
@@ -50,7 +53,6 @@
     shadowsStyle + 
     typographyStyle + 
     textStyle + 
-    transformStyle +
     animationsStyle +
     customStyle
   "
@@ -59,16 +61,17 @@
     class="alf-rb-wrapper"
     [class.alf-rb-wrapper--label-before]="labelPos === 'before'"
     [attr.for]="idRadio"
-    [style.cursor]="isComponentDisabled ? 'not-allowed' : cursor"
+    [style.cursor]="isRadioButtonDisabled ? 'not-allowed' : cursor"
+    (click)="onLabelClick($event)"
   >
+    <!-- Input oculto para accesibilidad y estado -->
     <input 
       type="radio"
-      class="alf-rb-input"
+      hidden
       [id]="idRadio"
       [name]="radioName"
-      [disabled]="isComponentDisabled"
+      [disabled]="isRadioButtonDisabled"
       [checked]="isChecked"
-      [tabindex]="isComponentDisabled ? -1 : 0"
       (change)="onInputChange($event)"
       (keydown)="onInputKeydown($event)"
       (focus)="focused.set(true)"
@@ -78,15 +81,24 @@
       [attr.aria-describedby]="aria?.ariaDescribedBy || (idRadio + '-description')"
     >
 
+    <!-- Contenedor Visual (Circle) -->
     <div 
       class="alf-rb-circle"
       [alfRipple]="ripple"
       [alfTooltipText]="tooltip"
+      [style]="
+        backgroundsStyle + 
+        borderStyle + 
+        paddingStyle + 
+        shadowsStyle + 
+        transformStyle
+      "
     >
       <div class="alf-rb-ripple-bg"></div>
       <div class="alf-rb-dot"></div>
     </div>
 
+    <!-- Texto del Label -->
     @if (labelText) {
       <span class="alf-rb-label-text">
         {{ labelText }}
@@ -95,12 +107,17 @@
   </label>
 </div>
 
-@if (config.helperText || config.error) {
+<!-- Helper y Errores -->
+@let helper = resolvedConfig()?.helperText;
+@let errorMsg = resolvedConfig()?.error;
+
+@if (helper || errorMsg) {
   <div [id]="idRadio + '-description'" class="alf-rb-description">
-    @if (config.error) {
-      <span class="alf-rb-error">{{ config.error }}</span>
+    @if (errorMsg) {
+      <span class="alf-rb-error">{{ errorMsg }}</span>
     } @else {
-      <span class="alf-rb-helper">{{ config.helperText }}</span>
+      <span class="alf-rb-helper">{{ helper }}</span>
     }
   </div>
 }
+

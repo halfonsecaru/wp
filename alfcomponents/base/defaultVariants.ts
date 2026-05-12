@@ -698,8 +698,13 @@ const ghost = (variant: AlfColorVariantEnum, text: AlfColorEnum, hoverBg: AlfCol
 export const resolveVariantConfig = (
     variant?: AlfColorVariantEnum
 ): PredefinedConfig => {
-    const v = resolveAlfColorVariant(variant);
 
+    if(!variant){
+        variant = AlfColorVariantEnum.Transparent;
+    }
+
+    const v = resolveAlfColorVariant(variant);
+    
     switch (v) {
         // FAMILY: PRIMARY
         case AlfColorVariantEnum.Primary:
@@ -813,7 +818,12 @@ export const resolveVariantConfig = (
         case AlfColorVariantEnum.LightCrystal:   
             return crystal(v, AlfColorEnum.LightCrystal, AlfColorEnum.LightCrystalHover, AlfColorEnum.Gray600);
 
+        case AlfColorVariantEnum.Transparent:
+            return ghost(v, AlfColorEnum.Secondary, AlfColorEnum.Transparent);
+
+
         default:
+
             return solid(v, AlfColorEnum.Secondary, AlfColorEnum.SecondaryHover);
     }
 };

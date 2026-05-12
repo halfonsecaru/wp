@@ -4,7 +4,8 @@
  */
 @mixin alf-transform-css-vars(
   $prefix,
-  $disabled-selectors: '&[disabled], &:disabled, &.disabled'
+  $disabled-selectors: '&[disabled], &:disabled, &.disabled',
+  $focus-selectors: '&:focus, &:focus-visible'
 ) {
   transform: var(#{$prefix}-transform-transform, none);
   perspective: var(#{$prefix}-transform-perspective, none);
@@ -25,13 +26,13 @@
     backface-visibility: var(#{$prefix}-transform-active-backface-visibility, var(#{$prefix}-transform-hover-backface-visibility, var(#{$prefix}-transform-backface-visibility, visible)));
   }
 
-  &:focus,
-  &:focus-visible {
+  #{$focus-selectors} {
     transform: var(#{$prefix}-transform-focus-transform, var(#{$prefix}-transform-transform, none));
     perspective: var(#{$prefix}-transform-focus-perspective, var(#{$prefix}-transform-perspective, none));
     transform-style: var(#{$prefix}-transform-focus-transform-style, var(#{$prefix}-transform-transform-style, flat));
     backface-visibility: var(#{$prefix}-transform-focus-backface-visibility, var(#{$prefix}-transform-backface-visibility, visible));
   }
+
 
   #{$disabled-selectors} {
     transform: var(#{$prefix}-transform-disabled-transform, var(#{$prefix}-transform-transform, none));

@@ -1,11 +1,11 @@
-import {
-  AlfColorVariantEnum,
-  AlfSizeEnum,
-  AlfCheckboxVariantEnum,
+import { 
+  AlfColorVariantEnum, 
+  AlfSizeEnum, 
+  AlfCheckboxVariantEnum, 
+  AlfColorEnum
 } from '@alfcomponents/enums';
 import { AlfCheckboxInterface } from '../interfaces/alf-checkbox.interface';
 import { resolveVariantConfig } from '@alfcomponents/base/defaultVariants';
-
 
 /**
  * Default base configuration for the alf-checkbox component.
@@ -21,19 +21,18 @@ export const ALF_CHECKBOX_DEFAULT: AlfCheckboxInterface = {
 
 /**
  * Elite Factory for Checkboxes.
- * Mirrors the AlfButton pattern for complete visual consistency across the system.
+ * Resolves the complete visual configuration from the central engine.
  */
 export const getAlfCheckboxDefaultConfig = (
-  variant: AlfColorVariantEnum
+  variant?: AlfColorVariantEnum
 ): AlfCheckboxInterface => {
-
-  const variantConfig = resolveVariantConfig(variant);
+  // If no variant is provided, we default to Transparent to keep it clean
+  const v = variant ?? AlfColorVariantEnum.Secondary;
+  const variantConfig = resolveVariantConfig(v);
+  
   return {
     ...ALF_CHECKBOX_DEFAULT,
-    colorVariant: variant,
     ...variantConfig,
-    // border: generateBorders(styleKind, variant),
-    // typography: generateTypography(variant),
-    // textStyle: generateTextStyle(styleKind, variant),
+    colorVariant: v,
   };
 };

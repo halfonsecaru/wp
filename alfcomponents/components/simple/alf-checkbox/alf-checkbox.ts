@@ -7,7 +7,8 @@ import {
   inject,
   input,
   model,
-  output
+  output,
+  ViewEncapsulation
 } from '@angular/core';
 import { AlfBaseConfiguration } from '@alfcomponents/base/alf-base-configuration';
 import { generateUniqueId, visualprefixEnum } from '@alfcomponents/shared';
@@ -20,10 +21,15 @@ import {
 import { AlfRippleDirective, AlfTooltipTextDirective } from '@alfcomponents/directives';
 import { AlfCheckboxInterface } from './interfaces/alf-checkbox.interface';
 import {
-  ALF_CHECKBOX_DEFAULT,
   getAlfCheckboxDefaultConfig,
 } from './predefined/alf-checkbox.predefined';
 
+/**
+ * AlfCheckbox Component
+ * ✅ Elite Design System Standard.
+ * ✅ Reactive Signals (input, model, computed).
+ * ✅ Centralized Visual Engine Integration.
+ */
 @Component({
   selector: 'alf-checkbox',
   standalone: true,
@@ -31,23 +37,23 @@ import {
   templateUrl: './alf-checkbox.html',
   styleUrl: './alf-checkbox.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
 export class AlfCheckbox extends AlfBaseConfiguration<AlfCheckboxInterface> {
-  // ── 1. Effects ────────────────────────────────────────────────────────────
+  // ── 1. Attributes ─────────────────────────────────────────────────────────
 
-  // ── 2. Attributes ─────────────────────────────────────────────────────────
+  protected override readonly visualPrefix: string = visualprefixEnum.Checkbox;
+  protected readonly internalId: string = generateUniqueId({ prefix: 'alf-cb' });
 
-  protected override readonly visualPrefix = visualprefixEnum.Checkbox;
-  protected readonly internalId = generateUniqueId({ prefix: 'alf-cb' });
+  private readonly el: ElementRef = inject(ElementRef);
 
-  private readonly el = inject(ElementRef);
-
-  // ── 3. Signals ────────────────────────────────────────────────────────────
+  // ── 2. Signals (Inputs & Models) ──────────────────────────────────────────
 
   /** Choosing a predefined style (Primary, Secondary, etc.) - Supports base and local naming */
   public readonly variant = input<AlfColorVariantEnum | undefined>(undefined);
 
-  /** Direct user configuration. */
+  /** Direct user configuration (Elite Standard) */
+
   public override readonly inputConfig = input<AlfCheckboxInterface>(undefined, { alias: 'config' });
 
   /** Two-way binding for the checked state */
@@ -56,32 +62,51 @@ export class AlfCheckbox extends AlfBaseConfiguration<AlfCheckboxInterface> {
   /** Two-way binding for the indeterminate state */
   public readonly indeterminate = model<boolean>(false);
 
-  /** Visual style (Elegant, Standard) */
+  /** Specific checkbox style (Elegant vs Standard) */
   public readonly checkboxStyle = input<AlfCheckboxVariantEnum>();
 
-  /** Label text */
+  /** Label text for the checkbox */
   public readonly label = input<string>();
 
-  /** Checkbox size */
+  /** Dimension scale (XS to 2XL) */
   public readonly size = input<AlfSizeEnum>();
 
-  /** Error message */
+  /** Reactive error message */
   public readonly error = input<string>();
 
-  /** Helper text */
+  /** Reactive helper text */
   public readonly helperText = input<string>();
 
-  // ── 4. Computed ───────────────────────────────────────────────────────────
+  // ── 3. Computed (Reactive Engine) ─────────────────────────────────────────
 
   /**
    * Final configuration merge.
-   * Mirroring AlfInput logic for role and appearance resolution.
+   * Resolves hierarchy: Inputs > InputConfig > Design System Defaults.
    */
+  public readonly finalConfig = computed<AlfCheckboxInterface>(() => {
+    const rawV = (this.colorVariant() ?? this.variant() ?? this.inputConfig()?.colorVariant) as string;
+    
+    // Mapeo manual ultra-robusto para las variantes core si vienen como string
+    let v: AlfColorVariantEnum | undefined;
+    if (rawV) {
+      const lowerV = rawV.toLowerCase();
+      const coreVariants: Record<string, AlfColorVariantEnum> = {
+        primary: AlfColorVariantEnum.Primary,
+        secondary: AlfColorVariantEnum.Secondary,
+        success: AlfColorVariantEnum.Success,
+        danger: AlfColorVariantEnum.Danger,
+        warning: AlfColorVariantEnum.Warning,
+        info: AlfColorVariantEnum.Info,
+        light: AlfColorVariantEnum.Light,
+        dark: AlfColorVariantEnum.Dark,
+        transparent: AlfColorVariantEnum.Transparent
+      };
+      
+      v = coreVariants[lowerV] ?? (rawV as AlfColorVariantEnum);
+    }
 
-  public readonly finalConfig = computed(() => {
-    const v = this.colorVariant() ?? this.variant();
     const cfg = {
-      ...getAlfCheckboxDefaultConfig(v ? v : AlfColorVariantEnum.Secondary),
+      ...getAlfCheckboxDefaultConfig(v),
       ...this.inputConfig(),
     };
 
@@ -92,60 +117,50 @@ export class AlfCheckbox extends AlfBaseConfiguration<AlfCheckboxInterface> {
       size: this.size() ?? cfg?.size,
       error: this.error() ?? cfg?.error,
       helperText: this.helperText() ?? cfg?.helperText,
-      colorVariant: v ? v : AlfColorVariantEnum.Secondary,
       disabled: this.disabled() ?? cfg?.disabled,
       checked: this.checked(),
       indeterminate: this.indeterminate(),
     };
-
   });
 
+  /** Syncs with AlfBaseConfiguration resolvedConfig */
   public override readonly resolvedConfig = this.finalConfig;
 
-  /** Resolves the visual style */
-  public readonly checkboxStyleComputed = computed(
+  /** Resolves the effective checkbox style */
+  public readonly checkboxStyleComputed = computed<AlfCheckboxVariantEnum>(
     () => this.resolvedConfig()?.checkboxStyle ?? AlfCheckboxVariantEnum.Elegant
   );
 
-  /** Resolves the label text */
-  public readonly labelComputed = computed(() => this.resolvedConfig()?.label ?? '');
+  /** Resolves the visible label */
+  public readonly labelComputed = computed<string>(() => this.resolvedConfig()?.label ?? '');
 
-  /** Resolves the label position */
-  public readonly labelPositionComputed = computed(
+  /** Resolves the label positioning (before/after) */
+  public readonly labelPositionComputed = computed<'before' | 'after'>(
     () => this.resolvedConfig()?.labelPosition ?? 'after'
   );
 
-  /** Resolves the size */
-  public readonly sizeComputed = computed(() => this.resolvedConfig()?.size ?? AlfSizeEnum.MD);
+  /** Resolves the dimension scale */
+  public readonly sizeComputed = computed<AlfSizeEnum>(() => this.resolvedConfig()?.size ?? AlfSizeEnum.MD);
 
-  /** Resolves if it's disabled */
-  public readonly isDisabled = computed(() => this.disabledComputed());
-
-  /** Icon to display inside the box */
-  public readonly displayIcon = computed(() => {
+  /** Icon to display inside the checked box */
+  public readonly displayIcon = computed<string>(() => {
     if (this.indeterminate()) return '−';
     return this.resolvedConfig()?.iconSelected || AlfIconsUnicodeIconEnum.CheckMark;
   });
 
-  // ── 5. Lifecycle Hooks ────────────────────────────────────────────────────
+  // ── 4. Outputs ────────────────────────────────────────────────────────────
 
-  // ── 6. Outputs ────────────────────────────────────────────────────────────
-
-  /** Emits when the checked state changes */
+  /** Emitted whenever the checked state changes */
   public readonly onCheckedChange = output<boolean>();
 
-  // ── 7. Functions / Handlers ───────────────────────────────────────────────
+  // ── 5. Handlers (Arrow Functions) ─────────────────────────────────────────
 
-  @HostListener('click', ['$event'])
-  public readonly onHostClick = (event: Event): void => {
-    if (this.isDisabled()) return;
-    event.preventDefault();
-    this.toggle();
-  };
-
-  /** Toggles the checked state */
+  /**
+   * Toggles the checkbox state.
+   * Resets indeterminate state on manual change.
+   */
   public readonly toggle = (): void => {
-    if (this.isDisabled()) return;
+    if (this.disabledComputed()) return;
 
     const newValue = !this.checked();
     this.checked.set(newValue);
@@ -153,9 +168,16 @@ export class AlfCheckbox extends AlfBaseConfiguration<AlfCheckboxInterface> {
     this.onCheckedChange.emit(newValue);
   };
 
-  /** Accessibility keyboard handler */
-  public readonly onInputKeydown = (event: KeyboardEvent): void => {
-    if (this.isDisabled()) return;
+  /** Click handler for the label wrapper */
+  protected readonly onLabelClick = (event: Event): void => {
+    if (this.disabledComputed()) return;
+    event.preventDefault();
+    this.toggle();
+  };
+
+  /** Keyboard support (Space/Enter) */
+  protected readonly onInputKeydown = (event: KeyboardEvent): void => {
+    if (this.disabledComputed()) return;
     if (event.key === ' ' || event.key === 'Enter') {
       event.preventDefault();
       this.toggle();

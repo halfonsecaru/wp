@@ -1,39 +1,55 @@
 @use '../../../styles/mixins' as *;
 
 :host {
-    display: flex;
+  display: flex;
   vertical-align: middle;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    align-content: flex-start;
-    justify-content: center;
-    align-items: flex-start;
 }
 
 .alf-cb {
-  @include alf-transition;
-  position: relative;
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  justify-content: center;
+  align-content: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+
+  @include alf-transition;
+
+  @include alf-display-layout-css-vars($prefix: '--alf-cb',
+    $display: flex,
+    $align: flex-start,
+    $justify: flex-start,
+    $disabled-selectors: '&--disabled',
+    $focus-selectors: '&:focus-within, &:focus-visible'
+  );
+
+  //@include alf-background-css-vars('--alf-cb', '&--disabled', '&:focus-within, &:focus-visible');
+  @include alf-padding-css-vars('--alf-cb', '&--disabled', '&:focus-within, &:focus-visible');
+  @include alf-margin-css-vars('--alf-cb', '&--disabled', '&:focus-within, &:focus-visible');
+  @include alf-shadows-css-vars('--alf-cb', '&--disabled');
+  @include alf-typography-css-vars('--alf-cb', '&--disabled', '&:focus-within, &:focus-visible');
+  @include alf-text-style-css-vars('--alf-cb', '&--disabled', '&:focus-within, &:focus-visible');
+  @include alf-outline-css-vars('--alf-cb', '&--disabled');
+  @include alf-transform-css-vars('--alf-cb', '&--disabled');
+
+
+  position: relative;
   cursor: pointer;
   user-select: none;
   width: auto;
 
-  // Layout base (margin, display)
-  @include alf-display-layout-css-vars('--alf-cb');
-  @include alf-margin-css-vars('--alf-cb');
 
   &--disabled {
     cursor: not-allowed;
-    opacity: 0.6;
+    opacity: 0.5;
     pointer-events: none;
   }
 
+  // Contenedor interno para alinear checkbox + label
   &-wrapper {
     display: inline-flex;
     align-items: center;
     gap: 0.75rem;
-    width: 100%;
     cursor: inherit;
 
     &--label-before {
@@ -41,12 +57,7 @@
     }
   }
 
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
-
+  // El "cuadrito" o "circulito" visual
   &-box {
     position: relative;
     display: flex;
@@ -54,136 +65,169 @@
     justify-content: center;
     flex-shrink: 0;
 
-    // Dimensiones base por defecto (MD)
+    // Tamaño base (MD por defecto)
     width: 1.25rem;
     height: 1.25rem;
 
-    // Aplicación de variables Élite
-    @include alf-background-css-vars('--alf-cb');
-    @include alf-border-css-vars('--alf-cb');
-    @include alf-padding-css-vars('--alf-cb');
-    @include alf-shadows-css-vars('--alf-cb');
-    @include alf-typography-css-vars('--alf-cb');
-    @include alf-text-style-css-vars('--alf-cb');
-    @include alf-transform-css-vars('--alf-cb');
+    // Aplicación de variables Élite de Borde (Usando el prefijo correcto --alf-cb)
+    @include alf-border-css-vars('--alf-cb', '&--disabled', ':focus-within');
 
-    // Transiciones específicas para evitar jitter
-    transition:
-      background-color 0.2s ease,
-      border-color 0.2s ease,
-      box-shadow 0.2s ease,
-      transform 0.1s ease;
 
-    &:active {
-      transform: scale(0.92);
-    }
+
+
+
+    // Estilo Base (Unchecked)
+    background-color: transparent;
+
+    // Borde: Usamos los nombres reales del motor (--prefix-border-prop)
+    border-width: var(--alf-cb-border-width, 1px);
+    border-style: var(--alf-cb-border-style, solid);
+    border-color: var(--alf-cb-border-color, var(--alf-gray-300, #d1d5db));
+
   }
 
-  &-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    line-height: 1;
-    color: currentColor;
-    pointer-events: none;
+  // Estado Seleccionado / Indeterminado
+  &--checked &-box,
+  &--indeterminate &-box {
+    border-color: var(--alf-cb-border-color);
   }
 
   svg {
     width: 0.85rem;
     height: 0.85rem;
-    color: currentColor;
-    stroke: currentColor;
     fill: none;
-    pointer-events: none;
-    
-    path {
-      stroke: var(--alf-cb-text-color, currentColor);
-    }
-
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
     stroke-dasharray: 20;
     stroke-dashoffset: 20;
-    animation: alf-cb-check 0.3s forwards ease-in-out;
+    animation: alf-cb-check 0.3s forwards ease-out;
   }
 
+  .alf-cb-icon,
+  svg path {
+    stroke: var(--alf-cb-border-color, var(--alf-gray-300, #d1d5db));
+    color: var(--alf-cb-border-color, var(--alf-gray-300, #d1d5db));
+  }
+
+  // Icono (Tick / Dash)
+  &-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+
+    pointer-events: none;
+
+
+
+
+  }
+
+  // Texto del Label
   &-label-text {
-    @include alf-typography-css-vars('--alf-cb');
+    //  @include alf-typography-css-vars('--alf-cb');
     font-family: inherit;
+    line-height: 1.25rem;
+
+    // Usamos el color de marca (bg-color) o el de borde
+    color: var(--alf-cb-bg-color, var(--alf-cb-border-color, inherit)) !important;
+
   }
 
-  &-description {
-    margin-top: 0.25rem;
+
+  // Descripciones y Helpers
+  &-description,
+  &-helper {
+    margin-top: 0.2rem;
     padding-left: 2rem;
     font-size: 0.75rem;
+    opacity: 0.7;
+    color: var(--alf-cb-text-color-default, inherit);
   }
 
   &-error {
-    color: var(--alf-danger, #dc3545);
+    color: var(--alf-danger, #dc3545) !important;
   }
 
-  &-helper {
-    color: var(--alf-text-muted, #6c757d);
+  // ── VARIANTES DE FORMA ────────────────────────────────────────────────────
+
+  &--standard &-box {
+    border-radius: 0.25rem;
   }
 
-  // ── SIZES (Escalado Élite) ────────────────────────────────────────────────
-  
-  // Extra Small (xs)
+  &--elegant &-box {
+    border-radius: 50%;
+  }
+
+  // ── SIZES ─────────────────────────────────────────────────────────────────
+
   &--xs &-box {
     width: 0.85rem;
     height: 0.85rem;
-    font-size: 0.65rem;
-    svg { width: 0.6rem; height: 0.6rem; stroke-width: 4; }
+
+    svg {
+      width: 0.55rem;
+      height: 0.55rem;
+      stroke-width: 4;
+    }
   }
 
-  // Small (sm)
   &--sm &-box {
     width: 1.05rem;
     height: 1.05rem;
-    font-size: 0.75rem;
-    svg { width: 0.75rem; height: 0.75rem; stroke-width: 3.5; }
+
+    svg {
+      width: 0.7rem;
+      height: 0.7rem;
+      stroke-width: 3.5;
+    }
   }
 
-  // Medium (md) - Default
   &--md &-box {
     width: 1.25rem;
     height: 1.25rem;
-    font-size: 0.9rem;
-    svg { width: 0.85rem; height: 0.85rem; stroke-width: 3; }
+
+    svg {
+      width: 0.85rem;
+      height: 0.85rem;
+      stroke-width: 3;
+    }
   }
 
-  // Large (lg)
   &--lg &-box {
     width: 1.5rem;
     height: 1.5rem;
-    font-size: 1.1rem;
-    svg { width: 1.1rem; height: 1.1rem; stroke-width: 2.5; }
+
+    svg {
+      width: 1.1rem;
+      height: 1.1rem;
+      stroke-width: 2.5;
+    }
   }
 
-  // Extra Large (xl)
   &--xl &-box {
     width: 1.85rem;
     height: 1.85rem;
-    font-size: 1.35rem;
-    svg { width: 1.3rem; height: 1.3rem; stroke-width: 2; }
+
+    svg {
+      width: 1.3rem;
+      height: 1.3rem;
+      stroke-width: 2;
+    }
   }
 
-  // Double Extra Large (2xl)
   &--2xl &-box {
     width: 2.25rem;
     height: 2.25rem;
-    font-size: 1.6rem;
-    svg { width: 1.6rem; height: 1.6rem; stroke-width: 2; }
+
+    svg {
+      width: 1.6rem;
+      height: 1.6rem;
+      stroke-width: 2;
+    }
   }
-}
-
-// ── VARIANTS ──────────────────────────────────────────────────────────────
-
-.alf-cb--standard .alf-cb-box {
-  border-radius: 0.25rem;
-}
-
-.alf-cb--elegant .alf-cb-box {
-  border-radius: 50%;
 }
 
 @keyframes alf-cb-check {

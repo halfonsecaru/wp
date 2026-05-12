@@ -92,13 +92,39 @@ export const visualBorderBase = <TPrefix extends string>(prefix: TPrefix, input:
     const border = input.border;
     const declarations: string[] = [];
 
-    const mapBorder = (p: string, s: AlfBorderBaseInterface, d: AlfBorderBaseInterface | undefined, decls: string[]) => {
+    const mapBorder = (p: string, s: any, d: any, decls: string[]) => {
         const isInt = p.includes('-hover') || p.includes('-active') || p.includes('-focus') || p.includes('-disabled');
         const should = (v: any, dv: any) => v !== undefined && (!isInt || v !== dv);
+        
+        // Propiedades Globales
         if (should(s.borderColor, d?.borderColor)) decls.push(`${p}-color: ${s.borderColor};`);
         if (should(s.borderStyle, d?.borderStyle)) decls.push(`${p}-style: ${s.borderStyle};`);
         if (should(s.borderWidth, d?.borderWidth)) decls.push(`${p}-width: ${s.borderWidth};`);
         if (should(s.borderRadius, d?.borderRadius)) decls.push(`${p}-radius: ${s.borderRadius};`);
+
+        // Anchos por lado
+        if (should(s.borderTopWidth, d?.borderTopWidth)) decls.push(`${p}-top-width: ${s.borderTopWidth};`);
+        if (should(s.borderRightWidth, d?.borderRightWidth)) decls.push(`${p}-right-width: ${s.borderRightWidth};`);
+        if (should(s.borderBottomWidth, d?.borderBottomWidth)) decls.push(`${p}-bottom-width: ${s.borderBottomWidth};`);
+        if (should(s.borderLeftWidth, d?.borderLeftWidth)) decls.push(`${p}-left-width: ${s.borderLeftWidth};`);
+
+        // Estilos por lado
+        if (should(s.borderTopStyle, d?.borderTopStyle)) decls.push(`${p}-top-style: ${s.borderTopStyle};`);
+        if (should(s.borderRightStyle, d?.borderRightStyle)) decls.push(`${p}-right-style: ${s.borderRightStyle};`);
+        if (should(s.borderBottomStyle, d?.borderBottomStyle)) decls.push(`${p}-bottom-style: ${s.borderBottomStyle};`);
+        if (should(s.borderLeftStyle, d?.borderLeftStyle)) decls.push(`${p}-left-style: ${s.borderLeftStyle};`);
+
+        // Colores por lado
+        if (should(s.borderTopColor, d?.borderTopColor)) decls.push(`${p}-top-color: ${s.borderTopColor};`);
+        if (should(s.borderRightColor, d?.borderRightColor)) decls.push(`${p}-right-color: ${s.borderRightColor};`);
+        if (should(s.borderBottomColor, d?.borderBottomColor)) decls.push(`${p}-bottom-color: ${s.borderBottomColor};`);
+        if (should(s.borderLeftColor, d?.borderLeftColor)) decls.push(`${p}-left-color: ${s.borderLeftColor};`);
+
+        // Radios individuales
+        if (should(s.borderTopLeftRadius, d?.borderTopLeftRadius)) decls.push(`${p}-top-left-radius: ${s.borderTopLeftRadius};`);
+        if (should(s.borderTopRightRadius, d?.borderTopRightRadius)) decls.push(`${p}-top-right-radius: ${s.borderTopRightRadius};`);
+        if (should(s.borderBottomRightRadius, d?.borderBottomRightRadius)) decls.push(`${p}-bottom-right-radius: ${s.borderBottomRightRadius};`);
+        if (should(s.borderBottomLeftRadius, d?.borderBottomLeftRadius)) decls.push(`${p}-bottom-left-radius: ${s.borderBottomLeftRadius};`);
     };
 
     const states = ['default', 'hover', 'active', 'focus', 'disabled'] as const;

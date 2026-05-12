@@ -1,26 +1,26 @@
 <div class="demo-container">
-  <h1 class="demo-title">💎 AlfCheckbox Elite Demo</h1>
+  <h1 class="demo-title">💎 AlfRadioButton Elite Demo</h1>
 
-  <!-- 1. CHECKBOX VARIANTS & STYLES -->
+  <!-- 1. RADIO VARIANTS & STYLES -->
   <div class="demo-card">
-    <h3>Checkbox DNA Variants</h3>
+    <h3>Radio Button DNA Variants</h3>
     
-    @for (style of checkboxStyles; track style.value) {
+    @for (style of radioStyles; track style.value) {
       <div class="style-section">
         <h4 class="style-title">{{ style.name }} Style</h4>
         
         <div class="color-grid">
           @for (variant of solidVariants; track variant) {
-            @let cbSignal = getChecked('cb-' + style.name, variant);
+            @let rbSignal = getChecked('rb-' + style.name, variant);
             <div class="color-item">
               <span class="variant-name">{{ variant }}</span>
-              <alf-checkbox 
-                [checked]="cbSignal()"
-                (checkedChange)="cbSignal.set($event)"
+              <alf-radio-button 
+                [checked]="rbSignal()"
+                (checkedChange)="rbSignal.set($event)"
                 [label]="style.name" 
                 [variant]="variant"
-                [checkboxStyle]="style.value">
-              </alf-checkbox>
+                [radioButtonStyle]="style.value">
+              </alf-radio-button>
             </div>
           }
         </div>
@@ -33,15 +33,15 @@
     <h3>Premium DNA (Soft, Crystal & Gradients)</h3>
     <div class="color-grid">
       @for (variant of premiumVariants; track variant) {
-        @let cbSignal = getChecked('cb-premium', variant);
+        @let rbSignal = getChecked('rb-premium', variant);
         <div class="color-item">
           <span class="variant-name">{{ variant }}</span>
-          <alf-checkbox 
-            [checked]="cbSignal()"
-            (checkedChange)="cbSignal.set($event)"
+          <alf-radio-button 
+            [checked]="rbSignal()"
+            (checkedChange)="rbSignal.set($event)"
             [label]="'Premium'" 
             [variant]="variant">
-          </alf-checkbox>
+          </alf-radio-button>
         </div>
       }
     </div>
@@ -52,15 +52,15 @@
     <h3>Dimension Scale</h3>
     <div class="size-row">
       @for (size of sizes; track size) {
-        @let cbSignal = getChecked('cb-size', size);
+        @let rbSignal = getChecked('rb-size', size);
         <div class="size-item">
-          <alf-checkbox 
-            [checked]="cbSignal()"
-            (checkedChange)="cbSignal.set($event)"
+          <alf-radio-button 
+            [checked]="rbSignal()"
+            (checkedChange)="rbSignal.set($event)"
             [label]="size" 
             [size]="size"
             variant="Primary">
-          </alf-checkbox>
+          </alf-radio-button>
         </div>
       }
     </div>
@@ -71,51 +71,68 @@
     <h3>Functional Scenarios</h3>
     
     <div class="color-grid">
-      <!-- Indeterminate -->
-      <div class="color-item">
-        <span class="variant-name">Indeterminate</span>
-        <alf-checkbox 
-          [indeterminate]="indeterminateSignal()"
-          (indeterminateChange)="indeterminateSignal.set($event)"
-          label="Partial State" 
-          variant="Info">
-        </alf-checkbox>
+      <!-- Group Simulation -->
+      <div class="color-item" style="grid-column: span 2;">
+        <span class="variant-name">Radio Group Simulation: {{ selectedGroupValue() }}</span>
+        <div style="display: flex; gap: 2rem; margin-top: 1rem;">
+          <alf-radio-button 
+            [checked]="selectedGroupValue() === 'Option 1'"
+            (onCheckedChange)="selectedGroupValue.set($event)"
+            value="Option 1"
+            label="Option 1" 
+            variant="Primary">
+          </alf-radio-button>
+          <alf-radio-button 
+            [checked]="selectedGroupValue() === 'Option 2'"
+            (onCheckedChange)="selectedGroupValue.set($event)"
+            value="Option 2"
+            label="Option 2" 
+            variant="Primary">
+          </alf-radio-button>
+          <alf-radio-button 
+            [checked]="selectedGroupValue() === 'Option 3'"
+            (onCheckedChange)="selectedGroupValue.set($event)"
+            value="Option 3"
+            label="Option 3" 
+            variant="Primary">
+          </alf-radio-button>
+        </div>
       </div>
 
       <!-- Disabled -->
       <div class="color-item">
         <span class="variant-name">Disabled State</span>
-        <alf-checkbox 
+        <alf-radio-button 
           [label]="'Locked'" 
           [variant]="AlfColorVariantEnum.Primary"
           [config]="{ disabled: true, checked: true }">
-        </alf-checkbox>
+        </alf-radio-button>
       </div>
 
       <!-- Validation Errors -->
       <div class="color-item">
-        @let errorChecked = getChecked('state-cb', 'error');
+        @let errorChecked = getChecked('state-rb', 'error');
         <span class="variant-name">Validation (Error)</span>
-        <alf-checkbox 
+        <alf-radio-button 
           [checked]="errorChecked()"
           (checkedChange)="errorChecked.set($event)"
           [label]="'Invalid'" 
           [variant]="AlfColorVariantEnum.Danger"
-          [config]="{ error: 'Field is required' }">
-        </alf-checkbox>
+          [config]="{ error: 'Selection is required' }">
+        </alf-radio-button>
       </div>
 
       <!-- Helper Text -->
       <div class="color-item">
-        @let helperChecked = getChecked('state-cb', 'helper');
+        @let helperChecked = getChecked('state-rb', 'helper');
         <span class="variant-name">Information (Helper)</span>
-        <alf-checkbox 
+        <alf-radio-button 
           [checked]="helperChecked()"
           (checkedChange)="helperChecked.set($event)"
           [label]="'Helpful'" 
           [variant]="AlfColorVariantEnum.Success"
           [config]="{ helperText: 'Información adicional' }">
-        </alf-checkbox>
+        </alf-radio-button>
       </div>
     </div>
   </div>
@@ -126,21 +143,21 @@
     <div class="color-grid">
       <div class="color-item">
         <span class="variant-name">Position: After (Default)</span>
-        <alf-checkbox 
+        <alf-radio-button 
           [checked]="true"
           label="Label After" 
           variant="Primary"
           [config]="{ labelPosition: 'after' }">
-        </alf-checkbox>
+        </alf-radio-button>
       </div>
       <div class="color-item">
         <span class="variant-name">Position: Before</span>
-        <alf-checkbox 
+        <alf-radio-button 
           [checked]="true"
           label="Label Before" 
           variant="Secondary"
           [config]="{ labelPosition: 'before' }">
-        </alf-checkbox>
+        </alf-radio-button>
       </div>
     </div>
   </div>

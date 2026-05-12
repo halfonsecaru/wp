@@ -1,123 +1,66 @@
-# AlfButtons - Button Component (New)
+# AlfButton - Elite Button Component
 
-Standalone button component for AlfComponents with CSS-variable driven visuals, link/button polymorphism, reactive outputs, and click debounce.
+High-performance standalone button component designed for Angular 21. It implements the **Elite Visual Engine**, with full design centralization in TypeScript, polymorphic support (button/anchor), and a dynamic theme system powered by CSS variables.
 
-## Main features
+## Key Features
 
-- Polymorphic render: `<button>` by default and `<a>` when `link` is provided.
-- Centralized visual engine: presets resolved by `visualType` and `colorVariant`.
-- `Light` variant adjusted to keep text color consistent on hover/active.
-- Reactive outputs: `onClick`, `onHoverEnter`, `onHoverLeave`.
-- Double-click protection with `debounceTime`.
-- Tooltip and ripple integration via directives.
-- i18n support for predefined buttons through `getAlfPredefinedButton(...)`.
+- **Polymorphic Rendering**: Automatically switches between `<button>` and `<a>` based on the `link` input configuration.
+- **Elite Visual Engine**: All visual logic (Solid, Outline, Soft, Ghost, etc.) is centralized in `defaultVariants.ts`.
+- **Dynamic Theming**: Utilizes `AlfColorEnum` with CSS variables and fallbacks for instantaneous, flicker-free theme switching.
+- **Smart Identity Inheritance**: Decorative variants (e.g., `PrimaryOutline`) automatically inherit the chromatic DNA from their base family (`Primary`).
+- **Double-Click Protection**: Implements a reactive `debounceTime` system to prevent multiple executions on critical actions.
+- **Zoneless Ready**: Optimized for Angular architectures without Zone.js.
 
-## Basic usage
+## Basic Usage
 
 ```html
-<alf-buttons
-  [inputConfig]="saveButton"
-  tooltip="Save changes"
+<alf-button
+  [inputConfig]="saveButtonConfig"
   (onClick)="handleSave($event)">
-</alf-buttons>
+</alf-button>
 ```
 
-```ts
-import { getAlfPredefinedButton } from '@alfcomponents/components/simple/alf-buttons/alf-button-predefined';
-import { DefaultButtonKeys } from '@alfcomponents/components/simple/alf-buttons/enums/defaultButtonKeys.interface';
+```typescript
+import { getAlfButtonDefaultConfig } from '@alfcomponents/components/simple/alf-button/predefined/alf-button.predefined';
+import { AlfColorVariantEnum } from '@alfcomponents/enums';
 
-saveButton = getAlfPredefinedButton(DefaultButtonKeys.Accept, { lang: 'en' });
+// Get the predefined configuration from the design system
+saveButtonConfig = getAlfButtonDefaultConfig(AlfColorVariantEnum.Primary);
 ```
 
-## Full API
+## Component API
 
-Property resolution priority: direct input > `inputConfig` > internal default.
-
-### Button-specific inputs
+### Main Inputs
 
 | Input | Type | Description |
 |---|---|---|
-| `inputConfig` | `AlfButtonInterface` | Full button configuration as a single object. |
-| `type` | `AlfButtonTypeEnum` | HTML button type (`button`, `submit`, etc.). |
-| `label` | `string` | Visible button label. |
-| `iconLeft` | `AlfIconsUnicodeIconEnum` | Left icon. |
-| `iconRight` | `AlfIconsUnicodeIconEnum` | Right icon. |
-| `link` | `{ url: string; target?: AlfLinkTargetEnum }` | If provided, renders `<a>` instead of `<button>`. |
-| `debounceTime` | `number` | Threshold in ms to ignore repeated clicks. |
+| `inputConfig` | `AlfButtonInterface` | Comprehensive button configuration object. |
+| `type` | `AlfButtonTypeEnum` | Button HTML type (`button`, `submit`, `reset`). |
+| `label` | `string` | Visible button text (overrides i18n). |
+| `iconLeft` | `AlfIconsUnicodeIconEnum` | Icon placed to the left of the text. |
+| `iconRight` | `AlfIconsUnicodeIconEnum` | Icon placed to the right of the text. |
+| `link` | `AlfLinkInterface` | Link configuration (converts the button to an `<a>`). |
+| `debounceTime` | `number` | Wait time in ms to filter repeated clicks. |
 
-### Inherited base inputs
+### Visual Configuration (Inherited)
 
-| Input | Type | Description |
-|---|---|---|
-| `tooltip` | `string \| AlfTooltipConfig` | Host tooltip configuration. |
-| `ripple` | `boolean \| AlfRippleInterface` | Enables/disables ripple or provides ripple config. |
-| `colorVariant` | `AlfColorVariantEnum` | Base color variant. |
-| `visualType` | `AlfButtonVisualTypeEnum` | Visual kind (`Solid`, `Outlined`, `Text`, etc.). |
-| `predefined` | `AlfVisualPredefinedEnum` | Design-system visual preset. |
-| `cursor` | `AlfCursorEnum` | Host cursor style. |
-| `disabled` | `boolean` | Disabled state. |
-| `aria` | `AlfAriaBaseInterface` | ARIA configuration object. |
-| `animations` | `AlfAnimateCssInterface` | Enter/exit animation configuration. |
-| `backgrounds` | `AlfBackgroundsInterface` | Per-state background overrides. |
-| `border` | `AlfBorderInterface` | Per-state border overrides. |
-| `displayAndLayout` | `AlfDisplayAndLayoutInterface` | Display, alignment, gap, and layout overrides. |
-| `margin` | `AlfMarginInterface` | Per-state margin overrides. |
-| `outline` | `AlfOutlineInterface` | Per-state outline overrides. |
-| `padding` | `AlfPaddingInterface` | Per-state padding overrides. |
-| `shadows` | `AlfShadowsInterface` | Per-state shadow overrides. |
-| `textStyle` | `AlfTextStyleInterface` | Per-state text style overrides. |
-| `transform` | `AlfTransformInterface` | Per-state transform overrides. |
-| `typography` | `AlfTypographyInterface` | Per-state typography overrides. |
+| Property | Description |
+|---|---|
+| `colorVariant` | Base color variant (Primary, Success, etc.). |
+| `visualType` | Visual style (Solid, Outline, Ghost, Soft, Crystal, 3D, Gradient). |
+| `disabled` | Component interaction state. |
+| `ripple` | Click ripple effect configuration. |
+| `animations` | Entrance/exit animations (Animate.css). |
 
-### Outputs
+## Styling Architecture
 
-| Output | Type | Description |
-|---|---|---|
-| `onClick` | `output<MouseEvent>` | Emitted on click after debounce validation. |
-| `onHoverEnter` | `output<MouseEvent>` | Emitted on `mouseenter`. |
-| `onHoverLeave` | `output<MouseEvent>` | Emitted on `mouseleave`. |
+The component uses a dual strategy:
+1. **SCSS**: Defines layout structure, gap, and static behaviors.
+2. **TypeScript (Engine)**: Injects dynamic styles (colors, shadows, typography) based on the selected variant, ensuring design logic stays within the code.
 
-### Real default values
+## i18n and Translations
 
-| Property | Real default | Source |
-|---|---|---|
-| `debounceTime` | `0` | `alf-buttons.ts` (`input<number>(0)`) |
-| `type` | `AlfButtonTypeEnum.Button` | `base-button-configuration.ts` (`typeComputed`) |
-| `label` | `'Boton'` | `base-button-configuration.ts` (`labelComputed`) |
-| `link` | `undefined` | `base-button-configuration.ts` (`linkComputed`) |
-| `ripple` | `true` | `alf-base-configuration.ts` (`rippleInputComputed`) |
-| `colorVariant` | `AlfColorVariantEnum.Default` | `alf-base-configuration.ts` (`colorVariantComputed`) |
-| `cursor` | `AlfCursorEnum.Pointer` | `alf-base-configuration.ts` (`cursorComputed`) |
-| `disabled` | `false` | `alf-base-configuration.ts` (`disabledComputed`) |
-| `tooltip` | `undefined` | `alf-base-configuration.ts` (`tooltipComputed`) |
-| `predefined` | `undefined` | `alf-base-configuration.ts` (`predefinedComputed`) |
-| `visualType` | `undefined` | `alf-base-configuration.ts` (`visualTypeComputed`) |
-| `aria` | `undefined` | `alf-base-configuration.ts` (`ariaComputed`) |
-| `animations` | `undefined` | `alf-base-configuration.ts` (`animationsComputed`) |
-| `backgrounds`, `border`, `displayAndLayout`, `margin`, `outline`, `padding`, `shadows`, `textStyle`, `transform`, `typography` | `undefined` | `alf-base-configuration.ts` (override computeds) |
-
-Practical notes:
-- If `visualType` and `predefined` are `undefined`, the effective visual style resolves to `Solid`.
-- If `link` is `undefined`, the effective render is `<button>`.
-
-## Supported visual types
-
-- `Solid`
-- `Outlined`
-- `Text`
-- `Ghost`
-- `Soft`
-- `Crystal`
-- `ThreeD`
-- `Glossy`
-- `Gradient`
-- `Raised`
-
-## i18n notes
-
-- Predefined label i18n lives in `i18n/alf-button.i18n.ts`.
-- Use `getAlfPredefinedButton(...)` to get translated labels.
-- If you set `label` manually in `inputConfig`, that manual text takes precedence.
+The component supports native internationalization for common labels. Translations are located in `i18n/alf-button.i18n.ts`. When using `getAlfButtonDefaultConfig`, the system attempts to resolve the appropriate label based on the configured language.
 
 ---
-Part of the Alfonizer Design System.
+Part of the **Alfonizer Design System** ecosystem.

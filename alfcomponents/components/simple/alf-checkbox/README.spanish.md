@@ -1,49 +1,50 @@
-# AlfCheckbox
+# AlfCheckbox - Componente de Checkbox Élite
 
-Componente de checkbox élite para la librería AlfComponents. Ofrece un diseño premium con múltiples variantes visuales, animaciones fluidas y soporte completo para internacionalización.
+Componente de checkbox standalone de alto rendimiento, diseñado para Angular 21. Totalmente integrado con el **Elite Visual Engine** y optimizado para arquitecturas Zoneless mediante el uso intensivo de Signals.
 
-## Características
+## Características Principales
 
-- 3 Estilos de Interacción: Elegant (Neumórfico), Standard (Limpio), Moving (Expansivo).
-- 5 Familias Visuales: Solid, Outlined, Standard, Soft, Crystal.
-- Soporte para Two-way binding (`checked`, `indeterminate`).
-- Sistema de validación (helperText, error).
-- Soporte multilingüe y accesibilidad WAI-ARIA.
+- **Signals Nativos**: Utiliza `input()`, `model()` y `computed()` para una reactividad pura y eficiente.
+- **Elite Visual Engine**: Colores, ripples y bordes gestionados centralmente desde `defaultVariants.ts`.
+- **Modos Visuales**: Soporte para estilos `Elegant` (redondeado/circular) y `Standard` (cuadrado).
+- **Estado Indeterminado**: Soporte completo para estados "mixed" (útil en árboles de selección).
+- **Temas Dinámicos**: Implementado con `AlfColorEnum` y variables CSS para cambios de tema instantáneos.
+- **Accesibilidad**: Gestión completa de ARIA y soporte de teclado (Espacio/Enter).
 
 ## Uso Básico
 
 ```html
-<alf-checkbox 
-  [(checked)]="isChecked"
-  label="Acepto los términos"
-  variant="SolidPrimary"
->
-</alf-checkbox>
+<alf-checkbox
+  [(checked)]="isAccepted"
+  [label]="'Acepto los términos'"
+  [variant]="AlfColorVariantEnum.Primary"
+/>
 ```
 
-## Propiedades
+### Uso con Configuración Integral
+```typescript
+import { getAlfCheckboxDefaultConfig } from './predefined/alf-checkbox.predefined';
+
+config = getAlfCheckboxDefaultConfig(AlfColorVariantEnum.Success);
+```
+```html
+<alf-checkbox [config]="config" />
+```
+
+## API del Componente
 
 | Propiedad | Tipo | Descripción |
 |---|---|---|
-| `variant` | `string \| AlfColorVariantEnum` | Variante de color y estilo (ej: 'OutlineSuccess') |
-| `config` | `AlfCheckboxInterface` | Configuración completa del componente |
-| `checked` | `boolean` (model) | Estado de selección |
-| `indeterminate` | `boolean` (model) | Estado indeterminado |
-| `checkboxStyle` | `AlfCheckboxVariantEnum` | Estilo visual: Elegant, Standard, Moving |
-| `label` | `string` | Texto de la etiqueta |
-| `size` | `AlfSizeEnum` | Tamaño: Sm, Md, Lg, Xl |
-| `disabled` | `boolean` | Deshabilita el componente |
+| `checked` | `model<boolean>` | Binding bidireccional del estado marcado. |
+| `indeterminate` | `model<boolean>` | Binding bidireccional del estado indeterminado. |
+| `label` | `input<string>` | Texto de la etiqueta. |
+| `checkboxStyle` | `AlfCheckboxVariantEnum` | Estilo visual (`Elegant` o `Standard`). |
+| `size` | `AlfSizeEnum` | Escala de dimensiones (XS a 2XL). |
+| `disabled` | `input<boolean>` | Estado deshabilitado. |
+| `error` | `input<string>` | Mensaje de error reactivo. |
 
-## Estilos de Interacción
+## Refactorización Élite
+Este componente ha sido migrado a la arquitectura de "Motor Centralizado", lo que garantiza que sus colores y comportamientos sean 100% consistentes con otros componentes como `AlfButton`.
 
-1. **Elegant**: Diseño circular con efectos de profundidad neumórfica.
-2. **Standard**: Diseño cuadrado tradicional con transiciones suaves.
-3. **Moving**: El checkbox se expande para envolver el texto al ser seleccionado.
-
-## Familias de Variantes
-
-- **Solid**: Fondo relleno y borde sólido.
-- **Outlined**: Borde sólido y fondo transparente.
-- **Standard**: Sin bordes, estilo minimalista.
-- **Soft**: Fondo pastel muy suave sin bordes.
-- **Crystal**: Efecto traslúcido tipo cristal sin bordes.
+---
+Parte del ecosistema **Alfonizer Design System**.

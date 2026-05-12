@@ -2,7 +2,8 @@ import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { CommonModule, JsonPipe } from '@angular/common';
 import { AlfInput } from '@alfcomponents/components/simple/alf-input/alf-input';
 import { AlfBorderInterface, AlfBorderBaseInterface } from '@alfcomponents/interfaces';
-import { AlfColorEnum, AlfPxEnum, AlfRadiusEnum, AlfBorderStyleEnum, AlfColorVariantEnum, AlfInputColorVariantEnum, AlfInputAdornmentEnum, AlfInputAppearanceEnum, AlfInputTypeEnum } from '@alfcomponents/enums';
+import { AlfColorEnum, AlfPxEnum, AlfRadiusEnum, AlfBorderStyleEnum, AlfColorVariantEnum, AlfInputAdornmentEnum, AlfInputAppearanceEnum, AlfInputTypeEnum } from '@alfcomponents/enums';
+
 
 @Component({
   selector: 'app-alf-input-viewer',
@@ -14,7 +15,7 @@ import { AlfColorEnum, AlfPxEnum, AlfRadiusEnum, AlfBorderStyleEnum, AlfColorVar
 })
 export class AlfInputViewer {
   public readonly AlfColorVariantEnum = AlfColorVariantEnum;
-  public readonly AlfInputColorVariantEnum = AlfInputColorVariantEnum;
+
   public readonly AlfInputAdornmentEnum = AlfInputAdornmentEnum;
   public readonly AlfInputAppearanceEnum = AlfInputAppearanceEnum;
   public readonly AlfInputTypeEnum = AlfInputTypeEnum;

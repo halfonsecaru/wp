@@ -1,5 +1,5 @@
-import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
-import { AlfCheckbox } from '@alfcomponents/components/simple/alf-checkbox/alf-checkbox';
+import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
+import { AlfCheckbox } from '@alfcomponents/components';
 import { AlfCheckboxVariantEnum, AlfColorVariantEnum, AlfSizeEnum } from '@alfcomponents/enums';
 
 @Component({
@@ -11,16 +11,59 @@ import { AlfCheckboxVariantEnum, AlfColorVariantEnum, AlfSizeEnum } from '@alfco
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AlfCheckboxViewer {
-  protected readonly checked1 = signal(true);
-  protected readonly checked2 = signal(false);
-  protected readonly checked3 = signal(false);
-  protected readonly checked4 = signal(false);
-  protected readonly checkedElegant = signal(false);
-  protected readonly checkedStandard = signal(true);
-  protected readonly checkedMoving = signal(false);
-  protected readonly indeterminate2 = signal(true);
+  public readonly AlfCheckboxVariantEnum = AlfCheckboxVariantEnum;
+  public readonly AlfColorVariantEnum = AlfColorVariantEnum;
 
-  protected readonly AlfCheckboxVariantEnum = AlfCheckboxVariantEnum;
-  protected readonly AlfColorVariantEnum = AlfColorVariantEnum;
-  protected readonly AlfSizeEnum = AlfSizeEnum;
+  public readonly solidVariants = [
+    AlfColorVariantEnum.Primary,
+    AlfColorVariantEnum.Secondary,
+    AlfColorVariantEnum.Success,
+    AlfColorVariantEnum.Danger,
+    AlfColorVariantEnum.Warning,
+    AlfColorVariantEnum.Info,
+    AlfColorVariantEnum.Dark,
+    AlfColorVariantEnum.Default,
+  ];
+
+  public readonly premiumVariants = [
+    AlfColorVariantEnum.PrimarySoft,
+    AlfColorVariantEnum.SuccessSoft,
+    AlfColorVariantEnum.PrimaryCrystal,
+    AlfColorVariantEnum.GradientPurple,
+    AlfColorVariantEnum.GradientSunset,
+  ];
+
+  public readonly checkboxStyles = [
+    { name: 'Elegant', value: AlfCheckboxVariantEnum.Elegant },
+    { name: 'Standard', value: AlfCheckboxVariantEnum.Standard },
+  ];
+
+  public readonly sizes = [
+    AlfSizeEnum.XS,
+    AlfSizeEnum.SM,
+    AlfSizeEnum.MD,
+    AlfSizeEnum.LG,
+    AlfSizeEnum.XL,
+    AlfSizeEnum.XXL
+  ];
+
+  private readonly checkedStates = new Map<string, any>();
+
+  /**
+   * Helper to get/create a signal for a specific combination.
+   * This maintains internal state for all checkboxes in the demo.
+   */
+  public getChecked(style: string, variant: string) {
+    const key = `${style}-${variant}`;
+    if (!this.checkedStates.has(key)) {
+      // Default to checked for standard/premium variants to show off colors
+      this.checkedStates.set(key, signal(true));
+    }
+    return this.checkedStates.get(key);
+  }
+
+  /**
+   * For indeterminate demo
+   */
+  public readonly indeterminateSignal = signal(true);
 }

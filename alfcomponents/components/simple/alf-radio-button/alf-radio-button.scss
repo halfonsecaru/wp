@@ -1,219 +1,187 @@
 @use '../../../styles/mixins' as *;
 
 :host {
-  display: inline-block;
-  vertical-align: middle;
+  display: inline-flex;
 }
 
 .alf-rb {
-  // Configuración de variables base heredas del motor visual
-  @include alf-border-css-vars('--alf-rb', '&.alf-rb--disabled');
-  @include alf-background-css-vars('--alf-rb', '&.alf-rb--disabled');
-  @include alf-margin-css-vars('--alf-rb', '&.alf-rb--disabled');
-  @include alf-outline-css-vars('--alf-rb', '&.alf-rb--disabled');
-  @include alf-padding-css-vars('--alf-rb', '&.alf-rb--disabled');
-  @include alf-shadows-css-vars('--alf-rb', '&.alf-rb--disabled');
-  @include alf-typography-css-vars('--alf-rb', '&.alf-rb--disabled');
-  @include alf-text-style-css-vars('--alf-rb', '&.alf-rb--disabled');
-  @include alf-transform-css-vars('--alf-rb', '&.alf-rb--disabled');
-  @include alf-display-layout-css-vars('--alf-rb', '&.alf-rb--disabled');
-
-  // ============================================
-  // LAYOUT & TRANSPARENCY
-  // ============================================
-  display: inline-flex;
+  box-sizing: border-box;
+  display: flex;
   align-items: center;
+  justify-content: center;
+  align-content: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+
+  @include alf-transition;
+
+  @include alf-display-layout-css-vars($prefix: '--alf-rb',
+    $display: flex,
+    $align: center,
+    $justify: flex-start,
+    $disabled-selectors: '&--disabled',
+    $focus-selectors: '&:focus-within, &:focus-visible'
+  );
+
+  @include alf-padding-css-vars('--alf-rb', '&--disabled', '&:focus-within, &:focus-visible');
+  @include alf-margin-css-vars('--alf-rb', '&--disabled', '&:focus-within, &:focus-visible');
+  @include alf-shadows-css-vars('--alf-rb', '&--disabled');
+  @include alf-typography-css-vars('--alf-rb', '&--disabled', '&:focus-within, &:focus-visible');
+  @include alf-text-style-css-vars('--alf-rb', '&--disabled', '&:focus-within, &:focus-visible');
+  @include alf-outline-css-vars('--alf-rb', '&--disabled');
+  @include alf-transform-css-vars('--alf-rb', '&--disabled');
+
   position: relative;
+  cursor: pointer;
+  user-select: none;
+  width: auto;
 
-  // Reset Alfonizer base block styles to keep radio transparent
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    pointer-events: none;
+  }
 
-  // Internal Variable Mapping
-  --alf-rb-size: 1.5rem;
-  --alf-rb-theme-color: var(--alf-rb-text-color, #4f46e5);
-
-  .alf-rb-wrapper {
+  // Contenedor interno para alinear radio + label
+  &-wrapper {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    user-select: none;
-    padding: 4px 8px;
-    border-radius: 4px;
-    transition: all 0.2s ease;
-
-    // No background on hover as per user request
-    &:hover:not(.alf-rb-wrapper--disabled) {
-      background-color: transparent;
-    }
+    gap: 0.5rem;
+    cursor: inherit;
 
     &--label-before {
       flex-direction: row-reverse;
     }
   }
 
-  .alf-rb-input {
-    position: absolute;
-    opacity: 0;
-    width: 0;
-    height: 0;
-    margin: 0;
-    pointer-events: none;
+  // El "circulito" visual
+  &-circle {
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    // Tamaño base (MD por defecto)
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+
+    // Aplicación de variables Élite de Borde
+    @include alf-border-css-vars('--alf-rb', '&--disabled', ':focus-within');
+
+    // Estilo Base (Unchecked)
+    background-color: transparent;
+
+    border-width: var(--alf-rb-border-width, 1px);
+    border-style: var(--alf-rb-border-style, solid);
+    border-color: var(--alf-rb-border-color, var(--alf-gray-300, #d1d5db));
+    
+    @include alf-transition;
   }
 
-  .alf-rb-ripple-bg {
+  // El punto central
+  &-dot {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 70%; 
-    height: 70%;
-    border-radius: 50%;
-    background-color: color-mix(in srgb, var(--alf-rb-theme-color), white 15%);
+    width: 55%;
+    height: 55%;
+    border-radius: inherit;
+    background-color: var(--alf-rb-border-color, var(--alf-rb-bg-color, currentColor));
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.4); // Corregido el centrado
-    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.4, 0, 0.4, 1);
+    transform: translate(-50%, -50%) scale(0);
+    --alf-transition-duration: 0.3s;
+    --alf-transition-timing: cubic-bezier(0.34, 1.56, 0.64, 1);
+    @include alf-transition;
+  }
+
+  // Estado Seleccionado
+  &--checked &-circle {
+    border-color: var(--alf-rb-border-color);
+    
+    .alf-rb-dot {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+
+  // Ripple Background (Opcional, si se usa WAAPI o CSS)
+  &-ripple-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: var(--alf-rb-border-color);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
     pointer-events: none;
     z-index: 0;
   }
 
-  .alf-rb-circle {
-    position: relative;
-    width: var(--alf-rb-size);
-    height: var(--alf-rb-size);
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: border-color 0.4s ease, background-color 0.4s ease;
+  // Texto del Label
+  &-label-text {
+    font-family: inherit;
+    line-height: 1.25rem;
+    color: var(--alf-rb-bg-color, var(--alf-rb-border-color, inherit)) !important;
+    @include alf-transition;
+    margin-top: -1px;
+  }
 
-    border: 2px solid color-mix(in srgb, var(--alf-rb-theme-color), transparent 1%);
+  // Descripciones y Helpers
+  &-description,
+  &-helper {
+    margin-top: 0.2rem;
+    padding-left: 2rem;
+    font-size: 0.75rem;
+    opacity: 0.7;
+    color: var(--alf-rb-text-color-default, inherit);
+  }
+
+  &-error {
+    color: var(--alf-danger, #dc3545) !important;
+  }
+
+  // ── VARIANTES DE FORMA ────────────────────────────────────────────────────
+
+  &--standard &-circle {
+    border-radius: 0.25rem;
+  }
+
+  &--elegant &-circle {
     border-radius: 50%;
+  }  // ── SIZES ─────────────────────────────────────────────────────────────────
 
-    .alf-rb-dot {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      border-radius: 50%;
-      background-color: var(--alf-rb-theme-color);
-      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-      opacity: 0;
-      transform: translate(-50%, -50%) scale(0);
-      z-index: 1;
-    }
+  &--xs &-circle {
+    width: 0.85rem;
+    height: 0.85rem;
   }
 
-  // ============================================
-  // VARIANTS: Elegant vs Standard
-  // ============================================
-  &--elegant {
-    .alf-rb-circle {
-      border-width: 1px;
-      border-color: rgba(0, 0, 0, 0.1);
-      box-shadow:
-        2px 2px 5px rgba(0, 0, 0, 0.05),
-        -2px -2px 5px rgba(255, 255, 255, 0.8);
-      background: linear-gradient(145deg, 
-        color-mix(in srgb, var(--alf-rb-theme-color), white 90%), 
-        color-mix(in srgb, var(--alf-rb-theme-color), white 95%)
-      );
-      border-color: color-mix(in srgb, var(--alf-rb-theme-color), transparent);
-    }
+  &--sm &-circle {
+    width: 1.05rem;
+    height: 1.05rem;
   }
 
-  // ============================================
-  // STATES
-  // ============================================
-  &--checked {
-    .alf-rb-ripple-bg {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
-    }
-    .alf-rb-circle {
-      border-color: var(--alf-rb-theme-color);
-    }
-
-    .alf-rb-dot {
-      width: 50%;
-      height: 50%;
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
-    }
-
-    .alf-rb-label-text {
-      color: var(--alf-rb-theme-color);
-      font-weight: 600;
-    }
+  &--md &-circle {
+    width: 1.25rem;
+    height: 1.25rem;
   }
 
-  &--hovered:not(&--disabled) {
-    .alf-rb-circle {
-      // Oscurecer un poco el color del borde en hover
-      border-color: color-mix(in srgb, var(--alf-rb-theme-color), black 10%);
-    }
-
-    .alf-rb-label-text {
-      color: color-mix(in srgb, var(--alf-rb-text-color, #444), black 15%);
-    }
+  &--lg &-circle {
+    width: 1.5rem;
+    height: 1.5rem;
   }
 
-  &--focused:not(&--disabled) {
-    .alf-rb-circle {
-      // Sin sombras por petición, pero resaltamos el color
-      border-color: var(--alf-rb-theme-color);
-    }
+  &--xl &-circle {
+    width: 1.85rem;
+    height: 1.85rem;
   }
 
-  &--disabled {
-    opacity: 0.5;
-
-    .alf-rb-wrapper {
-      cursor: not-allowed;
-
-      &:hover {
-        background-color: transparent;
-      }
-    }
-  }
-
-  // SIZES
-  &--xs {
-    --alf-rb-size: 12px;
-  }
-
-  &--sm {
-    --alf-rb-size: 15px;
-  }
-
-  &--md {
-    --alf-rb-size: 18px;
-  }
-
-  &--lg {
-    --alf-rb-size: 28px;
-  }
-
-  &--xl {
-    --alf-rb-size: 34px;
-  }
-
-  .alf-rb-label-text {
-    font-size: 0.95rem;
-    color: var(--alf-rb-text-color, #444);
-    font-weight: 500;
-  }
-
-  .alf-rb-description {
-    font-size: 0.85rem;
-    margin-top: 0.25rem;
-    color: #666;
-    padding-inline-start: calc(var(--alf-rb-size) + 12px);
-
-    .alf-rb-error {
-      color: #dc2626;
-    }
+  &--2xl &-circle {
+    width: 2.25rem;
+    height: 2.25rem;
   }
 }

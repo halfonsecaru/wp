@@ -9,29 +9,19 @@ import { getAlfButtonLabel, AlfButtonI18nLabels } from '../i18n/alf-button.i18n'
 import { SupportedLanguage } from '@alfcomponents/i18n/i18n-utils';
 import { resolveVariantConfig } from '@alfcomponents/base/defaultVariants';
 
-/**
- * Configuración base por defecto para el componente alf-button.
- */
-export const ALF_BUTTON_DEFAULT: AlfButtonInterface = {
-  type: AlfButtonTypeEnum.Button,
-  disabled: false,
-  loading: false,
-  debounceTime: 0,
-  cursor: AlfCursorEnum.Pointer,
-
-};
-
-
 export const getAlfButtonDefaultConfig = (
   variant: AlfColorVariantEnum,
   labelKey?: keyof AlfButtonI18nLabels,
   lang?: SupportedLanguage
 ): AlfButtonInterface => {
 
-  const variantConfig = resolveVariantConfig(variant);
   return {
-    ...ALF_BUTTON_DEFAULT,
-    ...variantConfig,
+    type: AlfButtonTypeEnum.Button,
+    disabled: false,
+    loading: false,
+    debounceTime: 0,
+    cursor: AlfCursorEnum.Pointer,
+    ...resolveVariantConfig(variant),
     padding: {
       default: {
         paddingLeft: AlfPxEnum.Px20,

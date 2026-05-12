@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./app/pages/alf-radio-viewer/alf-radio-viewer').then(m => m.AlfRadioViewer)
+    loadComponent: () => import('./app/pages/alf-radio-button-viewer/alf-radio-button-viewer').then(m => m.AlfRadioButtonViewer)
   },
   {
     path: 'checkbox',

@@ -1,80 +1,63 @@
-# AI Usage Guide: AlfButtons (Nuevo)
+# AI Usage Guide: AlfButton (Elite Visual Engine)
 
-Este documento describe como extender y usar `alf-buttons` de forma segura desde un asistente de IA.
+This document describes how to extend and use the `alf-button` component safely from an AI assistant, adhering to the project's technical rigor and Architectural rules.
 
-## Arquitectura actual
+## Current Architecture
 
-- Componente: `alfcomponents/components/simple/alf-buttons/alf-buttons.ts`
-- Base: `AlfBaseButtonConfiguration` + `AlfBaseConfiguration`
-- Plantilla: `alf-buttons.html` (render button o anchor)
-- Estilos: `alf-buttons.scss` (variables `--alf-btn-*`)
+- **Component**: `alfcomponents/components/simple/alf-button/alf-button.ts`
+- **Core Engine**: Centralized in `alfcomponents/base/defaultVariants.ts`. All visual logic (Solid, Outline, Soft, etc.) is resolved here.
+- **DNA Identities**: `BASIC_IDENTITIES` (inside `defaultVariants.ts`) maps semantic roles (`Primary`, `Success`, etc.) to brand colors, contrast, and ripple behavior.
+- **Styling Strategy**: Dual approach. SCSS for static layout and **CSS Variables** (`AlfColorEnum`) with hex fallbacks for dynamic theming.
+- **Polymorphism**: Automatically renders `<button>` or `<a>` based on the presence of the `link` input.
 
-El motor visual no depende de clases utilitarias externas. Prioriza `inputConfig` y las entradas directas para resolver estilos y estados.
+## Intelligent Variant Resolution
 
-## Flujo recomendado para configuraciones
+The system uses a smart lookup mechanism:
+- If you request `AlfColorVariantEnum.PrimaryOutline`, the engine first checks for a specific identity for that variant.
+- If not found, it automatically resolves to the base family identity (`Primary`).
+- This ensures consistency across all decorative variants (Outline, Soft, Ghost, Crystal, 3D, Gradient).
 
-1. Para botones de catalogo, usa `getAlfPredefinedButton(...)`.
-2. Para customizaciones, mezcla sobre el objeto resultante:
-   - `label`
-   - `iconLeft` / `iconRight`
-   - `displayAndLayout`, `typography`, `textStyle`, etc.
-3. Evita hardcodear estilos inline fuera del sistema visual.
+## Recommended Configuration Workflow
 
-Ejemplo:
+1. **Base Configuration**: Always start with the factory function to get the Design System defaults:
+   ```ts
+   import { getAlfButtonDefaultConfig } from '@alfcomponents/components/simple/alf-button/predefined/alf-button.predefined';
+   
+   const config = getAlfButtonDefaultConfig(AlfColorVariantEnum.PrimaryOutline);
+   ```
 
-```ts
-const base = getAlfPredefinedButton(DefaultButtonKeys.Warning, {
-  visualType: AlfButtonVisualTypeEnum.Ghost,
-  lang: 'es',
-});
+2. **Customization**: Merge properties over the base config. Avoid hardcoding styles; use `AlfColorEnum` or `AlfPxEnum`.
+   ```ts
+   const finalConfig = {
+     ...config,
+     label: 'Accept Changes',
+     iconLeft: AlfIconsUnicodeIconEnum.CheckMark,
+     displayAndLayout: { default: { width: AlfPxEnum.Px160 } }
+   };
+   ```
 
-const config = {
-  ...base,
-  label: 'Revisar',
-};
-```
+3. **Reactive Binding**: Bind to the `[inputConfig]` property of the component.
 
-## i18n
+## Technical Rules (Mandatory)
 
-- Fuente i18n: `i18n/alf-button.i18n.ts`
-- `getAlfPredefinedButton(...)` ya resuelve label traducido.
-- Si se envia `label` manual, ese valor pisa el traducido.
+- **Access Modifiers**: Every variable and method MUST have a modifier (`public`, `private`, `protected`).
+- **Readonly Signals**: All signals (`input`, `computed`, `model`) MUST be `readonly`.
+- **Arrow Functions**: Use arrow functions for all class methods to ensure `this` context.
+- **No Directives Overuse**: Do NOT use `CommonModule` or `*ngIf`. Use `@if`, `@for`, and `@let`.
 
-## Eventos y comportamiento
+## Events and Behavior
 
-- Outputs disponibles:
-  - `onClick`
-  - `onHoverEnter`
-  - `onHoverLeave`
-- Debounce:
-  - Input: `debounceTime`
-  - Logica: ignora clicks dentro del umbral usando `Date.now()`.
-- Smart blur:
-  - En click de puntero (`event.detail > 0`) hace `blur()` para no dejar foco visual.
+- **Outputs**: `onClick`, `onHoverEnter`, `onHoverLeave`.
+- **Debounce**: Controlled by `debounceTime` (default 0). Internal logic prevents rapid double-clicks.
+- **Accessibility**: Automatic ARIA management and smart focus handling (blur on mouse click to avoid persistent focus rings).
 
-## Reglas para cambios de codigo
+## Testing
 
-- No romper consistencia de `Light`: el texto debe mantenerse estable en hover/active.
-- Si agregas un visual type nuevo, actualizar:
-  - `default-visual.ts`
-  - demo viewer
-  - tests del componente
-- Mantener imports por alias `@alfcomponents/...`.
-
-## Tests minimos esperados
-
-- Render `button` por defecto.
-- Render `a` cuando hay `link`.
-- Emision de `onClick`, `onHoverEnter`, `onHoverLeave`.
-- Debounce activo y desactivado.
-- i18n con `lang` explicito y con idioma de navegador.
-
-Comandos utiles:
-
-```bash
-npx vitest run alfcomponents/components/simple/alf-buttons/alf-buttons.spec.ts
-npx vitest run alfcomponents/components/simple/alf-buttons/alf-button-predefined.spec.ts
+Run tests before committing changes:
+```powershell
+npx vitest run alfcomponents/components/simple/alf-button/alf-button.spec.ts
+npx vitest run alfcomponents/components/simple/alf-button/alf-button-predefined.spec.ts
 ```
 
 ---
-Referencia tecnica para agentes IA y mantenimiento del componente.
+*Technical reference for AI agents and component maintenance.*
