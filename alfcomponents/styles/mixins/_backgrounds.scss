@@ -13,13 +13,13 @@
   $focus-selectors: '&:focus, &:focus-visible'
 ) {
   // --- 1. BASE / DEFAULT ---
-  $bgc: var(#{$prefix}-bg-color, var(#{$prefix}-bg, revert));
-  $bgi: var(#{$prefix}-bg-img, revert);
-  $bgs: var(#{$prefix}-bg-size, revert);
-  $bgp: var(#{$prefix}-bg-pos, revert);
-  $bgr: var(#{$prefix}-bg-repeat, revert);
-  $bga: var(#{$prefix}-bg-attachment, revert);
-  $bgcl: var(#{$prefix}-bg-clip, revert);
+  $bgc: var(#{$prefix}-bg-color, var(#{$prefix}-bg, transparent));
+  $bgi: var(#{$prefix}-bg-img, none);
+  $bgs: var(#{$prefix}-bg-size, auto);
+  $bgp: var(#{$prefix}-bg-pos, initial);
+  $bgr: var(#{$prefix}-bg-repeat, repeat);
+  $bga: var(#{$prefix}-bg-attachment, scroll);
+  $bgcl: var(#{$prefix}-bg-clip, border-box);
 
   background-color: $bgc;
   background-image: $bgi;

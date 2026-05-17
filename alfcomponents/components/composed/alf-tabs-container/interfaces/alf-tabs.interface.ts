@@ -21,7 +21,7 @@ import { InjectionToken } from "@angular/core";
  * Interfaz para el componente padre (contenedor) accesible desde los hijos.
  */
 export interface AlfTabsParentInterface {
-  onTabHeightMeasured(height: number, startHeightOverride?: number): void;
+  onTabHeightMeasured(): void;
 }
 
 export const ALF_TABS_CONTAINER_TOKEN = new InjectionToken<AlfTabsParentInterface>('ALF_TABS_CONTAINER_TOKEN');
@@ -43,6 +43,7 @@ export interface AlfSingleTabInterface {
     readonly textStyle?: AlfTextStyleInterface;
     readonly typography?: AlfTypographyInterface;
     readonly animations?: AlfAnimateCssInterface;
+    readonly displayAndLayout?: AlfDisplayAndLayoutInterface;
 }
 
 export interface AlfTabsContainerConfigInterface {

@@ -5,18 +5,17 @@
   @include alf-padding-css-vars('--alf-tab-content');
   @include alf-text-style-css-vars('--alf-tab-content');
   @include alf-typography-css-vars('--alf-tab-content');
-
-  width: 100%;
-  box-sizing: border-box;
+  @include alf-display-layout-css-vars('--alf-tab-content');
+  
   display: grid;
-  grid-template-rows: 1fr; // Por defecto todo visible
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
 
-  &.alf-tab-use-expand {
-    overflow: hidden;
-    // Eliminamos la animación de grid-template-rows interna para no chocar con la del padre
-  }
-
-  .alf-tab-content-inner {
-    min-height: 0;
-  }
+.alf-tab-content-inner {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }

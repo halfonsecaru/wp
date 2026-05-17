@@ -249,10 +249,7 @@ const buildAnimationsBaseConfig = (): AlfAnimateCssInterface => ({
  * Inicializa todos los rellenos a cero.
  */
 const buildPaddingBaseConfig = (): AlfPaddingBaseInterface => ({
-    paddingTop: AlfPxEnum.None,
-    paddingBottom: AlfPxEnum.None,
-    paddingLeft: AlfPxEnum.None,
-    paddingRight: AlfPxEnum.None,
+    padding: AlfPxEnum.None,
 });
 
 /**
@@ -260,10 +257,7 @@ const buildPaddingBaseConfig = (): AlfPaddingBaseInterface => ({
  * Inicializa todos los márgenes externos a cero.
  */
 const buildMarginBaseConfig = (): AlfMarginBaseInterface => ({
-    marginTop: AlfPxEnum.None,
-    marginBottom: AlfPxEnum.None,
-    marginLeft: AlfPxEnum.None,
-    marginRight: AlfPxEnum.None,
+    margin: AlfPxEnum.None,
 });
 
 /**
@@ -352,10 +346,6 @@ const buildColorBorderConfig = (
  */
 const buildMarginConfig = (): AlfMarginInterface => ({
     default: { ...buildMarginBaseConfig() },
-    hover: { ...buildMarginBaseConfig() },
-    active: { ...buildMarginBaseConfig() },
-    focus: { ...buildMarginBaseConfig() },
-    disabled: { ...buildMarginBaseConfig() },
 });
 
 /**
@@ -363,10 +353,6 @@ const buildMarginConfig = (): AlfMarginInterface => ({
  */
 const buildOutlineConfig = (): AlfOutlineInterface => ({
     default: { ...buildOutlineBaseConfig() },
-    hover: { ...buildOutlineBaseConfig() },
-    active: { ...buildOutlineBaseConfig() },
-    focus: { ...buildOutlineBaseConfig() },
-    disabled: { ...buildOutlineBaseConfig() },
 });
 
 /**
@@ -374,10 +360,6 @@ const buildOutlineConfig = (): AlfOutlineInterface => ({
  */
 const buildDisplayAndLayoutConfig = (): AlfDisplayAndLayoutInterface => ({
     default: { ...buildDisplayAndLayoutBaseConfig() },
-    hover: { ...buildDisplayAndLayoutBaseConfig() },
-    active: { ...buildDisplayAndLayoutBaseConfig() },
-    focus: { ...buildDisplayAndLayoutBaseConfig() },
-    disabled: { ...buildDisplayAndLayoutBaseConfig() },
 });
 
 /**
@@ -385,10 +367,6 @@ const buildDisplayAndLayoutConfig = (): AlfDisplayAndLayoutInterface => ({
  */
 const buildPaddingConfig = (): AlfPaddingInterface => ({
     default: { ...buildPaddingBaseConfig() },
-    hover: { ...buildPaddingBaseConfig() },
-    active: { ...buildPaddingBaseConfig() },
-    focus: { ...buildPaddingBaseConfig() },
-    disabled: { ...buildPaddingBaseConfig() },
 });
 
 /**
@@ -409,9 +387,6 @@ const buildTextStyleConfig = (variant: AlfColorVariantEnum, isSolid: boolean, ov
 
     return {
         default: { ...buildTextStyleBaseConfig(), color },
-        hover: { ...buildTextStyleBaseConfig(), color },
-        active: { ...buildTextStyleBaseConfig(), color },
-        focus: { ...buildTextStyleBaseConfig(), color },
         disabled: { ...buildTextStyleBaseConfig(), color: AlfColorEnum.Gray500 },
     };
 };
@@ -430,9 +405,6 @@ const buildTypographyConfig = (variant: AlfColorVariantEnum, overrideColor?: Alf
 
     return {
         default: { ...buildTypographyBaseConfig(), color },
-        hover: { ...buildTypographyBaseConfig(), color },
-        active: { ...buildTypographyBaseConfig(), color },
-        focus: { ...buildTypographyBaseConfig(), color },
         disabled: { ...buildTypographyBaseConfig(), color: AlfColorEnum.Gray500 },
     };
 };
@@ -443,10 +415,6 @@ const buildTypographyConfig = (variant: AlfColorVariantEnum, overrideColor?: Alf
  */
 const buildShadowConfig = (): AlfShadowsInterface => ({
     default: { ...buildShadowsBaseConfig(), boxShadow: AlfShadowEnum.None },
-    hover: { ...buildShadowsBaseConfig(), boxShadow: AlfShadowEnum.None },
-    active: { ...buildShadowsBaseConfig(), boxShadow: AlfShadowEnum.None },
-    focus: { ...buildShadowsBaseConfig(), boxShadow: AlfShadowEnum.None },
-    disabled: { ...buildShadowsBaseConfig(), boxShadow: AlfShadowEnum.None },
 });
 
 /**
@@ -461,10 +429,6 @@ const buildAnimationsConfig = (): AlfAnimateCssInterface => ({
  */
 const buildTransformConfig = (): AlfTransformInterface => ({
     default: { ...buildTransformBaseConfig() },
-    hover: { ...buildTransformBaseConfig() },
-    active: { ...buildTransformBaseConfig() },
-    focus: { ...buildTransformBaseConfig() },
-    disabled: { ...buildTransformBaseConfig() },
 });
 
 

@@ -138,6 +138,10 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
         ...user.default,
         cursor: this.cursorComputed()
       },
+      hover: { ...base.hover, ...resolved.hover, ...user.hover },
+      active: { ...base.active, ...resolved.active, ...user.active },
+      focus: { ...base.focus, ...resolved.focus, ...user.focus },
+      disabled: { ...base.disabled, ...resolved.disabled, ...user.disabled },
     };
   });
 
@@ -152,6 +156,10 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
       ...resolved,
       ...user,
       default: { ...base.default, ...resolved.default, ...user.default },
+      hover: { ...base.hover, ...resolved.hover, ...user.hover },
+      active: { ...base.active, ...resolved.active, ...user.active },
+      focus: { ...base.focus, ...resolved.focus, ...user.focus },
+      disabled: { ...base.disabled, ...resolved.disabled, ...user.disabled },
     };
   });
   protected readonly outlineComputed = computed(() => {
@@ -180,6 +188,10 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
       ...resolved,
       ...user,
       default: { ...base.default, ...resolved.default, ...user.default },
+      hover: { ...base.hover, ...resolved.hover, ...user.hover },
+      active: { ...base.active, ...resolved.active, ...user.active },
+      focus: { ...base.focus, ...resolved.focus, ...user.focus },
+      disabled: { ...base.disabled, ...resolved.disabled, ...user.disabled },
     };
   });
 

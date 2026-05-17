@@ -11,6 +11,8 @@ import {
   AlfJustifyContentEnum,
   AlfPercentageEnum,
   AlfAnimationTypeEnum,
+  AlfFontWeightEnum,
+  AlfCursorEnum,
 } from '@alfcomponents/enums';
 import { AlfTabsContainerConfigInterface, AlfSingleTabInterface } from '../interfaces/alf-tabs.interface';
 
@@ -21,6 +23,11 @@ export const ALF_TABS_CONTAINER_DEFAULT: AlfTabsContainerConfigInterface = {
   tabsStyle: AlfTabsStyleEnum.Underline,
   tab: [],
   colorVariant: AlfColorVariantEnum.Transparent,
+  typography: {
+    default: {
+      fontWeight: AlfFontWeightEnum.SemiBold,
+    }
+  },
   animations: {
     enterStage: AlfAnimationTypeEnum.FadeIn,
     exitStage: AlfAnimationTypeEnum.FadeOut,
@@ -32,6 +39,48 @@ export const ALF_TABS_CONTAINER_DEFAULT: AlfTabsContainerConfigInterface = {
     exitStage: AlfAnimationTypeEnum.FadeOut,
     duration: '0.4s',
     delay: '0.1s',
+  },
+  border: {
+    default: {
+      borderWidth: AlfPxEnum.Px1,
+      borderStyle: AlfBorderStyleEnum.Solid,
+      borderColor: AlfColorEnum.Gray300,
+      borderRadius: AlfRadiusEnum.Md
+    },
+    hover: {
+      borderWidth: AlfPxEnum.Px1,
+      borderStyle: AlfBorderStyleEnum.Solid,
+      borderColor: AlfColorEnum.Gray300,
+      borderRadius: AlfRadiusEnum.Md
+    },
+    focus: {
+      borderWidth: AlfPxEnum.Px1,
+      borderStyle: AlfBorderStyleEnum.Solid,
+      borderColor: AlfColorEnum.Gray300,
+      borderRadius: AlfRadiusEnum.Md
+    },
+    active: {
+      borderWidth: AlfPxEnum.Px1,
+      borderStyle: AlfBorderStyleEnum.Solid,
+      borderColor: AlfColorEnum.Gray300,
+      borderRadius: AlfRadiusEnum.Md
+    }
+  },
+  backgrounds: {
+    default: { backgroundColor: AlfColorEnum.Transparent },
+    hover: { backgroundColor: AlfColorEnum.Transparent },
+    active: { backgroundColor: AlfColorEnum.Transparent },
+    focus: { backgroundColor: AlfColorEnum.Transparent }
+  },
+  displayAndLayout: {
+    default: {
+      display: AlfDisplayEnum.Flex,
+      flexDirection: AlfFlexDirectionEnum.Column,
+      alignItems: AlfAlignItemsEnum.Stretch,
+      justifyContent: AlfJustifyContentEnum.Start,
+      width: AlfPxEnum.auto,
+      height: AlfPxEnum.auto
+    }
   }
 };
 
@@ -39,15 +88,68 @@ export const ALF_TABS_CONTAINER_DEFAULT: AlfTabsContainerConfigInterface = {
  * Configuración por defecto para el contenido de una pestaña individual.
  */
 export const ALF_TAB_CONTENT_DEFAULT: Partial<AlfSingleTabInterface> = {
+  colorVariant: AlfColorVariantEnum.Transparent,
   padding: {
-    default: { padding: AlfPxEnum.Px10 }
+    default: { padding: AlfPxEnum.Px10 },
+    hover: { padding: AlfPxEnum.Px10 },
+    active: { padding: AlfPxEnum.Px10 },
+    focus: { padding: AlfPxEnum.Px10 }
   },
   backgrounds: {
-    default: { backgroundColor: AlfColorEnum.Transparent }
+    default: { backgroundColor: AlfColorEnum.Transparent },
+    hover: { backgroundColor: AlfColorEnum.Transparent },
+    active: { backgroundColor: AlfColorEnum.Transparent },
+    focus: { backgroundColor: AlfColorEnum.Transparent }
   },
-  border: {
-    default: { borderWidth: AlfPxEnum.None, borderColor: AlfColorEnum.Transparent }
-  }
+  displayAndLayout: {
+    default: {
+      display: AlfDisplayEnum.Grid,
+      flexDirection: AlfFlexDirectionEnum.Column,
+      alignItems: AlfAlignItemsEnum.Stretch,
+      justifyContent: AlfJustifyContentEnum.Start,
+      width: AlfPxEnum.auto,
+      height: AlfPxEnum.auto,
+      cursor: AlfCursorEnum.Default
+    },
+    hover: {
+      display: AlfDisplayEnum.Grid,
+      flexDirection: AlfFlexDirectionEnum.Column,
+      alignItems: AlfAlignItemsEnum.Stretch,
+      justifyContent: AlfJustifyContentEnum.Start,
+      width: AlfPxEnum.auto,
+      height: AlfPxEnum.auto,
+      cursor: AlfCursorEnum.Pointer
+    },
+    active: {
+      display: AlfDisplayEnum.Grid,
+      flexDirection: AlfFlexDirectionEnum.Column,
+      alignItems: AlfAlignItemsEnum.Stretch,
+      justifyContent: AlfJustifyContentEnum.Start,
+      width: AlfPxEnum.auto,
+      height: AlfPxEnum.auto,
+      cursor: AlfCursorEnum.Pointer
+    },
+    focus: {
+      display: AlfDisplayEnum.Grid,
+      flexDirection: AlfFlexDirectionEnum.Column,
+      alignItems: AlfAlignItemsEnum.Stretch,
+      justifyContent: AlfJustifyContentEnum.Start,
+      width: AlfPxEnum.auto,
+      height: AlfPxEnum.auto,
+      cursor: AlfCursorEnum.Pointer
+    },
+    disabled: {
+      display: AlfDisplayEnum.Grid,
+      flexDirection: AlfFlexDirectionEnum.Column,
+      alignItems: AlfAlignItemsEnum.Stretch,
+      justifyContent: AlfJustifyContentEnum.Start,
+      width: AlfPxEnum.auto,
+      height: AlfPxEnum.auto,
+      cursor: AlfCursorEnum.NotAllowed
+    }
+  },
+
+
 };
 
 /**
@@ -67,7 +169,8 @@ export const getAlfTabDefaultConfig = (
         flexDirection: AlfFlexDirectionEnum.Column,
         alignItems: AlfAlignItemsEnum.Stretch,
         justifyContent: AlfJustifyContentEnum.Start,
-        width: AlfPercentageEnum.Full
+        width: AlfPercentageEnum.Full,
+        height: AlfPxEnum.auto
       }
     }
   };

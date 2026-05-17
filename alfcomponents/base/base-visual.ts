@@ -151,6 +151,7 @@ export const visualPaddingBase = <TPrefix extends string>(prefix: TPrefix, input
     const mapPadding = (p: string, s: AlfPaddingBaseInterface, d: AlfPaddingBaseInterface | undefined, decls: string[]) => {
         const isInt = p.includes('-hover') || p.includes('-active') || p.includes('-focus') || p.includes('-disabled');
         const should = (v: any, dv: any) => v !== undefined && (!isInt || v !== dv);
+        if (should(s.padding, d?.padding)) decls.push(`${p}: ${s.padding};`);
         if (should(s.paddingTop, d?.paddingTop)) decls.push(`${p}-top: ${s.paddingTop};`);
         if (should(s.paddingBottom, d?.paddingBottom)) decls.push(`${p}-bottom: ${s.paddingBottom};`);
         if (should(s.paddingLeft, d?.paddingLeft)) decls.push(`${p}-left: ${s.paddingLeft};`);
@@ -205,14 +206,17 @@ export const visualDisplayAndLayoutBase = <TPrefix extends string>(prefix: TPref
 
     const mapLayout = (p: string, s: AlfDisplayAndLayoutBaseInterface) => {
         if (s.display !== undefined) declarations.push(`${p}-display: ${s.display};`);
+        if (s.flexDirection !== undefined) declarations.push(`${p}-flex-direction: ${s.flexDirection};`);
+        if (s.flexWrap !== undefined) declarations.push(`${p}-flex-wrap: ${s.flexWrap};`);
         if (s.width !== undefined) declarations.push(`${p}-width: ${s.width};`);
         if (s.height !== undefined) declarations.push(`${p}-height: ${s.height};`);
         if (s.gap !== undefined) declarations.push(`${p}-gap: ${s.gap};`);
-        if (s.justifyContent !== undefined) declarations.push(`${p}-justify: ${s.justifyContent};`);
-        if (s.alignItems !== undefined) declarations.push(`${p}-align: ${s.alignItems};`);
+        if (s.justifyContent !== undefined) declarations.push(`${p}-justify-content: ${s.justifyContent};`);
+        if (s.alignItems !== undefined) declarations.push(`${p}-align-items: ${s.alignItems};`);
         if (s.overflow !== undefined) declarations.push(`${p}-overflow: ${s.overflow};`);
         if (s.position !== undefined) declarations.push(`${p}-position: ${s.position};`);
         if (s.cursor !== undefined) declarations.push(`${p}-cursor: ${s.cursor};`);
+        if (s.opacity !== undefined) declarations.push(`${p}-opacity: ${s.opacity};`);
     };
 
     const states = ['default', 'hover', 'active', 'focus', 'disabled'] as const;
@@ -242,6 +246,7 @@ export const visualMarginBase = <TPrefix extends string>(prefix: TPrefix, input:
     const mapMargin = (p: string, s: AlfMarginBaseInterface, d: AlfMarginBaseInterface | undefined, decls: string[]) => {
         const isInt = p.includes('-hover') || p.includes('-active') || p.includes('-focus') || p.includes('-disabled');
         const should = (v: any, dv: any) => v !== undefined && (!isInt || v !== dv);
+        if (should(s.margin, d?.margin)) decls.push(`${p}: ${s.margin};`);
         if (should(s.marginTop, d?.marginTop)) decls.push(`${p}-top: ${s.marginTop};`);
         if (should(s.marginBottom, d?.marginBottom)) decls.push(`${p}-bottom: ${s.marginBottom};`);
         if (should(s.marginLeft, d?.marginLeft)) decls.push(`${p}-left: ${s.marginLeft};`);

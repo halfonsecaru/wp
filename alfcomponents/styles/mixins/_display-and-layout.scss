@@ -94,15 +94,23 @@
     gap: var(#{$prefix}-layout-hover-gap, $g);
     opacity: var(#{$prefix}-layout-hover-opacity, $op);
     cursor: var(#{$prefix}-layout-hover-cursor, $cur);
+    flex-direction: var(#{$prefix}-layout-hover-flex-direction, $fd);
+    flex-wrap: var(#{$prefix}-layout-hover-flex-wrap, $fw);
+    width: var(#{$prefix}-layout-hover-width, $w);
+    height: var(#{$prefix}-layout-hover-height, $h);
   }
 
   // --- 3. ACTIVE STATE ---
   &:active {
-    display: var(#{$prefix}-layout-active-display, $d);
-    justify-content: var(#{$prefix}-layout-active-justify-content, $jc);
-    align-items: var(#{$prefix}-layout-active-align-items, $ai);
-    gap: var(#{$prefix}-layout-active-gap, $g);
-    opacity: var(#{$prefix}-layout-active-opacity, $op);
+    display: var(#{$prefix}-layout-active-display, var(#{$prefix}-layout-hover-display, $d));
+    justify-content: var(#{$prefix}-layout-active-justify-content, var(#{$prefix}-layout-hover-justify-content, $jc));
+    align-items: var(#{$prefix}-layout-active-align-items, var(#{$prefix}-layout-hover-align-items, $ai));
+    gap: var(#{$prefix}-layout-active-gap, var(#{$prefix}-layout-hover-gap, $g));
+    opacity: var(#{$prefix}-layout-active-opacity, var(#{$prefix}-layout-hover-opacity, $op));
+    flex-direction: var(#{$prefix}-layout-active-flex-direction, var(#{$prefix}-layout-hover-flex-direction, $fd));
+    flex-wrap: var(#{$prefix}-layout-active-flex-wrap, var(#{$prefix}-layout-hover-flex-wrap, $fw));
+    width: var(#{$prefix}-layout-active-width, var(#{$prefix}-layout-hover-width, $w));
+    height: var(#{$prefix}-layout-active-height, var(#{$prefix}-layout-hover-height, $h));
   }
 
   // --- 4. FOCUS STATE ---

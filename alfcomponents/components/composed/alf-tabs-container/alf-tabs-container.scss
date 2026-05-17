@@ -1,7 +1,6 @@
 @use '../../../styles/mixins' as *;
 
 .alf-tabs-container {
-  // Mixins reactivos (Fuente de verdad: ALF_TABS_CONTAINER_DEFAULT y Signals)
   @include alf-border-css-vars('--alf-tabs');
   @include alf-background-css-vars('--alf-tabs');
   @include alf-margin-css-vars('--alf-tabs');
@@ -12,11 +11,7 @@
   @include alf-text-style-css-vars('--alf-tabs');
   @include alf-transform-css-vars('--alf-tabs');
   @include alf-display-layout-css-vars('--alf-tabs');
-
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-
+  
   .alf-tabs-header-container {
     display: flex;
     align-items: center;
@@ -105,10 +100,8 @@
   }
 
   .alf-tabs-content {
-    flex: 1;
-    position: relative;
+    height: var(--alf-tabs-content-height, auto);
     overflow: hidden;
-    // El padding ahora viene del contenedor padre vía configuración Élite
   }
 }
 

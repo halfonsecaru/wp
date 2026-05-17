@@ -1,4 +1,4 @@
-import { Component, contentChildren, effect, input, signal, computed, viewChild, ElementRef, viewChildren, untracked, afterNextRender, forwardRef, inject, booleanAttribute } from '@angular/core';
+import { Component, contentChildren, effect, input, signal, computed, viewChild, ElementRef, viewChildren, untracked, afterNextRender, forwardRef, inject, booleanAttribute, model, Injector } from '@angular/core';
 import { AlfTabComponent } from './components/alf-tab/alf-tab';
 import { AlfButton } from '../../simple/alf-button/alf-button';
 import { visualprefixEnum } from '@alfcomponents/shared';
@@ -11,7 +11,8 @@ import {
   AlfJustifyContentEnum,
   AlfPxEnum,
   AlfFontWeightEnum,
-  AlfRadiusEnum
+  AlfRadiusEnum,
+  AlfFontSizeEnum
 } from '@alfcomponents/enums';
 import { AlfBaseConfiguration } from '@alfcomponents/base';
 import { AlfTabsContainerConfigInterface, ALF_TABS_CONTAINER_TOKEN } from './interfaces/alf-tabs.interface';
@@ -34,79 +35,88 @@ import { AlfButtonInterface } from '../../simple/alf-button/interfaces/alf-butto
 export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsContainerConfigInterface> {
 
   /**
-   * Señal para elegir un estilo predefinido (Primary, Secondary, OutlinePrimary, etc.)
+   * Choosing a predefined style (Primary, Secondary, etc.) - Supports base and local naming.
    */
-  public readonly variant = input<string | AlfColorVariantEnum>(undefined, { alias: 'variant' });
+  public readonly variant = input<AlfColorVariantEnum | undefined>(undefined);
 
   /**
-   * Configuración predefinida basada en la variante elegida.
-   */
-  protected readonly predefinedConfig = computed(() => {
-    const v = this.variant();
-    if (!v) return ALF_TABS_CONTAINER_DEFAULT;
-
-    // Resolución segura del Enum si llega un string
-    let variantEnum = AlfColorVariantEnum.Transparent;
-    if (typeof v === 'string') {
-      const normalized = v.toLowerCase().replace(/-([a-z])/g, (g) => g[1].toUpperCase());
-      const key = normalized.charAt(0).toUpperCase() + normalized.slice(1);
-      variantEnum = (AlfColorVariantEnum as any)[key] ?? AlfColorVariantEnum.Secondary;
-    } else {
-      variantEnum = v;
-    }
-
-    return getAlfTabDefaultConfig(variantEnum);
-  });
-
-  /**
-   * Configuración directa del usuario.
+   * Direct user configuration (Elite Standard).
    */
   public override readonly inputConfig = input<AlfTabsContainerConfigInterface>(ALF_TABS_CONTAINER_DEFAULT, { alias: 'config' });
 
   /**
-   * Configuración FINAL (Prioridad absoluta a la variante si existe).
+   * Final configuration merge.
+   * Resolves hierarchy: Inputs > InputConfig > Design System Defaults.
    */
-  public readonly finalConfig = computed(() => {
-    const variant = this.variant();
-    const input = this.inputConfig();
-
-    if (variant) {
-      return this.predefinedConfig();
+  public readonly finalConfig = computed<AlfTabsContainerConfigInterface>(() => {
+    const rawV = (this.colorVariant() ?? this.variant() ?? this.inputConfig()?.colorVariant) as string;
+    
+    // Manual mapping for core variants if string is provided
+    let v: AlfColorVariantEnum | undefined;
+    if (rawV) {
+      const lowerV = rawV.toLowerCase();
+      const coreVariants: Record<string, AlfColorVariantEnum> = {
+        primary: AlfColorVariantEnum.Primary,
+        secondary: AlfColorVariantEnum.Secondary,
+        success: AlfColorVariantEnum.Success,
+        danger: AlfColorVariantEnum.Danger,
+        warning: AlfColorVariantEnum.Warning,
+        info: AlfColorVariantEnum.Info,
+        light: AlfColorVariantEnum.Light,
+        dark: AlfColorVariantEnum.Dark,
+        transparent: AlfColorVariantEnum.Transparent
+      };
+      
+      v = coreVariants[lowerV] ?? (rawV as AlfColorVariantEnum);
     }
 
-    return input ?? ALF_TABS_CONTAINER_DEFAULT;
+    const cfg = {
+      ...getAlfTabDefaultConfig(v),
+      ...this.inputConfig(),
+    };
+
+    return {
+      ...cfg,
+      fluidHeight: this.fluidHeightInput() ?? cfg?.fluidHeight,
+      contentAnimations: cfg?.contentAnimations,
+    };
   });
 
+  /** Syncs with AlfBaseConfiguration resolvedConfig */
   public override readonly resolvedConfig = this.finalConfig;
 
   /**
-   * Estilos custom adicionales
+   * Additional custom styles.
    */
   public readonly customStyleComputed = computed(() => {
     let styles = '';
     
-    // 1. Lógica del color del slider
+    // 1. Slider color logic
     const explicitBorder = this.borderComputed()?.default?.borderColor;
     let sliderColor: string;
 
     if (explicitBorder && explicitBorder !== AlfColorEnum.Transparent) {
       sliderColor = explicitBorder;
     } else {
-      const variant = this.colorVariantComputed();
-      switch (variant) {
-        case AlfColorVariantEnum.Primary: sliderColor = AlfColorEnum.Primary; break;
-        case AlfColorVariantEnum.Success: sliderColor = AlfColorEnum.Success; break;
-        case AlfColorVariantEnum.Danger: sliderColor = AlfColorEnum.Danger; break;
-        case AlfColorVariantEnum.Warning: sliderColor = AlfColorEnum.Warning; break;
-        case AlfColorVariantEnum.Info: sliderColor = AlfColorEnum.Info; break;
-        case AlfColorVariantEnum.Light: sliderColor = AlfColorEnum.Gray300; break;
-        case AlfColorVariantEnum.Dark: sliderColor = AlfColorEnum.Gray900; break;
-        default: sliderColor = AlfColorEnum.Secondary;
-      }
+      const v = this.colorVariantComputed().toString().toLowerCase();
+      const baseColor = v.replace(/outline|soft|crystal|3d/g, '');
+      
+      const colorMap: Record<string, AlfColorEnum> = {
+        primary: AlfColorEnum.Primary,
+        success: AlfColorEnum.Success,
+        danger: AlfColorEnum.Danger,
+        warning: AlfColorEnum.Warning,
+        info: AlfColorEnum.Info,
+        light: AlfColorEnum.Gray300,
+        dark: AlfColorEnum.Gray900,
+        secondary: AlfColorEnum.Secondary
+      };
+
+      sliderColor = colorMap[baseColor] ?? AlfColorEnum.Secondary;
     }
     styles += `--alf-tabs-slider-color: ${sliderColor};`;
 
-    // 2. Lógica para variante Crystal (Glassmorphism)
+    // 2. Crystal variant logic (Glassmorphism)
     if (this.colorVariantComputed().toString().toLowerCase().includes('crystal')) {
       styles += 'backdrop-filter: blur(12px) saturate(180%); background-color: rgba(255, 255, 255, 0.3) !important;';
     }
@@ -123,9 +133,9 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
   });
 
   /**
-   * Busca otros contenedores de pestañas dentro de este para detectar si somos el último nivel.
+   * Busca si hay otros contenedores anidados para determinar el comportamiento de altura.
    */
-  protected readonly nestedContainers = contentChildren(forwardRef(() => AlfTabsContainerComponent), { descendants: true });
+  protected readonly nestedContainers = contentChildren(forwardRef(() => AlfTabsContainerComponent), { descendants: false });
 
   /**
    * Propiedad computada que combina el input directo, la configuración y la auto-detección.
@@ -141,14 +151,18 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
   });
 
   private readonly parentTab = inject(AlfTabComponent, { optional: true });
-  protected readonly visualPrefix = visualprefixEnum.TabsContainer;
-  protected readonly tabs = contentChildren(AlfTabComponent, { descendants: false });
+  protected override readonly visualPrefix: string = visualprefixEnum.TabsContainer;
+  protected readonly tabs = contentChildren(forwardRef(() => AlfTabComponent), { descendants: false });
   protected readonly headerScrollRef = viewChild<ElementRef<HTMLDivElement>>('headerScroll');
   protected readonly headerMetrics = signal({ canLeft: false, canRight: false });
-  public readonly activeIndex = signal<number>(0);
-  protected readonly buttonRefs = viewChildren(AlfButton, { read: ElementRef });
+  /**
+   * Índice de la pestaña activa (Zoneless model).
+   */
+  public readonly activeIndex = model<number>(0);
+  protected readonly buttonRefs = viewChildren('tabButton', { read: ElementRef });
   protected readonly sliderRef = viewChild<ElementRef<HTMLDivElement>>('slider');
   private resizeObserver?: ResizeObserver;
+  private readonly injector = inject(Injector);
   public readonly isAnimating = signal<boolean>(false);
   public readonly containerHeight = signal<string>('auto');
 
@@ -172,48 +186,118 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
     });
 
     afterNextRender(() => {
-      const activeTab = this.tabs()[this.activeIndex()];
-      if (activeTab) activeTab.reportHeight();
+      this.onTabHeightMeasured();
     });
   }
 
+  private currentHeightAnimation: Animation | null = null;
+
   public readonly contentContainer = viewChild<ElementRef<HTMLDivElement>>('contentContainer');
-  public readonly ghostRef = viewChild<ElementRef<HTMLDivElement>>('ghost');
 
-  public readonly onTabHeightMeasured = (height: number, startHeightOverride?: number): void => {
-    if (!this.isFluidHeight()) {
-      this.containerHeight.set('auto');
-      return;
+  /**
+   * Aplica la altura al contenedor de contenido mediante el token CSS --alf-tabs-content-height.
+   * Este es el ÚNICO mecanismo de control de altura, eliminando conflictos Angular/WAAPI.
+   */
+  private readonly applyHeight = (container: HTMLElement, value: string): void => {
+    container.style.setProperty('--alf-tabs-content-height', value);
+  };
+
+  /**
+   * Mide la altura natural de la pestaña activa.
+   * Dos técnicas combinadas para romper TODO el estiramiento del Grid:
+   * 1. Oculta los tabs no-activos (rompe el stretch entre hermanos)
+   * 2. Colapsa el token --alf-tabs-content-height a auto (rompe el stretch del contenedor padre)
+   * Mide el scrollHeight del CONTENEDOR (no del inner), ya que este incluye
+   * el padding acumulado de todos los niveles de anidación.
+   * Todo síncrono en un frame, sin parpadeo.
+   */
+  private readonly measureNaturalHeight = (): number => {
+    const activeIdx = this.activeIndex();
+    const allTabs = this.tabs();
+    const activeTab = allTabs[activeIdx];
+    if (!activeTab) return 0;
+
+    const container = this.contentContainer()?.nativeElement;
+    if (!container) return 0;
+
+    // 1. Guardar el token actual del contenedor y colapsarlo a auto
+    const savedToken = container.style.getPropertyValue('--alf-tabs-content-height');
+    container.style.setProperty('--alf-tabs-content-height', 'auto');
+
+    // 2. Ocultar todos los tabs no-activos
+    const savedDisplays: { el: HTMLElement; display: string }[] = [];
+    for (let i = 0; i < allTabs.length; i++) {
+      if (i !== activeIdx) {
+        const el = allTabs[i].elementRef.nativeElement;
+        savedDisplays.push({ el, display: el.style.display });
+        el.style.display = 'none';
+      }
     }
 
-    const ghost = this.ghostRef()?.nativeElement;
-    const endHeight = height;
+    // Forzar un reflow para que el browser recalcule TODO
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    container.offsetHeight;
 
-    if (!ghost) {
-      this.containerHeight.set(`${endHeight}px`);
-      return;
+    // Medir scrollHeight del CONTENEDOR: incluye contenido + padding de hijos
+    const naturalHeight = container.scrollHeight;
+
+    // 3. Restaurar el token del contenedor
+    container.style.setProperty('--alf-tabs-content-height', savedToken || 'auto');
+
+    // 4. Restaurar los displays de los tabs
+    for (const saved of savedDisplays) {
+      saved.el.style.display = saved.display;
     }
 
-    const startHeight = startHeightOverride ?? ghost.offsetHeight;
+    return naturalHeight;
+  };
 
-    if (startHeight === 0 || this.containerHeight() === 'auto' || Math.abs(startHeight - endHeight) < 1) {
-      this.containerHeight.set(`${endHeight}px`);
+  public readonly onTabHeightMeasured = (): void => {
+    if (!this.isFluidHeight()) return;
+
+    const container = this.contentContainer()?.nativeElement;
+    if (!container) return;
+
+    // Cancelar animación previa para evitar conflictos
+    if (this.currentHeightAnimation) {
+      this.currentHeightAnimation.cancel();
+      this.currentHeightAnimation = null;
+    }
+
+    // Leer la altura actual ANTES de colapsar
+    const startHeight = container.offsetHeight;
+
+    // Medir la altura natural colapsando temporalmente
+    const endHeight = this.measureNaturalHeight();
+
+    console.log('[TABS DEBUG] startHeight:', startHeight, 'endHeight:', endHeight, 'diff:', Math.abs(startHeight - endHeight));
+
+    if (endHeight === 0) return;
+
+    if (startHeight === 0 || Math.abs(startHeight - endHeight) < 2) {
+      this.applyHeight(container, `${endHeight}px`);
       return;
     }
 
     this.isAnimating.set(true);
 
-    const anim = ghost.animate([
+    // Fijar la altura de inicio antes de animar
+    this.applyHeight(container, `${startHeight}px`);
+
+    const anim = container.animate([
       { height: `${startHeight}px` },
       { height: `${endHeight}px` }
     ], {
-      duration: 450,
+      duration: 350,
       easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
-      fill: 'forwards'
+      fill: 'none'
     });
 
+    this.currentHeightAnimation = anim;
+
     anim.onfinish = () => {
-      this.containerHeight.set(`${endHeight}px`);
+      this.applyHeight(container, `${endHeight}px`);
+      this.currentHeightAnimation = null;
       this.isAnimating.set(false);
 
       if (this.parentTab) {
@@ -222,7 +306,7 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
     };
   };
 
-  protected updateScrollMetrics(): void {
+  protected readonly updateScrollMetrics = (): void => {
     const el = this.headerScrollRef()?.nativeElement;
     if (!el) return;
 
@@ -234,25 +318,25 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
     });
 
     this.updateSlider(false);
-  }
+  };
 
-  public scrollLeft(): void {
+  public readonly scrollLeft = (): void => {
     const el = this.headerScrollRef()?.nativeElement;
     if (!el) return;
     el.scrollBy({ left: -200, behavior: 'smooth' });
-  }
+  };
 
-  public scrollRight(): void {
+  public readonly scrollRight = (): void => {
     const el = this.headerScrollRef()?.nativeElement;
     if (!el) return;
     el.scrollBy({ left: 200, behavior: 'smooth' });
-  }
+  };
 
-  protected onScroll(): void {
+  protected readonly onScroll = (): void => {
     this.updateScrollMetrics();
-  }
+  };
 
-  public updateSlider(animate: boolean = true): void {
+  public readonly updateSlider = (animate: boolean = true): void => {
     const active = this.activeIndex();
     const buttons = this.buttonRefs();
     const slider = this.sliderRef()?.nativeElement;
@@ -280,7 +364,7 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
 
     slider.style.width = `${width}px`;
     slider.style.left = `${left}px`;
-  }
+  };
 
   protected readonly animateSlider = effect(() => {
     this.activeIndex();
@@ -291,52 +375,85 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
     });
   });
 
+  /**
+   * Resolves the configuration for each tab button in the header.
+   */
   public readonly navigationTabs = computed(() => {
-    const containerColorVariant = this.colorVariantComputed();
+    const containerVariant = this.colorVariantComputed();
+    const currentTabs = this.tabs();
+    const activeIdx = this.activeIndex();
 
-    return this.tabs().map((tabInstance) => {
-      const tab = tabInstance as any;
+    return currentTabs.map((tab, index) => {
+      const isActive = index === activeIdx;
       const tabLabel = tab.finalLabel();
-      const tabInputConfig = tab.inputConfig() ?? {};
+      const tabConfig = tab.inputConfig();
 
-      const resolvedVariant = tab.colorVariant() ?? tabInputConfig.colorVariant ?? containerColorVariant ?? AlfColorVariantEnum.Secondary;
-      
-      const baseColor = resolvedVariant.toString().split('Outline')[0].split('Soft')[0].split('Crystal')[0].split('3D')[0].toLowerCase();
-      
-      const MAP: Record<string, AlfColorEnum> = {
-        'primary': AlfColorEnum.Blue050,
-        'secondary': AlfColorEnum.Gray050,
-        'success': AlfColorEnum.Green050,
-        'danger': AlfColorEnum.Red050,
-        'warning': AlfColorEnum.Yellow050,
-        'info': AlfColorEnum.Cyan050,
-        'light': AlfColorEnum.Gray050,
-        'dark': AlfColorEnum.Gray100
-      };
+      // Resolve effective variant for this tab
+      const v = tab.colorVariant() ?? tabConfig?.colorVariant ?? containerVariant ?? AlfColorVariantEnum.Secondary;
+      const baseColor = v.toString().toLowerCase();
 
-      const hoverBg = MAP[baseColor] ?? AlfColorEnum.Gray050;
+      // Para el texto activo, tratamos de sacar el color de la identidad:
+      let textColor = isActive ? AlfColorEnum.Gray900 : AlfColorEnum.Gray500;
+      if (isActive && baseColor.includes('primary')) textColor = AlfColorEnum.Primary;
+      else if (isActive && baseColor.includes('secondary')) textColor = AlfColorEnum.Secondary;
+      else if (isActive && baseColor.includes('success')) textColor = AlfColorEnum.Success;
+      else if (isActive && baseColor.includes('danger')) textColor = AlfColorEnum.Danger;
+      else if (isActive && baseColor.includes('warning')) textColor = AlfColorEnum.Warning;
 
-      const configuration: AlfButtonInterface = {
-        ...tabInputConfig,
+      const buttonConfig: AlfButtonInterface = {
+        ...tabConfig,
         label: tabLabel,
-        iconLeft: tab.iconLeft() ?? tabInputConfig.iconLeft,
-        iconRight: tab.iconRight() ?? tabInputConfig.iconRight,
-        colorVariant: resolvedVariant,
+        iconLeft: tab.iconLeft() ?? tabConfig?.iconLeft,
+        iconRight: tab.iconRight() ?? tabConfig?.iconRight,
+        colorVariant: v,
         backgrounds: {
           default: { backgroundColor: AlfColorEnum.Transparent },
-          hover: { backgroundColor: hoverBg },
-          active: { backgroundColor: hoverBg }
+          hover: { backgroundColor: AlfColorEnum.Transparent },
+          active: { backgroundColor: AlfColorEnum.Transparent },
+          focus: { backgroundColor: AlfColorEnum.Transparent }
         },
         typography: {
           default: {
-            ...tabInputConfig.typography?.default,
-            fontWeight: tabInputConfig.typography?.default?.fontWeight ?? AlfFontWeightEnum.SemiBold
+            ...tabConfig?.typography?.default,
+            fontWeight: isActive ? AlfFontWeightEnum.Bold : AlfFontWeightEnum.SemiBold,
           }
+        },
+        textStyle: {
+          default: { color: textColor },
+          hover: { color: textColor },
+          active: { color: textColor }
         },
         border: {
           default: {
-            ...tabInputConfig.border?.default,
-            borderRadius: tabInputConfig.border?.default?.borderRadius ?? AlfRadiusEnum.None
+            ...tabConfig?.border?.default,
+            borderWidth: AlfPxEnum.None,
+            borderRadius: AlfRadiusEnum.None
+          }
+        },
+        padding: {
+          default: {
+            paddingTop: AlfPxEnum.Px12,
+            paddingBottom: AlfPxEnum.Px12,
+            paddingLeft: AlfPxEnum.Px16,
+            paddingRight: AlfPxEnum.Px16
+          },
+          hover: {
+            paddingTop: AlfPxEnum.Px12,
+            paddingBottom: AlfPxEnum.Px12,
+            paddingLeft: AlfPxEnum.Px16,
+            paddingRight: AlfPxEnum.Px16
+          },
+          active: {
+            paddingTop: AlfPxEnum.Px12,
+            paddingBottom: AlfPxEnum.Px12,
+            paddingLeft: AlfPxEnum.Px16,
+            paddingRight: AlfPxEnum.Px16
+          },
+          focus: {
+            paddingTop: AlfPxEnum.Px12,
+            paddingBottom: AlfPxEnum.Px12,
+            paddingLeft: AlfPxEnum.Px16,
+            paddingRight: AlfPxEnum.Px16
           }
         },
         displayAndLayout: {
@@ -345,17 +462,39 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
             flexDirection: AlfFlexDirectionEnum.Row,
             alignItems: AlfAlignItemsEnum.Center,
             justifyContent: AlfJustifyContentEnum.Center,
-            gap: AlfPxEnum.Px8
+            gap: AlfPxEnum.Px8,
+            width: AlfPxEnum.auto,
+            height: '100%' as any
           }
         }
       };
 
       return {
         label: tabLabel,
-        configuration
+        configuration: buttonConfig
       };
     });
   });
+
+  public readonly arrowLeftConfig = computed<AlfButtonInterface>(() => ({
+    label: '‹',
+    colorVariant: AlfColorVariantEnum.Transparent,
+    typography: { default: { fontSize: AlfFontSizeEnum.Xl3, fontWeight: AlfFontWeightEnum.Bold } },
+    padding: { default: { paddingTop: AlfPxEnum.None, paddingBottom: AlfPxEnum.None, paddingLeft: AlfPxEnum.None, paddingRight: AlfPxEnum.None } },
+    border: { default: { borderWidth: AlfPxEnum.None } },
+    backgrounds: { default: { backgroundColor: AlfColorEnum.Transparent }, hover: { backgroundColor: AlfColorEnum.Transparent }, active: { backgroundColor: AlfColorEnum.Transparent } },
+    displayAndLayout: { default: { width: '100%' as any, height: '100%' as any } }
+  }));
+
+  public readonly arrowRightConfig = computed<AlfButtonInterface>(() => ({
+    label: '›',
+    colorVariant: AlfColorVariantEnum.Transparent,
+    typography: { default: { fontSize: AlfFontSizeEnum.Xl3, fontWeight: AlfFontWeightEnum.Bold } },
+    padding: { default: { paddingTop: AlfPxEnum.None, paddingBottom: AlfPxEnum.None, paddingLeft: AlfPxEnum.None, paddingRight: AlfPxEnum.None } },
+    border: { default: { borderWidth: AlfPxEnum.None } },
+    backgrounds: { default: { backgroundColor: AlfColorEnum.Transparent }, hover: { backgroundColor: AlfColorEnum.Transparent }, active: { backgroundColor: AlfColorEnum.Transparent } },
+    displayAndLayout: { default: { width: '100%' as any, height: '100%' as any } }
+  }));
 
   protected readonly syncActiveTab = effect(() => {
     const active = this.activeIndex();
@@ -371,6 +510,11 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
       }
     });
 
+    // El contenedor padre mide la altura directamente tras el render,
+    // sin depender del reporte del hijo (que puede ir a un contenedor anidado).
+    untracked(() => {
+      afterNextRender(this.onTabHeightMeasured, { injector: this.injector });
+    });
   });
 
   public readonly setActiveTab = (index: number): void => {
@@ -389,8 +533,11 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
 
   public readonly contentAnimationsStyle = computed(() => {
     const anim = this.finalConfig()?.contentAnimations;
-    if (!anim) return '';
-    const declarations: string[] = [];
+    const baseStyles = 'position: relative; overflow: hidden;';
+    
+    if (!anim) return baseStyles;
+    
+    const declarations: string[] = [baseStyles];
     if (anim.duration) declarations.push(`--animate-duration: ${anim.duration};`);
     if (anim.delay) declarations.push(`--animate-delay: ${anim.delay};`);
     return declarations.join(' ');
