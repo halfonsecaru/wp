@@ -8,6 +8,7 @@ export enum visualprefixEnum {
     Checkbox = '--alf-cb',
     RadioButton = '--alf-rb',
     Input = '--alf-inp',
+    Switch = '--alf-sw',
 
     // InternalIds
     ButtonsInternalId = '-alf-btn-id',

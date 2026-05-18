@@ -12,6 +12,10 @@ export * from './simple/alf-radio-button/predefined/alf-radio-button.predefined'
 export * from './simple/alf-input/alf-input';
 export * from './simple/alf-input/interfaces/alf-input.interface';
 export * from './simple/alf-input/predefined/alf-input.predefined';
+export * from './simple/alf-switch/alf-switch';
+export * from './simple/alf-switch/interfaces/alf-switch.interface';
+export * from './simple/alf-switch/predefined/alf-switch.predefined';
+
 
 // Standar Components
 export * from './standar/alf-code/alf-code';

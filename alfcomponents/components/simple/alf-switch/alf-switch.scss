@@ -1,0 +1,220 @@
+@use '../../../styles/mixins' as *;
+
+:host {
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+.alf-sw {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+
+  @include alf-transition;
+
+  @include alf-display-layout-css-vars($prefix: '--alf-sw',
+    $display: flex,
+    $align: flex-start,
+    $justify: flex-start,
+    $disabled-selectors: '&--disabled',
+    $focus-selectors: '&:focus-within, &:focus-visible'
+  );
+
+  @include alf-padding-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
+  @include alf-margin-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
+  @include alf-shadows-css-vars('--alf-sw', '&--disabled');
+  @include alf-typography-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
+  @include alf-text-style-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
+  @include alf-outline-css-vars('--alf-sw', '&--disabled');
+  @include alf-transform-css-vars('--alf-sw', '&--disabled');
+
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  width: auto;
+
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  // Internal wrapper
+  &-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: inherit;
+
+    &--label-before {
+      flex-direction: row-reverse;
+    }
+  }
+
+  // Switch Track
+  &-track {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    
+    // MD defaults (2.5rem width x 1.25rem height is standard ratio 2:1)
+    width: 2.5rem;
+    height: 1.25rem;
+    border-radius: 9999px;
+    background-color: var(--alf-sw-bg-color, var(--alf-gray-300, #d1d5db));
+
+    @include alf-border-css-vars('--alf-sw', '&--disabled', ':focus-within');
+    
+    border-width: var(--alf-sw-border-width, 1px);
+    border-style: var(--alf-sw-border-style, solid);
+    border-color: var(--alf-sw-border-color, transparent);
+    
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+
+  // Switch Thumb
+  &-thumb {
+    position: absolute;
+    left: 2px;
+    display: block;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  // Active state thumb shift and track tint
+  &--checked &-track {
+    background-color: var(--alf-sw-bg-color-active, #3b82f6);
+  }
+
+  &--checked &-thumb {
+    // Shifts rightward (Width 2.5rem - Thumb 1rem - spacing 4px = 1.25rem shift)
+    transform: translateX(1.25rem);
+  }
+
+  // Label text
+  &-label-text {
+    font-family: inherit;
+    line-height: 1.25rem;
+    color: var(--alf-sw-text-color, inherit);
+  }
+
+  // Helper and errors
+  &-description,
+  &-helper {
+    margin-top: 0.2rem;
+    padding-left: 2.75rem;
+    font-size: 0.75rem;
+    opacity: 0.7;
+    color: var(--alf-sw-text-color-default, inherit);
+  }
+
+  &-error {
+    color: var(--alf-danger, #dc3545) !important;
+  }
+
+  // Shape variants
+  &--standard &-track {
+    border-radius: 0.25rem;
+    
+    .alf-sw-thumb {
+      border-radius: 0.2rem;
+    }
+  }
+
+  &--elegant &-track {
+    border-radius: 9999px;
+  }
+
+  // ── SIZES ─────────────────────────────────────────────────────────────────
+  &--xs &-track {
+    width: 1.75rem;
+    height: 0.85rem;
+    
+    .alf-sw-thumb {
+      width: 0.65rem;
+      height: 0.65rem;
+    }
+  }
+
+  &--checked.alf-sw--xs &-thumb {
+    transform: translateX(0.9rem);
+  }
+
+  &--sm &-track {
+    width: 2.1rem;
+    height: 1.05rem;
+    
+    .alf-sw-thumb {
+      width: 0.85rem;
+      height: 0.85rem;
+    }
+  }
+
+  &--checked.alf-sw--sm &-thumb {
+    transform: translateX(1.05rem);
+  }
+
+  &--md &-track {
+    width: 2.5rem;
+    height: 1.25rem;
+    
+    .alf-sw-thumb {
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+
+  &--checked.alf-sw--md &-thumb {
+    transform: translateX(1.25rem);
+  }
+
+  &--lg &-track {
+    width: 3rem;
+    height: 1.5rem;
+    
+    .alf-sw-thumb {
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+  }
+
+  &--checked.alf-sw--lg &-thumb {
+    transform: translateX(1.5rem);
+  }
+
+  &--xl &-track {
+    width: 3.7rem;
+    height: 1.85rem;
+    
+    .alf-sw-thumb {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
+
+  &--checked.alf-sw--xl &-thumb {
+    transform: translateX(1.85rem);
+  }
+
+  &--2xl &-track {
+    width: 4.5rem;
+    height: 2.25rem;
+    
+    .alf-sw-thumb {
+      width: 1.85rem;
+      height: 1.85rem;
+    }
+  }
+
+  &--checked.alf-sw--2xl &-thumb {
+    transform: translateX(2.25rem);
+  }
+}
