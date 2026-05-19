@@ -1,6 +1,6 @@
 {
   "version": "6.0",
-  "nxVersion": "22.6.4",
+  "nxVersion": "22.7.0",
   "pathMappings": {
     "@libs/shared/*": [
       "libs/shared/*"
@@ -24,10 +24,1016 @@
   "nxJsonPlugins": [],
   "fileMap": {
     "projectFileMap": {
+      "alf-components": [
+        {
+          "file": "alfcomponents/CATALOG.md",
+          "hash": "18223173037944394925"
+        },
+        {
+          "file": "alfcomponents/base/alf-base-configuration.ts",
+          "hash": "10450074621887527508",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "alfcomponents/base/base-visual.ts",
+          "hash": "15933462374853590458"
+        },
+        {
+          "file": "alfcomponents/base/defaultVariants.ts",
+          "hash": "3171654773486245910"
+        },
+        {
+          "file": "alfcomponents/base/index.ts",
+          "hash": "8225622123688038074"
+        },
+        {
+          "file": "alfcomponents/components/composed/alf-tabs-container/README.english.md",
+          "hash": "6831909848544636785"
+        },
+        {
+          "file": "alfcomponents/components/composed/alf-tabs-container/README.spanish.md",
+          "hash": "16512322587802925647"
+        },
+        {
+          "file": "alfcomponents/components/composed/alf-tabs-container/alf-tabs-container.html",
+          "hash": "2764320604443795968"
+        },
+        {
+          "file": "alfcomponents/components/composed/alf-tabs-container/alf-tabs-container.scss",
+          "hash": "2167610859073062331"
+        },
+        {
+          "file": "alfcomponents/components/composed/alf-tabs-container/alf-tabs-container.spec.ts",
+          "hash": "15098814185881769208",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "alfcomponents/components/composed/alf-tabs-container/alf-tabs-container.ts",
+          "hash": "5843075181614853416",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "alfcomponents/components/composed/alf-tabs-container/components/alf-tab/alf-tab.html",
+          "hash": "16409924523284829338"
+        },
+        {
+          "file": "alfcomponents/components/composed/alf-tabs-container/components/alf-tab/alf-tab.scss",
+          "hash": "13719535215317822908"
+        },
+        {
+          "file": "alfcomponents/components/composed/alf-tabs-container/components/alf-tab/alf-tab.spec.ts",
+          "hash": "377758062308488911",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "alfcomponents/components/composed/alf-tabs-container/components/alf-tab/alf-tab.ts",
+          "hash": "14794798792965125126",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "alfcomponents/components/composed/alf-tabs-container/enums/alf-tabs.enum.ts",
+          "hash": "13727040122162317262"
+        },
+        {
+          "file": "alfcomponents/components/composed/alf-tabs-container/ia_usage.md",
+          "hash": "8072082213297287771"
+        },
+        {
+          "file": "alfcomponents/components/composed/alf-tabs-container/interfaces/alf-tabs.interface.ts",
+          "hash": "17208821916334683850",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "alfcomponents/components/composed/alf-tabs-container/predefined/alf-tabs-container.predefined.ts",
+          "hash": "15931638501311684503"
+        },
+        {
+          "file": "alfcomponents/components/composed/alf-tabs-container/refactoring_todo_tabs.md",
+          "hash": "10300428055140964968"
+        },
+        {
+          "file": "alfcomponents/components/index.ts",
+          "hash": "11197746121528792051"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-button/README.english.md",
+          "hash": "17186987344572196129"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-button/README.spanish.md",
+          "hash": "3179946214243724252"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-button/alf-button-predefined.spec.ts",
+          "hash": "5453079128280144325",
+          "deps": [
+            "npm:vitest"
+          ]
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-button/alf-button.html",
+          "hash": "17190138868595391505"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-button/alf-button.scss",
+          "hash": "4257655808829686397"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-button/alf-button.spec.ts",
+          "hash": "3779261652357395326",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/platform-browser-dynamic",
+            "npm:@angular/platform-browser",
+            "npm:vitest"
+          ]
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-button/alf-button.ts",
+          "hash": "7901324363402254247",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common"
+          ]
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-button/alf-tabs.interface.ts",
+          "hash": "3782519086682035519"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-button/base/alf-base-button-configuration.ts",
+          "hash": "3141048848904386479",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-button/enums/defaultButtonKeys.interface.ts",
+          "hash": "13231307670367681769"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-button/i18n/alf-button.i18n.ts",
+          "hash": "5306078910939067535"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-button/ia_usage.md",
+          "hash": "2183160415962419326"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-button/interfaces/alf-button.interface.ts",
+          "hash": "9836264931676707063"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-button/predefined/alf-button.predefined.ts",
+          "hash": "16334063941232946864"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-checkbox/README.english.md",
+          "hash": "11529243771591845045"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-checkbox/README.spanish.md",
+          "hash": "8647466360755157813"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-checkbox/alf-checkbox.html",
+          "hash": "13875399638914846862"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-checkbox/alf-checkbox.scss",
+          "hash": "10426645305875956864"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-checkbox/alf-checkbox.spec.ts",
+          "hash": "10526316747471719487",
+          "deps": [
+            "npm:vitest",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-checkbox/alf-checkbox.ts",
+          "hash": "8550757564000119981",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-checkbox/i18n/checkbox-i18n.ts",
+          "hash": "17075313212331315514"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-checkbox/ia_usage.md",
+          "hash": "5000106473670127324"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-checkbox/interfaces/alf-checkbox.interface.ts",
+          "hash": "10684819360439994369"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-checkbox/predefined/alf-checkbox.predefined.ts",
+          "hash": "531447638392860876"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-checkbox/refactoring_todo_checkbox.md",
+          "hash": "8692327410681740346"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-input/alf-input.html",
+          "hash": "16486223521868408257"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-input/alf-input.scss",
+          "hash": "16089505665765899242"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-input/alf-input.spec.ts",
+          "hash": "10002360215869382937",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/platform-browser-dynamic",
+            "npm:@angular/platform-browser",
+            "npm:vitest"
+          ]
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-input/alf-input.ts",
+          "hash": "17245729834982000218",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-input/i18n/alf-input.i18n.ts",
+          "hash": "16905537919737384313"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-input/interfaces/alf-input.interface.ts",
+          "hash": "17085661475207933396"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-input/predefined/alf-input.predefined.ts",
+          "hash": "18247017661776933181"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-radio-button/README.english.md",
+          "hash": "5098393501575322416"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-radio-button/README.spanish.md",
+          "hash": "13482312976981756561"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-radio-button/alf-radio-button.html",
+          "hash": "14241370279221053451"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-radio-button/alf-radio-button.scss",
+          "hash": "6397369210393633638"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-radio-button/alf-radio-button.spec.ts",
+          "hash": "15791939854611792134",
+          "deps": [
+            "npm:vitest",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-radio-button/alf-radio-button.ts",
+          "hash": "6342775178588074665",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-radio-button/i18n/alf-radio-button-i18n.ts",
+          "hash": "9693526726928294945"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-radio-button/ia_usage.md",
+          "hash": "14047600643625597406"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-radio-button/interfaces/alf-radio-button.interface.ts",
+          "hash": "2377187434117805850"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-radio-button/predefined/alf-radio-button.predefined.ts",
+          "hash": "3886127305576625442"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-spinner/README.md",
+          "hash": "7602059353670845472"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-spinner/alf-spinner.html",
+          "hash": "15430837611823979607"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-spinner/alf-spinner.scss",
+          "hash": "7188112088129037919"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-spinner/alf-spinner.spec.ts",
+          "hash": "12054449004921477392",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/platform-browser"
+          ]
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-spinner/alf-spinner.ts",
+          "hash": "2291978186070660936",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-switch/README.english.md",
+          "hash": "6407971743166304693"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-switch/README.spanish.md",
+          "hash": "852255948272203226"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-switch/alf-switch.html",
+          "hash": "1649413192036039227"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-switch/alf-switch.scss",
+          "hash": "3349505998860073962"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-switch/alf-switch.spec.ts",
+          "hash": "16433796184377764002",
+          "deps": [
+            "npm:vitest",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-switch/alf-switch.ts",
+          "hash": "16173665221164938284",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-switch/enums/.gitkeep",
+          "hash": "11861131629772259896"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-switch/i18n/switch-i18n.ts",
+          "hash": "14063955712528013872"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-switch/ia_usage.md",
+          "hash": "18347003024641435799"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-switch/interfaces/alf-switch.interface.ts",
+          "hash": "17914155310680973636"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-switch/predefined/alf-switch.predefined.ts",
+          "hash": "12265091092340551000"
+        },
+        {
+          "file": "alfcomponents/components/simple/alf-switch/utils/.gitkeep",
+          "hash": "228711836225735388"
+        },
+        {
+          "file": "alfcomponents/components/standar/alf-code/README.md",
+          "hash": "142796831043232979"
+        },
+        {
+          "file": "alfcomponents/components/standar/alf-code/alf-code.html",
+          "hash": "11496184856877709545"
+        },
+        {
+          "file": "alfcomponents/components/standar/alf-code/alf-code.scss",
+          "hash": "417898033268717570"
+        },
+        {
+          "file": "alfcomponents/components/standar/alf-code/alf-code.spec.ts",
+          "hash": "1162445837236407225",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/platform-browser-dynamic",
+            "npm:@angular/platform-browser",
+            "npm:vitest"
+          ]
+        },
+        {
+          "file": "alfcomponents/components/standar/alf-code/alf-code.ts",
+          "hash": "11587219259973629622",
+          "deps": [
+            "npm:@angular/core",
+            "npm:prismjs"
+          ]
+        },
+        {
+          "file": "alfcomponents/directives/alf-loading/alf-loading.directive.ts",
+          "hash": "12967371148796094247",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "alfcomponents/directives/alf-loading/alf-loading.spec.ts",
+          "hash": "3245133821533214742",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/platform-browser-dynamic",
+            "npm:@angular/platform-browser",
+            "npm:vitest"
+          ]
+        },
+        {
+          "file": "alfcomponents/directives/alf-loading/predefined/alf-loading.predefined.ts",
+          "hash": "8265409349489567429"
+        },
+        {
+          "file": "alfcomponents/directives/alf-loading/predefined/alf-loading.tokens.ts",
+          "hash": "2936489208375551102",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "alfcomponents/directives/index.ts",
+          "hash": "5730658939941264953"
+        },
+        {
+          "file": "alfcomponents/directives/popover/README.md",
+          "hash": "6006382972170625695"
+        },
+        {
+          "file": "alfcomponents/directives/popover/popover.spec.ts",
+          "hash": "17514236812196013820",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/platform-browser-dynamic",
+            "npm:@angular/platform-browser",
+            "npm:vitest"
+          ]
+        },
+        {
+          "file": "alfcomponents/directives/popover/popover.ts",
+          "hash": "17681368091596132915",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "alfcomponents/directives/ripple/alf-ripple.directive.spec.ts",
+          "hash": "3331936107228438060",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/platform-browser-dynamic",
+            "npm:@angular/platform-browser",
+            "npm:vitest"
+          ]
+        },
+        {
+          "file": "alfcomponents/directives/ripple/alf-ripple.directive.ts",
+          "hash": "17202113271058823089",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "alfcomponents/directives/ripple/ripple.spec.ts",
+          "hash": "3331936107228438060",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/platform-browser-dynamic",
+            "npm:@angular/platform-browser",
+            "npm:vitest"
+          ]
+        },
+        {
+          "file": "alfcomponents/directives/tooltip-text/README.md",
+          "hash": "18163614867469813032"
+        },
+        {
+          "file": "alfcomponents/directives/tooltip-text/tooltip-text.scss",
+          "hash": "15475612548339361438"
+        },
+        {
+          "file": "alfcomponents/directives/tooltip-text/tooltip-text.spec.ts",
+          "hash": "16386383802602010258",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/platform-browser-dynamic",
+            "npm:@angular/platform-browser",
+            "npm:vitest"
+          ]
+        },
+        {
+          "file": "alfcomponents/directives/tooltip-text/tooltip-text.ts",
+          "hash": "16866350336860881116",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "alfcomponents/enums/README.enums.md",
+          "hash": "16620198060168370006"
+        },
+        {
+          "file": "alfcomponents/enums/alf-animation-type.enum.ts",
+          "hash": "7503151138067554815"
+        },
+        {
+          "file": "alfcomponents/enums/alf-aria.enum.ts",
+          "hash": "10789857376826808110"
+        },
+        {
+          "file": "alfcomponents/enums/alf-background-attachment.enum.ts",
+          "hash": "6038493788632765781"
+        },
+        {
+          "file": "alfcomponents/enums/alf-background-clip.enum.ts",
+          "hash": "5544258121449420739"
+        },
+        {
+          "file": "alfcomponents/enums/alf-background-repeat.enum.ts",
+          "hash": "17481561170749544528"
+        },
+        {
+          "file": "alfcomponents/enums/alf-background-size.enum.ts",
+          "hash": "11967856184580993707"
+        },
+        {
+          "file": "alfcomponents/enums/alf-border-style.enum.ts",
+          "hash": "16587900655312350807"
+        },
+        {
+          "file": "alfcomponents/enums/alf-button-type.enum.ts",
+          "hash": "8888119995787337868"
+        },
+        {
+          "file": "alfcomponents/enums/alf-checkbox-variant.enum.ts",
+          "hash": "14825436389606705394"
+        },
+        {
+          "file": "alfcomponents/enums/alf-clothing-icon-type.enum.ts",
+          "hash": "3713383449113733513"
+        },
+        {
+          "file": "alfcomponents/enums/alf-color-variant.enum.ts",
+          "hash": "6016452364853956706"
+        },
+        {
+          "file": "alfcomponents/enums/alf-color.enum.ts",
+          "hash": "12506481750708855953"
+        },
+        {
+          "file": "alfcomponents/enums/alf-css-position.enum.ts",
+          "hash": "13385507869224666276"
+        },
+        {
+          "file": "alfcomponents/enums/alf-cursor.enum.ts",
+          "hash": "325414740866638637"
+        },
+        {
+          "file": "alfcomponents/enums/alf-display.enum.ts",
+          "hash": "15346236984439648540"
+        },
+        {
+          "file": "alfcomponents/enums/alf-flex-direction.enum.ts",
+          "hash": "10135752794492529420"
+        },
+        {
+          "file": "alfcomponents/enums/alf-flex-layout.enum.ts",
+          "hash": "16064680247237014996"
+        },
+        {
+          "file": "alfcomponents/enums/alf-font-family.enum.ts",
+          "hash": "12778201903266819299"
+        },
+        {
+          "file": "alfcomponents/enums/alf-font-size.enum.ts",
+          "hash": "8214007235646220850"
+        },
+        {
+          "file": "alfcomponents/enums/alf-font-style.enum.ts",
+          "hash": "13153670366616273346"
+        },
+        {
+          "file": "alfcomponents/enums/alf-font-weight.enum.ts",
+          "hash": "14121192391523964403"
+        },
+        {
+          "file": "alfcomponents/enums/alf-icon-size.enum.ts",
+          "hash": "6945327189532738082"
+        },
+        {
+          "file": "alfcomponents/enums/alf-icon-source.enum.ts",
+          "hash": "8359261142277885142"
+        },
+        {
+          "file": "alfcomponents/enums/alf-icon-style.enum.ts",
+          "hash": "2982843018557745537"
+        },
+        {
+          "file": "alfcomponents/enums/alf-icons-unicode-icon.enum.ts",
+          "hash": "1836932883700948484"
+        },
+        {
+          "file": "alfcomponents/enums/alf-input-adornment.enum.ts",
+          "hash": "519945643365444121"
+        },
+        {
+          "file": "alfcomponents/enums/alf-input-appearance.enum.ts",
+          "hash": "18102936670442488142"
+        },
+        {
+          "file": "alfcomponents/enums/alf-input-color-variant.enum.ts",
+          "hash": "12230510020051499417"
+        },
+        {
+          "file": "alfcomponents/enums/alf-input-type.enum.ts",
+          "hash": "13145268143911548236"
+        },
+        {
+          "file": "alfcomponents/enums/alf-labels-position.enum.ts",
+          "hash": "16802991161254404962"
+        },
+        {
+          "file": "alfcomponents/enums/alf-letter-spacing.enum.ts",
+          "hash": "6468716256314866643"
+        },
+        {
+          "file": "alfcomponents/enums/alf-line-height.enum.ts",
+          "hash": "15798158205915983062"
+        },
+        {
+          "file": "alfcomponents/enums/alf-link-target.enum.ts",
+          "hash": "16457532076698807299"
+        },
+        {
+          "file": "alfcomponents/enums/alf-list-styles.enum.ts",
+          "hash": "13868363433190037573"
+        },
+        {
+          "file": "alfcomponents/enums/alf-loading-styles.enum.ts",
+          "hash": "9513667464774450880"
+        },
+        {
+          "file": "alfcomponents/enums/alf-mix-blend-mode.enum.ts",
+          "hash": "4921276186364536585"
+        },
+        {
+          "file": "alfcomponents/enums/alf-object-fit.enum.ts",
+          "hash": "15525410022512322359"
+        },
+        {
+          "file": "alfcomponents/enums/alf-opacity.enum.ts",
+          "hash": "5718882136921815826"
+        },
+        {
+          "file": "alfcomponents/enums/alf-overflow-wrap.enum.ts",
+          "hash": "12344103883007334586"
+        },
+        {
+          "file": "alfcomponents/enums/alf-overflow.enum.ts",
+          "hash": "13260855619570586804"
+        },
+        {
+          "file": "alfcomponents/enums/alf-pattern-type.enum.ts",
+          "hash": "15952169747240914927"
+        },
+        {
+          "file": "alfcomponents/enums/alf-percentage.enum.ts",
+          "hash": "15839195733990875491"
+        },
+        {
+          "file": "alfcomponents/enums/alf-pointer-events.enum.ts",
+          "hash": "13335682628958790783"
+        },
+        {
+          "file": "alfcomponents/enums/alf-position.enum.ts",
+          "hash": "2319730892453789532"
+        },
+        {
+          "file": "alfcomponents/enums/alf-px.enum.ts",
+          "hash": "13138585745920655048"
+        },
+        {
+          "file": "alfcomponents/enums/alf-radio-button-variant.enum.ts",
+          "hash": "13821272517432431003"
+        },
+        {
+          "file": "alfcomponents/enums/alf-radius.enum.ts",
+          "hash": "1915802934358646686"
+        },
+        {
+          "file": "alfcomponents/enums/alf-rem.enum.ts",
+          "hash": "4306927416858721492"
+        },
+        {
+          "file": "alfcomponents/enums/alf-resize.enum.ts",
+          "hash": "3443740274288027804"
+        },
+        {
+          "file": "alfcomponents/enums/alf-scroll-behavior.enum.ts",
+          "hash": "7673923812010130106"
+        },
+        {
+          "file": "alfcomponents/enums/alf-shadow.enum.ts",
+          "hash": "656019503542083880"
+        },
+        {
+          "file": "alfcomponents/enums/alf-size.enum.ts",
+          "hash": "4554112829290317627"
+        },
+        {
+          "file": "alfcomponents/enums/alf-spinner-stroke.enum.ts",
+          "hash": "12350746415572979455"
+        },
+        {
+          "file": "alfcomponents/enums/alf-status.enum.ts",
+          "hash": "8541574611509942473"
+        },
+        {
+          "file": "alfcomponents/enums/alf-text-align.enum.ts",
+          "hash": "11721286392869188053"
+        },
+        {
+          "file": "alfcomponents/enums/alf-text-decoration.enum.ts",
+          "hash": "12107189680031412403"
+        },
+        {
+          "file": "alfcomponents/enums/alf-text-overflow.enum.ts",
+          "hash": "17278295082743082117"
+        },
+        {
+          "file": "alfcomponents/enums/alf-text-shadow.enum.ts",
+          "hash": "11263023344049402510"
+        },
+        {
+          "file": "alfcomponents/enums/alf-text-transform.enum.ts",
+          "hash": "8481225901203050517"
+        },
+        {
+          "file": "alfcomponents/enums/alf-theme.enum.ts",
+          "hash": "12547419850666056974"
+        },
+        {
+          "file": "alfcomponents/enums/alf-timing-function.enum.ts",
+          "hash": "7068148113312361794"
+        },
+        {
+          "file": "alfcomponents/enums/alf-variant.enum.ts",
+          "hash": "4004573019380696907"
+        },
+        {
+          "file": "alfcomponents/enums/alf-vertical-align.enum.ts",
+          "hash": "10715086629220370512"
+        },
+        {
+          "file": "alfcomponents/enums/alf-visibility.enum.ts",
+          "hash": "490023310119802713"
+        },
+        {
+          "file": "alfcomponents/enums/alf-white-space.enum.ts",
+          "hash": "4254679974496911246"
+        },
+        {
+          "file": "alfcomponents/enums/alf-word-break.enum.ts",
+          "hash": "7735632445679119479"
+        },
+        {
+          "file": "alfcomponents/enums/alf-z-index.enum.ts",
+          "hash": "10928494777400705489"
+        },
+        {
+          "file": "alfcomponents/enums/index.ts",
+          "hash": "14651196281748476926"
+        },
+        {
+          "file": "alfcomponents/i18n/README.md",
+          "hash": "8696898196022502398"
+        },
+        {
+          "file": "alfcomponents/i18n/i18n-utils.ts",
+          "hash": "15001555743499858148"
+        },
+        {
+          "file": "alfcomponents/index.ts",
+          "hash": "11828919800161930137"
+        },
+        {
+          "file": "alfcomponents/interfaces/alf-animations.interface.ts",
+          "hash": "18211952311344607865"
+        },
+        {
+          "file": "alfcomponents/interfaces/alf-aria.interface.ts",
+          "hash": "11272498009162928875"
+        },
+        {
+          "file": "alfcomponents/interfaces/alf-backgrounds.interface.ts",
+          "hash": "7464443409064040118"
+        },
+        {
+          "file": "alfcomponents/interfaces/alf-base-common-config.interface.ts",
+          "hash": "1965692952672987241"
+        },
+        {
+          "file": "alfcomponents/interfaces/alf-border.interface.ts",
+          "hash": "1724683871557354711"
+        },
+        {
+          "file": "alfcomponents/interfaces/alf-display-and-layout.interface.ts",
+          "hash": "9113777532110436551"
+        },
+        {
+          "file": "alfcomponents/interfaces/alf-list.interface.ts",
+          "hash": "18332967632087613152"
+        },
+        {
+          "file": "alfcomponents/interfaces/alf-loading.interface.ts",
+          "hash": "18122869875539174077"
+        },
+        {
+          "file": "alfcomponents/interfaces/alf-main-visual-style.interface.ts",
+          "hash": "8835494398249492540"
+        },
+        {
+          "file": "alfcomponents/interfaces/alf-margin.interface.ts",
+          "hash": "9385359655206094250"
+        },
+        {
+          "file": "alfcomponents/interfaces/alf-outline.interface.ts",
+          "hash": "17452384812029647905"
+        },
+        {
+          "file": "alfcomponents/interfaces/alf-padding.interface.ts",
+          "hash": "10207952705505570995"
+        },
+        {
+          "file": "alfcomponents/interfaces/alf-ripple.interface.ts",
+          "hash": "16003450170175699132"
+        },
+        {
+          "file": "alfcomponents/interfaces/alf-shadows.interface.ts",
+          "hash": "15447560133045010005"
+        },
+        {
+          "file": "alfcomponents/interfaces/alf-text-style.interface.ts",
+          "hash": "8156616997112833293"
+        },
+        {
+          "file": "alfcomponents/interfaces/alf-theme.interface.ts",
+          "hash": "3711959782770228240"
+        },
+        {
+          "file": "alfcomponents/interfaces/alf-transform.interface.ts",
+          "hash": "12055354810293325960"
+        },
+        {
+          "file": "alfcomponents/interfaces/alf-typography.interface.ts",
+          "hash": "8400469947696135408"
+        },
+        {
+          "file": "alfcomponents/interfaces/alf-validation.interface.ts",
+          "hash": "4632199452041595426"
+        },
+        {
+          "file": "alfcomponents/interfaces/index.ts",
+          "hash": "6629420163161646146"
+        },
+        {
+          "file": "alfcomponents/services/alf-resize.service.ts",
+          "hash": "425305631278094986",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "alfcomponents/services/index.ts",
+          "hash": "6966480716480741246"
+        },
+        {
+          "file": "alfcomponents/shared/id-generator.ts",
+          "hash": "15195628746795324996"
+        },
+        {
+          "file": "alfcomponents/shared/index.ts",
+          "hash": "10207827793681515375"
+        },
+        {
+          "file": "alfcomponents/shared/utils/validators.ts",
+          "hash": "2016594763225264097"
+        },
+        {
+          "file": "alfcomponents/shared/utils/variant-resolver.ts",
+          "hash": "1202847965507521723"
+        },
+        {
+          "file": "alfcomponents/shared/visualprefix.enum.ts",
+          "hash": "17405768857504790947"
+        },
+        {
+          "file": "alfcomponents/styles/_variables.scss",
+          "hash": "14106086376572435079"
+        },
+        {
+          "file": "alfcomponents/styles/mixins/_animations.scss",
+          "hash": "13172114580868719876"
+        },
+        {
+          "file": "alfcomponents/styles/mixins/_backgrounds.scss",
+          "hash": "5168996896442761387"
+        },
+        {
+          "file": "alfcomponents/styles/mixins/_border.scss",
+          "hash": "5343159445040840207"
+        },
+        {
+          "file": "alfcomponents/styles/mixins/_display-and-layout.scss",
+          "hash": "1956445298135756965"
+        },
+        {
+          "file": "alfcomponents/styles/mixins/_index.scss",
+          "hash": "2469483535745778719"
+        },
+        {
+          "file": "alfcomponents/styles/mixins/_margin.scss",
+          "hash": "5192619749157637297"
+        },
+        {
+          "file": "alfcomponents/styles/mixins/_outline.scss",
+          "hash": "6312823421257305802"
+        },
+        {
+          "file": "alfcomponents/styles/mixins/_padding.scss",
+          "hash": "739418922775913043"
+        },
+        {
+          "file": "alfcomponents/styles/mixins/_reactive.scss",
+          "hash": "9795657306861694186"
+        },
+        {
+          "file": "alfcomponents/styles/mixins/_shadows.scss",
+          "hash": "14128442981469961745"
+        },
+        {
+          "file": "alfcomponents/styles/mixins/_text-style.scss",
+          "hash": "2117290771658487881"
+        },
+        {
+          "file": "alfcomponents/styles/mixins/_transform.scss",
+          "hash": "18310649935609289922"
+        },
+        {
+          "file": "alfcomponents/styles/mixins/_transitions.scss",
+          "hash": "1245287254014685976"
+        },
+        {
+          "file": "alfcomponents/styles/mixins/_typography.scss",
+          "hash": "17882343719827501002"
+        },
+        {
+          "file": "alfcomponents/styles/tailwind-safelist.ts",
+          "hash": "16503507759699126239"
+        },
+        {
+          "file": "alfcomponents/themes/alf-theme.manager.ts",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "alfcomponents/themes/alf-theme.tokens.ts",
+          "hash": "13347887787979679256",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "alfcomponents/tsconfig.json",
+          "hash": "7319690487364245054"
+        }
+      ],
       "demo": [
         {
           "file": "apps/front/demo/.editorconfig",
-          "hash": "11641364645464013998"
+          "hash": "12076580701810272795"
         },
         {
           "file": "apps/front/demo/README.md",
@@ -35,11 +1041,11 @@
         },
         {
           "file": "apps/front/demo/package.json",
-          "hash": "6446970658680492296"
+          "hash": "4783043659507617086"
         },
         {
           "file": "apps/front/demo/src/app/app.config.ts",
-          "hash": "11844018484596543002",
+          "hash": "3230990552329020243",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/router"
@@ -47,41 +1053,115 @@
         },
         {
           "file": "apps/front/demo/src/app/app.html",
-          "hash": "17681715149392321156"
+          "hash": "9145882750885314806"
         },
         {
           "file": "apps/front/demo/src/app/app.routes.ts",
-          "hash": "1086202131697989825",
+          "hash": "2131997045729736725",
           "deps": [
             "npm:@angular/router"
           ]
         },
         {
           "file": "apps/front/demo/src/app/app.scss",
-          "hash": "17808387443609936413"
+          "hash": "4178256324499861163"
         },
         {
           "file": "apps/front/demo/src/app/app.ts",
-          "hash": "4986710538668774980",
+          "hash": "5600915559759362151",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/router"
           ]
         },
         {
-          "file": "apps/front/demo/src/app/pages/solid-buttons.ts",
-          "hash": "17125093310093435243",
+          "file": "apps/front/demo/src/app/app/pages/alf-buttons-viewer/alf-buttons-viewer.html",
+          "hash": "2942248562605266322"
+        },
+        {
+          "file": "apps/front/demo/src/app/app/pages/alf-buttons-viewer/alf-buttons-viewer.scss",
+          "hash": "8104649581445297025"
+        },
+        {
+          "file": "apps/front/demo/src/app/app/pages/alf-buttons-viewer/alf-buttons-viewer.ts",
+          "hash": "16065625479818358249",
           "deps": [
-            "npm:@angular/core"
+            "npm:@angular/core",
+            "alf-components"
+          ]
+        },
+        {
+          "file": "apps/front/demo/src/app/app/pages/alf-checkbox-viewer/alf-checkbox-viewer.html",
+          "hash": "17946212503206514933"
+        },
+        {
+          "file": "apps/front/demo/src/app/app/pages/alf-checkbox-viewer/alf-checkbox-viewer.scss",
+          "hash": "10933860071609970492"
+        },
+        {
+          "file": "apps/front/demo/src/app/app/pages/alf-checkbox-viewer/alf-checkbox-viewer.ts",
+          "hash": "12183618181758701567",
+          "deps": [
+            "npm:@angular/core",
+            "alf-components"
+          ]
+        },
+        {
+          "file": "apps/front/demo/src/app/app/pages/alf-input-viewer/alf-input-viewer.html",
+          "hash": "17683088745518608779"
+        },
+        {
+          "file": "apps/front/demo/src/app/app/pages/alf-input-viewer/alf-input-viewer.scss",
+          "hash": "3777244321709436707"
+        },
+        {
+          "file": "apps/front/demo/src/app/app/pages/alf-input-viewer/alf-input-viewer.ts",
+          "hash": "10517420998939499845",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "alf-components"
+          ]
+        },
+        {
+          "file": "apps/front/demo/src/app/app/pages/alf-radio-button-viewer/alf-radio-button-viewer.html",
+          "hash": "18052421382274765736"
+        },
+        {
+          "file": "apps/front/demo/src/app/app/pages/alf-radio-button-viewer/alf-radio-button-viewer.scss",
+          "hash": "10933860071609970492"
+        },
+        {
+          "file": "apps/front/demo/src/app/app/pages/alf-radio-button-viewer/alf-radio-button-viewer.ts",
+          "hash": "10926331122333705922",
+          "deps": [
+            "npm:@angular/core",
+            "alf-components"
+          ]
+        },
+        {
+          "file": "apps/front/demo/src/app/app/pages/alf-tabs-viewer/alf-tabs-viewer.html",
+          "hash": "16426034056476192833"
+        },
+        {
+          "file": "apps/front/demo/src/app/app/pages/alf-tabs-viewer/alf-tabs-viewer.scss",
+          "hash": "5183411645004657158"
+        },
+        {
+          "file": "apps/front/demo/src/app/app/pages/alf-tabs-viewer/alf-tabs-viewer.ts",
+          "hash": "4434886766056289370",
+          "deps": [
+            "npm:@angular/core",
+            "alf-components"
           ]
         },
         {
           "file": "apps/front/demo/src/index.html",
-          "hash": "11751066571783941634"
+          "hash": "875039183664991169"
         },
         {
           "file": "apps/front/demo/src/main.ts",
-          "hash": "15944248449879998907",
+          "hash": "10405740721546735325",
           "deps": [
             "npm:@angular/platform-browser"
           ]
@@ -92,94 +1172,46 @@
         },
         {
           "file": "apps/front/demo/src/styles.scss",
-          "hash": "1965583850859094018"
+          "hash": "15336908731850448325"
         },
         {
           "file": "apps/front/demo/tsconfig.json",
-          "hash": "3829814497089771670"
+          "hash": "18195008172241118603"
         }
       ]
     },
     "nonProjectFiles": [
       {
-        "file": ".angular/cache/21.2.6/demo/vite/com.chrome.devtools.json",
-        "hash": "12436902978287702412"
-      },
-      {
-        "file": ".angular/cache/21.2.6/demo/vite/deps/@angular_core.js",
-        "hash": "14192413924076410701"
-      },
-      {
-        "file": ".angular/cache/21.2.6/demo/vite/deps/@angular_platform-browser.js",
-        "hash": "15394756251697655505"
-      },
-      {
-        "file": ".angular/cache/21.2.6/demo/vite/deps/@angular_router.js",
-        "hash": "3775275874092535221"
-      },
-      {
-        "file": ".angular/cache/21.2.6/demo/vite/deps/@angular_router.js.map",
-        "hash": "12862905868405568567"
-      },
-      {
-        "file": ".angular/cache/21.2.6/demo/vite/deps/_metadata.json",
-        "hash": "17584619954047134221"
-      },
-      {
-        "file": ".angular/cache/21.2.6/demo/vite/deps/core-lutpOAv_.js",
-        "hash": "5964397804880376375"
-      },
-      {
-        "file": ".angular/cache/21.2.6/demo/vite/deps/core-lutpOAv_.js.map",
-        "hash": "16845227525783281656"
-      },
-      {
-        "file": ".angular/cache/21.2.6/demo/vite/deps/package.json",
-        "hash": "8630294688235076505"
-      },
-      {
-        "file": ".angular/cache/21.2.6/demo/vite/deps/platform-browser-b-b1Pkve.js",
-        "hash": "8437933779746553903"
-      },
-      {
-        "file": ".angular/cache/21.2.6/demo/vite/deps/platform-browser-b-b1Pkve.js.map",
-        "hash": "17544546609590723311"
-      },
-      {
         "file": ".gitignore",
-        "hash": "4373292525606429364"
+        "hash": "9680782339808757082"
       },
       {
         "file": ".prettierrc",
-        "hash": "1345354295904422289"
+        "hash": "13980805501939654889"
       },
       {
         "file": ".vscode/extensions.json",
-        "hash": "16104632344483163402"
+        "hash": "17283917243984684318"
       },
       {
         "file": ".vscode/launch.json",
-        "hash": "8626017545056590400"
+        "hash": "18006065868275655895"
       },
       {
         "file": ".vscode/settings.json",
-        "hash": "8337926829318194480"
+        "hash": "10515950508485582799"
       },
       {
         "file": ".vscode/tasks.json",
-        "hash": "18278738266989125600"
+        "hash": "3800424506364303852"
       },
       {
-        "file": "AI_INSTRUCTIONS.md",
-        "hash": "72728470170511635"
-      },
-      {
-        "file": "ALF_COMPONENT_TODO.md",
-        "hash": "8400106215406752393"
+        "file": "ELITE_TODO_PATTERN.md",
+        "hash": "4351493500124581463"
       },
       {
         "file": "README.md",
-        "hash": "10479040451033120105"
+        "hash": "12022385746048598294"
       },
       {
         "file": "READMESHORT.md",
@@ -187,611 +1219,15 @@
       },
       {
         "file": "RULES.md",
-        "hash": "14096566618843267538"
+        "hash": "10449325510995321195"
       },
       {
-        "file": "SESSION_HANDOVER.md",
-        "hash": "10626254421462873580"
-      },
-      {
-        "file": "alfcomponents/CATALOG.md",
-        "hash": "15311826282707200979"
-      },
-      {
-        "file": "alfcomponents/base/alf-base.component.ts",
-        "hash": "5767218961185202140"
-      },
-      {
-        "file": "alfcomponents/base/alf-base.style-resolver.ts",
-        "hash": "7459433806565093748"
-      },
-      {
-        "file": "alfcomponents/base/index.ts",
-        "hash": "3663313721800159860"
-      },
-      {
-        "file": "alfcomponents/components/composed/alf-tabs/TODO.md",
-        "hash": "18220666088781958690"
-      },
-      {
-        "file": "alfcomponents/components/index.ts",
-        "hash": "12793092615492076111"
-      },
-      {
-        "file": "alfcomponents/components/simple/alf-button/README.english.md",
-        "hash": "11883747749357176258"
-      },
-      {
-        "file": "alfcomponents/components/simple/alf-button/README.spanish.md",
-        "hash": "12538551362639125721"
-      },
-      {
-        "file": "alfcomponents/components/simple/alf-button/alf-button.html",
-        "hash": "3726005126695896737"
-      },
-      {
-        "file": "alfcomponents/components/simple/alf-button/alf-button.scss",
-        "hash": "16950613935966504714"
-      },
-      {
-        "file": "alfcomponents/components/simple/alf-button/alf-button.spec.ts",
-        "hash": "11322786947835405924"
-      },
-      {
-        "file": "alfcomponents/components/simple/alf-button/alf-button.ts",
-        "hash": "1809647536984625845"
-      },
-      {
-        "file": "alfcomponents/components/simple/alf-button/enums/defaultButtonKeys.interface.ts",
-        "hash": "13938516925444558175"
-      },
-      {
-        "file": "alfcomponents/components/simple/alf-button/i18n/alf-button.i18n.ts",
-        "hash": "13289579890195316521"
-      },
-      {
-        "file": "alfcomponents/components/simple/alf-button/ia_usage.md",
-        "hash": "11496835824923278643"
-      },
-      {
-        "file": "alfcomponents/components/simple/alf-button/interfaces/alf-button.interface.ts",
-        "hash": "1815538736053619872"
-      },
-      {
-        "file": "alfcomponents/components/simple/alf-button/predefined/alf-button.predefined.ts",
-        "hash": "18444915576530368450"
-      },
-      {
-        "file": "alfcomponents/components/simple/alf-button/predefined/index.ts",
-        "hash": "16964223151180525773"
-      },
-      {
-        "file": "alfcomponents/components/simple/alf-spinner/README.md",
-        "hash": "7602059353670845472"
-      },
-      {
-        "file": "alfcomponents/components/simple/alf-spinner/alf-spinner.html",
-        "hash": "7024861006033004273"
-      },
-      {
-        "file": "alfcomponents/components/simple/alf-spinner/alf-spinner.scss",
-        "hash": "9297506857624881771"
-      },
-      {
-        "file": "alfcomponents/components/simple/alf-spinner/alf-spinner.spec.ts",
-        "hash": "4846460594090781513"
-      },
-      {
-        "file": "alfcomponents/components/simple/alf-spinner/alf-spinner.ts",
-        "hash": "14953248587181123871"
-      },
-      {
-        "file": "alfcomponents/directives/alf-loading/alf-loading.directive.ts",
-        "hash": "14676299399416859291"
-      },
-      {
-        "file": "alfcomponents/directives/alf-loading/alf-loading.spec.ts",
-        "hash": "14047502096656656847"
-      },
-      {
-        "file": "alfcomponents/directives/alf-loading/predefined/alf-loading.predefined.ts",
-        "hash": "14215378105589109477"
-      },
-      {
-        "file": "alfcomponents/directives/alf-loading/predefined/alf-loading.tokens.ts",
-        "hash": "6927073807591865849"
-      },
-      {
-        "file": "alfcomponents/directives/alf-tab-content/README.md",
-        "hash": "1814793203920567479"
-      },
-      {
-        "file": "alfcomponents/directives/alf-tab-content/alf-tab-content.spec.ts",
-        "hash": "9066542632423605787"
-      },
-      {
-        "file": "alfcomponents/directives/alf-tab-content/alf-tab-content.ts",
-        "hash": "6764626047067497321"
-      },
-      {
-        "file": "alfcomponents/directives/index.ts",
-        "hash": "16053958199678091646"
-      },
-      {
-        "file": "alfcomponents/directives/popover/README.md",
-        "hash": "6006382972170625695"
-      },
-      {
-        "file": "alfcomponents/directives/popover/popover.spec.ts",
-        "hash": "9125245776132583791"
-      },
-      {
-        "file": "alfcomponents/directives/popover/popover.ts",
-        "hash": "11232313016097757628"
-      },
-      {
-        "file": "alfcomponents/directives/ripple/alf-ripple.directive.spec.ts",
-        "hash": "10813586395758167281"
-      },
-      {
-        "file": "alfcomponents/directives/ripple/alf-ripple.directive.ts",
-        "hash": "10893840966414541515"
-      },
-      {
-        "file": "alfcomponents/directives/ripple/ripple.spec.ts",
-        "hash": "10813586395758167281"
-      },
-      {
-        "file": "alfcomponents/directives/tooltip-text/README.md",
-        "hash": "18163614867469813032"
-      },
-      {
-        "file": "alfcomponents/directives/tooltip-text/tooltip-text.scss",
-        "hash": "9617981487831536063"
-      },
-      {
-        "file": "alfcomponents/directives/tooltip-text/tooltip-text.spec.ts",
-        "hash": "3806270973573254657"
-      },
-      {
-        "file": "alfcomponents/directives/tooltip-text/tooltip-text.ts",
-        "hash": "1320854935242216717"
-      },
-      {
-        "file": "alfcomponents/enums/README.enums.md",
-        "hash": "16620198060168370006"
-      },
-      {
-        "file": "alfcomponents/enums/alf-animation-type.enum.ts",
-        "hash": "15176102948697493077"
-      },
-      {
-        "file": "alfcomponents/enums/alf-aria.enum.ts",
-        "hash": "1544091932696251978"
-      },
-      {
-        "file": "alfcomponents/enums/alf-background-attachment.enum.ts",
-        "hash": "18111901680841093525"
-      },
-      {
-        "file": "alfcomponents/enums/alf-background-clip.enum.ts",
-        "hash": "15147606901919916699"
-      },
-      {
-        "file": "alfcomponents/enums/alf-background-repeat.enum.ts",
-        "hash": "1342749772158385887"
-      },
-      {
-        "file": "alfcomponents/enums/alf-background-size.enum.ts",
-        "hash": "5844322027369092755"
-      },
-      {
-        "file": "alfcomponents/enums/alf-border-style.enum.ts",
-        "hash": "9380227700602743719"
-      },
-      {
-        "file": "alfcomponents/enums/alf-button-type.enum.ts",
-        "hash": "16361621196128652845"
-      },
-      {
-        "file": "alfcomponents/enums/alf-button-visual-type.enum.ts",
-        "hash": "8068371473061230681"
-      },
-      {
-        "file": "alfcomponents/enums/alf-checkbox-variant.enum.ts",
-        "hash": "5503605442653716078"
-      },
-      {
-        "file": "alfcomponents/enums/alf-clothing-icon-type.enum.ts",
-        "hash": "1388270643407506153"
-      },
-      {
-        "file": "alfcomponents/enums/alf-color-variant.enum.ts",
-        "hash": "18368405972420154155"
-      },
-      {
-        "file": "alfcomponents/enums/alf-color.enum.ts",
-        "hash": "11233307906149476902"
-      },
-      {
-        "file": "alfcomponents/enums/alf-css-position.enum.ts",
-        "hash": "14027314448822367221"
-      },
-      {
-        "file": "alfcomponents/enums/alf-cursor.enum.ts",
-        "hash": "7901677509995611775"
-      },
-      {
-        "file": "alfcomponents/enums/alf-display.enum.ts",
-        "hash": "17942778937455498955"
-      },
-      {
-        "file": "alfcomponents/enums/alf-flex-direction.enum.ts",
-        "hash": "17844025614931322684"
-      },
-      {
-        "file": "alfcomponents/enums/alf-flex-layout.enum.ts",
-        "hash": "5925142641287680103"
-      },
-      {
-        "file": "alfcomponents/enums/alf-font-family.enum.ts",
-        "hash": "7835757788660266695"
-      },
-      {
-        "file": "alfcomponents/enums/alf-font-size.enum.ts",
-        "hash": "15855397934420754187"
-      },
-      {
-        "file": "alfcomponents/enums/alf-font-style.enum.ts",
-        "hash": "9396495600403211142"
-      },
-      {
-        "file": "alfcomponents/enums/alf-font-weight.enum.ts",
-        "hash": "1283691145584942966"
-      },
-      {
-        "file": "alfcomponents/enums/alf-icon-size.enum.ts",
-        "hash": "13504866117322282465"
-      },
-      {
-        "file": "alfcomponents/enums/alf-icon-source.enum.ts",
-        "hash": "430415679624586624"
-      },
-      {
-        "file": "alfcomponents/enums/alf-icon-style.enum.ts",
-        "hash": "7149387476405351847"
-      },
-      {
-        "file": "alfcomponents/enums/alf-icons-unicode-icon.enum.ts",
-        "hash": "8205343625230615185"
-      },
-      {
-        "file": "alfcomponents/enums/alf-input-adornment.enum.ts",
-        "hash": "7424244768945204819"
-      },
-      {
-        "file": "alfcomponents/enums/alf-input-predefined.enum.ts",
-        "hash": "705235567731215767"
-      },
-      {
-        "file": "alfcomponents/enums/alf-input-type.enum.ts",
-        "hash": "9779973282344994039"
-      },
-      {
-        "file": "alfcomponents/enums/alf-input-variant.enum.ts",
-        "hash": "4911273918561810083"
-      },
-      {
-        "file": "alfcomponents/enums/alf-labels-position.enum.ts",
-        "hash": "7250717553192552767"
-      },
-      {
-        "file": "alfcomponents/enums/alf-letter-spacing.enum.ts",
-        "hash": "14746364085009469414"
-      },
-      {
-        "file": "alfcomponents/enums/alf-line-height.enum.ts",
-        "hash": "15726234104501589850"
-      },
-      {
-        "file": "alfcomponents/enums/alf-link-target.enum.ts",
-        "hash": "7474106029248760655"
-      },
-      {
-        "file": "alfcomponents/enums/alf-list-styles.enum.ts",
-        "hash": "4158715164662798558"
-      },
-      {
-        "file": "alfcomponents/enums/alf-loading-styles.enum.ts",
-        "hash": "3757683267753168740"
-      },
-      {
-        "file": "alfcomponents/enums/alf-mix-blend-mode.enum.ts",
-        "hash": "10653690073823574199"
-      },
-      {
-        "file": "alfcomponents/enums/alf-object-fit.enum.ts",
-        "hash": "3085362372056675046"
-      },
-      {
-        "file": "alfcomponents/enums/alf-opacity.enum.ts",
-        "hash": "5741431181676087912"
-      },
-      {
-        "file": "alfcomponents/enums/alf-overflow-wrap.enum.ts",
-        "hash": "17593875462440337331"
-      },
-      {
-        "file": "alfcomponents/enums/alf-overflow.enum.ts",
-        "hash": "2722018910515295610"
-      },
-      {
-        "file": "alfcomponents/enums/alf-pattern-type.enum.ts",
-        "hash": "1826337677909923175"
-      },
-      {
-        "file": "alfcomponents/enums/alf-percentage.enum.ts",
-        "hash": "16037815127156982650"
-      },
-      {
-        "file": "alfcomponents/enums/alf-pointer-events.enum.ts",
-        "hash": "4078998202016713066"
-      },
-      {
-        "file": "alfcomponents/enums/alf-position.enum.ts",
-        "hash": "10983311098667836277"
-      },
-      {
-        "file": "alfcomponents/enums/alf-px.enum.ts",
-        "hash": "1924629314854122247"
-      },
-      {
-        "file": "alfcomponents/enums/alf-radius.enum.ts",
-        "hash": "9222857502216765692"
-      },
-      {
-        "file": "alfcomponents/enums/alf-rem.enum.ts",
-        "hash": "15109457836988668226"
-      },
-      {
-        "file": "alfcomponents/enums/alf-resize.enum.ts",
-        "hash": "846547611173722670"
-      },
-      {
-        "file": "alfcomponents/enums/alf-scroll-behavior.enum.ts",
-        "hash": "13350117966572058055"
-      },
-      {
-        "file": "alfcomponents/enums/alf-shadow.enum.ts",
-        "hash": "16944167590339632496"
-      },
-      {
-        "file": "alfcomponents/enums/alf-size.enum.ts",
-        "hash": "13786342908548128876"
-      },
-      {
-        "file": "alfcomponents/enums/alf-spinner-stroke.enum.ts",
-        "hash": "187820992390525562"
-      },
-      {
-        "file": "alfcomponents/enums/alf-status.enum.ts",
-        "hash": "17588310930979568109"
-      },
-      {
-        "file": "alfcomponents/enums/alf-text-align.enum.ts",
-        "hash": "3303194797959742150"
-      },
-      {
-        "file": "alfcomponents/enums/alf-text-decoration.enum.ts",
-        "hash": "10036320254560148993"
-      },
-      {
-        "file": "alfcomponents/enums/alf-text-overflow.enum.ts",
-        "hash": "14730520959337198335"
-      },
-      {
-        "file": "alfcomponents/enums/alf-text-shadow.enum.ts",
-        "hash": "3549550470374281419"
-      },
-      {
-        "file": "alfcomponents/enums/alf-text-transform.enum.ts",
-        "hash": "14196422872177343725"
-      },
-      {
-        "file": "alfcomponents/enums/alf-theme.enum.ts",
-        "hash": "17327310623084492988"
-      },
-      {
-        "file": "alfcomponents/enums/alf-timing-function.enum.ts",
-        "hash": "9785225099817510224"
-      },
-      {
-        "file": "alfcomponents/enums/alf-variant.enum.ts",
-        "hash": "10526881498819306213"
-      },
-      {
-        "file": "alfcomponents/enums/alf-vertical-align.enum.ts",
-        "hash": "17780664906738468998"
-      },
-      {
-        "file": "alfcomponents/enums/alf-visibility.enum.ts",
-        "hash": "16300075109516354810"
-      },
-      {
-        "file": "alfcomponents/enums/alf-white-space.enum.ts",
-        "hash": "4747231116058785066"
-      },
-      {
-        "file": "alfcomponents/enums/alf-word-break.enum.ts",
-        "hash": "10221665235777749834"
-      },
-      {
-        "file": "alfcomponents/enums/alf-z-index.enum.ts",
-        "hash": "16799272033173234307"
-      },
-      {
-        "file": "alfcomponents/enums/index.ts",
-        "hash": "12864822166235982326"
-      },
-      {
-        "file": "alfcomponents/i18n/README.md",
-        "hash": "8696898196022502398"
-      },
-      {
-        "file": "alfcomponents/i18n/i18n-utils.ts",
-        "hash": "8994729095276171458"
-      },
-      {
-        "file": "alfcomponents/index.ts",
-        "hash": "8758885439218857370"
-      },
-      {
-        "file": "alfcomponents/interfaces/alf-animations.interface.ts",
-        "hash": "7041593150531043598"
-      },
-      {
-        "file": "alfcomponents/interfaces/alf-aria.interface.ts",
-        "hash": "14575251916647096322"
-      },
-      {
-        "file": "alfcomponents/interfaces/alf-backgrounds.interface.ts",
-        "hash": "3415342462067219851"
-      },
-      {
-        "file": "alfcomponents/interfaces/alf-base.interface.ts",
-        "hash": "466700271765121303"
-      },
-      {
-        "file": "alfcomponents/interfaces/alf-border.interface.ts",
-        "hash": "8482167994557201484"
-      },
-      {
-        "file": "alfcomponents/interfaces/alf-display-and-layout.interface.ts",
-        "hash": "3550620702812592340"
-      },
-      {
-        "file": "alfcomponents/interfaces/alf-layout.interface.ts",
-        "hash": "4988788356042522458"
-      },
-      {
-        "file": "alfcomponents/interfaces/alf-list.interface.ts",
-        "hash": "3718001372095336468"
-      },
-      {
-        "file": "alfcomponents/interfaces/alf-loading.interface.ts",
-        "hash": "2444419883155813300"
-      },
-      {
-        "file": "alfcomponents/interfaces/alf-margin.interface.ts",
-        "hash": "5635809766300652446"
-      },
-      {
-        "file": "alfcomponents/interfaces/alf-outline.interface.ts",
-        "hash": "1924138816614613724"
-      },
-      {
-        "file": "alfcomponents/interfaces/alf-padding.interface.ts",
-        "hash": "12383903978700125430"
-      },
-      {
-        "file": "alfcomponents/interfaces/alf-ripple.interface.ts",
-        "hash": "1541564924422766470"
-      },
-      {
-        "file": "alfcomponents/interfaces/alf-shadows.interface.ts",
-        "hash": "17883152928290740279"
-      },
-      {
-        "file": "alfcomponents/interfaces/alf-text-style.interface.ts",
-        "hash": "4735629848777599931"
-      },
-      {
-        "file": "alfcomponents/interfaces/alf-transform.interface.ts",
-        "hash": "2382149541078259536"
-      },
-      {
-        "file": "alfcomponents/interfaces/alf-typography.interface.ts",
-        "hash": "12413672200506107946"
-      },
-      {
-        "file": "alfcomponents/interfaces/alf-validation.interface.ts",
-        "hash": "11574342983579794136"
-      },
-      {
-        "file": "alfcomponents/interfaces/index.ts",
-        "hash": "9820955000541450385"
-      },
-      {
-        "file": "alfcomponents/predefined/alf-patterns.predefined.ts",
-        "hash": "3925023351951748031"
-      },
-      {
-        "file": "alfcomponents/predefined/alf-ripple.predefined.ts",
-        "hash": "8847629682762842678"
-      },
-      {
-        "file": "alfcomponents/predefined/index.ts",
-        "hash": "13511529484261455216"
-      },
-      {
-        "file": "alfcomponents/styles/_variables.scss",
-        "hash": "17826799622216171185"
-      },
-      {
-        "file": "alfcomponents/styles/alf-tokens.scss",
-        "hash": "15534454099638248377"
-      },
-      {
-        "file": "alfcomponents/styles/mixins/_backgrounds.scss",
-        "hash": "14408065906539728340"
-      },
-      {
-        "file": "alfcomponents/styles/mixins/_border.scss",
-        "hash": "10232349841853834606"
-      },
-      {
-        "file": "alfcomponents/styles/mixins/_index.scss",
-        "hash": "13538853071093252440"
-      },
-      {
-        "file": "alfcomponents/styles/mixins/_margin.scss",
-        "hash": "18212587875607495169"
-      },
-      {
-        "file": "alfcomponents/styles/mixins/_padding.scss",
-        "hash": "11809139415424946714"
-      },
-      {
-        "file": "alfcomponents/styles/mixins/_shadows.scss",
-        "hash": "16125017819243974865"
-      },
-      {
-        "file": "alfcomponents/styles/mixins/_transform.scss",
-        "hash": "13432281581019462383"
-      },
-      {
-        "file": "alfcomponents/styles/mixins/_typography.scss",
-        "hash": "4499973588618427902"
-      },
-      {
-        "file": "alfcomponents/styles/tailwind-safelist.ts",
-        "hash": "8545874276771149815"
-      },
-      {
-        "file": "alfcomponents/themes/alf-theme.manager.ts",
-        "hash": "13057818329613146788"
-      },
-      {
-        "file": "alfcomponents/themes/alf-theme.tokens.ts",
-        "hash": "3639487930175455796"
-      },
-      {
-        "file": "alfcomponents/tsconfig.json",
-        "hash": "2400438431649939688"
+        "file": "TODO_ALF_INPUT.md",
+        "hash": "4307194814312389718"
       },
       {
         "file": "angular.json",
-        "hash": "13732970283077084866"
+        "hash": "6231714721703534938"
       },
       {
         "file": "config/angular/tsconfig.angular.base.json",
@@ -807,15 +1243,11 @@
       },
       {
         "file": "dumps/README.md",
-        "hash": "5598585629551196125"
+        "hash": "17013151779881183633"
       },
       {
         "file": "eslint.config.mjs",
         "hash": "6439418044436295996"
-      },
-      {
-        "file": "filtered.md",
-        "hash": "3244421341483603138"
       },
       {
         "file": "libs/angular/components/company/milenium/main/tipos.interface.ts",
@@ -823,7 +1255,7 @@
       },
       {
         "file": "libs/angular/components/html/combobox/comboBox.html",
-        "hash": "5526660536381034697"
+        "hash": "11689182982561881204"
       },
       {
         "file": "libs/angular/components/html/combobox/comboBox.scss",
@@ -831,15 +1263,15 @@
       },
       {
         "file": "libs/angular/components/html/combobox/comboBox.ts",
-        "hash": "7779028764234283694"
+        "hash": "14995358941426540262"
       },
       {
         "file": "libs/angular/components/html/combobox/interfaces/combobox.interface.ts",
-        "hash": "10000409345689076031"
+        "hash": "9009651980696728487"
       },
       {
         "file": "libs/angular/components/index.ts",
-        "hash": "16904055952271800850"
+        "hash": "11086059664589194125"
       },
       {
         "file": "libs/angular/components/nav-bars/footer/README.md",
@@ -891,7 +1323,7 @@
       },
       {
         "file": "libs/angular/components/nav-bars/sidebar/sidebar.html",
-        "hash": "12742043231607818957"
+        "hash": "4303296029381771510"
       },
       {
         "file": "libs/angular/components/nav-bars/sidebar/sidebar.scss",
@@ -899,7 +1331,7 @@
       },
       {
         "file": "libs/angular/components/nav-bars/sidebar/sidebar.ts",
-        "hash": "5351852584017202750"
+        "hash": "13705535669210314277"
       },
       {
         "file": "libs/angular/components/nav-bars/sidenav-menu/index.ts",
@@ -915,7 +1347,7 @@
       },
       {
         "file": "libs/angular/components/nav-bars/sidenav-menu/sidenav-menu.ts",
-        "hash": "12822271960037515946"
+        "hash": "13659476100371464202"
       },
       {
         "file": "libs/angular/components/nav-bars/top-nav-bar-mobile/README.md",
@@ -967,79 +1399,79 @@
       },
       {
         "file": "libs/angular/enums/backgrounColor.enum.ts",
-        "hash": "5243420554163327005"
+        "hash": "4165834885354208213"
       },
       {
         "file": "libs/angular/enums/border.enum.ts",
-        "hash": "5619468338094282182"
+        "hash": "5645546680941089635"
       },
       {
         "file": "libs/angular/enums/boxShadow.enum.ts",
-        "hash": "11178473968444867571"
+        "hash": "9754363390622646414"
       },
       {
         "file": "libs/angular/enums/colors.enum.ts",
-        "hash": "13396436436199148916"
+        "hash": "13316123905931058372"
       },
       {
         "file": "libs/angular/enums/float.enum.ts",
-        "hash": "7415869892828274014"
+        "hash": "1984408730831888666"
       },
       {
         "file": "libs/angular/enums/font-Size.enum.ts",
-        "hash": "12351451624966276744"
+        "hash": "6530112183919532437"
       },
       {
         "file": "libs/angular/enums/fontFamili.enum.ts",
-        "hash": "5299661487284606181"
+        "hash": "12137033861611717460"
       },
       {
         "file": "libs/angular/enums/form-component.enum.ts",
-        "hash": "1223698971701437521"
+        "hash": "518774734487591125"
       },
       {
         "file": "libs/angular/enums/heightOptions.enum.ts",
-        "hash": "16865427723565816256"
+        "hash": "2848087633639197958"
       },
       {
         "file": "libs/angular/enums/iconType.enum.ts",
-        "hash": "10226064418463278991"
+        "hash": "1588146585656732020"
       },
       {
         "file": "libs/angular/enums/letter-spacing.enum.ts",
-        "hash": "5381191544193437754"
+        "hash": "957613350026238626"
       },
       {
         "file": "libs/angular/enums/link.enum.ts",
-        "hash": "8323620628465634525"
+        "hash": "10287105879585169183"
       },
       {
         "file": "libs/angular/enums/paddingOptions.enum.ts",
-        "hash": "1972443269920258300"
+        "hash": "15735515006020090850"
       },
       {
         "file": "libs/angular/enums/rounded.enum.ts",
-        "hash": "16403110939583681686"
+        "hash": "4748196714092336299"
       },
       {
         "file": "libs/angular/enums/title.enum.ts",
-        "hash": "18102915087171155131"
+        "hash": "7827916912692492571"
       },
       {
         "file": "libs/angular/enums/widthOptions.enum.ts",
-        "hash": "773987584188604202"
+        "hash": "1292246110609197529"
       },
       {
         "file": "libs/angular/environments/environment.dev.ts",
-        "hash": "2678212609186894594"
+        "hash": "11199324255932338328"
       },
       {
         "file": "libs/angular/environments/environment.prod.ts",
-        "hash": "2918571935085628144"
+        "hash": "2211263416192879338"
       },
       {
         "file": "libs/angular/environments/environment.ts",
-        "hash": "2918571935085628144"
+        "hash": "2211263416192879338"
       },
       {
         "file": "libs/angular/forms/validators/email.validator.ts",
@@ -1055,123 +1487,123 @@
       },
       {
         "file": "libs/angular/icons/find-icon-by-enum.ts",
-        "hash": "11359831945728555216"
+        "hash": "14096872603100961893"
       },
       {
         "file": "libs/angular/icons/font-size.enum.ts",
-        "hash": "6639447827616579001"
+        "hash": "13448503178450139771"
       },
       {
         "file": "libs/angular/icons/icon-types.ts",
-        "hash": "15299639020228754002"
+        "hash": "6089100013691524976"
       },
       {
         "file": "libs/angular/icons/icon.interface.ts",
-        "hash": "16971324233962607748"
+        "hash": "2369460724780673483"
       },
       {
         "file": "libs/angular/icons/icons-svg.ts",
-        "hash": "4354712976007374109"
+        "hash": "16111195967896526037"
       },
       {
         "file": "libs/angular/icons/icons-unicode.ts",
-        "hash": "11225057169200574458"
+        "hash": "1925296309351320187"
       },
       {
         "file": "libs/angular/icons/svg/addOne.svg",
-        "hash": "14736643956449758442"
+        "hash": "11372942333310028505"
       },
       {
         "file": "libs/angular/icons/svg/articulo.svg",
-        "hash": "16952849968079436607"
+        "hash": "7948182825073582046"
       },
       {
         "file": "libs/angular/icons/svg/cancel.svg",
-        "hash": "8839781246491784919"
+        "hash": "4573712755536317876"
       },
       {
         "file": "libs/angular/icons/svg/check.svg",
-        "hash": "5454354339255796239"
+        "hash": "15055694531971471682"
       },
       {
         "file": "libs/angular/icons/svg/delete.svg",
-        "hash": "14631155203764724972"
+        "hash": "11441898235400708710"
       },
       {
         "file": "libs/angular/icons/svg/discount.svg",
-        "hash": "8812442285482596024"
+        "hash": "17655262450521254084"
       },
       {
         "file": "libs/angular/icons/svg/email.svg",
-        "hash": "2323712050938966694"
+        "hash": "4556654301353211932"
       },
       {
         "file": "libs/angular/icons/svg/girlFace.svg",
-        "hash": "191192178653258699"
+        "hash": "1033469543184039445"
       },
       {
         "file": "libs/angular/icons/svg/inventory.svg",
-        "hash": "16043079099221212501"
+        "hash": "57759002827339152"
       },
       {
         "file": "libs/angular/icons/svg/letter.svg",
-        "hash": "1854897812878655847"
+        "hash": "17741468639671976173"
       },
       {
         "file": "libs/angular/icons/svg/matLock.svg",
-        "hash": "4695137502316403130"
+        "hash": "1766656392660653984"
       },
       {
         "file": "libs/angular/icons/svg/matNotificationsOutline.svg",
-        "hash": "9129963874976632362"
+        "hash": "3964599696220674627"
       },
       {
         "file": "libs/angular/icons/svg/megaphone.svg",
-        "hash": "13614067830513063746"
+        "hash": "16819458184305287555"
       },
       {
         "file": "libs/angular/icons/svg/modify.svg",
-        "hash": "6916423587451482592"
+        "hash": "5462484076812461226"
       },
       {
         "file": "libs/angular/icons/svg/name.svg",
-        "hash": "3455123951743299871"
+        "hash": "15293159713840332304"
       },
       {
         "file": "libs/angular/icons/svg/phone.svg",
-        "hash": "8754278007198561150"
+        "hash": "15194474365340845353"
       },
       {
         "file": "libs/angular/icons/svg/promotions.svg",
-        "hash": "11299808073640828122"
+        "hash": "15902461159845913418"
       },
       {
         "file": "libs/angular/icons/svg/register.svg",
-        "hash": "16043079099221212501"
+        "hash": "57759002827339152"
       },
       {
         "file": "libs/angular/icons/svg/search.svg",
-        "hash": "9513876600847162334"
+        "hash": "143528028195392246"
       },
       {
         "file": "libs/angular/icons/svg/sendMessage.svg",
-        "hash": "13669312884263602631"
+        "hash": "5202950545944889748"
       },
       {
         "file": "libs/angular/icons/svg/shop.svg",
-        "hash": "18250892855638965704"
+        "hash": "6495544416251312318"
       },
       {
         "file": "libs/angular/icons/svg/shoppingBag.svg",
-        "hash": "15801920089469240196"
+        "hash": "3010865786777060442"
       },
       {
         "file": "libs/angular/icons/svg/shoppingCart.svg",
-        "hash": "14010405830305154716"
+        "hash": "16362915740523228035"
       },
       {
         "file": "libs/angular/icons/svg/start.svg",
-        "hash": "1590883870069782443"
+        "hash": "2833039653296068505"
       },
       {
         "file": "libs/angular/icons/svg/truck.svg",
@@ -1179,15 +1611,15 @@
       },
       {
         "file": "libs/angular/icons/svg/user.svg",
-        "hash": "16944515917948583786"
+        "hash": "5195001393109091853"
       },
       {
         "file": "libs/angular/icons/svg/whatsapp.svg",
-        "hash": "8754278007198561150"
+        "hash": "15194474365340845353"
       },
       {
         "file": "libs/angular/icons/unicode.enum.ts",
-        "hash": "6660983144562542232"
+        "hash": "14062220553151253430"
       },
       {
         "file": "libs/angular/images/index.ts",
@@ -1239,7 +1671,7 @@
       },
       {
         "file": "libs/nestjs/common/global.ts",
-        "hash": "13366874570562786522"
+        "hash": "13123936008484432244"
       },
       {
         "file": "libs/nestjs/common/globalPipes.ts",
@@ -1247,11 +1679,11 @@
       },
       {
         "file": "libs/nestjs/common/http-exception.filter.ts",
-        "hash": "5204388454316633129"
+        "hash": "17466558838742681937"
       },
       {
         "file": "libs/nestjs/common/index.ts",
-        "hash": "16706280341356336855"
+        "hash": "8176707386610536679"
       },
       {
         "file": "libs/nestjs/common/postgressEnsure.ts",
@@ -1267,27 +1699,27 @@
       },
       {
         "file": "libs/nestjs/configurations/env/.env.dev",
-        "hash": "2568903791008717005"
+        "hash": "1771186448974597034"
       },
       {
         "file": "libs/nestjs/configurations/env/.env.prod",
-        "hash": "965334103368583797"
+        "hash": "16355369119323781896"
       },
       {
         "file": "libs/nestjs/configurations/environments/environment.dev.ts",
-        "hash": "2918571935085628144"
+        "hash": "2211263416192879338"
       },
       {
         "file": "libs/nestjs/configurations/environments/environment.prod.ts",
-        "hash": "2918571935085628144"
+        "hash": "2211263416192879338"
       },
       {
         "file": "libs/nestjs/configurations/environments/environment.ts",
-        "hash": "18155392932068646531"
+        "hash": "403791393175098083"
       },
       {
         "file": "libs/nestjs/configurations/index.ts",
-        "hash": "1966830909816850129"
+        "hash": "16582754463194468114"
       },
       {
         "file": "libs/nestjs/defaults/createDefault.ts",
@@ -1307,35 +1739,35 @@
       },
       {
         "file": "libs/nestjs/swagger/swagger-decorator.ts",
-        "hash": "8020252945465856941"
+        "hash": "6329507500179379628"
       },
       {
         "file": "libs/nestjs/tsconfig.json",
-        "hash": "11892193836417118749"
+        "hash": "1479150928854127417"
       },
       {
         "file": "libs/shared/enums/alf-label.enum.ts",
-        "hash": "10611293707568989507"
+        "hash": "6011540801695641133"
       },
       {
         "file": "libs/shared/enums/app-roles.enum.ts",
-        "hash": "1385632662138561657"
+        "hash": "8301119333957023001"
       },
       {
         "file": "libs/shared/enums/env.enum.ts",
-        "hash": "4653545076166984407"
+        "hash": "13320985319738781380"
       },
       {
         "file": "libs/shared/enums/index.ts",
-        "hash": "10213998317202171041"
+        "hash": "12827937195898494714"
       },
       {
         "file": "libs/shared/enums/paymentTypes.enum.ts",
-        "hash": "3434357448887342970"
+        "hash": "4812415025056424239"
       },
       {
         "file": "libs/shared/helpers/i18n.helper.ts",
-        "hash": "725907292125732090"
+        "hash": "8156438844565560049"
       },
       {
         "file": "libs/shared/img/auth/login.png",
@@ -1347,7 +1779,7 @@
       },
       {
         "file": "libs/shared/img/banderas/afg.svg",
-        "hash": "12251092011396037871"
+        "hash": "1399970710212571217"
       },
       {
         "file": "libs/shared/img/banderas/ago.svg",
@@ -1375,11 +1807,11 @@
       },
       {
         "file": "libs/shared/img/banderas/arg.svg",
-        "hash": "6734494140006169140"
+        "hash": "4303944451152474818"
       },
       {
         "file": "libs/shared/img/banderas/arm.svg",
-        "hash": "2148052925686745067"
+        "hash": "2949433201015215740"
       },
       {
         "file": "libs/shared/img/banderas/asm.svg",
@@ -1415,7 +1847,7 @@
       },
       {
         "file": "libs/shared/img/banderas/bel.svg",
-        "hash": "9087029026463003227"
+        "hash": "13336007121500056392"
       },
       {
         "file": "libs/shared/img/banderas/ben.svg",
@@ -1435,11 +1867,11 @@
       },
       {
         "file": "libs/shared/img/banderas/bgr.svg",
-        "hash": "8867069521139787589"
+        "hash": "3705260198058688136"
       },
       {
         "file": "libs/shared/img/banderas/bhr.svg",
-        "hash": "5843998933346853045"
+        "hash": "1779832293537697283"
       },
       {
         "file": "libs/shared/img/banderas/bhs.svg",
@@ -1447,15 +1879,15 @@
       },
       {
         "file": "libs/shared/img/banderas/bih.svg",
-        "hash": "1039367079301753104"
+        "hash": "2362563027070206866"
       },
       {
         "file": "libs/shared/img/banderas/blm.svg",
-        "hash": "9623211258400872475"
+        "hash": "15766565838787386577"
       },
       {
         "file": "libs/shared/img/banderas/blr.svg",
-        "hash": "4527344175685812712"
+        "hash": "10067571962437274941"
       },
       {
         "file": "libs/shared/img/banderas/blz.svg",
@@ -1467,7 +1899,7 @@
       },
       {
         "file": "libs/shared/img/banderas/bol.svg",
-        "hash": "5109911115799046256"
+        "hash": "3440198037464254844"
       },
       {
         "file": "libs/shared/img/banderas/bra.svg",
@@ -1475,7 +1907,7 @@
       },
       {
         "file": "libs/shared/img/banderas/brb.svg",
-        "hash": "12039672984758393931"
+        "hash": "18262241685931508187"
       },
       {
         "file": "libs/shared/img/banderas/brn.svg",
@@ -1487,7 +1919,7 @@
       },
       {
         "file": "libs/shared/img/banderas/bvt.svg",
-        "hash": "17991356525789872429"
+        "hash": "14593795891633536112"
       },
       {
         "file": "libs/shared/img/banderas/bwa.svg",
@@ -1495,7 +1927,7 @@
       },
       {
         "file": "libs/shared/img/banderas/caf.svg",
-        "hash": "9645878891263499258"
+        "hash": "6042341731465386442"
       },
       {
         "file": "libs/shared/img/banderas/can.svg",
@@ -1511,7 +1943,7 @@
       },
       {
         "file": "libs/shared/img/banderas/chl.svg",
-        "hash": "4062857346469714021"
+        "hash": "1915409086804735401"
       },
       {
         "file": "libs/shared/img/banderas/chn.svg",
@@ -1539,7 +1971,7 @@
       },
       {
         "file": "libs/shared/img/banderas/col.svg",
-        "hash": "5141848374887682141"
+        "hash": "1907645978821118029"
       },
       {
         "file": "libs/shared/img/banderas/com.svg",
@@ -1619,7 +2051,7 @@
       },
       {
         "file": "libs/shared/img/banderas/esp.svg",
-        "hash": "18283405984811582049"
+        "hash": "15316650812359739838"
       },
       {
         "file": "libs/shared/img/banderas/est.svg",
@@ -1631,11 +2063,11 @@
       },
       {
         "file": "libs/shared/img/banderas/fin.svg",
-        "hash": "16423160478314619561"
+        "hash": "1088459227784538391"
       },
       {
         "file": "libs/shared/img/banderas/fji.svg",
-        "hash": "15239910194503311688"
+        "hash": "18321232716781170584"
       },
       {
         "file": "libs/shared/img/banderas/flk.svg",
@@ -1643,7 +2075,7 @@
       },
       {
         "file": "libs/shared/img/banderas/fra.svg",
-        "hash": "10381834702098903338"
+        "hash": "7627446440304755018"
       },
       {
         "file": "libs/shared/img/banderas/fro.svg",
@@ -1655,15 +2087,15 @@
       },
       {
         "file": "libs/shared/img/banderas/gab.svg",
-        "hash": "6731068168769420256"
+        "hash": "6706132374705205998"
       },
       {
         "file": "libs/shared/img/banderas/gbr.svg",
-        "hash": "2814062593977043017"
+        "hash": "17087957700758397446"
       },
       {
         "file": "libs/shared/img/banderas/geo.svg",
-        "hash": "6632236247515472489"
+        "hash": "4804419403683071243"
       },
       {
         "file": "libs/shared/img/banderas/ggy.svg",
@@ -1679,15 +2111,15 @@
       },
       {
         "file": "libs/shared/img/banderas/gin.svg",
-        "hash": "5437597732053088622"
+        "hash": "18109057960263900530"
       },
       {
         "file": "libs/shared/img/banderas/glp.svg",
-        "hash": "16016051903052357585"
+        "hash": "3826199198320765343"
       },
       {
         "file": "libs/shared/img/banderas/gmb.svg",
-        "hash": "12306833123486579413"
+        "hash": "16823576200794114553"
       },
       {
         "file": "libs/shared/img/banderas/gnb.svg",
@@ -1699,7 +2131,7 @@
       },
       {
         "file": "libs/shared/img/banderas/grc.svg",
-        "hash": "16319684998543701704"
+        "hash": "368445256614405326"
       },
       {
         "file": "libs/shared/img/banderas/grd.svg",
@@ -1707,7 +2139,7 @@
       },
       {
         "file": "libs/shared/img/banderas/grl.svg",
-        "hash": "1853698445010410485"
+        "hash": "15529481447647404737"
       },
       {
         "file": "libs/shared/img/banderas/gtm.svg",
@@ -1763,11 +2195,11 @@
       },
       {
         "file": "libs/shared/img/banderas/iot.svg",
-        "hash": "14450533989455836248"
+        "hash": "1955437173994918897"
       },
       {
         "file": "libs/shared/img/banderas/irl.svg",
-        "hash": "412071076099271086"
+        "hash": "12079858142229012429"
       },
       {
         "file": "libs/shared/img/banderas/irn.svg",
@@ -1783,15 +2215,15 @@
       },
       {
         "file": "libs/shared/img/banderas/isr.svg",
-        "hash": "10381467293067465957"
+        "hash": "10245556538386187589"
       },
       {
         "file": "libs/shared/img/banderas/ita.svg",
-        "hash": "9818445223371184223"
+        "hash": "15445570563534100782"
       },
       {
         "file": "libs/shared/img/banderas/jam.svg",
-        "hash": "2457827746575064411"
+        "hash": "5009104580794210816"
       },
       {
         "file": "libs/shared/img/banderas/jey.svg",
@@ -1803,7 +2235,7 @@
       },
       {
         "file": "libs/shared/img/banderas/jpn.svg",
-        "hash": "12183562763361569040"
+        "hash": "909767355243119255"
       },
       {
         "file": "libs/shared/img/banderas/kaz.svg",
@@ -1831,7 +2263,7 @@
       },
       {
         "file": "libs/shared/img/banderas/kor.svg",
-        "hash": "6350507330130285329"
+        "hash": "14722337617712916563"
       },
       {
         "file": "libs/shared/img/banderas/kwt.svg",
@@ -1839,7 +2271,7 @@
       },
       {
         "file": "libs/shared/img/banderas/lao.svg",
-        "hash": "15411043807682037076"
+        "hash": "7872912989442743255"
       },
       {
         "file": "libs/shared/img/banderas/lbn.svg",
@@ -1851,7 +2283,7 @@
       },
       {
         "file": "libs/shared/img/banderas/lby.svg",
-        "hash": "17638568406840052676"
+        "hash": "16579659368615660138"
       },
       {
         "file": "libs/shared/img/banderas/lca.svg",
@@ -1879,19 +2311,19 @@
       },
       {
         "file": "libs/shared/img/banderas/lva.svg",
-        "hash": "7934962151759319638"
+        "hash": "17469125744214054498"
       },
       {
         "file": "libs/shared/img/banderas/mac.svg",
-        "hash": "3444243181080240244"
+        "hash": "3623176718703024270"
       },
       {
         "file": "libs/shared/img/banderas/maf.svg",
-        "hash": "10381834702098903338"
+        "hash": "7627446440304755018"
       },
       {
         "file": "libs/shared/img/banderas/mar.svg",
-        "hash": "12568769248366644819"
+        "hash": "8024230551639195172"
       },
       {
         "file": "libs/shared/img/banderas/mco.svg",
@@ -1911,7 +2343,7 @@
       },
       {
         "file": "libs/shared/img/banderas/mex.svg",
-        "hash": "3025292093130186395"
+        "hash": "10664705498895680268"
       },
       {
         "file": "libs/shared/img/banderas/mhl.svg",
@@ -1923,7 +2355,7 @@
       },
       {
         "file": "libs/shared/img/banderas/mli.svg",
-        "hash": "11189526025006734381"
+        "hash": "15185303548509398304"
       },
       {
         "file": "libs/shared/img/banderas/mlt.svg",
@@ -1931,7 +2363,7 @@
       },
       {
         "file": "libs/shared/img/banderas/mmr.svg",
-        "hash": "18177761566538444792"
+        "hash": "18318596377338584999"
       },
       {
         "file": "libs/shared/img/banderas/mne.svg",
@@ -1939,7 +2371,7 @@
       },
       {
         "file": "libs/shared/img/banderas/mng.svg",
-        "hash": "12554174297749778117"
+        "hash": "11989474486062468782"
       },
       {
         "file": "libs/shared/img/banderas/mnp.svg",
@@ -1963,11 +2395,11 @@
       },
       {
         "file": "libs/shared/img/banderas/mus.svg",
-        "hash": "12598146117924884657"
+        "hash": "3777029706751784056"
       },
       {
         "file": "libs/shared/img/banderas/mwi.svg",
-        "hash": "3619843111216628819"
+        "hash": "2710578882780871221"
       },
       {
         "file": "libs/shared/img/banderas/mys.svg",
@@ -2003,7 +2435,7 @@
       },
       {
         "file": "libs/shared/img/banderas/niu.svg",
-        "hash": "14380774860669773380"
+        "hash": "12966301417218865993"
       },
       {
         "file": "libs/shared/img/banderas/nld.svg",
@@ -2011,15 +2443,15 @@
       },
       {
         "file": "libs/shared/img/banderas/nor.svg",
-        "hash": "17991356525789872429"
+        "hash": "14593795891633536112"
       },
       {
         "file": "libs/shared/img/banderas/npl.svg",
-        "hash": "5446676191618954573"
+        "hash": "4160047163960704192"
       },
       {
         "file": "libs/shared/img/banderas/nru.svg",
-        "hash": "5544948842036280883"
+        "hash": "8337937275286505080"
       },
       {
         "file": "libs/shared/img/banderas/nzl.svg",
@@ -2031,7 +2463,7 @@
       },
       {
         "file": "libs/shared/img/banderas/pak.svg",
-        "hash": "8827962930763727937"
+        "hash": "15236778056921873404"
       },
       {
         "file": "libs/shared/img/banderas/pan.svg",
@@ -2039,7 +2471,7 @@
       },
       {
         "file": "libs/shared/img/banderas/pcn.svg",
-        "hash": "11991914356148802598"
+        "hash": "2439265221179552581"
       },
       {
         "file": "libs/shared/img/banderas/per.svg",
@@ -2047,11 +2479,11 @@
       },
       {
         "file": "libs/shared/img/banderas/phl.svg",
-        "hash": "17272225685456251057"
+        "hash": "14700614428784593495"
       },
       {
         "file": "libs/shared/img/banderas/plw.svg",
-        "hash": "3504006469204014984"
+        "hash": "15515976619784356430"
       },
       {
         "file": "libs/shared/img/banderas/png.svg",
@@ -2079,7 +2511,7 @@
       },
       {
         "file": "libs/shared/img/banderas/pse.svg",
-        "hash": "3138286893392376241"
+        "hash": "18296121128869693316"
       },
       {
         "file": "libs/shared/img/banderas/pyf.svg",
@@ -2087,7 +2519,7 @@
       },
       {
         "file": "libs/shared/img/banderas/qat.svg",
-        "hash": "17181313275272634681"
+        "hash": "2893000930232853370"
       },
       {
         "file": "libs/shared/img/banderas/reu.svg",
@@ -2103,15 +2535,15 @@
       },
       {
         "file": "libs/shared/img/banderas/rwa.svg",
-        "hash": "16704023827545168358"
+        "hash": "12904173612654901381"
       },
       {
         "file": "libs/shared/img/banderas/sau.svg",
-        "hash": "16498665830230700292"
+        "hash": "2898476755398645658"
       },
       {
         "file": "libs/shared/img/banderas/sdn.svg",
-        "hash": "7118965883571443455"
+        "hash": "15897670177111964742"
       },
       {
         "file": "libs/shared/img/banderas/sen.svg",
@@ -2119,19 +2551,19 @@
       },
       {
         "file": "libs/shared/img/banderas/sgp.svg",
-        "hash": "16803895791550671208"
+        "hash": "10792141346575733033"
       },
       {
         "file": "libs/shared/img/banderas/sgs.svg",
-        "hash": "2652874768332126079"
+        "hash": "12507393630634787938"
       },
       {
         "file": "libs/shared/img/banderas/shn.svg",
-        "hash": "17821239898911658994"
+        "hash": "11408575401835556922"
       },
       {
         "file": "libs/shared/img/banderas/sjm.svg",
-        "hash": "17991356525789872429"
+        "hash": "14593795891633536112"
       },
       {
         "file": "libs/shared/img/banderas/slb.svg",
@@ -2139,7 +2571,7 @@
       },
       {
         "file": "libs/shared/img/banderas/sle.svg",
-        "hash": "15045053291847282336"
+        "hash": "17935350770279133959"
       },
       {
         "file": "libs/shared/img/banderas/slv.svg",
@@ -2155,7 +2587,7 @@
       },
       {
         "file": "libs/shared/img/banderas/spm.svg",
-        "hash": "16835908521397387014"
+        "hash": "10371146081624937610"
       },
       {
         "file": "libs/shared/img/banderas/srb.svg",
@@ -2163,7 +2595,7 @@
       },
       {
         "file": "libs/shared/img/banderas/ssd.svg",
-        "hash": "1335775909043399630"
+        "hash": "10164019687704253844"
       },
       {
         "file": "libs/shared/img/banderas/stp.svg",
@@ -2171,7 +2603,7 @@
       },
       {
         "file": "libs/shared/img/banderas/sur.svg",
-        "hash": "18015247497870732435"
+        "hash": "8974932632861974364"
       },
       {
         "file": "libs/shared/img/banderas/svk.svg",
@@ -2179,7 +2611,7 @@
       },
       {
         "file": "libs/shared/img/banderas/svn.svg",
-        "hash": "125977934211043042"
+        "hash": "6172777483021972957"
       },
       {
         "file": "libs/shared/img/banderas/swe.svg",
@@ -2219,7 +2651,7 @@
       },
       {
         "file": "libs/shared/img/banderas/tjk.svg",
-        "hash": "365364326366363248"
+        "hash": "2812919773163696854"
       },
       {
         "file": "libs/shared/img/banderas/tkl.svg",
@@ -2235,7 +2667,7 @@
       },
       {
         "file": "libs/shared/img/banderas/ton.svg",
-        "hash": "15760638864518951527"
+        "hash": "16259940571393800247"
       },
       {
         "file": "libs/shared/img/banderas/tto.svg",
@@ -2247,7 +2679,7 @@
       },
       {
         "file": "libs/shared/img/banderas/tur.svg",
-        "hash": "3406298841925411607"
+        "hash": "12757120761178135221"
       },
       {
         "file": "libs/shared/img/banderas/tuv.svg",
@@ -2275,11 +2707,11 @@
       },
       {
         "file": "libs/shared/img/banderas/undefined.svg",
-        "hash": "6084388299281735265"
+        "hash": "8758612939103760393"
       },
       {
         "file": "libs/shared/img/banderas/ury.svg",
-        "hash": "2104336543239733622"
+        "hash": "2874819351809525049"
       },
       {
         "file": "libs/shared/img/banderas/usa.svg",
@@ -2291,7 +2723,7 @@
       },
       {
         "file": "libs/shared/img/banderas/vat.svg",
-        "hash": "16238039127868739952"
+        "hash": "6114926634916396289"
       },
       {
         "file": "libs/shared/img/banderas/vct.svg",
@@ -2343,7 +2775,7 @@
       },
       {
         "file": "libs/shared/img/banderas/zwe.svg",
-        "hash": "12684606408228255915"
+        "hash": "18211438440043759675"
       },
       {
         "file": "libs/shared/img/config.json",
@@ -2355,7 +2787,7 @@
       },
       {
         "file": "libs/shared/img/icons/angular.svg",
-        "hash": "12636543904317232329"
+        "hash": "14291720052542003750"
       },
       {
         "file": "libs/shared/img/icons/nestjs.svg",
@@ -2391,75 +2823,43 @@
       },
       {
         "file": "libs/shared/index.ts",
-        "hash": "17671362908116222344"
+        "hash": "13585273781555211929"
       },
       {
         "file": "libs/shared/interfaces/city.interface.ts",
-        "hash": "9816783732491245881"
+        "hash": "15967234601233542135"
       },
       {
         "file": "libs/shared/interfaces/country.interface.ts",
-        "hash": "12897969679611573947"
+        "hash": "13867318641576009608"
       },
       {
         "file": "libs/shared/interfaces/index.ts",
-        "hash": "12394719711096538776"
+        "hash": "4746726603726552540"
       },
       {
         "file": "libs/shared/interfaces/province.interface.ts",
-        "hash": "9206566789712096275"
+        "hash": "6838279449588942200"
       },
       {
         "file": "libs/shared/interfaces/response.interface.ts",
-        "hash": "2994332878522440342"
+        "hash": "4487126466938952016"
       },
       {
         "file": "libs/shared/tsconfig.json",
-        "hash": "2341990835398967577"
-      },
-      {
-        "file": "mapas/alf-button/AI_USAGE.md",
-        "hash": "12997856324111057385"
-      },
-      {
-        "file": "mapas/alf-button/README.md",
-        "hash": "378716138317869649"
-      },
-      {
-        "file": "mapas/alf-button/README_EN.md",
-        "hash": "6707803692483500407"
-      },
-      {
-        "file": "mapas/alf-button/alf-button-content.ts",
-        "hash": "17279910889094871279"
-      },
-      {
-        "file": "mapas/alf-button/alf-button.html",
-        "hash": "7951131180694778501"
-      },
-      {
-        "file": "mapas/alf-button/alf-button.scss",
-        "hash": "10973415962286449839"
-      },
-      {
-        "file": "mapas/alf-button/i18n/button-i18n.ts",
-        "hash": "2320136984260760007"
-      },
-      {
-        "file": "mapas/alf-button/interfaces/alfButton.ts",
-        "hash": "869919659141847092"
+        "hash": "15463941332961822453"
       },
       {
         "file": "nest-cli.json",
-        "hash": "3790419444998965455"
+        "hash": "3626675826474511170"
       },
       {
         "file": "package-lock.json",
-        "hash": "8606247043639340193"
+        "hash": "17323302533015411657"
       },
       {
         "file": "package.json",
-        "hash": "16272814254391163399"
+        "hash": "2961265739411968908"
       },
       {
         "file": "scripts/angular/eliminateExist.ts",
@@ -2467,11 +2867,11 @@
       },
       {
         "file": "scripts/angular/generate.angular.ts",
-        "hash": "8456097728726819198"
+        "hash": "14467940483359274028"
       },
       {
         "file": "scripts/build-libs.js",
-        "hash": "831961902923649171"
+        "hash": "2800846086571793306"
       },
       {
         "file": "scripts/install-node-modules.ts",
@@ -2479,7 +2879,7 @@
       },
       {
         "file": "scripts/logger.ts",
-        "hash": "15668171616426682198"
+        "hash": "13700719864258156773"
       },
       {
         "file": "scripts/nestjs/export-nest-project.ts",
@@ -2487,15 +2887,15 @@
       },
       {
         "file": "scripts/nestjs/nestjs-generator.ts",
-        "hash": "2969618404226078889"
+        "hash": "14148202907702351252"
       },
       {
         "file": "scripts/nestjs/nestjs-project-manager.ts",
-        "hash": "9319789620002106217"
+        "hash": "10779029618485656753"
       },
       {
         "file": "scripts/project-creator.ts",
-        "hash": "9632758803734321891"
+        "hash": "15527766299425839125"
       },
       {
         "file": "scripts/reload.ts",
@@ -2507,25 +2907,29 @@
       },
       {
         "file": "tsconfig.json",
-        "hash": "5686413365938108596"
+        "hash": "17168131215414906987"
       },
       {
         "file": "tsconfig.spec.json",
-        "hash": "15258511810925429730"
+        "hash": "771913306104665224"
       },
       {
         "file": "vitest.config.ts",
-        "hash": "14100883566940769467"
+        "hash": "6097564505813886753"
       },
       {
         "file": "vitest.setup.ts",
-        "hash": "2157953351249982101"
+        "hash": "15051301120434590860"
       },
       {
         "file": "webpack.config.js",
-        "hash": "11040829589492477353"
+        "hash": "15245400229778516605"
+      },
+      {
+        "file": "yarn.lock",
+        "hash": "14189488365655305685"
       }
     ]
   },
-  "externalNodesHash": "505817148783333392"
+  "externalNodesHash": "8729636442372760755"
 }

@@ -15,20 +15,55 @@ export enum AlfColorEnum {
   // ===== THEME ROLES =====
   Primary = 'var(--alf-primary, #0d6efd)',
   PrimaryHover = 'var(--alf-primary-hover, #0a55c7ff)',
+  PrimaryFocus = 'var(--alf-primary-focus, #0a55c7ff)',
+  PrimaryDisabled = 'var(--alf-primary-disabled, #0a55c7ff)',
+  PrimaryActive = 'var(--alf-primary-active, #0a55c7ff)',
+
+
   Secondary = 'var(--alf-secondary, #6c757d)',
   SecondaryHover = 'var(--alf-secondary-hover, #4a5055ff)',
+  SecondaryFocus = 'var(--alf-secondary-focus, #4a5055ff)',
+  SecondaryDisabled = 'var(--alf-secondary-disabled, #4a5055ff)',
+  SecondaryActive = 'var(--alf-secondary-active, #4a5055ff)',
+
+
   Success = 'var(--alf-success, #198754)',
   SuccessHover = 'var(--alf-success-hover, #125b39ff)',
+  SuccessFocus = 'var(--alf-success-focus, #125b39ff)',
+  SuccessDisabled = 'var(--alf-success-disabled, #125b39ff)',
+  SuccessActive = 'var(--alf-success-active, #125b39ff)',
+
+
   Danger = 'var(--alf-danger, #dc3545)',
   DangerHover = 'var(--alf-danger-hover, #bb2d3b)',
+  DangerFocus = 'var(--alf-danger-focus, #bb2d3b)',
+  DangerDisabled = 'var(--alf-danger-disabled, #bb2d3b)',
+  DangerActive = 'var(--alf-danger-active, #bb2d3b)',
+
+
   Warning = 'var(--alf-warning, #ffc107)',
   WarningHover = 'var(--alf-warning-hover, #d5a926ff)',
+  WarningFocus = 'var(--alf-warning-focus, #d5a926ff)',
+  WarningDisabled = 'var(--alf-warning-disabled, #d5a926ff)',
+  WarningActive = 'var(--alf-warning-active, #d5a926ff)',
+
   Info = 'var(--alf-info, #0dcaf0)',
   InfoHover = 'var(--alf-info-hover, #2bb9d6ff)',
+  InfoFocus = 'var(--alf-info-focus, #2bb9d6ff)',
+  InfoDisabled = 'var(--alf-info-disabled, #2bb9d6ff)',
+  InfoActive = 'var(--alf-info-active, #2bb9d6ff)',
+
   Light = 'var(--alf-light, #f8f9fa)',
   LightHover = 'var(--alf-light-hover, #f8f9fa)',
+  LightFocus = 'var(--alf-light-focus, #f8f9fa)',
+  LightDisabled = 'var(--alf-light-disabled, #f8f9fa)',
+  LightActive = 'var(--alf-light-active, #f8f9fa)',
+
   Dark = 'var(--alf-dark, #212529)',
   DarkHover = 'var(--alf-dark-hover, #0f0f0f)',
+  DarkFocus = 'var(--alf-dark-focus, #0f0f0f)',
+  DarkDisabled = 'var(--alf-dark-disabled, #0f0f0f)',
+  DarkActive = 'var(--alf-dark-active, #0f0f0f)',
 
 
   // ===== SOFT COLORS (050 Level) =====

@@ -63,7 +63,15 @@
     overflow: visible !important;
 
     // Inyectamos el motor visual Élite para layout flex y tipografía aquí
-    @include alf-display-layout-css-vars('--alf-inp', flex, flex-start, center, 0, '&.alf-input--disabled', '&.alf-input--focused, &:focus-within');
+    @include alf-display-layout-css-vars(
+      $prefix: '--alf-inp',
+      $disabled-selectors: '&.alf-input--disabled',
+      $focus-selectors: '&.alf-input--focused, &:focus-within',
+      $display: flex,
+      $justify: flex-start,
+      $align: center,
+      $gap: 0
+    );
     @include alf-typography-css-vars('--alf-inp', '&.alf-input--disabled', '&.alf-input--focused, &:focus-within');
     @include alf-padding-css-vars('--alf-inp', '&.alf-input--disabled', '&.alf-input--focused, &:focus-within');
     @include alf-text-style-css-vars('--alf-inp', '&.alf-input--disabled', '&.alf-input--focused, &:focus-within');

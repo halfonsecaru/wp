@@ -122,46 +122,44 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
     };
   });
 
+  // ******* Completado ******* //
   protected readonly displayAndLayoutComputed = computed(() => {
-    const variant = this.colorVariantComputed() ?? AlfColorVariantEnum.Default;
-    const base = resolveVariantConfig(variant).displayAndLayout;
+    const base = resolveVariantConfig(AlfColorVariantEnum.Default).displayAndLayoutBase;
     const resolved = this.resolvedConfig()?.displayAndLayout || {};
     const user = this.displayAndLayout() || {};
-
+    
     return {
-      ...base,
-      ...resolved,
-      ...user,
       default: { 
-        ...base.default, 
-        ...resolved.default, 
-        ...user.default,
+        ...base?.default, 
+        ...resolved?.default, 
+        ...user?.default,
         cursor: this.cursorComputed()
       },
-      hover: { ...base.hover, ...resolved.hover, ...user.hover },
-      active: { ...base.active, ...resolved.active, ...user.active },
-      focus: { ...base.focus, ...resolved.focus, ...user.focus },
-      disabled: { ...base.disabled, ...resolved.disabled, ...user.disabled },
+      hover: { ...base?.hover, ...resolved?.hover, ...user?.hover },
+      active: { ...base?.active, ...resolved?.active, ...user?.active },
+      focus: { ...base?.focus, ...resolved?.focus, ...user?.focus },
+      disabled: { ...base?.disabled, ...resolved?.disabled, ...user?.disabled },
     };
   });
+  // ************************** //
+  
 
+  // ******* Completado ******* //
   protected readonly marginComputed = computed(() => {
-    const variant = this.colorVariantComputed() ?? AlfColorVariantEnum.Default;
-    const base = resolveVariantConfig(variant).margin;
-    const resolved = this.resolvedConfig()?.margin || {};
-    const user = this.margin() || {};
+    const base = resolveVariantConfig(AlfColorVariantEnum.Default).marginBase;
+    const resolved = this.resolvedConfig()?.margin || undefined;
+    const user = this.margin() || undefined;
 
     return {
-      ...base,
-      ...resolved,
-      ...user,
-      default: { ...base.default, ...resolved.default, ...user.default },
-      hover: { ...base.hover, ...resolved.hover, ...user.hover },
-      active: { ...base.active, ...resolved.active, ...user.active },
-      focus: { ...base.focus, ...resolved.focus, ...user.focus },
-      disabled: { ...base.disabled, ...resolved.disabled, ...user.disabled },
+      default: { ...base?.default, ...resolved?.default, ...user?.default },
+      hover: { ...base?.hover, ...resolved?.hover, ...user?.hover },
+      active: { ...base?.active, ...resolved?.active, ...user?.active },
+      focus: { ...base?.focus, ...resolved?.focus, ...user?.focus },
+      disabled: { ...base?.disabled, ...resolved?.disabled, ...user?.disabled },
     };
   });
+  // ************************** //
+  
   protected readonly outlineComputed = computed(() => {
     const variant = this.colorVariantComputed() ?? AlfColorVariantEnum.Default;
     const base = resolveVariantConfig(variant).outline;
@@ -177,23 +175,21 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
     };
   });
 
+  // ******* Completado ******* //
   protected readonly paddingComputed = computed(() => {
-    const variant = this.colorVariantComputed() ?? AlfColorVariantEnum.Default;
-    const base = resolveVariantConfig(variant).padding;
-    const resolved = this.resolvedConfig()?.padding || {};
+    const base = resolveVariantConfig(AlfColorVariantEnum.Default).paddingBase;
+    const resolved = this.resolvedConfig()?.padding || undefined;
     const user = this.padding() || {};
 
     return {
-      ...base,
-      ...resolved,
-      ...user,
-      default: { ...base.default, ...resolved.default, ...user.default },
-      hover: { ...base.hover, ...resolved.hover, ...user.hover },
-      active: { ...base.active, ...resolved.active, ...user.active },
-      focus: { ...base.focus, ...resolved.focus, ...user.focus },
-      disabled: { ...base.disabled, ...resolved.disabled, ...user.disabled },
+      default: { ...base?.default, ...resolved?.default, ...user?.default },
+      hover: { ...base?.hover, ...resolved?.hover, ...user?.hover },
+      active: { ...base?.active, ...resolved?.active, ...user?.active },
+      focus: { ...base?.focus, ...resolved?.focus, ...user?.focus },
+      disabled: { ...base?.disabled, ...resolved?.disabled, ...user?.disabled },
     };
   });
+  // ************************** //
 
   protected readonly shadowsComputed = computed(() => {
     const variant = this.colorVariantComputed() ?? AlfColorVariantEnum.Default;
@@ -202,9 +198,6 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
     const user = this.shadows() || {};
 
     return {
-      ...base,
-      ...resolved,
-      ...user,
       default: { ...base.default, ...resolved.default, ...user.default },
       hover: { ...base.hover, ...resolved.hover, ...user.hover },
       active: { ...base.active, ...resolved.active, ...user.active },

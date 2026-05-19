@@ -1,0 +1,235 @@
+<div class="sw-page">
+  <header class="sw-page__header">
+    <h1 class="sw-page__title">AlfSwitch</h1>
+    <p class="sw-page__subtitle">Componente de interruptor interactivo con soporte para variantes, tamaños y estilos.</p>
+  </header>
+
+  <div class="sw-grid">
+    <!-- CARD: Estilos -->
+    <div class="sw-card">
+      <h2 class="sw-card__title">
+        <span class="sw-card__dot sw-card__dot--blue"></span>
+        Estilos
+      </h2>
+      <div class="sw-card__body">
+        <div class="sw-demo-row">
+          <div class="sw-demo-item">
+            <span class="sw-demo-label">Elegant</span>
+            <alf-switch [config]="configElegant" [(checked)]="checkedElegant" />
+          </div>
+          <div class="sw-demo-item">
+            <span class="sw-demo-label">Standard</span>
+            <alf-switch [config]="configStandard" [(checked)]="checkedStandard" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD: Posición del label -->
+    <div class="sw-card">
+      <h2 class="sw-card__title">
+        <span class="sw-card__dot sw-card__dot--purple"></span>
+        Posición del label
+      </h2>
+      <div class="sw-card__body">
+        <div class="sw-demo-col">
+          <alf-switch [config]="configBasic" [(checked)]="checkedBasic" />
+          <alf-switch [config]="configLabelBefore" [(checked)]="checkedLabelBefore" />
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD: Helper & Error -->
+    <div class="sw-card">
+      <h2 class="sw-card__title">
+        <span class="sw-card__dot sw-card__dot--amber"></span>
+        Helper & Error
+      </h2>
+      <div class="sw-card__body">
+        <div class="sw-demo-col">
+          <alf-switch [config]="configWithHelper" [(checked)]="checkedWithHelper" />
+          <alf-switch [config]="configWithError" [(checked)]="checkedWithError" />
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD: Colores -->
+    <div class="sw-card">
+      <h2 class="sw-card__title">
+        <span class="sw-card__dot sw-card__dot--green"></span>
+        Colores personalizados
+      </h2>
+      <div class="sw-card__body">
+        <div class="sw-demo-col">
+          <alf-switch [config]="configGreen" [(checked)]="checkedGreen" />
+          <alf-switch [config]="configRed" [(checked)]="checkedRed" />
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD: Variantes Sólidas -->
+    <div class="sw-card">
+      <h2 class="sw-card__title">
+        <span class="sw-card__dot sw-card__dot--indigo"></span>
+        Variantes Sólidas
+      </h2>
+      <div class="sw-card__body">
+        <div class="sw-demo-col">
+          <alf-switch [config]="configPrimary" [(checked)]="checkedPrimary" />
+          <alf-switch [config]="configSecondary" [(checked)]="checkedSecondary" />
+          <alf-switch [config]="configSuccess" [(checked)]="checkedSuccess" />
+          <alf-switch [config]="configDanger" [(checked)]="checkedDanger" />
+          <alf-switch [config]="configWarning" [(checked)]="checkedWarning" />
+          <alf-switch [config]="configInfo" [(checked)]="checkedInfo" />
+          <alf-switch [config]="configLight" [(checked)]="checkedLight" />
+          <alf-switch [config]="configDark" [(checked)]="checkedDark" />
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD: Sombras Directas -->
+    <div class="sw-card">
+      <h2 class="sw-card__title">
+        <span class="sw-card__dot sw-card__dot--amber"></span>
+        Sombras Directas
+      </h2>
+      <div class="sw-card__body">
+        <div class="sw-demo-col">
+          <alf-switch 
+            style="
+              --alf-sw-shadows-box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+              --alf-sw-shadows-hover-box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            "
+            [config]="{ labelText: 'Sombra suave interactiva' }"
+            [(checked)]="checkedShadowSoft"
+          />
+          <alf-switch 
+            style="
+              --alf-sw-shadows-box-shadow: 0 0 0px transparent;
+              --alf-sw-shadows-focus-box-shadow: 0 0 15px rgba(59, 130, 246, 0.8);
+            "
+            [config]="{ labelText: 'Efecto brillo en foco' }"
+            [(checked)]="checkedShadowGlow"
+          />
+          <alf-switch 
+            style="
+              --alf-sw-shadows-box-shadow: 0 8px 16px rgba(139, 92, 246, 0.25);
+              --alf-sw-shadows-hover-box-shadow: 0 12px 24px rgba(139, 92, 246, 0.45);
+            "
+            [config]="{ labelText: 'Sombra de color Neón' }"
+            [(checked)]="checkedShadowNeon"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD: Tamaños (ancho completo) -->
+    <div class="sw-card sw-card--wide">
+      <h2 class="sw-card__title">
+        <span class="sw-card__dot sw-card__dot--cyan"></span>
+        Tamaños
+      </h2>
+      <div class="sw-card__body">
+        <div class="sw-demo-sizes">
+          <div class="sw-size-item">
+            <span class="sw-size-badge">XS</span>
+            <alf-switch [config]="configXS" [(checked)]="checkedXS" />
+          </div>
+          <div class="sw-size-item">
+            <span class="sw-size-badge">SM</span>
+            <alf-switch [config]="configSM" [(checked)]="checkedSM" />
+          </div>
+          <div class="sw-size-item">
+            <span class="sw-size-badge">MD</span>
+            <alf-switch [config]="configMD" [(checked)]="checkedMD" />
+          </div>
+          <div class="sw-size-item">
+            <span class="sw-size-badge">LG</span>
+            <alf-switch [config]="configLG" [(checked)]="checkedLG" />
+          </div>
+          <div class="sw-size-item">
+            <span class="sw-size-badge">XL</span>
+            <alf-switch [config]="configXL" [(checked)]="checkedXL" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD: Estado reactivo -->
+    <div class="sw-card sw-card--terminal">
+      <h2 class="sw-card__title sw-card__title--light">
+        <span class="sw-terminal-dot sw-terminal-dot--red"></span>
+        <span class="sw-terminal-dot sw-terminal-dot--yellow"></span>
+        <span class="sw-terminal-dot sw-terminal-dot--green"></span>
+        <span class="sw-terminal-title">Estado reactivo</span>
+      </h2>
+      <div class="sw-terminal__body">
+        <p class="sw-terminal__line">
+          <span class="sw-terminal__key">checkedElegant</span>
+          <span class="sw-terminal__sep">→</span>
+          <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedElegant()">{{ checkedElegant() }}</span>
+        </p>
+        <p class="sw-terminal__line">
+          <span class="sw-terminal__key">checkedBasic</span>
+          <span class="sw-terminal__sep">→</span>
+          <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedBasic()">{{ checkedBasic() }}</span>
+        </p>
+        <p class="sw-terminal__line">
+          <span class="sw-terminal__key">checkedWithHelper</span>
+          <span class="sw-terminal__sep">→</span>
+          <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedWithHelper()">{{ checkedWithHelper() }}</span>
+        </p>
+        <p class="sw-terminal__line">
+          <span class="sw-terminal__key">checkedGreen</span>
+          <span class="sw-terminal__sep">→</span>
+          <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedGreen()">{{ checkedGreen() }}</span>
+        </p>
+        <p class="sw-terminal__line">
+          <span class="sw-terminal__key">checkedMD</span>
+          <span class="sw-terminal__sep">→</span>
+          <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedMD()">{{ checkedMD() }}</span>
+        </p>
+        <p class="sw-terminal__line">
+          <span class="sw-terminal__key">checkedPrimary</span>
+          <span class="sw-terminal__sep">→</span>
+          <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedPrimary()">{{ checkedPrimary() }}</span>
+        </p>
+        <p class="sw-terminal__line">
+          <span class="sw-terminal__key">checkedSecondary</span>
+          <span class="sw-terminal__sep">→</span>
+          <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedSecondary()">{{ checkedSecondary() }}</span>
+        </p>
+        <p class="sw-terminal__line">
+          <span class="sw-terminal__key">checkedSuccess</span>
+          <span class="sw-terminal__sep">→</span>
+          <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedSuccess()">{{ checkedSuccess() }}</span>
+        </p>
+        <p class="sw-terminal__line">
+          <span class="sw-terminal__key">checkedDanger</span>
+          <span class="sw-terminal__sep">→</span>
+          <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedDanger()">{{ checkedDanger() }}</span>
+        </p>
+        <p class="sw-terminal__line">
+          <span class="sw-terminal__key">checkedWarning</span>
+          <span class="sw-terminal__sep">→</span>
+          <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedWarning()">{{ checkedWarning() }}</span>
+        </p>
+        <p class="sw-terminal__line">
+          <span class="sw-terminal__key">checkedInfo</span>
+          <span class="sw-terminal__sep">→</span>
+          <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedInfo()">{{ checkedInfo() }}</span>
+        </p>
+        <p class="sw-terminal__line">
+          <span class="sw-terminal__key">checkedLight</span>
+          <span class="sw-terminal__sep">→</span>
+          <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedLight()">{{ checkedLight() }}</span>
+        </p>
+        <p class="sw-terminal__line">
+          <span class="sw-terminal__key">checkedDark</span>
+          <span class="sw-terminal__sep">→</span>
+          <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedDark()">{{ checkedDark() }}</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

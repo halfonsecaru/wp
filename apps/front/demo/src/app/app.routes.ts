@@ -20,5 +20,9 @@ export const routes: Routes = [
   {
     path: 'buttons',
     loadComponent: () => import('./app/pages/alf-buttons-viewer/alf-buttons-viewer').then(m => m.AlfButtonsViewer)
+  },
+  {
+    path: 'switch',
+    loadComponent: () => import('./app/pages/alf-switch-viewer/alf-switch-viewer').then(m => m.AlfSwitchViewer)
   }
 ];

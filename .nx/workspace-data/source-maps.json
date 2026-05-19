@@ -402,5 +402,71 @@
       "apps/front/demo/package.json",
       "nx/core/package-json"
     ]
+  },
+  "alfcomponents": {
+    "root": [
+      "angular.json",
+      "nx-angular-json-plugin"
+    ],
+    "projectType": [
+      "angular.json",
+      "nx-angular-json-plugin"
+    ],
+    "sourceRoot": [
+      "angular.json",
+      "nx-angular-json-plugin"
+    ],
+    "prefix": [
+      "angular.json",
+      "nx-angular-json-plugin"
+    ],
+    "name": [
+      "angular.json",
+      "nx-angular-json-plugin"
+    ],
+    "targets": [
+      "angular.json",
+      "nx-angular-json-plugin"
+    ],
+    "targets.build": [
+      "angular.json",
+      "nx-angular-json-plugin"
+    ],
+    "targets.build.executor": [
+      "angular.json",
+      "nx-angular-json-plugin"
+    ],
+    "targets.build.options": [
+      "angular.json",
+      "nx-angular-json-plugin"
+    ],
+    "targets.build.configurations": [
+      "angular.json",
+      "nx-angular-json-plugin"
+    ],
+    "targets.build.defaultConfiguration": [
+      "angular.json",
+      "nx-angular-json-plugin"
+    ],
+    "targets.build.options.project": [
+      "angular.json",
+      "nx-angular-json-plugin"
+    ],
+    "targets.build.configurations.production": [
+      "angular.json",
+      "nx-angular-json-plugin"
+    ],
+    "targets.build.configurations.production.tsConfig": [
+      "angular.json",
+      "nx-angular-json-plugin"
+    ],
+    "targets.build.configurations.development": [
+      "angular.json",
+      "nx-angular-json-plugin"
+    ],
+    "targets.build.configurations.development.tsConfig": [
+      "angular.json",
+      "nx-angular-json-plugin"
+    ]
   }
 }

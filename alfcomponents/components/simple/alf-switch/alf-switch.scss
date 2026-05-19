@@ -15,21 +15,16 @@
 
   @include alf-transition;
 
-  @include alf-display-layout-css-vars($prefix: '--alf-sw',
-    $display: flex,
-    $align: flex-start,
-    $justify: flex-start,
-    $disabled-selectors: '&--disabled',
-    $focus-selectors: '&:focus-within, &:focus-visible'
-  );
-
+  @include alf-display-layout-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
   @include alf-padding-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
   @include alf-margin-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
-  @include alf-shadows-css-vars('--alf-sw', '&--disabled');
-  @include alf-typography-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
-  @include alf-text-style-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
-  @include alf-outline-css-vars('--alf-sw', '&--disabled');
-  @include alf-transform-css-vars('--alf-sw', '&--disabled');
+  @include alf-shadows-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
+
+
+  //@include alf-typography-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
+  // @include alf-text-style-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
+  // @include alf-outline-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
+  // @include alf-transform-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
 
   position: relative;
   cursor: pointer;
@@ -38,7 +33,6 @@
 
   &--disabled {
     cursor: not-allowed;
-    opacity: 0.5;
     pointer-events: none;
   }
 
@@ -67,7 +61,7 @@
     border-radius: 9999px;
     background-color: var(--alf-sw-bg-color, var(--alf-gray-300, #d1d5db));
 
-    @include alf-border-css-vars('--alf-sw', '&--disabled', ':focus-within');
+//    @include alf-border-css-vars('--alf-sw', '&--disabled', ':focus-within');
     
     border-width: var(--alf-sw-border-width, 1px);
     border-style: var(--alf-sw-border-style, solid);
@@ -101,9 +95,10 @@
 
   // Label text
   &-label-text {
+    @include alf-typography-css-vars('--alf-sw');
     font-family: inherit;
     line-height: 1.25rem;
-    color: var(--alf-sw-text-color, inherit);
+    color: var(--alf-sw-typo-color, var(--alf-sw-border-color, inherit));
   }
 
   // Helper and errors

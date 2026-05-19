@@ -10,7 +10,7 @@ import { AlfBaseCommonConfigInterface } from '@alfcomponents/interfaces';
  * Interface for the AlfSwitch component configuration.
  * Inherits from AlfBaseCommonConfigInterface to ensure visual consistency.
  */
-export interface AlfSwitchInterface {
+export interface AlfSwitchInterface extends AlfBaseCommonConfigInterface {
   /**
    * Estilo visual del switch.
    * - 'standard': Diseño cuadrado/rectangular.

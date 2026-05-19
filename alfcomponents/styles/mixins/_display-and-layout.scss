@@ -13,12 +13,12 @@
  */
 @mixin alf-display-layout-css-vars(
   $prefix,
+  $disabled-selectors: '&[disabled], &:disabled, &.disabled',
+  $focus-selectors: '&:focus, &:focus-visible',
   $display: inline-flex,
   $justify: center,
   $align: center,
-  $gap: 0,
-  $disabled-selectors: '&[disabled], &:disabled, &.disabled',
-  $focus-selectors: '&:focus, &:focus-visible'
+  $gap: 0
 ) {
   // --- 1. BASE / DEFAULT ---
   // Usamos los argumentos del mixin como fallback final en lugar de 'revert'
