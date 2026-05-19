@@ -148,17 +148,16 @@ export interface PredefinedConfig {
     marginBase: AlfMarginInterface;
     paddingBase: AlfPaddingInterface;
     displayAndLayoutBase: AlfDisplayAndLayoutInterface;
-    shadowsBase: AlfShadowsInterface;
+    shadows: AlfShadowsInterface;
+    typography: AlfTypographyInterface;
 
     backgrounds: AlfBackgroundsInterface;
     border: AlfBorderInterface;
     ripple: AlfRippleInterface;
     outline: AlfOutlineInterface;
     textStyle: AlfTextStyleInterface;
-    typography: AlfTypographyInterface;
     animations: AlfAnimateCssInterface;
     transform: AlfTransformInterface;
-    typographyBase: AlfTypographyBaseInterface;
     transformBase: AlfTransformBaseInterface;
     animationsBase: AlfAnimateCssInterface;
     outlineBase: AlfOutlineBaseInterface;
@@ -171,12 +170,13 @@ export interface PredefinedConfig {
  * Construye la base de tipografía por defecto.
  * Define las propiedades tipográficas estándar del sistema.
  */
-const buildTypographyBaseConfig = (): AlfTypographyBaseInterface => ({
+const buildTypographyBaseConfig = (main: AlfColorEnum, hover: AlfColorEnum, focus: AlfColorEnum, disabled: AlfColorEnum, active: AlfColorEnum): AlfTypographyInterface => {
+    const base: AlfTypographyBaseInterface = {
     fontSize: AlfFontSizeEnum.Base,
     fontWeight: AlfFontWeightEnum.Normal,
     lineHeight: AlfLineHeightEnum.Normal,
     textAlign: AlfTextAlignEnum.Left,
-    color: AlfColorEnum.Gray900,
+    color: main,
     letterSpacing: AlfLetterSpacingEnum.Normal,
     whiteSpace: AlfWhiteSpaceEnum.Normal,
     wordBreak: AlfWordBreakEnum.Normal,
@@ -189,7 +189,28 @@ const buildTypographyBaseConfig = (): AlfTypographyBaseInterface => ({
     textOverflow: AlfTextOverflowEnum.Clip,
     textShadow: AlfTextShadowEnum.None,
     verticalAlign: AlfVerticalAlignEnum.Middle,
-});
+    }
+
+    return {
+        default: base,
+        hover: {
+            ...base,
+            color: hover,
+        },
+        focus: {
+            ...base,
+            color: focus,
+        },
+        disabled: {
+            ...base,
+            color: disabled,
+        },
+        active: {
+            ...base,
+            color: active,
+        },
+    }
+};
 
 /**
  * Construye la base de transformación por defecto.
@@ -448,22 +469,22 @@ const buildTextStyleConfig = (variant: AlfColorVariantEnum, isSolid: boolean, ov
 };
 
 
-/**
- * Genera la configuración de tipografía reactiva según la variante.
- * @param variant La variante de color.
- * @param overrideColor Color opcional para forzar la tipografía (útil en outlines).
- */
-const buildTypographyConfig = (variant: AlfColorVariantEnum, overrideColor?: AlfColorEnum): AlfTypographyInterface => {
-    const identity = getVariantIdentity(variant);
-    const isLight = variant === AlfColorVariantEnum.Light || variant === AlfColorVariantEnum.LightOutline;
-    const color = overrideColor ?? (isLight ? AlfColorEnum.Gray700 : (identity?.brand ?? AlfColorEnum.Gray600));
+// /**
+//  * Genera la configuración de tipografía reactiva según la variante.
+//  * @param variant La variante de color.
+//  * @param overrideColor Color opcional para forzar la tipografía (útil en outlines).
+//  */
+// const buildTypographyConfig = (variant: AlfColorVariantEnum, overrideColor?: AlfColorEnum): AlfTypographyInterface => {
+//     const identity = getVariantIdentity(variant);
+//     const isLight = variant === AlfColorVariantEnum.Light || variant === AlfColorVariantEnum.LightOutline;
+//     const color = overrideColor ?? (isLight ? AlfColorEnum.Gray700 : (identity?.brand ?? AlfColorEnum.Gray600));
 
 
-    return {
-        default: { ...buildTypographyBaseConfig(), color },
-        disabled: { ...buildTypographyBaseConfig(), color: AlfColorEnum.Gray500 },
-    };
-};
+//     return {
+//         default: { ...buildTypographyBaseConfig(), color },
+//         disabled: { ...buildTypographyBaseConfig(), color: AlfColorEnum.Gray500 },
+//     };
+// };
 
 
 
@@ -536,7 +557,8 @@ const solid = (variant: AlfColorVariantEnum, main: AlfColorEnum, hover: AlfColor
     paddingBase: buildPaddingBaseConfig(),
     displayAndLayoutBase: buildDisplayAndLayoutBaseConfig(),
     marginBase: buildMarginBaseConfig(),
-    shadowsBase: buildShadowsBaseConfig(main, hover, focus, disabled, active),
+    shadows: buildShadowsBaseConfig(main, hover, focus, disabled, active),
+    typography: buildTypographyBaseConfig(main, hover, focus, disabled, active),
 
 
     backgrounds: buildColorBackgroundConfig(main, hover),
@@ -546,68 +568,77 @@ const solid = (variant: AlfColorVariantEnum, main: AlfColorEnum, hover: AlfColor
     textStyle: buildTextStyleConfig(variant, true),
     animations: buildAnimationsConfig(),
     transform: buildTransformConfig(),
-    typographyBase: buildTypographyBaseConfig(),
     transformBase: buildTransformBaseConfig(),
     animationsBase: buildAnimationsBaseConfig(),
 
     outlineBase: buildOutlineBaseConfig(),
     textStyleBase: buildTextStyleBaseConfig(),
-    typography: undefined
 });
 
 /**
  * Variante 3D / Profundidad: Utiliza gradientes y efectos de volumen.
  */
-const depth = (variant: AlfColorVariantEnum, main: AlfColorEnum, hover: AlfColorEnum, focus: AlfColorEnum, disabled: AlfColorEnum, active: AlfColorEnum): PredefinedConfig => ({
+const depth = (
+    variant: AlfColorVariantEnum,
+    main: AlfColorEnum,
+    hover: AlfColorEnum,
+    focus: AlfColorEnum,
+    disabled: AlfColorEnum,
+    active: AlfColorEnum
+): PredefinedConfig => ({
     paddingBase: buildPaddingBaseConfig(),
     displayAndLayoutBase: buildDisplayAndLayoutBaseConfig(),
     marginBase: buildMarginBaseConfig(),
-    shadowsBase: buildShadowsBaseConfig(main, hover, focus, disabled, active),
+    shadows: buildShadowsBaseConfig(main, hover, focus, disabled, active),
+    typography: buildTypographyBaseConfig(main, hover, focus, disabled, active),
 
     backgrounds: buildColorBackgroundConfig(main, hover),
     border: buildColorBorderConfig(AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None),
     ripple: { color: AlfColorEnum.White },
     outline: buildOutlineConfig(),
     textStyle: buildTextStyleConfig(variant, true),
-    typography: buildTypographyConfig(variant),
     animations: buildAnimationsConfig(),
     transform: buildTransformConfig(),
-    typographyBase: buildTypographyBaseConfig(),
     transformBase: buildTransformBaseConfig(),
-    shadowsBase: buildShadowsBaseConfig(),
     animationsBase: buildAnimationsBaseConfig(),
-    paddingBase: buildPaddingBaseConfig(),
-    marginBase: buildMarginBaseConfig(),
     outlineBase: buildOutlineBaseConfig(),
-    displayAndLayoutBase: buildDisplayAndLayoutBaseConfig(),
     textStyleBase: buildTextStyleBaseConfig()
 });
 
 /**
  * Variante Outline: Fondo transparente/sutil con borde de color acentuado.
  */
-const outline = (variant: AlfColorVariantEnum, main: AlfColorEnum, hover: AlfColorEnum, bg: AlfColorEnum = AlfColorEnum.Transparent, bgHover: AlfColorEnum = AlfColorEnum.Gray100): PredefinedConfig => {
+const outline = (
+    variant: AlfColorVariantEnum,
+    main: AlfColorEnum,
+    hover: AlfColorEnum,
+    focus: AlfColorEnum,
+    disabled: AlfColorEnum,
+    active: AlfColorEnum,
+    bg: AlfColorEnum = AlfColorEnum.Transparent,
+    bgHover: AlfColorEnum = AlfColorEnum.Gray100
+): PredefinedConfig => {
     // Si NO es Light, forzamos que el texto sea del color del borde (main)
     const isLight = variant === AlfColorVariantEnum.Light || variant === AlfColorVariantEnum.LightOutline;
     const textColor = isLight ? undefined : main;
 
     return {
+        paddingBase: buildPaddingBaseConfig(),
+        displayAndLayoutBase: buildDisplayAndLayoutBaseConfig(),
+        marginBase: buildMarginBaseConfig(),
+
+        shadows: buildShadowsBaseConfig(main, hover, focus, disabled, active),
         backgrounds: buildColorBackgroundConfig(bg, bgHover),
+        typography: buildTypographyBaseConfig(main, hover, focus, disabled, active),
         border: buildColorBorderConfig(main, hover),
         ripple: { color: hover },
         outline: buildOutlineConfig(),
         textStyle: buildTextStyleConfig(variant, false, textColor),
-        typography: buildTypographyConfig(variant, textColor),
         animations: buildAnimationsConfig(),
         transform: buildTransformConfig(),
-        typographyBase: buildTypographyBaseConfig(),
         transformBase: buildTransformBaseConfig(),
-        shadowsBase: buildShadowsBaseConfig(main, hover, focus, disabled, active),
         animationsBase: buildAnimationsBaseConfig(),
-        paddingBase: buildPaddingBaseConfig(),
-        marginBase: buildMarginBaseConfig(),
         outlineBase: buildOutlineBaseConfig(),
-        displayAndLayoutBase: buildDisplayAndLayoutBaseConfig(),
         textStyleBase: buildTextStyleBaseConfig()
     };
 };
@@ -616,23 +647,30 @@ const outline = (variant: AlfColorVariantEnum, main: AlfColorEnum, hover: AlfCol
 /**
  * Variante Soft: Colores pastel suaves con alta legibilidad textual.
  */
-const soft = (variant: AlfColorVariantEnum, bg: AlfColorEnum, hover: AlfColorEnum, text: AlfColorEnum): PredefinedConfig => ({
-    backgrounds: buildColorBackgroundConfig(bg, hover),
-    border: buildColorBorderConfig(AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None),
-    ripple: { color: text },
-    outline: buildOutlineConfig(),
-    textStyle: buildTextStyleConfig(variant, false, text),
-    typography: buildTypographyConfig(variant, text),
-    animations: buildAnimationsConfig(),
-    transform: buildTransformConfig(),
-    typographyBase: buildTypographyBaseConfig(),
-    transformBase: buildTransformBaseConfig(),
-    shadowsBase: buildShadowsBaseConfig(),
-    animationsBase: buildAnimationsBaseConfig(),
+const soft = (
+    variant: AlfColorVariantEnum,
+    bg: AlfColorEnum,
+    bgHover: AlfColorEnum,
+    main: AlfColorEnum,
+    hover: AlfColorEnum,
+    focus: AlfColorEnum,
+    disabled: AlfColorEnum,
+    active: AlfColorEnum
+): PredefinedConfig => ({
     paddingBase: buildPaddingBaseConfig(),
-    marginBase: buildMarginBaseConfig(),
-    outlineBase: buildOutlineBaseConfig(),
     displayAndLayoutBase: buildDisplayAndLayoutBaseConfig(),
+    marginBase: buildMarginBaseConfig(),
+    shadows: buildShadowsBaseConfig(main, hover, focus, disabled, active),
+    backgrounds: buildColorBackgroundConfig(bg, bgHover),
+    border: buildColorBorderConfig(AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None),
+    ripple: { color: main },
+    outline: buildOutlineConfig(),
+    textStyle: buildTextStyleConfig(variant, false, main),
+    typography: buildTypographyBaseConfig(main, hover, focus, disabled, active),    animations: buildAnimationsConfig(),
+    transform: buildTransformConfig(),
+    transformBase: buildTransformBaseConfig(),
+    animationsBase: buildAnimationsBaseConfig(),
+    outlineBase: buildOutlineBaseConfig(),
     textStyleBase: buildTextStyleBaseConfig()
 });
 
@@ -640,23 +678,31 @@ const soft = (variant: AlfColorVariantEnum, bg: AlfColorEnum, hover: AlfColorEnu
 /**
  * Variante Crystal: Efecto glassmorphism con desenfoque y bordes translúcidos.
  */
-const crystal = (variant: AlfColorVariantEnum, main: AlfColorEnum, hover: AlfColorEnum, text: AlfColorEnum): PredefinedConfig => ({
-    backgrounds: buildColorBackgroundConfig(main, hover),
+const crystal = (
+    variant: AlfColorVariantEnum,
+    bg: AlfColorEnum,
+    bgHover: AlfColorEnum,
+    main: AlfColorEnum,
+    hover: AlfColorEnum,
+    focus: AlfColorEnum,
+    disabled: AlfColorEnum,
+    active: AlfColorEnum
+): PredefinedConfig => ({
+    paddingBase: buildPaddingBaseConfig(),
+    displayAndLayoutBase: buildDisplayAndLayoutBaseConfig(),
+    marginBase: buildMarginBaseConfig(),
+    shadows: buildShadowsBaseConfig(main, hover, focus, disabled, active),
+    backgrounds: buildColorBackgroundConfig(bg, bgHover),
     border: buildColorBorderConfig(AlfColorEnum.White30, AlfColorEnum.White40),
-    ripple: { color: text },
+    ripple: { color: main },
     outline: buildOutlineConfig(),
-    textStyle: buildTextStyleConfig(variant, false, text),
-    typography: buildTypographyConfig(variant, text),
+    textStyle: buildTextStyleConfig(variant, false, main),
+    typography: buildTypographyBaseConfig(main, hover, focus, disabled, active),
     animations: buildAnimationsConfig(),
     transform: buildTransformConfig(),
-    typographyBase: buildTypographyBaseConfig(),
     transformBase: buildTransformBaseConfig(),
-    shadowsBase: buildShadowsBaseConfig(),
     animationsBase: buildAnimationsBaseConfig(),
-    paddingBase: buildPaddingBaseConfig(),
-    marginBase: buildMarginBaseConfig(),
     outlineBase: buildOutlineBaseConfig(),
-    displayAndLayoutBase: buildDisplayAndLayoutBaseConfig(),
     textStyleBase: buildTextStyleBaseConfig()
 });
 
@@ -664,23 +710,30 @@ const crystal = (variant: AlfColorVariantEnum, main: AlfColorEnum, hover: AlfCol
 /**
  * Variante Ghost: Estilo minimalista, fondo transparente que reacciona al hover.
  */
-const ghost = (variant: AlfColorVariantEnum, text: AlfColorEnum, hoverBg: AlfColorEnum): PredefinedConfig => ({
+const ghost = (
+    variant: AlfColorVariantEnum,
+    main: AlfColorEnum,
+    hover: AlfColorEnum,
+    focus: AlfColorEnum,
+    disabled: AlfColorEnum,
+    active: AlfColorEnum,
+    hoverBg: AlfColorEnum
+): PredefinedConfig => ({
+    paddingBase: buildPaddingBaseConfig(),
+    displayAndLayoutBase: buildDisplayAndLayoutBaseConfig(),
+    marginBase: buildMarginBaseConfig(),
+    shadows: buildShadowsBaseConfig(main, hover, focus, disabled, active),
     backgrounds: buildColorBackgroundConfig(AlfColorEnum.Transparent, hoverBg),
     border: buildColorBorderConfig(AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None),
-    ripple: { color: text },
+    ripple: { color: main },
     outline: buildOutlineConfig(),
-    textStyle: buildTextStyleConfig(variant, false, text),
-    typography: buildTypographyConfig(variant, text),
+    textStyle: buildTextStyleConfig(variant, false, main),
+    typography: buildTypographyBaseConfig(main, hover, focus, disabled, active),
     animations: buildAnimationsConfig(),
     transform: buildTransformConfig(),
-    typographyBase: buildTypographyBaseConfig(),
     transformBase: buildTransformBaseConfig(),
-    shadowsBase: buildShadowsBaseConfig(),
     animationsBase: buildAnimationsBaseConfig(),
-    paddingBase: buildPaddingBaseConfig(),
-    marginBase: buildMarginBaseConfig(),
     outlineBase: buildOutlineBaseConfig(),
-    displayAndLayoutBase: buildDisplayAndLayoutBaseConfig(),
     textStyleBase: buildTextStyleBaseConfig()
 });
 
@@ -709,120 +762,118 @@ export const resolveVariantConfig = (
         case AlfColorVariantEnum.Primary:
             return solid(v, AlfColorEnum.Primary, AlfColorEnum.PrimaryHover, AlfColorEnum.PrimaryFocus, AlfColorEnum.PrimaryDisabled, AlfColorEnum.PrimaryActive);
         case AlfColorVariantEnum.Primary3D:
-            return depth(v, AlfColorEnum.Primary3D, AlfColorEnum.Primary3DHover);
+            return depth(v, AlfColorEnum.Primary3D, AlfColorEnum.Primary3DHover, AlfColorEnum.Primary3DFocus, AlfColorEnum.Primary3DDisabled, AlfColorEnum.Primary3DActive);
         case AlfColorVariantEnum.PrimaryOutline:
-            return outline(v, AlfColorEnum.Primary, AlfColorEnum.PrimaryHover, AlfColorEnum.PrimarySoft, AlfColorEnum.PrimarySoftHover);
+            return outline(v, AlfColorEnum.PrimaryOutline, AlfColorEnum.PrimaryOutlineHover, AlfColorEnum.PrimaryOutlineFocus, AlfColorEnum.PrimaryOutlineDisabled, AlfColorEnum.PrimaryOutlineActive, AlfColorEnum.PrimaryOutlineBg, AlfColorEnum.PrimaryOutlineBgHover);
         case AlfColorVariantEnum.PrimarySoft:
-            return soft(v, AlfColorEnum.PrimarySoft, AlfColorEnum.PrimarySoftHover, AlfColorEnum.Primary);
+            return soft(v, AlfColorEnum.PrimarySoft, AlfColorEnum.PrimarySoftHover, AlfColorEnum.PrimarySoftText, AlfColorEnum.PrimarySoftTextHover, AlfColorEnum.PrimarySoftFocus, AlfColorEnum.PrimarySoftDisabled, AlfColorEnum.PrimarySoftActive);
         case AlfColorVariantEnum.PrimaryGhost:
-            return ghost(v, AlfColorEnum.Primary, AlfColorEnum.PrimarySoft);
+            return ghost(v, AlfColorEnum.PrimaryGhostText, AlfColorEnum.PrimaryGhostTextHover, AlfColorEnum.PrimaryGhostFocus, AlfColorEnum.PrimaryGhostDisabled, AlfColorEnum.PrimaryGhostActive, AlfColorEnum.PrimaryGhostBgHover);
         case AlfColorVariantEnum.PrimaryCrystal:
-            return crystal(v, AlfColorEnum.PrimaryCrystal, AlfColorEnum.PrimaryCrystalHover, AlfColorEnum.Primary);
+            return crystal(v, AlfColorEnum.PrimaryCrystal, AlfColorEnum.PrimaryCrystalHover, AlfColorEnum.PrimaryCrystalText, AlfColorEnum.PrimaryCrystalTextHover, AlfColorEnum.PrimaryCrystalFocus, AlfColorEnum.PrimaryCrystalDisabled, AlfColorEnum.PrimaryCrystalActive);
 
         // FAMILY: SECONDARY
         case AlfColorVariantEnum.Secondary:
             return solid(v, AlfColorEnum.Secondary, AlfColorEnum.SecondaryHover, AlfColorEnum.SecondaryFocus, AlfColorEnum.SecondaryDisabled, AlfColorEnum.SecondaryActive);
         case AlfColorVariantEnum.Secondary3D:
-            return depth(v, AlfColorEnum.Secondary3D, AlfColorEnum.Secondary3DHover);
+            return depth(v, AlfColorEnum.Secondary3D, AlfColorEnum.Secondary3DHover, AlfColorEnum.Secondary3DFocus, AlfColorEnum.Secondary3DDisabled, AlfColorEnum.Secondary3DActive);
         case AlfColorVariantEnum.SecondaryOutline:
-            return outline(v, AlfColorEnum.Secondary, AlfColorEnum.SecondaryHover, AlfColorEnum.SecondarySoft, AlfColorEnum.SecondarySoftHover);
+            return outline(v, AlfColorEnum.SecondaryOutline, AlfColorEnum.SecondaryOutlineHover, AlfColorEnum.SecondaryOutlineFocus, AlfColorEnum.SecondaryOutlineDisabled, AlfColorEnum.SecondaryOutlineActive, AlfColorEnum.SecondaryOutlineBg, AlfColorEnum.SecondaryOutlineBgHover);
         case AlfColorVariantEnum.SecondarySoft:
-            return soft(v, AlfColorEnum.SecondarySoft, AlfColorEnum.SecondarySoftHover, AlfColorEnum.Secondary);
+            return soft(v, AlfColorEnum.SecondarySoft, AlfColorEnum.SecondarySoftHover, AlfColorEnum.SecondarySoftText, AlfColorEnum.SecondarySoftTextHover, AlfColorEnum.SecondarySoftFocus, AlfColorEnum.SecondarySoftDisabled, AlfColorEnum.SecondarySoftActive);
         case AlfColorVariantEnum.SecondaryGhost:
-            return ghost(v, AlfColorEnum.Secondary, AlfColorEnum.SecondarySoft);
+            return ghost(v, AlfColorEnum.SecondaryGhostText, AlfColorEnum.SecondaryGhostTextHover, AlfColorEnum.SecondaryGhostFocus, AlfColorEnum.SecondaryGhostDisabled, AlfColorEnum.SecondaryGhostActive, AlfColorEnum.SecondaryGhostBgHover);
         case AlfColorVariantEnum.SecondaryCrystal:
-            return crystal(v, AlfColorEnum.SecondaryCrystal, AlfColorEnum.SecondaryCrystalHover, AlfColorEnum.Secondary);
+            return crystal(v, AlfColorEnum.SecondaryCrystal, AlfColorEnum.SecondaryCrystalHover, AlfColorEnum.SecondaryCrystalText, AlfColorEnum.SecondaryCrystalTextHover, AlfColorEnum.SecondaryCrystalFocus, AlfColorEnum.SecondaryCrystalDisabled, AlfColorEnum.SecondaryCrystalActive);
 
         // FAMILY: SUCCESS
         case AlfColorVariantEnum.Success:
             return solid(v, AlfColorEnum.Success, AlfColorEnum.SuccessHover, AlfColorEnum.SuccessFocus, AlfColorEnum.SuccessDisabled, AlfColorEnum.SuccessActive);
         case AlfColorVariantEnum.Success3D:
-            return depth(v, AlfColorEnum.Success3D, AlfColorEnum.Success3DHover);
+            return depth(v, AlfColorEnum.Success3D, AlfColorEnum.Success3DHover, AlfColorEnum.Success3DFocus, AlfColorEnum.Success3DDisabled, AlfColorEnum.Success3DActive);
         case AlfColorVariantEnum.SuccessOutline:
-            return outline(v, AlfColorEnum.Success, AlfColorEnum.SuccessHover, AlfColorEnum.SuccessSoft, AlfColorEnum.SuccessSoftHover);
+            return outline(v, AlfColorEnum.SuccessOutline, AlfColorEnum.SuccessOutlineHover, AlfColorEnum.SuccessOutlineFocus, AlfColorEnum.SuccessOutlineDisabled, AlfColorEnum.SuccessOutlineActive, AlfColorEnum.SuccessOutlineBg, AlfColorEnum.SuccessOutlineBgHover);
         case AlfColorVariantEnum.SuccessSoft:
-            return soft(v, AlfColorEnum.SuccessSoft, AlfColorEnum.SuccessSoftHover, AlfColorEnum.Success);
+            return soft(v, AlfColorEnum.SuccessSoft, AlfColorEnum.SuccessSoftHover, AlfColorEnum.SuccessSoftText, AlfColorEnum.SuccessSoftTextHover, AlfColorEnum.SuccessSoftFocus, AlfColorEnum.SuccessSoftDisabled, AlfColorEnum.SuccessSoftActive);
         case AlfColorVariantEnum.SuccessGhost:
-            return ghost(v, AlfColorEnum.Success, AlfColorEnum.SuccessSoft);
+            return ghost(v, AlfColorEnum.SuccessGhostText, AlfColorEnum.SuccessGhostTextHover, AlfColorEnum.SuccessGhostFocus, AlfColorEnum.SuccessGhostDisabled, AlfColorEnum.SuccessGhostActive, AlfColorEnum.SuccessGhostBgHover);
         case AlfColorVariantEnum.SuccessCrystal:
-            return crystal(v, AlfColorEnum.SuccessCrystal, AlfColorEnum.SuccessCrystalHover, AlfColorEnum.Success);
+            return crystal(v, AlfColorEnum.SuccessCrystal, AlfColorEnum.SuccessCrystalHover, AlfColorEnum.SuccessCrystalText, AlfColorEnum.SuccessCrystalTextHover, AlfColorEnum.SuccessCrystalFocus, AlfColorEnum.SuccessCrystalDisabled, AlfColorEnum.SuccessCrystalActive);
 
         // FAMILY: DANGER
         case AlfColorVariantEnum.Danger:
             return solid(v, AlfColorEnum.Danger, AlfColorEnum.DangerHover, AlfColorEnum.DangerFocus, AlfColorEnum.DangerDisabled, AlfColorEnum.DangerActive);
         case AlfColorVariantEnum.Danger3D:
-            return depth(v, AlfColorEnum.Danger3D, AlfColorEnum.Danger3DHover);
+            return depth(v, AlfColorEnum.Danger3D, AlfColorEnum.Danger3DHover, AlfColorEnum.Danger3DFocus, AlfColorEnum.Danger3DDisabled, AlfColorEnum.Danger3DActive);
         case AlfColorVariantEnum.DangerOutline:
-            return outline(v, AlfColorEnum.Danger, AlfColorEnum.DangerHover, AlfColorEnum.DangerSoft, AlfColorEnum.DangerSoftHover);
+            return outline(v, AlfColorEnum.DangerOutline, AlfColorEnum.DangerOutlineHover, AlfColorEnum.DangerOutlineFocus, AlfColorEnum.DangerOutlineDisabled, AlfColorEnum.DangerOutlineActive, AlfColorEnum.DangerOutlineBg, AlfColorEnum.DangerOutlineBgHover);
         case AlfColorVariantEnum.DangerSoft:
-            return soft(v, AlfColorEnum.DangerSoft, AlfColorEnum.DangerSoftHover, AlfColorEnum.Danger);
+            return soft(v, AlfColorEnum.DangerSoft, AlfColorEnum.DangerSoftHover, AlfColorEnum.DangerSoftText, AlfColorEnum.DangerSoftTextHover, AlfColorEnum.DangerSoftFocus, AlfColorEnum.DangerSoftDisabled, AlfColorEnum.DangerSoftActive);
         case AlfColorVariantEnum.DangerGhost:
-            return ghost(v, AlfColorEnum.Danger, AlfColorEnum.DangerSoft);
+            return ghost(v, AlfColorEnum.DangerGhostText, AlfColorEnum.DangerGhostTextHover, AlfColorEnum.DangerGhostFocus, AlfColorEnum.DangerGhostDisabled, AlfColorEnum.DangerGhostActive, AlfColorEnum.DangerGhostBgHover);
         case AlfColorVariantEnum.DangerCrystal:
-            return crystal(v, AlfColorEnum.DangerCrystal, AlfColorEnum.DangerCrystalHover, AlfColorEnum.Danger);
+            return crystal(v, AlfColorEnum.DangerCrystal, AlfColorEnum.DangerCrystalHover, AlfColorEnum.DangerCrystalText, AlfColorEnum.DangerCrystalTextHover, AlfColorEnum.DangerCrystalFocus, AlfColorEnum.DangerCrystalDisabled, AlfColorEnum.DangerCrystalActive);
 
         // FAMILY: WARNING
         case AlfColorVariantEnum.Warning:
             return solid(v, AlfColorEnum.Warning, AlfColorEnum.WarningHover, AlfColorEnum.WarningFocus, AlfColorEnum.WarningDisabled, AlfColorEnum.WarningActive);
         case AlfColorVariantEnum.Warning3D:
-            return depth(v, AlfColorEnum.Warning3D, AlfColorEnum.Warning3DHover);
+            return depth(v, AlfColorEnum.Warning3D, AlfColorEnum.Warning3DHover, AlfColorEnum.Warning3DFocus, AlfColorEnum.Warning3DDisabled, AlfColorEnum.Warning3DActive);
         case AlfColorVariantEnum.WarningOutline:
-            return outline(v, AlfColorEnum.Warning, AlfColorEnum.WarningHover, AlfColorEnum.WarningSoft, AlfColorEnum.WarningSoftHover);
+            return outline(v, AlfColorEnum.WarningOutline, AlfColorEnum.WarningOutlineHover, AlfColorEnum.WarningOutlineFocus, AlfColorEnum.WarningOutlineDisabled, AlfColorEnum.WarningOutlineActive, AlfColorEnum.WarningOutlineBg, AlfColorEnum.WarningOutlineBgHover);
         case AlfColorVariantEnum.WarningSoft:
-            return soft(v, AlfColorEnum.WarningSoft, AlfColorEnum.WarningSoftHover, AlfColorEnum.Warning);
+            return soft(v, AlfColorEnum.WarningSoft, AlfColorEnum.WarningSoftHover, AlfColorEnum.WarningSoftText, AlfColorEnum.WarningSoftTextHover, AlfColorEnum.WarningSoftFocus, AlfColorEnum.WarningSoftDisabled, AlfColorEnum.WarningSoftActive);
         case AlfColorVariantEnum.WarningGhost:
-            return ghost(v, AlfColorEnum.Warning, AlfColorEnum.WarningSoft);
+            return ghost(v, AlfColorEnum.WarningGhostText, AlfColorEnum.WarningGhostTextHover, AlfColorEnum.WarningGhostFocus, AlfColorEnum.WarningGhostDisabled, AlfColorEnum.WarningGhostActive, AlfColorEnum.WarningGhostBgHover);
         case AlfColorVariantEnum.WarningCrystal:
-            return crystal(v, AlfColorEnum.WarningCrystal, AlfColorEnum.WarningCrystalHover, AlfColorEnum.Warning);
+            return crystal(v, AlfColorEnum.WarningCrystal, AlfColorEnum.WarningCrystalHover, AlfColorEnum.WarningCrystalText, AlfColorEnum.WarningCrystalTextHover, AlfColorEnum.WarningCrystalFocus, AlfColorEnum.WarningCrystalDisabled, AlfColorEnum.WarningCrystalActive);
 
         // FAMILY: INFO
         case AlfColorVariantEnum.Info:
             return solid(v, AlfColorEnum.Info, AlfColorEnum.InfoHover, AlfColorEnum.InfoFocus, AlfColorEnum.InfoDisabled, AlfColorEnum.InfoActive);
         case AlfColorVariantEnum.Info3D:
-            return depth(v, AlfColorEnum.Info3D, AlfColorEnum.Info3DHover);
+            return depth(v, AlfColorEnum.Info3D, AlfColorEnum.Info3DHover, AlfColorEnum.Info3DFocus, AlfColorEnum.Info3DDisabled, AlfColorEnum.Info3DActive);
         case AlfColorVariantEnum.InfoOutline:
-            return outline(v, AlfColorEnum.Info, AlfColorEnum.InfoHover, AlfColorEnum.InfoSoft, AlfColorEnum.InfoSoftHover);
+            return outline(v, AlfColorEnum.InfoOutline, AlfColorEnum.InfoOutlineHover, AlfColorEnum.InfoOutlineFocus, AlfColorEnum.InfoOutlineDisabled, AlfColorEnum.InfoOutlineActive, AlfColorEnum.InfoOutlineBg, AlfColorEnum.InfoOutlineBgHover);
         case AlfColorVariantEnum.InfoSoft:
-            return soft(v, AlfColorEnum.InfoSoft, AlfColorEnum.InfoSoftHover, AlfColorEnum.Info);
+            return soft(v, AlfColorEnum.InfoSoft, AlfColorEnum.InfoSoftHover, AlfColorEnum.InfoSoftText, AlfColorEnum.InfoSoftTextHover, AlfColorEnum.InfoSoftFocus, AlfColorEnum.InfoSoftDisabled, AlfColorEnum.InfoSoftActive);
         case AlfColorVariantEnum.InfoGhost:
-            return ghost(v, AlfColorEnum.Info, AlfColorEnum.InfoSoft);
+            return ghost(v, AlfColorEnum.InfoGhostText, AlfColorEnum.InfoGhostTextHover, AlfColorEnum.InfoGhostFocus, AlfColorEnum.InfoGhostDisabled, AlfColorEnum.InfoGhostActive, AlfColorEnum.InfoGhostBgHover);
         case AlfColorVariantEnum.InfoCrystal:
-            return crystal(v, AlfColorEnum.InfoCrystal, AlfColorEnum.InfoCrystalHover, AlfColorEnum.Info);
+            return crystal(v, AlfColorEnum.InfoCrystal, AlfColorEnum.InfoCrystalHover, AlfColorEnum.InfoCrystalText, AlfColorEnum.InfoCrystalTextHover, AlfColorEnum.InfoCrystalFocus, AlfColorEnum.InfoCrystalDisabled, AlfColorEnum.InfoCrystalActive);
 
         // FAMILY: DARK
         case AlfColorVariantEnum.Dark:
             return solid(v, AlfColorEnum.Dark, AlfColorEnum.DarkHover, AlfColorEnum.DarkFocus, AlfColorEnum.DarkDisabled, AlfColorEnum.DarkActive);
         case AlfColorVariantEnum.Dark3D:
-            return depth(v, AlfColorEnum.Dark3D, AlfColorEnum.Dark3DHover);
+            return depth(v, AlfColorEnum.Dark3D, AlfColorEnum.Dark3DHover, AlfColorEnum.Dark3DFocus, AlfColorEnum.Dark3DDisabled, AlfColorEnum.Dark3DActive);
         case AlfColorVariantEnum.DarkOutline:
-            return outline(v, AlfColorEnum.Dark, AlfColorEnum.DarkHover, AlfColorEnum.DarkSoft, AlfColorEnum.DarkSoftHover);
+            return outline(v, AlfColorEnum.DarkOutline, AlfColorEnum.DarkOutlineHover, AlfColorEnum.DarkOutlineFocus, AlfColorEnum.DarkOutlineDisabled, AlfColorEnum.DarkOutlineActive, AlfColorEnum.DarkOutlineBg, AlfColorEnum.DarkOutlineBgHover);
         case AlfColorVariantEnum.DarkSoft:
-            return soft(v, AlfColorEnum.DarkSoft, AlfColorEnum.DarkSoftHover, AlfColorEnum.Dark);
+            return soft(v, AlfColorEnum.DarkSoft, AlfColorEnum.DarkSoftHover, AlfColorEnum.DarkSoftText, AlfColorEnum.DarkSoftTextHover, AlfColorEnum.DarkSoftFocus, AlfColorEnum.DarkSoftDisabled, AlfColorEnum.DarkSoftActive);
         case AlfColorVariantEnum.DarkGhost:
-            return ghost(v, AlfColorEnum.Dark, AlfColorEnum.DarkSoft);
+            return ghost(v, AlfColorEnum.DarkGhostText, AlfColorEnum.DarkGhostTextHover, AlfColorEnum.DarkGhostFocus, AlfColorEnum.DarkGhostDisabled, AlfColorEnum.DarkGhostActive, AlfColorEnum.DarkGhostBgHover);
         case AlfColorVariantEnum.DarkCrystal:
-            return crystal(v, AlfColorEnum.DarkCrystal, AlfColorEnum.DarkCrystalHover, AlfColorEnum.Dark);
+            return crystal(v, AlfColorEnum.DarkCrystal, AlfColorEnum.DarkCrystalHover, AlfColorEnum.DarkCrystalText, AlfColorEnum.DarkCrystalTextHover, AlfColorEnum.DarkCrystalFocus, AlfColorEnum.DarkCrystalDisabled, AlfColorEnum.DarkCrystalActive);
 
         // FAMILY: LIGHT
         case AlfColorVariantEnum.Light:
             return solid(v, AlfColorEnum.Light, AlfColorEnum.LightHover, AlfColorEnum.LightFocus, AlfColorEnum.LightDisabled, AlfColorEnum.LightActive);
         case AlfColorVariantEnum.Light3D:
-            return depth(v, AlfColorEnum.Light3DHover, 'linear-gradient(to bottom, #e9ecef, #dee2e6)' as any);
+            return depth(v, AlfColorEnum.Light3D, 'linear-gradient(to bottom, #e9ecef, #dee2e6)' as any, AlfColorEnum.Light3DFocus, AlfColorEnum.Light3DDisabled, AlfColorEnum.Light3DActive);
         case AlfColorVariantEnum.LightOutline:
-            return outline(v, AlfColorEnum.Gray400, AlfColorEnum.Gray500, AlfColorEnum.LightSoft, AlfColorEnum.LightSoftHover);
+            return outline(v, AlfColorEnum.LightOutline, AlfColorEnum.LightOutlineHover, AlfColorEnum.LightOutlineFocus, AlfColorEnum.LightOutlineDisabled, AlfColorEnum.LightOutlineActive, AlfColorEnum.LightOutlineBg, AlfColorEnum.LightOutlineBgHover);
         case AlfColorVariantEnum.LightSoft:
-            return soft(v, AlfColorEnum.LightSoft, AlfColorEnum.LightSoftHover, AlfColorEnum.Gray600);
+            return soft(v, AlfColorEnum.LightSoft, AlfColorEnum.LightSoftHover, AlfColorEnum.LightSoftText, AlfColorEnum.LightSoftTextHover, AlfColorEnum.LightSoftFocus, AlfColorEnum.LightSoftDisabled, AlfColorEnum.LightSoftActive);
         case AlfColorVariantEnum.LightGhost:
-            return ghost(v, AlfColorEnum.Gray600, AlfColorEnum.LightSoft);
+            return ghost(v, AlfColorEnum.LightGhostText, AlfColorEnum.LightGhostTextHover, AlfColorEnum.LightGhostFocus, AlfColorEnum.LightGhostDisabled, AlfColorEnum.LightGhostActive, AlfColorEnum.LightGhostBgHover);
         case AlfColorVariantEnum.LightCrystal:
-            return crystal(v, AlfColorEnum.LightCrystal, AlfColorEnum.LightCrystalHover, AlfColorEnum.Gray600);
+            return crystal(v, AlfColorEnum.LightCrystal, AlfColorEnum.LightCrystalHover, AlfColorEnum.LightCrystalText, AlfColorEnum.LightCrystalTextHover, AlfColorEnum.LightCrystalFocus, AlfColorEnum.LightCrystalDisabled, AlfColorEnum.LightCrystalActive);
 
         case AlfColorVariantEnum.Transparent:
-            return ghost(v, AlfColorEnum.Secondary, AlfColorEnum.Transparent);
-
+            return ghost(v, AlfColorEnum.SecondaryGhostText, AlfColorEnum.SecondaryGhostTextHover, AlfColorEnum.SecondaryGhostFocus, AlfColorEnum.SecondaryGhostDisabled, AlfColorEnum.SecondaryGhostActive, AlfColorEnum.Transparent);
 
         default:
-
             return solid(v, AlfColorEnum.Secondary, AlfColorEnum.SecondaryHover, AlfColorEnum.SecondaryFocus, AlfColorEnum.SecondaryDisabled, AlfColorEnum.SecondaryActive);
     }
 };

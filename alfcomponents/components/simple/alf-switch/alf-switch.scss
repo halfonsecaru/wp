@@ -19,9 +19,8 @@
   @include alf-padding-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
   @include alf-margin-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
   @include alf-shadows-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
-
-
-  //@include alf-typography-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
+  @include alf-typography-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
+  
   // @include alf-text-style-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
   // @include alf-outline-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
   // @include alf-transform-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');

@@ -191,11 +191,11 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
   });
   // ************************** //
 
-  protected readonly shadowsComputed = computed(() => {
+  protected readonly typographyComputed = computed(() => {
     const variant = this.colorVariantComputed() ?? AlfColorVariantEnum.Default;
-    const base = resolveVariantConfig(variant).shadows;
-    const resolved = this.resolvedConfig()?.shadows || {};
-    const user = this.shadows() || {};
+    const base = resolveVariantConfig(variant).typography;
+    const resolved = this.resolvedConfig()?.typography || {};
+    const user = this.typography() || {};
 
     return {
       default: { ...base.default, ...resolved.default, ...user.default },
@@ -203,6 +203,21 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
       active: { ...base.active, ...resolved.active, ...user.active },
       focus: { ...base.focus, ...resolved.focus, ...user.focus },
       disabled: { ...base.disabled, ...resolved.disabled, ...user.disabled },
+    };
+  });
+
+  protected readonly shadowsComputed = computed(() => {
+    const variant = this.colorVariantComputed() ?? AlfColorVariantEnum.Default;
+    const base = resolveVariantConfig(variant).shadows;
+    const resolved = this.resolvedConfig()?.shadows || undefined;
+    const user = this.shadows() || undefined;
+
+    return {
+      default: { ...base?.default, ...resolved?.default, ...user?.default },
+      hover: { ...base?.hover, ...resolved?.hover, ...user?.hover },
+      active: { ...base?.active, ...resolved?.active, ...user?.active },
+      focus: { ...base?.focus, ...resolved?.focus, ...user?.focus },
+      disabled: { ...base?.disabled, ...resolved?.disabled, ...user?.disabled },
     };
   });
 
@@ -224,23 +239,7 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
     };
   });
 
-  protected readonly typographyComputed = computed(() => {
-    const variant = this.colorVariantComputed() ?? AlfColorVariantEnum.Default;
-    const base = resolveVariantConfig(variant).typography;
-    const resolved = this.resolvedConfig()?.typography || {};
-    const user = this.typography() || {};
 
-    return {
-      ...base,
-      ...resolved,
-      ...user,
-      default: { ...base.default, ...resolved.default, ...user.default },
-      hover: { ...base.hover, ...resolved.hover, ...user.hover },
-      active: { ...base.active, ...resolved.active, ...user.active },
-      focus: { ...base.focus, ...resolved.focus, ...user.focus },
-      disabled: { ...base.disabled, ...resolved.disabled, ...user.disabled },
-    };
-  });
 
 
   protected readonly transformComputed = computed(() => {
