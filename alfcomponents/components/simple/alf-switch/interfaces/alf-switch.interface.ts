@@ -1,8 +1,5 @@
 import {
-  AlfColorEnum,
   AlfLabelsPositionEnum,
-  AlfPxEnum,
-  AlfSizeEnum,
 } from '@alfcomponents/enums';
 import { AlfBaseCommonConfigInterface } from '@alfcomponents/interfaces';
 
@@ -43,13 +40,6 @@ export interface AlfSwitchInterface extends AlfBaseCommonConfigInterface {
    * @example error: 'Este campo es obligatorio'
    */
   readonly error?: string;
-
-  /**
-   * Escala de dimensión visual (XS a 2XL).
-   * @default AlfSizeEnum.MD
-   * @example size: AlfSizeEnum.LG
-   */
-  readonly size?: AlfSizeEnum;
 
   /**
    * Estado del switch (activado/desactivado).
@@ -93,48 +83,5 @@ export interface AlfSwitchInterface extends AlfBaseCommonConfigInterface {
    * @example labelText: 'Activar notificaciones'
    */
   readonly labelText?: string;
-
-  /**
-   * Color del track cuando el switch está activado.
-   * @default AlfColorEnum.Primary
-   * @example checkedColor: AlfColorEnum.Green500
-   */
-  readonly checkedColor?: AlfColorEnum;
-
-  /**
-   * Color del track cuando el switch está desactivado.
-   * @default AlfColorEnum.Gray400
-   * @example uncheckedColor: AlfColorEnum.Gray300
-   */
-  readonly uncheckedColor?: AlfColorEnum;
-
-  /**
-   * Color del círculo/thumb deslizante del switch.
-   * @default AlfColorEnum.White
-   * @example thumbColor: AlfColorEnum.Gray100
-   */
-  readonly thumbColor?: AlfColorEnum;
-
-  /**
-   * Altura de la pista del switch.
-   * Se aplica el estilo AlfBorderRadiusEnum.ExtraSmall si switchStyle es 'standard'
-   * Se aplica el estilo AlfBorderRadiusEnum.ExtraLarge si switchStyle es 'elegant'
-   * @default AlfSizeEnum.Size24
-   * @example trackHeight: AlfSizeEnum.Size32
-   */
-  readonly trackHeight?: AlfSizeEnum;
-
-  /**
-   * Ancho de la pista del switch.
-   * @default AlfPxEnum.Px48
-   * @example trackWidth: AlfPxEnum.Px60
-   */
-  readonly trackWidth?: AlfPxEnum;
-
-  /**
-   * Tamaño del círculo/thumb deslizante.
-   * @default AlfPxEnum.Px20
-   * @example thumbSize: AlfPxEnum.Px28
-   */
-  readonly thumbSize?: AlfPxEnum;
 }
+

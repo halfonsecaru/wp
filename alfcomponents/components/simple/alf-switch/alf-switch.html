@@ -1,7 +1,8 @@
 @let config = configComputed(); 
 @let isChecked = checked(); 
+@let isComponentDisabled = disabledComputed();
 @let switchStyle = config?.switchStyle ?? 'elegant'; 
-@let size = config?.size ?? 'md';
+@let switchSize = size() ?? 'md';
 @let labelPos = config?.labelPosition ?? 'after'; 
 @let labelText = config?.labelText ?? '';
 @let helperText = config?.helperText ?? ''; 
@@ -26,8 +27,7 @@
 
 <div 
   class="alf-sw" 
-  [class]="'alf-sw--' + switchStyle + ' ' + 'alf-sw--' + size + ' ' + customClass + ' ' + animationsClass" 
-  [class.alf-sw--checked]="isChecked"
+  [class]="'alf-sw--' + switchStyle + ' ' + 'alf-sw--' + switchSize + ' ' + (isChecked ? 'alf-sw--checked' : '') + ' ' + (isComponentDisabled ? 'alf-sw--disabled' : '') + ' ' + customClass + ' ' + animationsClass" 
   [style]="displayAndLayoutStyle + marginStyle + customStyle"
 >
   <label 
@@ -41,6 +41,7 @@
       hidden 
       [id]="internalId" 
       [checked]="isChecked" 
+      [disabled]="isComponentDisabled"
       (keydown)="onInputKeydown($event)" 
       [attr.aria-checked]="isChecked"
       [style]="outlineStyle"
@@ -56,7 +57,7 @@
     @if (labelText) {
     <span 
       class="alf-sw-label-text"
-      [style]="typographyStyle + textStyle"
+      [style]="borderStyle"
     >{{ labelText }}</span>
     }
   </label>

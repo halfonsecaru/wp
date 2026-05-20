@@ -15,11 +15,11 @@
         <div class="sw-demo-row">
           <div class="sw-demo-item">
             <span class="sw-demo-label">Elegant</span>
-            <alf-switch [config]="configElegant" [(checked)]="checkedElegant" />
+            <alf-switch switchStyle="elegant" labelText="Estilo elegant" [(checked)]="checkedElegant" />
           </div>
           <div class="sw-demo-item">
             <span class="sw-demo-label">Standard</span>
-            <alf-switch [config]="configStandard" [(checked)]="checkedStandard" />
+            <alf-switch switchStyle="standard" labelText="Estilo standard" [(checked)]="checkedStandard" />
           </div>
         </div>
       </div>
@@ -33,8 +33,8 @@
       </h2>
       <div class="sw-card__body">
         <div class="sw-demo-col">
-          <alf-switch [config]="configBasic" [(checked)]="checkedBasic" />
-          <alf-switch [config]="configLabelBefore" [(checked)]="checkedLabelBefore" />
+          <alf-switch labelText="Switch básico" [(checked)]="checkedBasic" />
+          <alf-switch labelText="Label a la izquierda" labelPosition="before" [(checked)]="checkedLabelBefore" />
         </div>
       </div>
     </div>
@@ -47,8 +47,8 @@
       </h2>
       <div class="sw-card__body">
         <div class="sw-demo-col">
-          <alf-switch [config]="configWithHelper" [(checked)]="checkedWithHelper" />
-          <alf-switch [config]="configWithError" [(checked)]="checkedWithError" />
+          <alf-switch labelText="Notificaciones push" helperText="Recibirás alertas en tiempo real" [(checked)]="checkedWithHelper" />
+          <alf-switch labelText="Campo obligatorio" error="Este campo es obligatorio" [(checked)]="checkedWithError" />
         </div>
       </div>
     </div>
@@ -61,64 +61,108 @@
       </h2>
       <div class="sw-card__body">
         <div class="sw-demo-col">
-          <alf-switch [config]="configGreen" [(checked)]="checkedGreen" />
-          <alf-switch [config]="configRed" [(checked)]="checkedRed" />
-        </div>
-      </div>
-    </div>
-
-    <!-- CARD: Variantes Sólidas -->
-    <div class="sw-card">
-      <h2 class="sw-card__title">
-        <span class="sw-card__dot sw-card__dot--indigo"></span>
-        Variantes Sólidas
-      </h2>
-      <div class="sw-card__body">
-        <div class="sw-demo-col">
-          <alf-switch [config]="configPrimary" [(checked)]="checkedPrimary" />
-          <alf-switch [config]="configSecondary" [(checked)]="checkedSecondary" />
-          <alf-switch [config]="configSuccess" [(checked)]="checkedSuccess" />
-          <alf-switch [config]="configDanger" [(checked)]="checkedDanger" />
-          <alf-switch [config]="configWarning" [(checked)]="checkedWarning" />
-          <alf-switch [config]="configInfo" [(checked)]="checkedInfo" />
-          <alf-switch [config]="configLight" [(checked)]="checkedLight" />
-          <alf-switch [config]="configDark" [(checked)]="checkedDark" />
+          <alf-switch colorVariant="success" labelText="Verde cuando activo" [(checked)]="checkedGreen" />
+          <alf-switch colorVariant="danger" labelText="Rojo cuando activo" [(checked)]="checkedRed" />
         </div>
       </div>
     </div>
 
     <!-- CARD: Sombras Directas -->
-    <div class="sw-card">
+    <div class="sw-card sw-card--wide">
       <h2 class="sw-card__title">
         <span class="sw-card__dot sw-card__dot--amber"></span>
         Sombras Directas
       </h2>
       <div class="sw-card__body">
-        <div class="sw-demo-col">
-          <alf-switch 
-            style="
-              --alf-sw-shadows-box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-              --alf-sw-shadows-hover-box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            "
-            [config]="{ labelText: 'Sombra suave interactiva' }"
-            [(checked)]="checkedShadowSoft"
-          />
-          <alf-switch 
-            style="
-              --alf-sw-shadows-box-shadow: 0 0 0px transparent;
-              --alf-sw-shadows-focus-box-shadow: 0 0 15px rgba(59, 130, 246, 0.8);
-            "
-            [config]="{ labelText: 'Efecto brillo en foco' }"
-            [(checked)]="checkedShadowGlow"
-          />
-          <alf-switch 
-            style="
-              --alf-sw-shadows-box-shadow: 0 8px 16px rgba(139, 92, 246, 0.25);
-              --alf-sw-shadows-hover-box-shadow: 0 12px 24px rgba(139, 92, 246, 0.45);
-            "
-            [config]="{ labelText: 'Sombra de color Neón' }"
-            [(checked)]="checkedShadowNeon"
-          />
+        <div class="sw-demo-grid-4">
+          <div class="sw-size-item">
+            <span class="sw-size-badge">Suave</span>
+            <alf-switch 
+              style="
+                --alf-sw-shadows-box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+                --alf-sw-shadows-hover-box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+              "
+              labelText="Interactiva"
+              [(checked)]="checkedShadowSoft"
+            />
+          </div>
+          <div class="sw-size-item">
+            <span class="sw-size-badge">Brillo</span>
+            <alf-switch 
+              style="
+                --alf-sw-shadows-box-shadow: 0 0 0px transparent;
+                --alf-sw-shadows-focus-box-shadow: 0 0 15px rgba(59, 130, 246, 0.8);
+              "
+              labelText="Foco brillante"
+              [(checked)]="checkedShadowGlow"
+            />
+          </div>
+          <div class="sw-size-item">
+            <span class="sw-size-badge">Neón</span>
+            <alf-switch 
+              style="
+                --alf-sw-shadows-box-shadow: 0 8px 16px rgba(139, 92, 246, 0.25);
+                --alf-sw-shadows-hover-box-shadow: 0 12px 24px rgba(139, 92, 246, 0.45);
+              "
+              labelText="Neón profundo"
+              [(checked)]="checkedShadowNeon"
+            />
+          </div>
+          <div class="sw-size-item">
+            <span class="sw-size-badge">Retro</span>
+            <alf-switch 
+              style="
+                --alf-sw-shadows-box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.2);
+                --alf-sw-shadows-hover-box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.4);
+              "
+              labelText="Sombra dura"
+              [(checked)]="checkedShadowRetro"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD: Variantes Sólidas -->
+    <div class="sw-card sw-card--wide">
+      <h2 class="sw-card__title">
+        <span class="sw-card__dot sw-card__dot--indigo"></span>
+        Variantes Sólidas
+      </h2>
+      <div class="sw-card__body">
+        <div class="sw-demo-grid-4">
+          <div class="sw-size-item">
+            <span class="sw-size-badge">Primary</span>
+            <alf-switch colorVariant="primary" labelText="Primary" [(checked)]="checkedPrimary" />
+          </div>
+          <div class="sw-size-item">
+            <span class="sw-size-badge">Secondary</span>
+            <alf-switch colorVariant="secondary" labelText="Secondary" [(checked)]="checkedSecondary" />
+          </div>
+          <div class="sw-size-item">
+            <span class="sw-size-badge">Success</span>
+            <alf-switch colorVariant="success" labelText="Success" [(checked)]="checkedSuccess" />
+          </div>
+          <div class="sw-size-item">
+            <span class="sw-size-badge">Danger</span>
+            <alf-switch colorVariant="danger" labelText="Danger" [(checked)]="checkedDanger" />
+          </div>
+          <div class="sw-size-item">
+            <span class="sw-size-badge">Warning</span>
+            <alf-switch colorVariant="warning" labelText="Warning" [(checked)]="checkedWarning" />
+          </div>
+          <div class="sw-size-item">
+            <span class="sw-size-badge">Info</span>
+            <alf-switch colorVariant="info" labelText="Info" [(checked)]="checkedInfo" />
+          </div>
+          <div class="sw-size-item">
+            <span class="sw-size-badge">Light</span>
+            <alf-switch colorVariant="light" labelText="Light" [(checked)]="checkedLight" />
+          </div>
+          <div class="sw-size-item">
+            <span class="sw-size-badge">Dark</span>
+            <alf-switch colorVariant="dark" labelText="Dark" [(checked)]="checkedDark" />
+          </div>
         </div>
       </div>
     </div>
@@ -133,23 +177,23 @@
         <div class="sw-demo-sizes">
           <div class="sw-size-item">
             <span class="sw-size-badge">XS</span>
-            <alf-switch [config]="configXS" [(checked)]="checkedXS" />
+            <alf-switch size="xs" labelText="XS" [(checked)]="checkedXS" />
           </div>
           <div class="sw-size-item">
             <span class="sw-size-badge">SM</span>
-            <alf-switch [config]="configSM" [(checked)]="checkedSM" />
+            <alf-switch size="sm" labelText="SM" [(checked)]="checkedSM" />
           </div>
           <div class="sw-size-item">
             <span class="sw-size-badge">MD</span>
-            <alf-switch [config]="configMD" [(checked)]="checkedMD" />
+            <alf-switch size="md" labelText="MD" [(checked)]="checkedMD" />
           </div>
           <div class="sw-size-item">
             <span class="sw-size-badge">LG</span>
-            <alf-switch [config]="configLG" [(checked)]="checkedLG" />
+            <alf-switch size="lg" labelText="LG" [(checked)]="checkedLG" />
           </div>
           <div class="sw-size-item">
             <span class="sw-size-badge">XL</span>
-            <alf-switch [config]="configXL" [(checked)]="checkedXL" />
+            <alf-switch size="xl" labelText="XL" [(checked)]="checkedXL" />
           </div>
         </div>
       </div>

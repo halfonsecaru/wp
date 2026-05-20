@@ -128,6 +128,17 @@
   flex-wrap: wrap;
 }
 
+.sw-demo-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2.5rem 1.5rem;
+  justify-items: start;
+
+  .sw-size-item {
+    align-items: flex-start;
+  }
+}
+
 .sw-size-item {
   display: flex;
   flex-direction: column;
