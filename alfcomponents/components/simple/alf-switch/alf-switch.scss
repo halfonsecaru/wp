@@ -20,10 +20,9 @@
   @include alf-padding-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
   @include alf-margin-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
   @include alf-typography-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
-  
-  // @include alf-text-style-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
-  // @include alf-outline-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
-  // @include alf-transform-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
+  @include alf-text-style-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
+  @include alf-outline-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
+  @include alf-transform-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
 
   position: relative;
   cursor: pointer;
@@ -60,7 +59,7 @@
     border-radius: 9999px;
 
     // Unchecked: versión suavizada del color de la variante usando color-mix
-    background-color: color-mix(in srgb, var(--alf-sw-bg-color, #3b82f6) 35%, white);
+    background-color: color-mix(in srgb, var(--alf-sw-bg-color, #3b82f6) 30%, var(--alf-gray-200, #e9ecef));
     
     border-width: var(--alf-sw-border-width, 1px);
     border-style: var(--alf-sw-border-style, solid);
@@ -136,7 +135,7 @@
     
     display: inline-block;
     font-family: inherit;
-    color: var(--alf-sw-border-color, inherit);
+    color: var(--alf-sw-text-color, inherit);
     transition: color 0.3s ease;
     
     // Fix text jitter/shifting during hover transitions
@@ -144,10 +143,6 @@
     -moz-osx-font-smoothing: grayscale;
     backface-visibility: hidden;
     transform: translateZ(0);
-  }
-
-  &:hover &-label-text {
-    color: var(--alf-sw-border-hover-color, var(--alf-sw-border-color, inherit));
   }
 
   // Helper and errors

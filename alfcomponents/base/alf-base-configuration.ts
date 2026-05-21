@@ -109,7 +109,7 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
   // Computeds para estilos inyectados
   protected readonly backgroundsComputed = computed(() => {
     const variant = this.colorVariantComputed() ?? AlfColorVariantEnum.Default;
-    const base = resolveVariantConfig(variant).backgrounds;
+    const base = resolveVariantConfig(variant).backgroundsBase;
     const resolved = this.resolvedConfig()?.backgrounds || {};
     const user = this.backgrounds() || {};
 
@@ -162,7 +162,7 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
   
   protected readonly outlineComputed = computed(() => {
     const variant = this.colorVariantComputed() ?? AlfColorVariantEnum.Default;
-    const base = resolveVariantConfig(variant).outline;
+    const base = resolveVariantConfig(variant).outlineBase;
     const resolved = this.resolvedConfig()?.outline || {};
     const user = this.outline() || {};
 
@@ -193,7 +193,7 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
 
   protected readonly typographyComputed = computed(() => {
     const variant = this.colorVariantComputed() ?? AlfColorVariantEnum.Default;
-    const base = resolveVariantConfig(variant).typography;
+    const base = resolveVariantConfig(variant).typographyBase;
     const resolved = this.resolvedConfig()?.typography || {};
     const user = this.typography() || {};
 
@@ -208,7 +208,7 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
 
   protected readonly shadowsComputed = computed(() => {
     const variant = this.colorVariantComputed() ?? AlfColorVariantEnum.Default;
-    const base = resolveVariantConfig(variant).shadows;
+    const base = resolveVariantConfig(variant).shadowsBase;
     const resolved = this.resolvedConfig()?.shadows || undefined;
     const user = this.shadows() || undefined;
 
@@ -223,7 +223,7 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
 
   protected readonly textStyleComputed = computed(() => {
     const variant = this.colorVariantComputed() ?? AlfColorVariantEnum.Default;
-    const base = resolveVariantConfig(variant).textStyle;
+    const base = resolveVariantConfig(variant).textStyleBase;
     const resolved = this.resolvedConfig()?.textStyle || {};
     const user = this.textStyle() || {};
 
@@ -244,7 +244,7 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
 
   protected readonly transformComputed = computed(() => {
     const variant = this.colorVariantComputed() ?? AlfColorVariantEnum.Default;
-    const base = resolveVariantConfig(variant).transform;
+    const base = resolveVariantConfig(variant).transformBase;
     const resolved = this.resolvedConfig()?.transform || {};
     const user = this.transform() || {};
 
@@ -262,7 +262,7 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
 
   protected readonly animationsComputed = computed(() => {
     const variant = this.colorVariantComputed() ?? AlfColorVariantEnum.Default;
-    const base = resolveVariantConfig(variant).animations;
+    const base = resolveVariantConfig(variant).animationsBase;
     const resolved = this.resolvedConfig()?.animations || {};
     const user = this.animations() || {};
 
@@ -275,7 +275,7 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
 
   protected readonly borderComputed = computed(() => {
     const variant = this.colorVariantComputed() ?? AlfColorVariantEnum.Default;
-    const base = resolveVariantConfig(variant).border;
+    const base = resolveVariantConfig(variant).borderBase;
     const resolved = this.resolvedConfig()?.border || {};
     const user = this.border() || {};
 

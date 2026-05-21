@@ -1,6 +1,6 @@
 import { Directive, ElementRef, Renderer2, inject, Input, effect, computed, signal } from '@angular/core';
 import { AlfRippleInterface } from '../../interfaces/alf-ripple.interface';
-import { ALF_RIPPLE_DEFAULT } from '../../base/defaultVariants';
+import { AlfColorEnum } from '@alfcomponents/enums';
 
 
 /**
@@ -29,6 +29,13 @@ export class AlfRippleDirective {
 
   private readonly cfg = computed<AlfRippleInterface>(() => {
     const val = this._config();
+
+    const ALF_RIPPLE_DEFAULT: AlfRippleInterface = {
+      color: AlfColorEnum.White,
+      duration: 1000,
+      enabled: true
+    };
+
     if (val === true) return ALF_RIPPLE_DEFAULT;
     if (val === false) return { enabled: false };
     return { ...ALF_RIPPLE_DEFAULT, ...val };

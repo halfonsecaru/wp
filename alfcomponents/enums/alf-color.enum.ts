@@ -649,11 +649,11 @@ export enum AlfColorEnum {
 
   // ===== LIGHT FAMILY =====
   // solid
-  Light = 'var(--alf-light, #f8f9fa)',
-  LightHover = 'var(--alf-light-hover, #f8f9fa)',
-  LightFocus = 'var(--alf-light-focus, #f8f9fa)',
+  Light = 'var(--alf-light, #e9ecef)',
+  LightHover = 'var(--alf-light-hover, #dee2e6)',
+  LightFocus = 'var(--alf-light-focus, #dee2e6)',
   LightDisabled = 'var(--alf-light-disabled, #f8f9fa)',
-  LightActive = 'var(--alf-light-active, #f8f9fa)',
+  LightActive = 'var(--alf-light-active, #ced4da)',
   // soft
   LightSoft = 'var(--alf-light-soft, #fafafa)',
   LightSoftHover = 'var(--alf-light-soft-hover, #f8f9fa)',

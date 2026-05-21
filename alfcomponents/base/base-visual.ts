@@ -2,7 +2,6 @@ import { AlfColorEnum, AlfColorVariantEnum } from '@alfcomponents/enums';
 import { resolveAlfColorVariant } from '@alfcomponents/shared';
 import {
     AlfBorderInterface,
-    AlfBorderBaseInterface,
     AlfBackgroundsInterface,
     AlfBackgroundsBaseInterface,
     AlfPaddingBaseInterface,
@@ -23,13 +22,17 @@ import {
     AlfTransformInterface,
     AlfTransformBaseInterface,
     AlfAnimateCssInterface,
-    AlfRippleInterface
 } from '@alfcomponents/interfaces';
 import { resolveVariantConfig } from './defaultVariants';
 
 
+
 /**
- * Obtiene la configuración visual base por variante de color delegando en el motor Élite.
+ * Obtiene la configuración visual predefinida (PredefinedConfig) para una variante dada.
+ * Actúa como puente entre el enum de variante y la configuración base unificada.
+ *
+ * @param type Variante de color solicitada.
+ * @returns Configuración visual base tipada como MainVisualStyleInterface.
  */
 export const getPredefinedVisualType = (
     type: AlfColorVariantEnum = AlfColorVariantEnum.Default
@@ -38,8 +41,16 @@ export const getPredefinedVisualType = (
 };
 
 
+
 /**
- * Añade variables CSS de un estado a una lista de declaraciones.
+ * Añade las propiedades de un estado (hover, focus, etc.) a las declaraciones CSS.
+ * Omite la inyección de propiedades que sean idénticas al estado por defecto para evitar redundancias.
+ *
+ * @param statePrefix Prefijo CSS a inyectar (ej. '--alf-sw-bg-hover').
+ * @param state Objeto con las propiedades del estado actual.
+ * @param defaultState Objeto con las propiedades del estado default para comparación.
+ * @param declarations Array de declaraciones mutante.
+ * @param mapFn Función inyectora específica de cada módulo visual.
  */
 const addStateToDeclarations = (
     statePrefix: string,
@@ -52,8 +63,14 @@ const addStateToDeclarations = (
     mapFn(statePrefix, state, defaultState, declarations);
 };
 
+
 /**
- * Resuelve variables CSS para background por estado.
+ * Resuelve y mapea las variables CSS de los fondos (Backgrounds) para todos los estados interactivos.
+ * Procesa colores sólidos y gradientes (imágenes de fondo).
+ *
+ * @param prefix Prefijo base del componente (ej. '--alf-btn').
+ * @param input Objeto con la variante y configuraciones opcionales de fondos.
+ * @returns Cadena de texto con las variables CSS compiladas listas para el DOM.
  */
 export const visualBackgroundBase = <TPrefix extends string>(prefix: TPrefix, input: {
     readonly type: AlfColorVariantEnum;
@@ -80,8 +97,14 @@ export const visualBackgroundBase = <TPrefix extends string>(prefix: TPrefix, in
     return declarations.join(' ');
 };
 
+
 /**
- * Resuelve variables CSS para borde por estado.
+ * Resuelve y mapea las variables CSS de bordes (Borders) en todos sus estados.
+ * Contempla color, estilo, grosor global y grosores específicos por cada lado.
+ *
+ * @param prefix Prefijo base del componente (ej. '--alf-btn').
+ * @param input Objeto con la variante y configuraciones opcionales de bordes.
+ * @returns Cadena de texto con las variables CSS compiladas listas para el DOM.
  */
 export const visualBorderBase = <TPrefix extends string>(prefix: TPrefix, input: {
     readonly type: AlfColorVariantEnum;
@@ -95,7 +118,7 @@ export const visualBorderBase = <TPrefix extends string>(prefix: TPrefix, input:
     const mapBorder = (p: string, s: any, d: any, decls: string[]) => {
         const isInt = p.includes('-hover') || p.includes('-active') || p.includes('-focus') || p.includes('-disabled');
         const should = (v: any, dv: any) => v !== undefined && (!isInt || v !== dv);
-        
+
         // Propiedades Globales
         if (should(s.borderColor, d?.borderColor)) decls.push(`${p}-color: ${s.borderColor};`);
         if (should(s.borderStyle, d?.borderStyle)) decls.push(`${p}-style: ${s.borderStyle};`);
@@ -137,7 +160,12 @@ export const visualBorderBase = <TPrefix extends string>(prefix: TPrefix, input:
 };
 
 /**
- * Resuelve variables CSS para padding por estado.
+ * Resuelve y mapea las variables CSS para los rellenos (Paddings) por estado.
+ * Soporta rellenos globales o detallados (top, right, bottom, left).
+ *
+ * @param prefix Prefijo base del componente.
+ * @param input Objeto con la variante y configuraciones de padding.
+ * @returns Cadena de texto con las variables CSS.
  */
 export const visualPaddingBase = <TPrefix extends string>(prefix: TPrefix, input: {
     readonly type: AlfColorVariantEnum;
@@ -168,7 +196,11 @@ export const visualPaddingBase = <TPrefix extends string>(prefix: TPrefix, input
 };
 
 /**
- * Resuelve variables CSS para sombras por estado.
+ * Resuelve y mapea las variables CSS para las sombras (Box Shadows) interactivas.
+ *
+ * @param prefix Prefijo base del componente.
+ * @param input Objeto con la variante y configuraciones de sombras.
+ * @returns Cadena de texto con las variables CSS para sombras.
  */
 export const visualShadowsBase = <TPrefix extends string>(prefix: TPrefix, input: {
     readonly type: AlfColorVariantEnum;
@@ -192,8 +224,15 @@ export const visualShadowsBase = <TPrefix extends string>(prefix: TPrefix, input
         addStateToDeclarations(`${prefix}-shadow${s === 'default' ? '' : '-' + s}`, state, s === 'default' ? undefined : base, declarations, mapShadows);
     });
     return declarations.join(' ');
-}/**
- * Resuelve variables CSS para display/layout por estado.
+}
+
+/**
+ * Resuelve y mapea las variables CSS de layout (Display, Flex, Width, Height, etc.).
+ * Controla el comportamiento estructural y geométrico del componente.
+ *
+ * @param prefix Prefijo base del componente.
+ * @param input Objeto con la variante y configuraciones de layout.
+ * @returns Cadena de texto con las variables CSS de layout.
  */
 export const visualDisplayAndLayoutBase = <TPrefix extends string>(prefix: TPrefix, input: {
     readonly type: AlfColorVariantEnum;
@@ -231,8 +270,13 @@ export const visualDisplayAndLayoutBase = <TPrefix extends string>(prefix: TPref
 };
 
 
+
 /**
- * Resuelve variables CSS para margen por estado.
+ * Resuelve y mapea las variables CSS para los márgenes (Margins) externos.
+ *
+ * @param prefix Prefijo base del componente.
+ * @param input Objeto con la variante y configuraciones de margen.
+ * @returns Cadena de texto con las variables CSS.
  */
 export const visualMarginBase = <TPrefix extends string>(prefix: TPrefix, input: {
     readonly type: AlfColorVariantEnum;
@@ -262,8 +306,14 @@ export const visualMarginBase = <TPrefix extends string>(prefix: TPrefix, input:
     return declarations.join(' ');
 };
 
+
 /**
- * Resuelve variables CSS para transform por estado.
+ * Resuelve y mapea las variables CSS de transformación espacial (Translate, Scale, Rotate) 
+ * reactivas a cada estado interactivo.
+ *
+ * @param prefix Prefijo base del componente.
+ * @param input Objeto con la variante y configuraciones espaciales.
+ * @returns Cadena de texto con las variables CSS.
  */
 export const visualTransformBase = <TPrefix extends string>(prefix: TPrefix, input: {
     readonly type: AlfColorVariantEnum;
@@ -292,8 +342,14 @@ export const visualTransformBase = <TPrefix extends string>(prefix: TPrefix, inp
     return declarations.join(' ');
 };
 
+
 /**
- * Resuelve variables CSS para textStyle por estado.
+ * Resuelve y mapea las variables CSS relacionadas exclusivamente con el color del texto y su grosor,
+ * diferenciadas de la tipografía base para permitir herencias limpias en elementos hijos (ej. spans de iconos).
+ *
+ * @param prefix Prefijo base del componente.
+ * @param input Objeto con la variante y configuraciones de estilo de texto.
+ * @returns Cadena de texto con las variables CSS.
  */
 export const visualTextStyleBase = <TPrefix extends string>(prefix: TPrefix, input: {
     readonly type: AlfColorVariantEnum;
@@ -320,8 +376,13 @@ export const visualTextStyleBase = <TPrefix extends string>(prefix: TPrefix, inp
     return declarations.join(' ');
 };
 
+
 /**
- * Resuelve variables CSS para tipografía por estado.
+ * Resuelve y mapea las variables CSS completas de Tipografía (Size, Family, Line Height, Align, etc.).
+ *
+ * @param prefix Prefijo base del componente.
+ * @param input Objeto con la variante y configuraciones tipográficas.
+ * @returns Cadena de texto con las variables CSS.
  */
 export const visualTypographyBase = <TPrefix extends string>(prefix: TPrefix, input: {
     readonly type: AlfColorVariantEnum;
@@ -347,13 +408,18 @@ export const visualTypographyBase = <TPrefix extends string>(prefix: TPrefix, in
     const base = { ...predefinedTypography?.default, ...typography?.default };
     states.forEach(s => {
         const state = { ...predefinedTypography?.[s], ...typography?.[s] };
-        addStateToDeclarations(`${prefix}-typo${s === 'default' ? '' : '-' + s}`, state, s === 'default' ? undefined : base, declarations, mapTypography);
+        addStateToDeclarations(`${prefix}-typography${s === 'default' ? '' : '-' + s}`, state, s === 'default' ? undefined : base, declarations, mapTypography);
     });
     return declarations.join(' ');
 };
 
+
 /**
- * Resuelve variables CSS para animaciones.
+ * Resuelve variables CSS para duraciones y delays de animaciones inyectadas.
+ *
+ * @param prefix Prefijo base del componente.
+ * @param input Objeto con las configuraciones de animación.
+ * @returns Cadena de texto con las variables CSS (anim-duration, anim-delay).
  */
 export const visualAnimationsBase = <TPrefix extends string>(prefix: TPrefix, input: {
     readonly type: AlfColorVariantEnum;
@@ -368,8 +434,13 @@ export const visualAnimationsBase = <TPrefix extends string>(prefix: TPrefix, in
     return declarations.join(' ');
 };
 
+
 /**
- * Genera la cadena de clases de Animate.css.
+ * Genera la cadena de clases nativas de Animate.css necesarias para inyectar al DOM
+ * durante los ciclos de vida de enterStage/exitStage.
+ *
+ * @param input Objeto con la configuración de la animación.
+ * @returns Cadena con clases compuestas (ej. 'animate__animated animate__fadeIn').
  */
 export const visualAnimationsClassBase = (input: {
     readonly animations?: AlfAnimateCssInterface;
@@ -386,8 +457,13 @@ export const visualAnimationsClassBase = (input: {
     return classes.join(' ');
 };
 
+
 /**
- * Resuelve variables CSS para outline por estado.
+ * Resuelve y mapea las variables CSS para el Outline de accesibilidad o enfoque.
+ *
+ * @param prefix Prefijo base del componente.
+ * @param input Objeto con la configuración de outline.
+ * @returns Cadena de texto con las variables CSS de outline.
  */
 export const visualOutlineBase = <TPrefix extends string>(prefix: TPrefix, input: {
     readonly type: AlfColorVariantEnum;
@@ -412,8 +488,13 @@ export const visualOutlineBase = <TPrefix extends string>(prefix: TPrefix, input
     return declarations.join(' ');
 };
 
+
 /**
- * Resuelve el color base del ripple con alto contraste.
+ * Resuelve matemáticamente el color base ideal para el efecto Ripple, asegurando
+ * siempre un contraste óptimo (WCAG) sobre el fondo de la variante elegida.
+ *
+ * @param input Variante actual.
+ * @returns El color calculado para la expansión del Ripple.
  */
 export const visualRippleColorBase = (input: { type: AlfColorVariantEnum }): AlfColorEnum => {
     const resolved = resolveAlfColorVariant(input.type);
