@@ -1,8 +1,7 @@
 import { 
   AlfColorVariantEnum, 
   AlfSizeEnum, 
-  AlfCheckboxVariantEnum, 
-  AlfColorEnum
+  AlfCheckboxVariantEnum
 } from '@alfcomponents/enums';
 import { AlfCheckboxInterface } from '../interfaces/alf-checkbox.interface';
 import { AlfComponentTypeEnum, resolveVariantConfig } from '@alfcomponents/base/defaultVariants';
@@ -32,7 +31,6 @@ export const getAlfCheckboxDefaultConfig = (
   
   return {
     ...ALF_CHECKBOX_DEFAULT,
-    ...variantConfig,
-    colorVariant: v,
+    ...variantConfig
   };
 };

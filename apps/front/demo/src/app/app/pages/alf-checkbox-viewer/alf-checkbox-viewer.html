@@ -72,8 +72,6 @@
 							<alf-checkbox 
 								[size]="sz" 
 								[label]="sz" 
-								[checked]="selectedSizeGroup() === sz"
-								(onCheckedChange)="selectedSizeGroup.set(sz)"
 							/>
 						</div>
 					}
@@ -186,8 +184,8 @@
 							<span class="rb-size-badge">Suave</span>
 							<alf-checkbox 
 								style="
-									--alf-rb-shadows-box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-									--alf-rb-shadows-hover-box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+									--alf-cb-shadows-box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+									--alf-cb-shadows-hover-box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 								"
 								label="Interactiva"
 								[checked]="dynamicSelected() === 'Option A'"
@@ -198,8 +196,8 @@
 							<span class="rb-size-badge">Retro</span>
 							<alf-checkbox 
 								style="
-									--alf-rb-shadows-box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.2);
-									--alf-rb-shadows-hover-box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.4);
+									--alf-cb-shadows-box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.2);
+									--alf-cb-shadows-hover-box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.4);
 								"
 								label="Sombra dura"
 								[checked]="dynamicSelected() === 'Option B'"

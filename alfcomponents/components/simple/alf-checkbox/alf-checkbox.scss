@@ -6,6 +6,7 @@
 }
 
 .alf-cb {
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -26,7 +27,6 @@
   //@include alf-background-css-vars('--alf-cb', '&--disabled', '&:focus-within, &:focus-visible');
   @include alf-padding-css-vars('--alf-cb', '&--disabled', '&:focus-within, &:focus-visible');
   @include alf-margin-css-vars('--alf-cb', '&--disabled', '&:focus-within, &:focus-visible');
-  @include alf-shadows-css-vars('--alf-cb', '&--disabled');
   @include alf-typography-css-vars('--alf-cb', '&--disabled', '&:focus-within, &:focus-visible');
   @include alf-text-style-css-vars('--alf-cb', '&--disabled', '&:focus-within, &:focus-visible');
   @include alf-outline-css-vars('--alf-cb', '&--disabled');
@@ -37,6 +37,8 @@
   cursor: pointer;
   user-select: none;
   width: auto;
+  height: auto !important;
+  overflow: visible !important;
 
 
   &--disabled {
@@ -59,6 +61,7 @@
 
   // El "cuadrito" o "circulito" visual
   &-box {
+    box-sizing: border-box;
     position: relative;
     display: flex;
     align-items: center;
@@ -69,8 +72,9 @@
     width: 1.25rem;
     height: 1.25rem;
 
-    // Aplicación de variables Élite de Borde (Usando el prefijo correcto --alf-cb)
+    // Aplicación de variables Élite de Borde y Sombra
     @include alf-border-css-vars('--alf-cb', '&--disabled', ':focus-within');
+    @include alf-shadows-css-vars('--alf-cb', '&--disabled');
 
 
 
@@ -80,8 +84,8 @@
     background-color: transparent;
 
     // Borde: Usamos los nombres reales del motor (--prefix-border-prop)
-    border-width: var(--alf-cb-border-width, 1px);
-    border-style: var(--alf-cb-border-style, solid);
+    border-width: 1px !important;
+    border-style: solid !important;
     border-color: var(--alf-cb-border-color, var(--alf-gray-300, #d1d5db));
 
   }
@@ -105,35 +109,35 @@
   }
 
   .alf-cb-icon,
-  svg path {
-    stroke: var(--alf-cb-border-color, var(--alf-gray-300, #d1d5db));
-    color: var(--alf-cb-border-color, var(--alf-gray-300, #d1d5db));
-  }
-
-  // Icono (Tick / Dash)
-  &-icon {
+  .alf-cb-svg-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
     height: 100%;
-
+    position: absolute;
+    top: 0;
+    left: 0;
     pointer-events: none;
-
-
-
-
   }
+
+  .alf-cb-icon,
+  svg path {
+    stroke: var(--alf-cb-border-color, var(--alf-gray-300, #d1d5db));
+    color: var(--alf-cb-border-color, var(--alf-gray-300, #d1d5db));
+  }
+
+
 
   // Texto del Label
   &-label-text {
-    //  @include alf-typography-css-vars('--alf-cb');
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
     font-family: inherit;
-    line-height: 1.25rem;
-
-    // Usamos el color de marca (bg-color) o el de borde
+    line-height: normal;
     color: var(--alf-cb-bg-color, var(--alf-cb-border-color, inherit)) !important;
-
+    @include alf-transition;
   }
 
 

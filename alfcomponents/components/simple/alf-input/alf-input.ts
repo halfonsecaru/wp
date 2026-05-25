@@ -29,9 +29,9 @@ import { AlfColorVariantEnum, AlfInputTypeEnum, AlfInputAppearanceEnum, AlfInput
 
 import { AlfRippleDirective, AlfTooltipTextDirective } from '@alfcomponents/directives';
 import { AlfInputInterface } from './interfaces/alf-input.interface';
-import { ALF_INPUT_DEFAULT, getAlfInputDefaultConfiguration } from './predefined/alf-input.predefined';
 import { getAlfInputLabel, AlfInputI18nLabels } from './i18n/alf-input.i18n';
 import { interpolate } from '@alfcomponents/i18n/i18n-utils';
+import { getAlfInputDefaultConfiguration } from './predefined/alf-input.predefined';
 
 import { AlfComponentTypeEnum } from '@alfcomponents/base/defaultVariants';
 
@@ -140,6 +140,7 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
   public readonly label = input<string | undefined>(undefined);
   public readonly placeholder = input<string | undefined>(undefined);
   public readonly type = input<AlfInputTypeEnum>(AlfInputTypeEnum.Text);
+  public readonly inputType = input<AlfInputTypeEnum | undefined>(undefined);
 
   public readonly error = input<string | undefined>(undefined);
   public readonly helperText = input<string | undefined>(undefined);
@@ -184,8 +185,16 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
     }
 
 
+    // Auto-transform to Outline for Input because inputs are outlined by default
+    let finalColorVariant = variantEnum;
+    if (finalColorVariant === AlfColorVariantEnum.Default) {
+      finalColorVariant = AlfColorVariantEnum.SecondaryOutline;
+    } else if (!finalColorVariant.toString().toLowerCase().includes('outline')) {
+      finalColorVariant = (finalColorVariant.toString() + 'Outline') as AlfColorVariantEnum;
+    }
+
     const app = (this.appearance() ?? inputCfg?.appearance ?? AlfInputAppearanceEnum.Outline) as AlfInputAppearanceEnum;
-    const base = getAlfInputDefaultConfiguration(variantEnum, app);
+    const base = getAlfInputDefaultConfiguration(finalColorVariant, app);
     
     const final: AlfInputInterface = {
       ...base,
@@ -212,8 +221,8 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
       clearable: this.clearable() ?? inputCfg?.clearable ?? base.clearable,
       showPasswordToggle: this.showPasswordToggleInput() ?? inputCfg?.showPasswordToggle ?? base.showPasswordToggle,
       showCharCounter: this.showCharCounterInput() ?? inputCfg?.showCharCounter ?? base.showCharCounter,
-      inputType: this.type() ?? inputCfg?.inputType ?? base.inputType,
-      colorVariant: variantEnum,
+      inputType: this.inputType() ?? this.type() ?? inputCfg?.inputType ?? base.inputType,
+      colorVariant: finalColorVariant,
     };
 
     // Auto-resolve validators
@@ -291,7 +300,7 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
   );
 
   public readonly inputTypeAttr = computed(() => {
-    const type = this.type() ?? this.resolvedConfig()?.inputType;
+    const type = this.resolvedConfig()?.inputType;
     if (type === AlfInputTypeEnum.Password && this.isPasswordVisible()) return 'text';
     return this.resolveInputTypeAttr(type);
   });
@@ -310,9 +319,8 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
       !this.isLoading();
   });
 
-  // Variable usada en el template (line 17)
   public readonly showPasswordToggle = computed(() => {
-    const type = this.type() ?? this.resolvedConfig()?.inputType;
+    const type = this.resolvedConfig()?.inputType;
     return type === AlfInputTypeEnum.Password &&
       this.resolvedConfig()?.showPasswordToggle !== false;
   });

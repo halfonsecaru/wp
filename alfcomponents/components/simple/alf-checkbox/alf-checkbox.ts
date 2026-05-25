@@ -8,6 +8,7 @@ import {
   input,
   model,
   output,
+  signal,
   ViewEncapsulation
 } from '@angular/core';
 import { AlfBaseConfiguration } from '@alfcomponents/base/alf-base-configuration';
@@ -65,6 +66,12 @@ export class AlfCheckbox extends AlfBaseConfiguration<AlfCheckboxInterface> {
   /** Two-way binding for the indeterminate state */
   public readonly indeterminate = model<boolean>(false);
 
+  /** Associated value */
+  public readonly value = input<any>(undefined);
+
+  /** Native name attribute for grouping */
+  public readonly name = input<string>(undefined);
+
   /** Specific checkbox style (Elegant vs Standard) */
   public readonly checkboxStyle = input<AlfCheckboxVariantEnum>();
 
@@ -80,7 +87,12 @@ export class AlfCheckbox extends AlfBaseConfiguration<AlfCheckboxInterface> {
   /** Reactive helper text */
   public readonly helperText = input<string>();
 
-  // ── 3. Computed (Reactive Engine) ─────────────────────────────────────────
+  // ── 3. State Signals ──────────────────────────────────────────────────────
+
+  public readonly focused = signal<boolean>(false);
+  public readonly hovered = signal<boolean>(false);
+
+  // ── 4. Computed (Reactive Engine) ─────────────────────────────────────────
 
   /**
    * Final configuration merge.
@@ -118,6 +130,8 @@ export class AlfCheckbox extends AlfBaseConfiguration<AlfCheckboxInterface> {
       checkboxStyle: this.checkboxStyle() ?? cfg?.checkboxStyle,
       label: this.label() ?? cfg?.label,
       size: this.size() ?? cfg?.size,
+      value: this.value() ?? cfg?.value,
+      name: this.name() ?? cfg?.name,
       error: this.error() ?? cfg?.error,
       helperText: this.helperText() ?? cfg?.helperText,
       disabled: this.disabled() ?? cfg?.disabled,
@@ -145,6 +159,11 @@ export class AlfCheckbox extends AlfBaseConfiguration<AlfCheckboxInterface> {
   /** Resolves the dimension scale */
   public readonly sizeComputed = computed<AlfSizeEnum>(() => this.resolvedConfig()?.size ?? AlfSizeEnum.MD);
 
+  /** Resolves if it's disabled */
+  public readonly isComponentDisabled = computed(() => 
+    this.disabledComputed() || (this.resolvedConfig()?.disabled ?? false)
+  );
+
   /** Icon to display inside the checked box */
   public readonly displayIcon = computed<string>(() => {
     if (this.indeterminate()) return '−';
@@ -156,14 +175,14 @@ export class AlfCheckbox extends AlfBaseConfiguration<AlfCheckboxInterface> {
   /** Emitted whenever the checked state changes */
   public readonly onCheckedChange = output<boolean>();
 
-  // ── 5. Handlers (Arrow Functions) ─────────────────────────────────────────
+  // ── 6. Handlers (Arrow Functions) ─────────────────────────────────────────
 
   /**
    * Toggles the checkbox state.
    * Resets indeterminate state on manual change.
    */
   public readonly toggle = (): void => {
-    if (this.disabledComputed()) return;
+    if (this.isComponentDisabled()) return;
 
     const newValue = !this.checked();
     this.checked.set(newValue);
@@ -171,16 +190,22 @@ export class AlfCheckbox extends AlfBaseConfiguration<AlfCheckboxInterface> {
     this.onCheckedChange.emit(newValue);
   };
 
+  /** Handles the change event from the native input */
+  public readonly onInputChange = (event: Event): void => {
+    if (this.isComponentDisabled()) return;
+    this.toggle();
+  };
+
   /** Click handler for the label wrapper */
   protected readonly onLabelClick = (event: Event): void => {
-    if (this.disabledComputed()) return;
+    if (this.isComponentDisabled()) return;
     event.preventDefault();
     this.toggle();
   };
 
   /** Keyboard support (Space/Enter) */
   protected readonly onInputKeydown = (event: KeyboardEvent): void => {
-    if (this.disabledComputed()) return;
+    if (this.isComponentDisabled()) return;
     if (event.key === ' ' || event.key === 'Enter') {
       event.preventDefault();
       this.toggle();

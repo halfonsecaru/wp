@@ -1,192 +1,103 @@
-import {
-  AlfColorVariantEnum,
-  AlfFontSizeEnum,
-  AlfFontWeightEnum,
-  AlfPxEnum,
-  AlfRadiusEnum,
-  AlfTextAlignEnum,
-  AlfShadowEnum,
-  AlfPercentageEnum,
-  AlfColorEnum,
-  AlfCursorEnum,
-  AlfBorderStyleEnum,
-} from '@alfcomponents/enums';
+import { AlfInputAppearanceEnum, AlfInputTypeEnum, AlfColorVariantEnum } from '@alfcomponents/enums';
 import { AlfInputInterface } from '../interfaces/alf-input.interface';
-import { AlfBorderInterface, AlfDisplayAndLayoutInterface, AlfPaddingInterface, AlfBorderBaseInterface } from '@alfcomponents/interfaces';
-import { AlfComponentTypeEnum, resolveVariantConfig } from '@alfcomponents/base/defaultVariants';
+import { AlfComponentTypeEnum, resolveVariantConfig } from '../../../../base/defaultVariants';
 
-/**
- * Configuración base por defecto para el componente alf-input.
- */
-export const ALF_INPUT_DEFAULT: AlfInputInterface = {
-  disabled: false,
-  typography: {
-    default: {
-      fontWeight: AlfFontWeightEnum.Normal,
-      fontSize: AlfFontSizeEnum.Md,
-      textAlign: AlfTextAlignEnum.Left,
-    }
-  },
-  padding: {
-    default: {
-      paddingTop: AlfPxEnum.None,
-      paddingBottom: AlfPxEnum.None,
-      paddingLeft: AlfPxEnum.None,
-      paddingRight: AlfPxEnum.None,
-    },
-  },
-  shadows: {
-    default: {
-      boxShadow: AlfShadowEnum.None
-    },
-    hover: {
-      boxShadow: AlfShadowEnum.None
-    }
-  },
-  backgrounds: {
-    default: {
-      backgroundColor: AlfColorEnum.Transparent,
-    },
-    hover: {
-      backgroundColor: AlfColorEnum.Transparent,
-    },
-    active: {
-      backgroundColor: AlfColorEnum.Transparent,
-    },
-    disabled: {
-      backgroundColor: AlfColorEnum.Transparent,
-    },
-    focus: {
-      backgroundColor: AlfColorEnum.Transparent,
-    }
-  },
-  border: {
-    default: {
-
-      borderRadius: AlfRadiusEnum.Lg,
-      borderColor: AlfColorEnum.Gray700,
-    },
-    active: {
-      borderRadius: AlfRadiusEnum.Lg,
-      borderColor: AlfColorEnum.Gray800,
-    },
-    focus: {
-      borderRadius: AlfRadiusEnum.Lg,
-      borderColor: AlfColorEnum.Gray800,
-    },
-    disabled: {
-      borderRadius: AlfRadiusEnum.Lg,
-      borderColor: AlfColorEnum.Gray800,
-    }
-  },
-  displayAndLayout: {
-    default: {
-      width: AlfPercentageEnum.Percent100,
-      height: AlfPxEnum.Px40,
-      cursor: AlfCursorEnum.Text,
-    },
-    hover: {
-      width: AlfPercentageEnum.Percent100,
-      height: AlfPxEnum.Px40,
-      cursor: AlfCursorEnum.Text,
-    },
-    focus: {
-      width: AlfPercentageEnum.Percent100,
-      height: AlfPxEnum.Px40,
-      cursor: AlfCursorEnum.Text,
-    },
-    active: {
-      width: AlfPercentageEnum.Percent100,
-      height: AlfPxEnum.Px40,
-      cursor: AlfCursorEnum.Text,
-    },
-    disabled: {
-      width: AlfPercentageEnum.Percent100,
-      height: AlfPxEnum.Px40,
-      cursor: AlfCursorEnum.Text,
-    }
-  },
+export const ALF_INPUT_DEFAULT_BASE: AlfInputInterface = {
+  inputType: AlfInputTypeEnum.Text,
+  appearance: AlfInputAppearanceEnum.Outline,
+  required: false,
+  readonly: false,
+  loading: false,
+  clearable: false,
+  showPasswordToggle: true,
+  showCharCounter: false,
+  debounceTime: 0,
+  autocomplete: 'off',
+  label: '',
+  placeholder: '',
+  value: '',
 };
 
-/**
- * Factory de configuración para AlfInput.
- */
 export const getAlfInputDefaultConfiguration = (
-  variant: AlfColorVariantEnum,
-  appearance: 'outline' | 'fill' | 'standard' = 'outline'
+  variant?: AlfColorVariantEnum,
+  appearance?: AlfInputAppearanceEnum
 ): AlfInputInterface => {
-  const base = ALF_INPUT_DEFAULT;
-
-  if (appearance === 'outline') {
-    return {
-      ...base,
-      ...(variant !== AlfColorVariantEnum.Default ? resolveVariantConfig(transformSolidToOutline(variant), AlfComponentTypeEnum.Input) : {}),
-    };
-  } else if (appearance === 'fill' || appearance === 'standard') {
-    const isStd = appearance === 'standard';
-    const variantConfig = variant !== AlfColorVariantEnum.Default ? transformSolidToOutline(variant) : AlfColorVariantEnum.PrimaryOutline;
-    const config = resolveVariantConfig(variantConfig, AlfComponentTypeEnum.Input);
-
-    return {
-      ...config,
-      border: {
-        ...config.borderBase,
-        default: {
-          ...config.borderBase?.default,
-          borderWidth: AlfPxEnum.None,
-          borderBottomWidth: AlfPxEnum.Px2,
-          borderStyle: AlfBorderStyleEnum.Solid,
-          borderBottomStyle: AlfBorderStyleEnum.Solid,
-          borderColor: config.borderBase?.default?.borderColor || AlfColorEnum.Primary,
-          borderBottomColor: config.borderBase?.default?.borderColor || AlfColorEnum.Primary,
-          borderRadius:  AlfRadiusEnum.None,
-          borderBottomLeftRadius: AlfRadiusEnum.None,
-          borderBottomRightRadius: AlfRadiusEnum.None,
-        },
-        hover: {
-          ...config.borderBase?.hover,
-          borderWidth: AlfPxEnum.None,
-          borderBottomWidth: AlfPxEnum.Px2,
-          borderStyle: AlfBorderStyleEnum.Solid,
-          borderBottomStyle: AlfBorderStyleEnum.Solid,
-          borderRadius: AlfRadiusEnum.None,
-          borderBottomColor: config.borderBase?.hover?.borderColor || AlfColorEnum.Primary,
-        },
-        active: {
-          ...config.borderBase?.hover,
-          borderWidth: AlfPxEnum.None,
-          borderBottomWidth: AlfPxEnum.Px2,
-          borderStyle: AlfBorderStyleEnum.Solid,
-          borderBottomStyle: AlfBorderStyleEnum.Solid,
-          borderRadius: AlfRadiusEnum.None,
-          borderBottomColor: config.borderBase?.hover?.borderColor || AlfColorEnum.Primary,
-        },
-        focus: {
-          ...config.borderBase?.focus,
-          borderWidth: AlfPxEnum.None,
-          borderBottomWidth: AlfPxEnum.Px2,
-          borderStyle: AlfBorderStyleEnum.Solid,
-          borderBottomStyle: AlfBorderStyleEnum.Solid,
-          borderRadius: AlfRadiusEnum.None,
-          borderBottomColor: config.borderBase?.focus?.borderColor || AlfColorEnum.Primary,
-        }
-      },
-      backgrounds: {
-        default: { backgroundColor: isStd ? AlfColorEnum.Transparent : (config.backgroundsBase?.default?.backgroundColor || AlfColorEnum.Transparent) },
-        hover: { backgroundColor: isStd ? AlfColorEnum.Transparent : (config.backgroundsBase?.hover?.backgroundColor || AlfColorEnum.Transparent) },
-        focus: { backgroundColor: isStd ? AlfColorEnum.Transparent : (config.backgroundsBase?.focus?.backgroundColor || AlfColorEnum.Transparent) },
-        active: { backgroundColor: isStd ? AlfColorEnum.Transparent : (config.backgroundsBase?.active?.backgroundColor || AlfColorEnum.Transparent) },
-        disabled: { backgroundColor: isStd ? AlfColorEnum.Transparent : (config.backgroundsBase?.disabled?.backgroundColor || AlfColorEnum.Transparent) },
-      }
-    };
-  }
+  const v = variant ?? AlfColorVariantEnum.SecondaryOutline;
+  const variantConfig = resolveVariantConfig(v, AlfComponentTypeEnum.Input) as Partial<AlfInputInterface>;
 
   return {
-    ...base
+    ...ALF_INPUT_DEFAULT_BASE,
+    ...variantConfig,
+    colorVariant: v,
+    appearance: appearance ?? AlfInputAppearanceEnum.Outline,
+
+    // DEFINING STANDARD VISUAL SPECIFICATIONS DYNAMICALLY
+    displayAndLayout: {
+      default: {
+        minHeight: '48px',
+        height: '48px',
+        display: 'flex',
+        alignItems: 'center',
+        width: '100%',
+        boxSizing: 'border-box',
+      },
+      disabled: {
+        minHeight: '48px',
+        height: '48px',
+        display: 'flex',
+        alignItems: 'center',
+        width: '100%',
+        boxSizing: 'border-box',
+      }
+    } as any,
+    backgrounds: {
+      default: {
+        backgroundImage: 'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 242, 245, 0.9) 100%)',
+      },
+      hover: {
+        backgroundImage: 'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 242, 245, 0.9) 100%)',
+      },
+      focus: {
+        backgroundImage: 'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 242, 245, 0.9) 100%)',
+      },
+      disabled: {
+        backgroundColor: '#f1f5f9',
+        backgroundImage: 'none',
+      }
+    } as any,
+    border: {
+      default: {
+        borderWidth: '1px',
+        borderStyle: 'solid',
+        borderColor: '#cbd5e1',
+        borderRadius: '8px',
+      },
+      hover: {
+        borderColor: '#94a3b8',
+        borderStyle: 'solid',
+        borderWidth: '1px',
+        borderRadius: '8px',
+      },
+      focus: {
+        borderColor: '#4f46e5',
+        borderStyle: 'solid',
+        borderWidth: '1px',
+        borderRadius: '8px',
+      },
+      disabled: {
+        borderColor: '#e2e8f0',
+        borderStyle: 'solid',
+        borderWidth: '1px',
+        borderRadius: '8px',
+      }
+    } as any,
+    shadows: {
+      default: {
+        boxShadow: 'none',
+      },
+      focus: {
+        boxShadow: '0 0 0 1px #4f46e5, 0 4px 12px rgba(79, 70, 229, 0.08)',
+      }
+    } as any
   };
 };
-
-function transformSolidToOutline(variantConfig: AlfColorVariantEnum): AlfColorVariantEnum {
-
-  return variantConfig.toString() + 'Outline' as AlfColorVariantEnum;
-}

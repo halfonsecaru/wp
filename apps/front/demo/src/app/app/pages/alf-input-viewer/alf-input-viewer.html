@@ -1,0 +1,85 @@
+<div class="inp-page">
+  <header class="inp-page__header">
+    <h1 class="inp-page__title">💎 AlfInput Elite Demo</h1>
+    <p class="inp-page__subtitle">Componente de entrada de texto premium integrado con el Elite Visual Engine.</p>
+  </header>
+
+  <div class="inp-grid">
+    <!-- 1. ESTILO ESTÁNDAR (CON EXTREMA CALIDAD) -->
+    <div class="inp-card">
+      <h2 class="inp-card__title">
+        <span class="inp-card__dot inp-card__dot--blue"></span>
+        Showcase de Estilo Estándar (Imagen de Referencia)
+      </h2>
+      <div class="inp-card__body">
+        <div class="inp-demo-col">
+          <alf-input 
+            label="Usuario" 
+            [required]="true"
+            prefix="👩‍💼"
+            placeholder="Introduce tu usuario..." 
+            [value]="valStandard()" 
+            (onInput)="valStandard.set($event)" 
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. TIPOS DE INPUT -->
+    <div class="inp-card">
+      <h2 class="inp-card__title">
+        <span class="inp-card__dot inp-card__dot--purple"></span>
+        Tipos y Componentes
+      </h2>
+      <div class="inp-card__body">
+        <div class="inp-demo-col">
+          <alf-input type="password" label="Contraseña" placeholder="Tu contraseña segura" [value]="valPassword()" (onInput)="valPassword.set($event)" />
+          <alf-input type="email" label="Correo Electrónico" placeholder="usuario@empresa.com" [value]="valEmail()" (onInput)="valEmail.set($event)" />
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. VARIANTES SÓLIDAS -->
+    <div class="inp-card inp-card--wide">
+      <h2 class="inp-card__title">
+        VARIANTES DE COLOR
+      </h2>
+      <div class="inp-card__body">
+        <div class="inp-demo-col" style="gap: 2rem;">
+          <div class="inp-demo-grid-4">
+            @for (variant of solidVariants; track variant) {
+              @let inpSignal = getValue('solid', variant);
+              <div class="inp-size-item" style="align-items: stretch; gap: 0.5rem; width: 100%;">
+                <span class="inp-variant-badge inp-variant-badge--{{ variant }}" style="align-self: flex-start;">{{ variant }}</span>
+                <alf-input 
+                  [variant]="variant" 
+                  [label]="variant" 
+                  placeholder="Escribe algo..."
+                  [value]="inpSignal()"
+                  (onInput)="inpSignal.set($event)" />
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. ESTADOS FUNCIONALES -->
+    <div class="inp-card">
+      <h2 class="inp-card__title">
+        <span class="inp-card__dot inp-card__dot--amber"></span>
+        Estados Funcionales
+      </h2>
+      <div class="inp-card__body">
+        <div class="inp-demo-col">
+          <alf-input label="Con Ayuda" helperText="Este texto te ayuda a entender el campo" placeholder="Escribe..." [value]="valHelper()" (onInput)="valHelper.set($event)" />
+          <alf-input label="Con Error" error="El formato es incorrecto" [value]="valError()" (onInput)="valError.set($event)" />
+          
+          <alf-input label="Deshabilitado" [disabled]="true" [value]="valDisabled()" />
+          <alf-input label="Solo Lectura" [readonly]="true" [value]="valReadonly()" />
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

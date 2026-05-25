@@ -25,7 +25,6 @@
 
   @include alf-padding-css-vars('--alf-rb', '&--disabled', '&:focus-within, &:focus-visible');
   @include alf-margin-css-vars('--alf-rb', '&--disabled', '&:focus-within, &:focus-visible');
-  @include alf-shadows-css-vars('--alf-rb', '&--disabled');
   @include alf-typography-css-vars('--alf-rb', '&--disabled', '&:focus-within, &:focus-visible');
   @include alf-text-style-css-vars('--alf-rb', '&--disabled', '&:focus-within, &:focus-visible');
   @include alf-outline-css-vars('--alf-rb', '&--disabled');
@@ -70,8 +69,9 @@
     height: 1.25rem;
     border-radius: 50%;
 
-    // Aplicación de variables Élite de Borde
+    // Aplicación de variables Élite de Borde y Sombra
     @include alf-border-css-vars('--alf-rb', '&--disabled', ':focus-within');
+    @include alf-shadows-css-vars('--alf-rb', '&--disabled');
 
     // Estilo Base (Unchecked)
     background-color: transparent;
@@ -133,7 +133,6 @@
     line-height: normal;
     color: var(--alf-rb-bg-color, var(--alf-rb-border-color, inherit)) !important;
     @include alf-transition;
-    margin-top: -4px;
   }
 
   // Descripciones y Helpers

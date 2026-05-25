@@ -22,7 +22,7 @@
 @let customStyle = customStyleComputed();
 
 <!-- 4. Estado Core del Checkbox -->
-@let isComponentDisabled = disabledComputed();
+@let isCheckboxDisabled = isComponentDisabled();
 @let idCheckbox = internalId;
 @let labelText = labelComputed();
 @let labelPos = labelPositionComputed();
@@ -32,13 +32,20 @@
 @let size = sizeComputed();
 @let styleVariant = checkboxStyleComputed();
 @let icon = displayIcon();
+@let checkboxName = name();
+@let isHovered = hovered();
+@let isFocused = focused();
 
 <div
   class="alf-cb"
   [class]="'alf-cb--' + styleVariant + ' alf-cb--' + size + ' ' + customClass + ' ' + animationsClass"
   [class.alf-cb--checked]="isChecked"
   [class.alf-cb--indeterminate]="isIndeterminate"
-  [class.alf-cb--disabled]="isComponentDisabled"
+  [class.alf-cb--disabled]="isCheckboxDisabled"
+  [class.alf-cb--hovered]="isHovered"
+  [class.alf-cb--focused]="isFocused"
+  (mouseenter)="hovered.set(true)"
+  (mouseleave)="hovered.set(false)"
   [style]="
     backgroundsStyle + 
     borderStyle + 
@@ -58,7 +65,7 @@
     class="alf-cb-wrapper"
     [class.alf-cb-wrapper--label-before]="labelPos === 'before'"
     [attr.for]="idCheckbox"
-    [style.cursor]="isComponentDisabled ? 'not-allowed' : cursor"
+    [style.cursor]="isCheckboxDisabled ? 'not-allowed' : cursor"
     (click)="onLabelClick($event)"
   >
 
@@ -67,10 +74,14 @@
       type="checkbox"
       hidden
       [id]="idCheckbox"
-      [disabled]="isComponentDisabled"
+      [name]="checkboxName"
+      [disabled]="isCheckboxDisabled"
       [checked]="isChecked"
       [indeterminate]="isIndeterminate"
+      (change)="onInputChange($event)"
       (keydown)="onInputKeydown($event)"
+      (focus)="focused.set(true)"
+      (blur)="focused.set(false)"
       [attr.aria-checked]="isIndeterminate ? 'mixed' : isChecked"
       [attr.aria-label]="aria?.ariaLabel || labelText"
       [attr.aria-describedby]="aria?.ariaDescribedBy || (idCheckbox + '-description')"
