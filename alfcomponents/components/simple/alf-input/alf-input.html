@@ -13,6 +13,8 @@
 @let showPwdLbl = showPwdLabel();
 @let hidePwdLbl = hidePwdLabel();
 @let val = value();
+@let ripple = rippleComputed();
+@let tooltip = tooltipComputed();
 
 <!-- Estilos del Motor Élite en formato string de CSS inline -->
 @let backgroundsStyle = createBackgroundsStyle();
@@ -32,16 +34,18 @@
 @let customStyle = customStyleComputed();
 
 <div 
-  class="alf-input" 
+  [class]="'alf-input ' + animationsClass + ' ' + customClass"
   [class.alf-input--focused]="isFocused()" 
   [class.alf-input--disabled]="isComponentDisabled" 
   [class.alf-input--readonly]="isComponentReadonly" 
   [class.alf-input--error]="errorMsg" 
   [class.alf-input--has-value]="val.length > 0"
   [class.alf-input--has-prefix]="config?.prefix"
-  [class]="customClass + ' ' + animationsClass"
-  [style]="displayAndLayoutStyle + marginStyle + textStyle + customStyle + backgroundsStyle + borderStyle + shadowsStyle"
+  [alfRipple]="ripple"
+  [alfTooltipText]="tooltip"
+  [style]="displayAndLayoutStyle + marginStyle + paddingStyle + outlineStyle + transformStyle + animationsStyle + typographyStyle + textStyle + customStyle + backgroundsStyle + borderStyle + shadowsStyle"
 >
+
   @if (config?.prefix) {
     <span class="alf-input__prefix">{{ config.prefix }}</span>
   }

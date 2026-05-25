@@ -16,7 +16,7 @@ export class AlfInputViewer {
 
   public readonly valOutline = signal<string>('');
   public readonly valFill = signal<string>('');
-  public readonly valStandard = signal<string>('dsfafd');
+  public readonly valStandard = signal<string>('');
   
   public readonly valPassword = signal<string>('');
   public readonly valEmail = signal<string>('');

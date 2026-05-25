@@ -841,4 +841,8 @@ export enum AlfColorEnum {
   GradientInfoText = 'var(--alf-gradient-info-text, #ffffffff)',
   GradientInfoTextHover = 'var(--alf-gradient-info-text-hover, #d1d1d1ff)',
   GradientInfoDisabled = 'var(--alf-gradient-info-disabled, linear-gradient(135deg, rgba(59,130,246,0.5) 0%, rgba(37,99,235,0.5) 100%))',
-}
+
+  // Beauty background
+  GradientBeauty1 = 'var(--alf-gradient-beauty-1, linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 242, 245, 0.9) 100%))',
+  CoolGray = 'var(--alf-cool-gray, #94a3b8)',
+}

@@ -64,4 +64,7 @@ export * from './alf-visibility.enum';
 export * from './alf-white-space.enum';
 export * from './alf-word-break.enum';
 export * from './alf-z-index.enum';
+export * from './alf-box-sizing.enum';
+
+
 

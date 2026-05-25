@@ -6,17 +6,11 @@
 }
 
 .alf-input {
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 100%;
   box-sizing: border-box;
-  padding: 0 16px;
-  cursor: text;
 
   @include alf-transition;
 
-  @include alf-display-layout-css-vars($prefix: '--alf-input',
+  @include alf-display-layout-css-vars($prefix: '--alf-inp',
     $display: flex,
     $align: center,
     $justify: flex-start,
@@ -24,49 +18,41 @@
     $focus-selectors: '&--focused'
   );
 
-  @include alf-background-css-vars('--alf-input', '&--disabled', '&--focused');
-  @include alf-border-css-vars('--alf-input', '&--disabled', '&--focused');
-  @include alf-shadows-css-vars('--alf-input', '&--disabled', '&--focused');
-  @include alf-padding-css-vars('--alf-input', '&--disabled', '&--focused');
-  @include alf-margin-css-vars('--alf-input', '&--disabled', '&--focused');
-  @include alf-typography-css-vars('--alf-input', '&--disabled', '&--focused');
-  @include alf-text-style-css-vars('--alf-input', '&--disabled', '&--focused');
-  @include alf-outline-css-vars('--alf-input', '&--disabled');
-  @include alf-transform-css-vars('--alf-input', '&--disabled');
+  @include alf-background-css-vars('--alf-inp', '&--disabled', '&--focused');
+  @include alf-border-css-vars('--alf-inp', '&--disabled', '&--focused');
+  @include alf-shadows-css-vars('--alf-inp', '&--disabled', '&--focused');
+  @include alf-padding-css-vars('--alf-inp', '&--disabled', '&--focused');
+  @include alf-margin-css-vars('--alf-inp', '&--disabled', '&--focused');
+  @include alf-typography-css-vars('--alf-inp', '&--disabled', '&--focused');
+  @include alf-text-style-css-vars('--alf-inp', '&--disabled', '&--focused');
+  @include alf-outline-css-vars('--alf-inp', '&--disabled');
+  @include alf-transform-css-vars('--alf-inp', '&--disabled');
 
-  // Binding Elite variables to properties
-  min-height: var(--alf-input-min-height, 48px);
-  border-radius: var(--alf-input-border-radius, var(--alf-input-border-top-left-radius, 8px));
-  background: var(--alf-input-bg-image, var(--alf-input-bg-color, linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 242, 245, 0.9) 100%)));
-  border-width: var(--alf-input-border-width, 1px);
-  border-style: var(--alf-input-border-style, solid);
-  border-color: var(--alf-input-border-color, #cbd5e1);
-  box-shadow: var(--alf-input-box-shadow, none);
 
   &--error {
-    border-color: #ef4444;
+    border-color: var(--alf-danger, #dc3545);
+
     &:hover {
-      border-color: #dc2626;
+      border-color: var(--alf-danger-hover, #bb2d3b);
     }
   }
 
-  &--disabled {
-    opacity: 0.6;
-    pointer-events: none;
-  }
-
-  &--readonly {
-    cursor: default;
+  &--has-prefix {
+    .alf-input__field-wrap {
+      padding-left: 0;
+    }
   }
 }
+
 
 .alf-input__prefix {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 12px;
+  margin-left: 10px;
+  margin-right: 0px;
   font-size: 1.25rem;
-  color: #64748b;
+  color: var(--alf-cool-gray, #94a3b8);
   user-select: none;
 }
 
@@ -76,6 +62,7 @@
   display: flex;
   height: 100%;
   align-items: center;
+  padding-left: 14px;
 }
 
 .alf-input__field {
@@ -85,9 +72,11 @@
   outline: none;
   font-family: inherit;
   font-size: 1.1rem;
-  color: #1e293b;
-  padding: 0;
+  color: var(--alf-inp-text-color, #1e293b);
   box-sizing: border-box;
+
+
+
 
   &--textarea {
     resize: vertical;
@@ -96,7 +85,7 @@
   }
 
   &::placeholder {
-    color: #94a3b8;
+    color: var(--alf-cool-gray, #94a3b8);
     transition: opacity 0.2s ease;
   }
 }
@@ -104,9 +93,10 @@
 .alf-input__label {
   position: absolute;
   left: 16px;
-  top: 50%;
+  top: 52%;
   transform: translateY(-50%);
-  color: #64748b;
+  color: var(--alf-inp-text-color, var(--alf-cool-gray, #94a3b8));
+
   font-size: 1.1rem;
   pointer-events: none;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -121,31 +111,36 @@
   z-index: 2;
 
   &--has-prefix {
-    left: 48px;
+    left: 40px;
   }
 
   &--float {
     top: 0;
-    left: 12px !important;
-    transform: translateY(-50%) scale(0.75);
-    color: #4f46e5;
-    background: #ffffff; /* Sits on border line, masking it */
+    left: 10px;
+    transform: translateY(-75%) scale(0.75);
+    color: var(--alf-inp-border-color, var(--alf-cool-gray, #94a3b8));
+    background: transparent;
     padding: 0 6px;
     font-weight: 600;
   }
 }
 
+
+
+
+
 .alf-input--error {
   .alf-input__label--float {
-    color: #ef4444;
+    color: var(--alf-danger, #dc3545);
   }
 }
 
 .alf-input__required-star {
-  color: #ef4444;
+  color: var(--alf-danger, #dc3545);
   margin-left: 2px;
   font-weight: bold;
 }
+
 
 .alf-input__suffix-area {
   display: flex;

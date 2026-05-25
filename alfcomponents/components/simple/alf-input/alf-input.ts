@@ -51,12 +51,6 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
   protected override readonly componentType = AlfComponentTypeEnum.Input;
   protected readonly internalId: string = generateUniqueId({ prefix: 'alf-inp' });
 
-  private readonly el: ElementRef = inject(ElementRef);
-
-  // ── Effects ───────────────────────────────────────────────────────────────
-
-
-
   /** Efecto de debounce — aplica el valor pendiente tras el tiempo configurado */
   private readonly debounceEffect = effect((onCleanup) => {
     const pending = this.pendingValue();
@@ -256,6 +250,21 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
   });
 
   public override readonly resolvedConfig = this.finalConfig;
+
+  public override readonly rippleComputed = computed<any>(() => {
+    const rippleInput = this.rippleInputComputed();
+    if (rippleInput === false) return false;
+
+    const baseRippleConf = {
+      color: 'rgba(0, 0, 0, 0.06)',
+      duration: 1500
+    };
+
+    if (rippleInput === undefined || rippleInput === true) return baseRippleConf;
+    return { ...baseRippleConf, ...rippleInput };
+  });
+
+
 
 
   // ── Computed derivados ────────────────────────────────────────────────────

@@ -14,8 +14,10 @@ import {
   AlfFlexWrapEnum,
   AlfOpacityEnum,
   AlfPointerEventsEnum,
-  AlfCursorEnum
+  AlfCursorEnum,
+  AlfBoxSizingEnum
 } from '../enums';
+
 
 /**
  * Propiedades de visualización, dimensiones y Flexbox para un estado específico
@@ -54,8 +56,12 @@ export interface AlfDisplayAndLayoutBaseInterface {
   zIndex?: AlfZIndexEnum;
 
   // ===== DIMENSIONS =====
+  /** Box-sizing del elemento @example AlfBoxSizingEnum.BorderBox */
+  boxSizing?: AlfBoxSizingEnum;
+
   /** Ancho del elemento @example AlfPxEnum.Px100 | AlfPercentageEnum.Full */
   width?: AlfPxEnum | AlfRemEnum | AlfPercentageEnum;
+
 
   /** Alto del elemento @example AlfRemEnum.Rem10 */
   height?: AlfPxEnum | AlfRemEnum | AlfPercentageEnum;
