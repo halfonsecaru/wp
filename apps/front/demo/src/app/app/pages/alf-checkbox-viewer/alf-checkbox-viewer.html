@@ -1,147 +1,261 @@
-<div class="demo-container">
-  <h1 class="demo-title">💎 AlfCheckbox Elite Demo</h1>
+<div class="rb-page">
+	<header class="rb-page__header">
+		<h1 class="rb-page__title">💎 AlfCheckbox Elite Demo</h1>
+		<p class="rb-page__subtitle">Componente de casilla interactiva premium integrado con el Elite Visual Engine.</p>
+	</header>
 
-  <!-- 1. CHECKBOX VARIANTS & STYLES -->
-  <div class="demo-card">
-    <h3>Checkbox DNA Variants</h3>
-    
-    @for (style of checkboxStyles; track style.value) {
-      <div class="style-section">
-        <h4 class="style-title">{{ style.name }} Style</h4>
-        
-        <div class="color-grid">
-          @for (variant of solidVariants; track variant) {
-            @let cbSignal = getChecked('cb-' + style.name, variant);
-            <div class="color-item">
-              <span class="variant-name">{{ variant }}</span>
-              <alf-checkbox 
-                [checked]="cbSignal()"
-                (checkedChange)="cbSignal.set($event)"
-                [label]="style.name" 
-                [variant]="variant"
-                [checkboxStyle]="style.value">
-              </alf-checkbox>
-            </div>
-          }
-        </div>
-      </div>
-    }
-  </div>
+	<div class="rb-grid">
+		<!-- 1. ESTILOS VISUALES -->
+		<div class="rb-card">
+			<h2 class="rb-card__title">
+				<span class="rb-card__dot rb-card__dot--blue"></span>
+				Estilos Visuales (Elegant vs Standard)
+			</h2>
+			<div class="rb-card__body">
+				<div class="rb-demo-row">
+					<div class="rb-demo-item">
+						<span class="rb-demo-label">Elegant</span>
+						<alf-checkbox 
+							checkboxStyle="elegant" 
+							label="Estilo Elegant" 
+							[checked]="selectedStyleGroup() === 'elegant'"
+							(onCheckedChange)="selectedStyleGroup.set('elegant')"
+						/>
+					</div>
+					<div class="rb-demo-item">
+						<span class="rb-demo-label">Standard</span>
+						<alf-checkbox 
+							checkboxStyle="standard" 
+							label="Estilo Standard" 
+							[checked]="selectedStyleGroup() === 'standard'"
+							(onCheckedChange)="selectedStyleGroup.set('standard')"
+						/>
+					</div>
+				</div>
+			</div>
+		</div>
 
-  <!-- 2. PREMIUM VARIANTS -->
-  <div class="demo-card">
-    <h3>Premium DNA (Soft, Crystal & Gradients)</h3>
-    <div class="color-grid">
-      @for (variant of premiumVariants; track variant) {
-        @let cbSignal = getChecked('cb-premium', variant);
-        <div class="color-item">
-          <span class="variant-name">{{ variant }}</span>
-          <alf-checkbox 
-            [checked]="cbSignal()"
-            (checkedChange)="cbSignal.set($event)"
-            [label]="'Premium'" 
-            [variant]="variant">
-          </alf-checkbox>
-        </div>
-      }
-    </div>
-  </div>
+		<!-- 2. POSICIÓN DEL LABEL -->
+		<div class="rb-card">
+			<h2 class="rb-card__title">
+				<span class="rb-card__dot rb-card__dot--purple"></span>
+				Posición del label
+			</h2>
+			<div class="rb-card__body">
+				<div class="rb-demo-col">
+					<alf-checkbox 
+						label="Label a la derecha (Default)" 
+						[checked]="selectedLabelPosGroup() === 'after'"
+						(onCheckedChange)="selectedLabelPosGroup.set('after')"
+					/>
+					<alf-checkbox 
+						label="Label a la izquierda" 
+						[config]="{ labelPosition: 'before' }"
+						[checked]="selectedLabelPosGroup() === 'before'"
+						(onCheckedChange)="selectedLabelPosGroup.set('before')"
+					/>
+				</div>
+			</div>
+		</div>
 
-  <!-- 3. SIZING -->
-  <div class="demo-card">
-    <h3>Dimension Scale</h3>
-    <div class="size-row">
-      @for (size of sizes; track size) {
-        @let cbSignal = getChecked('cb-size', size);
-        <div class="size-item">
-          <alf-checkbox 
-            [checked]="cbSignal()"
-            (checkedChange)="cbSignal.set($event)"
-            [label]="size" 
-            [size]="size"
-            variant="Primary">
-          </alf-checkbox>
-        </div>
-      }
-    </div>
-  </div>
+		<!-- 3. TAMAÑOS (ANCHO COMPLETO) -->
+		<div class="rb-card rb-card--wide">
+			<h2 class="rb-card__title">
+				<span class="rb-card__dot rb-card__dot--cyan"></span>
+				Escala de Dimensiones
+			</h2>
+			<div class="rb-card__body">
+				<div class="rb-demo-sizes">
+					@for (sz of sizes; track sz) {
+						<div class="rb-size-item">
+							<span class="rb-size-badge">{{ sz }}</span>
+							<alf-checkbox 
+								[size]="sz" 
+								[label]="sz" 
+								[checked]="selectedSizeGroup() === sz"
+								(onCheckedChange)="selectedSizeGroup.set(sz)"
+							/>
+						</div>
+					}
+				</div>
+			</div>
+		</div>
 
-  <!-- 4. FUNCTIONAL STATES -->
-  <div class="demo-card">
-    <h3>Functional Scenarios</h3>
-    
-    <div class="color-grid">
-      <!-- Indeterminate -->
-      <div class="color-item">
-        <span class="variant-name">Indeterminate</span>
-        <alf-checkbox 
-          [indeterminate]="indeterminateSignal()"
-          (indeterminateChange)="indeterminateSignal.set($event)"
-          label="Partial State" 
-          variant="Info">
-        </alf-checkbox>
-      </div>
+		<!-- 4. VARIANTES SÓLIDAS (ELEGANT Y STANDARD) -->
+		<div class="rb-card rb-card--wide">
+			<h2 class="rb-card__title">
+				VARIANTES SÓLIDAS (ELEGANT & STANDARD)
+			</h2>
+			<div class="rb-card__body">
+				<div class="rb-demo-col" style="gap: 2rem;">
+					<div>
+						<span class="rb-demo-label" style="display: block; margin-bottom: 1.25rem;">Elegant Style</span>
+						<div class="rb-demo-grid-4">
+							@for (variant of solidVariants; track variant) {
+								<div class="rb-size-item" style="align-items: flex-start; gap: 0.5rem;">
+									<span class="rb-variant-badge rb-variant-badge--{{ variant }}">{{ variant }}</span>
+									<alf-checkbox 
+										checkboxStyle="elegant" 
+										[variant]="variant" 
+										[label]="variant" 
+										[checked]="selectedSolidElegantGroup() === variant"
+										(onCheckedChange)="selectedSolidElegantGroup.set(variant)"
+									/>
+								</div>
+							}
+						</div>
+					</div>
 
-      <!-- Disabled -->
-      <div class="color-item">
-        <span class="variant-name">Disabled State</span>
-        <alf-checkbox 
-          [label]="'Locked'" 
-          [variant]="AlfColorVariantEnum.Primary"
-          [config]="{ disabled: true, checked: true }">
-        </alf-checkbox>
-      </div>
+					<div style="margin-top: 1rem; border-top: 1px solid #f1f5f9; padding-top: 2rem;">
+						<span class="rb-demo-label" style="display: block; margin-bottom: 1.25rem;">Standard Style</span>
+						<div class="rb-demo-grid-4">
+							@for (variant of solidVariants; track variant) {
+								<div class="rb-size-item" style="align-items: flex-start; gap: 0.5rem;">
+									<span class="rb-variant-badge rb-variant-badge--{{ variant }}">{{ variant }}</span>
+									<alf-checkbox 
+										checkboxStyle="standard" 
+										[variant]="variant" 
+										[label]="variant" 
+										[checked]="selectedSolidStandardGroup() === variant"
+										(onCheckedChange)="selectedSolidStandardGroup.set(variant)"
+									/>
+								</div>
+							}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-      <!-- Validation Errors -->
-      <div class="color-item">
-        @let errorChecked = getChecked('state-cb', 'error');
-        <span class="variant-name">Validation (Error)</span>
-        <alf-checkbox 
-          [checked]="errorChecked()"
-          (checkedChange)="errorChecked.set($event)"
-          [label]="'Invalid'" 
-          [variant]="AlfColorVariantEnum.Danger"
-          [config]="{ error: 'Field is required' }">
-        </alf-checkbox>
-      </div>
 
-      <!-- Helper Text -->
-      <div class="color-item">
-        @let helperChecked = getChecked('state-cb', 'helper');
-        <span class="variant-name">Information (Helper)</span>
-        <alf-checkbox 
-          [checked]="helperChecked()"
-          (checkedChange)="helperChecked.set($event)"
-          [label]="'Helpful'" 
-          [variant]="AlfColorVariantEnum.Success"
-          [config]="{ helperText: 'Información adicional' }">
-        </alf-checkbox>
-      </div>
-    </div>
-  </div>
 
-  <!-- 5. POSITIONS -->
-  <div class="demo-card">
-    <h3>Label Positioning</h3>
-    <div class="color-grid">
-      <div class="color-item">
-        <span class="variant-name">Position: After (Default)</span>
-        <alf-checkbox 
-          [checked]="true"
-          label="Label After" 
-          variant="Primary"
-          [config]="{ labelPosition: 'after' }">
-        </alf-checkbox>
-      </div>
-      <div class="color-item">
-        <span class="variant-name">Position: Before</span>
-        <alf-checkbox 
-          [checked]="true"
-          label="Label Before" 
-          variant="Secondary"
-          [config]="{ labelPosition: 'before' }">
-        </alf-checkbox>
-      </div>
-    </div>
-  </div>
+		<!-- 11. ESTADOS FUNCIONALES / ESCENARIOS -->
+		<div class="rb-card">
+			<h2 class="rb-card__title">
+				<span class="rb-card__dot rb-card__dot--amber"></span>
+				Estados Funcionales e Información
+			</h2>
+			<div class="rb-card__body">
+				<div class="rb-demo-col">
+					<alf-checkbox 
+						label="Grupo de Ayuda" 
+						helperText="Este es un texto informativo que te ayuda a decidir" 
+						[(checked)]="checkedWithHelper"
+					/>
+					<alf-checkbox 
+						label="Campo con Error" 
+						error="Debes solucionar este problema de validación" 
+						[(checked)]="checkedWithError"
+					/>
+          
+					<div class="rb-demo-row" style="margin-top: 0.5rem; gap: 1rem;">
+						<div class="rb-demo-item">
+							<span class="rb-demo-label">Elegant Disabled Off</span>
+							<alf-checkbox label="Bloqueado" [config]="{ disabled: true, checked: false }" />
+						</div>
+						<div class="rb-demo-item">
+							<span class="rb-demo-label">Elegant Disabled On</span>
+							<alf-checkbox label="Bloqueado" [config]="{ disabled: true, checked: true }" />
+						</div>
+					</div>
+          
+					<div class="rb-demo-row" style="gap: 1rem;">
+						<div class="rb-demo-item">
+							<span class="rb-demo-label">Standard Disabled Off</span>
+							<alf-checkbox checkboxStyle="standard" label="Bloqueado" [config]="{ disabled: true, checked: false }" />
+						</div>
+						<div class="rb-demo-item">
+							<span class="rb-demo-label">Standard Disabled On</span>
+							<alf-checkbox checkboxStyle="standard" label="Bloqueado" [config]="{ disabled: true, checked: true }" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 12. SOMBRAS DIRECTAS -->
+		<div class="rb-card">
+			<h2 class="rb-card__title">
+				<span class="rb-card__dot rb-card__dot--amber"></span>
+				Sombras e Interacciones Directas
+			</h2>
+			<div class="rb-card__body">
+				<div class="rb-demo-col">
+					<div class="rb-demo-row" style="justify-content: space-between; gap: 1rem;">
+						<div class="rb-size-item">
+							<span class="rb-size-badge">Suave</span>
+							<alf-checkbox 
+								style="
+									--alf-rb-shadows-box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+									--alf-rb-shadows-hover-box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+								"
+								label="Interactiva"
+								[checked]="dynamicSelected() === 'Option A'"
+								(onCheckedChange)="dynamicSelected.set('Option A')"
+							/>
+						</div>
+						<div class="rb-size-item">
+							<span class="rb-size-badge">Retro</span>
+							<alf-checkbox 
+								style="
+									--alf-rb-shadows-box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.2);
+									--alf-rb-shadows-hover-box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.4);
+								"
+								label="Sombra dura"
+								[checked]="dynamicSelected() === 'Option B'"
+								(onCheckedChange)="dynamicSelected.set('Option B')"
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 13. ESTADO REACTIVO -->
+		<div class="rb-card rb-card--wide rb-card--terminal">
+			<h2 class="rb-card__title rb-card__title--light">
+				<span class="rb-terminal-dot rb-terminal-dot--red"></span>
+				<span class="rb-terminal-dot rb-terminal-dot--yellow"></span>
+				<span class="rb-terminal-dot rb-terminal-dot--green"></span>
+				<span class="rb-terminal-title">Consola de Estado Reactiva (Zoneless Signals)</span>
+			</h2>
+			<div class="rb-terminal__body" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+				<div>
+					<p class="rb-terminal__line">
+						<span class="rb-terminal__key">selectedStyleGroup</span>
+						<span class="rb-terminal__sep">→</span>
+						<span class="rb-terminal__value">{{ selectedStyleGroup() }}</span>
+					</p>
+					<p class="rb-terminal__line">
+						<span class="rb-terminal__key">selectedLabelPosGroup</span>
+						<span class="rb-terminal__sep">→</span>
+						<span class="rb-terminal__value">{{ selectedLabelPosGroup() }}</span>
+					</p>
+					<p class="rb-terminal__line">
+						<span class="rb-terminal__key">selectedSizeGroup</span>
+						<span class="rb-terminal__sep">→</span>
+						<span class="rb-terminal__value">{{ selectedSizeGroup() }}</span>
+					</p>
+				</div>
+
+				<div>
+					<p class="rb-terminal__line">
+						<span class="rb-terminal__key">selectedSolidElegantGroup</span>
+						<span class="rb-terminal__sep">→</span>
+						<span class="rb-terminal__value rb-terminal__value--true">{{ selectedSolidElegantGroup() }}</span>
+					</p>
+					<p class="rb-terminal__line">
+						<span class="rb-terminal__key">selectedSolidStandardGroup</span>
+						<span class="rb-terminal__sep">→</span>
+						<span class="rb-terminal__value rb-terminal__value--true">{{ selectedSolidStandardGroup() }}</span>
+					</p>
+					<p class="rb-terminal__line">
+						<span class="rb-terminal__key">dynamicSelected</span>
+						<span class="rb-terminal__sep">→</span>
+						<span class="rb-terminal__value rb-terminal__value--true">{{ dynamicSelected() }}</span>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

@@ -47,3 +47,36 @@
     color: var(--alf-txt-color-disabled, var(--alf-txt-color));
   }
 }
+
+/**
+ * AlfPremiumStyle Mixin
+ * Reutiliza la estética premium translúcida e interactiva en cualquier componente.
+ * Utiliza color-mix() para crear fondos e interactividad a partir de variables CSS del motor.
+ */
+@mixin alf-premium-style(
+  $prefix,
+  $opacity-default: 5%,
+  $border-opacity-default: 15%,
+  $opacity-hover: 18%,
+  $opacity-active: 28%,
+  $include-states: true
+) {
+  // Base State (Default / Unchecked)
+  background-color: color-mix(in srgb, var(#{$prefix}-border-color, var(#{$prefix}-bg-color, #3b82f6)) #{$opacity-default}, transparent);
+  background-image: none;
+  border-color: color-mix(in srgb, var(#{$prefix}-border-color, var(#{$prefix}-bg-color, #3b82f6)) #{$border-opacity-default}, transparent);
+
+  @if $include-states {
+    // Hover State
+    &:hover:not(:disabled):not(.disabled) {
+      background-color: color-mix(in srgb, var(#{$prefix}-border-hover-color, var(#{$prefix}-border-color, var(#{$prefix}-bg-hover-color, #2563eb))) #{$opacity-hover}, transparent);
+      border-color: var(#{$prefix}-border-hover-color, var(#{$prefix}-border-color, var(#{$prefix}-bg-hover-color, #2563eb)));
+    }
+
+    // Active State
+    &:active:not(:disabled):not(.disabled) {
+      background-color: color-mix(in srgb, var(#{$prefix}-border-active-color, var(#{$prefix}-border-color, var(#{$prefix}-bg-active-color, #1d4ed8))) #{$opacity-active}, transparent);
+      border-color: var(#{$prefix}-border-active-color, var(#{$prefix}-border-color, var(#{$prefix}-bg-active-color, #1d4ed8)));
+    }
+  }
+}

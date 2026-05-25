@@ -33,6 +33,8 @@ import { ALF_INPUT_DEFAULT, getAlfInputDefaultConfiguration } from './predefined
 import { getAlfInputLabel, AlfInputI18nLabels } from './i18n/alf-input.i18n';
 import { interpolate } from '@alfcomponents/i18n/i18n-utils';
 
+import { AlfComponentTypeEnum } from '@alfcomponents/base/defaultVariants';
+
 @Component({
   selector: 'alf-input',
   standalone: true,
@@ -46,6 +48,7 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
   // ── Configuración base ────────────────────────────────────────────────────
 
   protected override readonly visualPrefix: string = visualprefixEnum.Input;
+  protected override readonly componentType = AlfComponentTypeEnum.Input;
   protected readonly internalId: string = generateUniqueId({ prefix: 'alf-inp' });
 
   private readonly el: ElementRef = inject(ElementRef);

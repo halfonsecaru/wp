@@ -1,31 +1,31 @@
 <div class="sw-page">
   <header class="sw-page__header">
-    <h1 class="sw-page__title">AlfSwitch</h1>
-    <p class="sw-page__subtitle">Componente de interruptor interactivo con soporte para variantes, tamaños y estilos.</p>
+    <h1 class="sw-page__title">💎 AlfSwitch Elite Demo</h1>
+    <p class="sw-page__subtitle">Componente de interruptor interactivo de alto rendimiento integrado con el Elite Visual Engine.</p>
   </header>
 
   <div class="sw-grid">
-    <!-- CARD: Estilos -->
+    <!-- 1. ESTILOS VISUALES -->
     <div class="sw-card">
       <h2 class="sw-card__title">
         <span class="sw-card__dot sw-card__dot--blue"></span>
-        Estilos
+        Estilos Visuales
       </h2>
       <div class="sw-card__body">
         <div class="sw-demo-row">
           <div class="sw-demo-item">
             <span class="sw-demo-label">Elegant</span>
-            <alf-switch switchStyle="elegant" labelText="Estilo elegant" [(checked)]="checkedElegant" />
+            <alf-switch switchStyle="elegant" labelText="Estilo elegant" (checked)="checkedElegant" />
           </div>
           <div class="sw-demo-item">
             <span class="sw-demo-label">Standard</span>
-            <alf-switch switchStyle="standard" labelText="Estilo standard" [(checked)]="checkedStandard" />
+            <alf-switch switchStyle="standard" labelText="Estilo standard" (checked)="checkedStandard" />
           </div>
         </div>
       </div>
     </div>
 
-    <!-- CARD: Posición del label -->
+    <!-- 2. POSICIÓN DEL LABEL -->
     <div class="sw-card">
       <h2 class="sw-card__title">
         <span class="sw-card__dot sw-card__dot--purple"></span>
@@ -33,246 +33,470 @@
       </h2>
       <div class="sw-card__body">
         <div class="sw-demo-col">
-          <alf-switch labelText="Switch básico" [(checked)]="checkedBasic" />
-          <alf-switch labelText="Label a la izquierda" labelPosition="before" [(checked)]="checkedLabelBefore" />
+          <alf-switch labelText="Label a la derecha (Default)" (checked)="checkedBasic" />
+          <alf-switch labelText="Label a la izquierda" labelPosition="before" (checked)="checkedLabelBefore" />
         </div>
       </div>
     </div>
 
-    <!-- CARD: Helper & Error -->
-    <div class="sw-card">
-      <h2 class="sw-card__title">
-        <span class="sw-card__dot sw-card__dot--amber"></span>
-        Helper & Error
-      </h2>
-      <div class="sw-card__body">
-        <div class="sw-demo-col">
-          <alf-switch labelText="Notificaciones push" helperText="Recibirás alertas en tiempo real" [(checked)]="checkedWithHelper" />
-          <alf-switch labelText="Campo obligatorio" error="Este campo es obligatorio" [(checked)]="checkedWithError" />
-        </div>
-      </div>
-    </div>
-
-    <!-- CARD: Colores -->
-    <div class="sw-card">
-      <h2 class="sw-card__title">
-        <span class="sw-card__dot sw-card__dot--green"></span>
-        Colores personalizados
-      </h2>
-      <div class="sw-card__body">
-        <div class="sw-demo-col">
-          <alf-switch colorVariant="success" labelText="Verde cuando activo" [(checked)]="checkedGreen" />
-          <alf-switch colorVariant="danger" labelText="Rojo cuando activo" [(checked)]="checkedRed" />
-        </div>
-      </div>
-    </div>
-
-    <!-- CARD: Sombras Directas -->
-    <div class="sw-card sw-card--wide">
-      <h2 class="sw-card__title">
-        <span class="sw-card__dot sw-card__dot--amber"></span>
-        Sombras Directas
-      </h2>
-      <div class="sw-card__body">
-        <div class="sw-demo-grid-4">
-          <div class="sw-size-item">
-            <span class="sw-size-badge">Suave</span>
-            <alf-switch 
-              style="
-                --alf-sw-shadows-box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-                --alf-sw-shadows-hover-box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-              "
-              labelText="Interactiva"
-              [(checked)]="checkedShadowSoft"
-            />
-          </div>
-          <div class="sw-size-item">
-            <span class="sw-size-badge">Brillo</span>
-            <alf-switch 
-              style="
-                --alf-sw-shadows-box-shadow: 0 0 0px transparent;
-                --alf-sw-shadows-focus-box-shadow: 0 0 15px rgba(59, 130, 246, 0.8);
-              "
-              labelText="Foco brillante"
-              [(checked)]="checkedShadowGlow"
-            />
-          </div>
-          <div class="sw-size-item">
-            <span class="sw-size-badge">Neón</span>
-            <alf-switch 
-              style="
-                --alf-sw-shadows-box-shadow: 0 8px 16px rgba(139, 92, 246, 0.25);
-                --alf-sw-shadows-hover-box-shadow: 0 12px 24px rgba(139, 92, 246, 0.45);
-              "
-              labelText="Neón profundo"
-              [(checked)]="checkedShadowNeon"
-            />
-          </div>
-          <div class="sw-size-item">
-            <span class="sw-size-badge">Retro</span>
-            <alf-switch 
-              style="
-                --alf-sw-shadows-box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.2);
-                --alf-sw-shadows-hover-box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.4);
-              "
-              labelText="Sombra dura"
-              [(checked)]="checkedShadowRetro"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- CARD: Variantes Sólidas -->
-    <div class="sw-card sw-card--wide">
-      <h2 class="sw-card__title">
-        <span class="sw-card__dot sw-card__dot--indigo"></span>
-        Variantes Sólidas
-      </h2>
-      <div class="sw-card__body">
-        <div class="sw-demo-grid-4">
-          <div class="sw-size-item">
-            <span class="sw-size-badge">Primary</span>
-            <alf-switch colorVariant="primary" labelText="Primary" [(checked)]="checkedPrimary" />
-          </div>
-          <div class="sw-size-item">
-            <span class="sw-size-badge">Secondary</span>
-            <alf-switch colorVariant="secondary" labelText="Secondary" [(checked)]="checkedSecondary" />
-          </div>
-          <div class="sw-size-item">
-            <span class="sw-size-badge">Success</span>
-            <alf-switch colorVariant="success" labelText="Success" [(checked)]="checkedSuccess" />
-          </div>
-          <div class="sw-size-item">
-            <span class="sw-size-badge">Danger</span>
-            <alf-switch colorVariant="danger" labelText="Danger" [(checked)]="checkedDanger" />
-          </div>
-          <div class="sw-size-item">
-            <span class="sw-size-badge">Warning</span>
-            <alf-switch colorVariant="warning" labelText="Warning" [(checked)]="checkedWarning" />
-          </div>
-          <div class="sw-size-item">
-            <span class="sw-size-badge">Info</span>
-            <alf-switch colorVariant="info" labelText="Info" [(checked)]="checkedInfo" />
-          </div>
-          <div class="sw-size-item">
-            <span class="sw-size-badge">Light</span>
-            <alf-switch colorVariant="light" labelText="Light" [(checked)]="checkedLight" />
-          </div>
-          <div class="sw-size-item">
-            <span class="sw-size-badge">Dark</span>
-            <alf-switch colorVariant="dark" labelText="Dark" [(checked)]="checkedDark" />
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- CARD: Tamaños (ancho completo) -->
+    <!-- 3. TAMAÑOS (ANCHO COMPLETO) -->
     <div class="sw-card sw-card--wide">
       <h2 class="sw-card__title">
         <span class="sw-card__dot sw-card__dot--cyan"></span>
-        Tamaños
+        Escala de Dimensiones
       </h2>
       <div class="sw-card__body">
         <div class="sw-demo-sizes">
           <div class="sw-size-item">
             <span class="sw-size-badge">XS</span>
-            <alf-switch size="xs" labelText="XS" [(checked)]="checkedXS" />
+            <alf-switch size="xs" labelText="XS" (checked)="checkedXS" />
           </div>
           <div class="sw-size-item">
             <span class="sw-size-badge">SM</span>
-            <alf-switch size="sm" labelText="SM" [(checked)]="checkedSM" />
+            <alf-switch size="sm" labelText="SM" (checked)="checkedSM" />
           </div>
           <div class="sw-size-item">
             <span class="sw-size-badge">MD</span>
-            <alf-switch size="md" labelText="MD" [(checked)]="checkedMD" />
+            <alf-switch size="md" labelText="MD" (checked)="checkedMD" />
           </div>
           <div class="sw-size-item">
             <span class="sw-size-badge">LG</span>
-            <alf-switch size="lg" labelText="LG" [(checked)]="checkedLG" />
+            <alf-switch size="lg" labelText="LG" (checked)="checkedLG" />
           </div>
           <div class="sw-size-item">
             <span class="sw-size-badge">XL</span>
-            <alf-switch size="xl" labelText="XL" [(checked)]="checkedXL" />
+            <alf-switch size="xl" labelText="XL" (checked)="checkedXL" />
+          </div>
+          <div class="sw-size-item">
+            <span class="sw-size-badge">2XL</span>
+            <alf-switch size="2xl" labelText="2XL" (checked)="checkedXXL" />
           </div>
         </div>
       </div>
     </div>
 
-    <!-- CARD: Estado reactivo -->
-    <div class="sw-card sw-card--terminal">
+    <!-- 4. VARIANTES SÓLIDAS LOOP (ELEGANT Y STANDARD) -->
+    <div class="sw-card sw-card--wide">
+      <h2 class="sw-card__title">
+        VARIANTES SÓLIDAS (ELEGANT & STANDARD)
+      </h2>
+      <div class="sw-card__body">
+        <div class="sw-demo-col" style="gap: 2rem;">
+          <div>
+            <span class="sw-demo-label" style="display: block; margin-bottom: 1.25rem;">Elegant Style</span>
+            <div class="sw-demo-grid-4">
+              @for (variant of solidVariants; track variant) {
+                @let swSignal = getChecked('elegant', variant);
+                <div class="sw-size-item" style="align-items: flex-start; gap: 0.5rem;">
+                  <span class="sw-variant-badge sw-variant-badge--{{ variant }}">{{ variant }}</span>
+                  <alf-switch 
+                    switchStyle="elegant" 
+                    [colorVariant]="variant" 
+                    [labelText]="variant" 
+                    [checked]="swSignal()"
+                    (checkedChange)="swSignal.set($event)" />
+                </div>
+              }
+            </div>
+          </div>
+
+          <div style="margin-top: 1rem; border-top: 1px solid #f1f5f9; padding-top: 2rem;">
+            <span class="sw-demo-label" style="display: block; margin-bottom: 1.25rem;">Standard Style</span>
+            <div class="sw-demo-grid-4">
+              @for (variant of solidVariants; track variant) {
+                @let swSignal = getChecked('standard', variant);
+                <div class="sw-size-item" style="align-items: flex-start; gap: 0.5rem;">
+                  <span class="sw-variant-badge sw-variant-badge--{{ variant }}">{{ variant }}</span>
+                  <alf-switch 
+                    switchStyle="standard" 
+                    [colorVariant]="variant" 
+                    [labelText]="variant" 
+                    [checked]="swSignal()"
+                    (checkedChange)="swSignal.set($event)" />
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 5. VARIANTES OUTLINE (ELEGANT & STANDARD) -->
+    <div class="sw-card sw-card--wide">
+      <h2 class="sw-card__title">
+        VARIANTES OUTLINE (ELEGANT & STANDARD)
+      </h2>
+      <div class="sw-card__body">
+        <div class="sw-demo-col" style="gap: 2rem;">
+          <div>
+            <span class="sw-demo-label" style="display: block; margin-bottom: 1.25rem;">Elegant Style</span>
+            <div class="sw-demo-grid-4">
+              @for (variant of outlineVariants; track variant) {
+                @let swSignal = getChecked('elegant-outline', variant);
+                <div class="sw-size-item" style="align-items: flex-start; gap: 0.5rem;">
+                  <span class="sw-variant-badge sw-variant-badge--{{ getBadgeColorClass(variant) }}">{{ variant }}</span>
+                  <alf-switch 
+                    switchStyle="elegant" 
+                    [colorVariant]="variant" 
+                    [labelText]="variant" 
+                    [checked]="swSignal()"
+                    (checkedChange)="swSignal.set($event)" />
+                </div>
+              }
+            </div>
+          </div>
+
+          <div style="margin-top: 1rem; border-top: 1px solid #f1f5f9; padding-top: 2rem;">
+            <span class="sw-demo-label" style="display: block; margin-bottom: 1.25rem;">Standard Style</span>
+            <div class="sw-demo-grid-4">
+              @for (variant of outlineVariants; track variant) {
+                @let swSignal = getChecked('standard-outline', variant);
+                <div class="sw-size-item" style="align-items: flex-start; gap: 0.5rem;">
+                  <span class="sw-variant-badge sw-variant-badge--{{ getBadgeColorClass(variant) }}">{{ variant }}</span>
+                  <alf-switch 
+                    switchStyle="standard" 
+                    [colorVariant]="variant" 
+                    [labelText]="variant" 
+                    [checked]="swSignal()"
+                    (checkedChange)="swSignal.set($event)" />
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. VARIANTES GHOST (ELEGANT & STANDARD) -->
+    <div class="sw-card sw-card--wide">
+      <h2 class="sw-card__title">
+        VARIANTES GHOST (ELEGANT & STANDARD)
+      </h2>
+      <div class="sw-card__body">
+        <div class="sw-demo-col" style="gap: 2rem;">
+          <div>
+            <span class="sw-demo-label" style="display: block; margin-bottom: 1.25rem;">Elegant Style</span>
+            <div class="sw-demo-grid-4">
+              @for (variant of ghostVariants; track variant) {
+                @let swSignal = getChecked('elegant-ghost', variant);
+                <div class="sw-size-item" style="align-items: flex-start; gap: 0.5rem;">
+                  <span class="sw-variant-badge sw-variant-badge--{{ getBadgeColorClass(variant) }}">{{ variant }}</span>
+                  <alf-switch 
+                    switchStyle="elegant" 
+                    [colorVariant]="variant" 
+                    [labelText]="variant" 
+                    [checked]="swSignal()"
+                    (checkedChange)="swSignal.set($event)" />
+                </div>
+              }
+            </div>
+          </div>
+
+          <div style="margin-top: 1rem; border-top: 1px solid #f1f5f9; padding-top: 2rem;">
+            <span class="sw-demo-label" style="display: block; margin-bottom: 1.25rem;">Standard Style</span>
+            <div class="sw-demo-grid-4">
+              @for (variant of ghostVariants; track variant) {
+                @let swSignal = getChecked('standard-ghost', variant);
+                <div class="sw-size-item" style="align-items: flex-start; gap: 0.5rem;">
+                  <span class="sw-variant-badge sw-variant-badge--{{ getBadgeColorClass(variant) }}">{{ variant }}</span>
+                  <alf-switch 
+                    switchStyle="standard" 
+                    [colorVariant]="variant" 
+                    [labelText]="variant" 
+                    [checked]="swSignal()"
+                    (checkedChange)="swSignal.set($event)" />
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. VARIANTES SOFT -->
+    <div class="sw-card sw-card--wide">
+      <h2 class="sw-card__title">
+        VARIANTES SOFT
+      </h2>
+      <div class="sw-card__body">
+        <div class="sw-demo-grid-4">
+          @for (variant of softVariants; track variant) {
+            @let swSignal = getChecked('soft', variant);
+            <div class="sw-size-item" style="align-items: flex-start; gap: 0.5rem;">
+              <span class="sw-variant-badge sw-variant-badge--{{ getBadgeColorClass(variant) }}">{{ variant }}</span>
+              <alf-switch 
+                [colorVariant]="variant" 
+                [labelText]="variant" 
+                [checked]="swSignal()"
+                (checkedChange)="swSignal.set($event)" />
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. VARIANTES CRYSTAL -->
+    <div class="sw-card sw-card--wide">
+      <h2 class="sw-card__title">
+        VARIANTES CRYSTAL
+      </h2>
+      <div class="sw-card__body">
+        <div class="sw-demo-grid-4">
+          @for (variant of crystalVariants; track variant) {
+            @let swSignal = getChecked('crystal', variant);
+            <div class="sw-size-item" style="align-items: flex-start; gap: 0.5rem;">
+              <span class="sw-variant-badge sw-variant-badge--{{ getBadgeColorClass(variant) }}">{{ variant }}</span>
+              <alf-switch 
+                [colorVariant]="variant" 
+                [labelText]="variant" 
+                [checked]="swSignal()"
+                (checkedChange)="swSignal.set($event)" />
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. VARIANTES 3D -->
+    <div class="sw-card sw-card--wide">
+      <h2 class="sw-card__title">
+        VARIANTES 3D
+      </h2>
+      <div class="sw-card__body">
+        <div class="sw-demo-grid-4">
+          @for (variant of depth3DVariants; track variant) {
+            @let swSignal = getChecked('depth', variant);
+            <div class="sw-size-item" style="align-items: flex-start; gap: 0.5rem;">
+              <span class="sw-variant-badge sw-variant-badge--{{ getBadgeColorClass(variant) }}">{{ variant }}</span>
+              <alf-switch 
+                [colorVariant]="variant" 
+                [labelText]="variant" 
+                [checked]="swSignal()"
+                (checkedChange)="swSignal.set($event)" />
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- 10. VARIANTES DEGRADADO (GRADIENTS) -->
+    <div class="sw-card sw-card--wide">
+      <h2 class="sw-card__title">
+        VARIANTES DEGRADADO (GRADIENTS)
+      </h2>
+      <div class="sw-card__body">
+        <div class="sw-demo-grid-4">
+          @for (variant of gradientVariants; track variant) {
+            @let swSignal = getChecked('gradient', variant);
+            <div class="sw-size-item" style="align-items: flex-start; gap: 0.5rem;">
+              <span class="sw-variant-badge sw-variant-badge--{{ getBadgeColorClass(variant) }}">{{ variant }}</span>
+              <alf-switch 
+                [colorVariant]="variant" 
+                [labelText]="variant" 
+                [checked]="swSignal()"
+                (checkedChange)="swSignal.set($event)" />
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 6. ESTADOS FUNCIONALES / ESCENARIOS -->
+    <div class="sw-card">
+      <h2 class="sw-card__title">
+        <span class="sw-card__dot sw-card__dot--amber"></span>
+        Estados Funcionales
+      </h2>
+      <div class="sw-card__body">
+        <div class="sw-demo-col">
+          <alf-switch labelText="Notificaciones push" helperText="Recibirás alertas en tiempo real" (checked)="checkedWithHelper" />
+          <alf-switch labelText="Campo obligatorio" error="Este campo es obligatorio" (checked)="checkedWithError" />
+          
+          <div class="sw-demo-row" style="margin-top: 0.5rem; gap: 1rem;">
+            <div class="sw-demo-item">
+              <span class="sw-demo-label">Elegant Disabled Off</span>
+              <alf-switch labelText="Bloqueado" [config]="{ disabled: true, checked: false }" />
+            </div>
+            <div class="sw-demo-item">
+              <span class="sw-demo-label">Elegant Disabled On</span>
+              <alf-switch labelText="Bloqueado" [config]="{ disabled: true, checked: true }" />
+            </div>
+          </div>
+          
+          <div class="sw-demo-row" style="gap: 1rem;">
+            <div class="sw-demo-item">
+              <span class="sw-demo-label">Standard Disabled Off</span>
+              <alf-switch switchStyle="standard" labelText="Bloqueado" [config]="{ disabled: true, checked: false }" />
+            </div>
+            <div class="sw-demo-item">
+              <span class="sw-demo-label">Standard Disabled On</span>
+              <alf-switch switchStyle="standard" labelText="Bloqueado" [config]="{ disabled: true, checked: true }" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. SOMBRAS DIRECTAS -->
+    <div class="sw-card">
+      <h2 class="sw-card__title">
+        <span class="sw-card__dot sw-card__dot--amber"></span>
+        Sombras Directas
+      </h2>
+      <div class="sw-card__body">
+        <div class="sw-demo-col">
+          <div class="sw-demo-row" style="justify-content: space-between;">
+            <div class="sw-size-item">
+              <span class="sw-size-badge">Suave</span>
+              <alf-switch 
+                style="
+                  --alf-sw-shadows-box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+                  --alf-sw-shadows-hover-box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+                "
+                labelText="Interactiva"
+                (checked)="checkedShadowSoft"
+              />
+            </div>
+            <div class="sw-size-item">
+              <span class="sw-size-badge">Brillo</span>
+              <alf-switch 
+                style="
+                  --alf-sw-shadows-box-shadow: 0 0 0px transparent;
+                  --alf-sw-shadows-focus-box-shadow: 0 0 15px rgba(59, 130, 246, 0.8);
+                "
+                labelText="Foco brillante"
+                (checked)="checkedShadowGlow"
+              />
+            </div>
+          </div>
+          
+          <div class="sw-demo-row" style="justify-content: space-between; margin-top: 1rem;">
+            <div class="sw-size-item">
+              <span class="sw-size-badge">Neón</span>
+              <alf-switch 
+                style="
+                  --alf-sw-shadows-box-shadow: 0 8px 16px rgba(139, 92, 246, 0.25);
+                  --alf-sw-shadows-hover-box-shadow: 0 12px 24px rgba(139, 92, 246, 0.45);
+                "
+                labelText="Neón profundo"
+                (checked)="checkedShadowNeon"
+              />
+            </div>
+            <div class="sw-size-item">
+              <span class="sw-size-badge">Retro</span>
+              <alf-switch 
+                style="
+                  --alf-sw-shadows-box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.2);
+                  --alf-sw-shadows-hover-box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.4);
+                "
+                labelText="Sombra dura"
+                (checked)="checkedShadowRetro"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. ESTADO REACTIVO -->
+    <div class="sw-card sw-card--wide sw-card--terminal">
       <h2 class="sw-card__title sw-card__title--light">
         <span class="sw-terminal-dot sw-terminal-dot--red"></span>
         <span class="sw-terminal-dot sw-terminal-dot--yellow"></span>
         <span class="sw-terminal-dot sw-terminal-dot--green"></span>
-        <span class="sw-terminal-title">Estado reactivo</span>
+        <span class="sw-terminal-title">Consola de Estado Reactiva (Zoneless Signals)</span>
       </h2>
-      <div class="sw-terminal__body">
-        <p class="sw-terminal__line">
-          <span class="sw-terminal__key">checkedElegant</span>
-          <span class="sw-terminal__sep">→</span>
-          <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedElegant()">{{ checkedElegant() }}</span>
-        </p>
-        <p class="sw-terminal__line">
-          <span class="sw-terminal__key">checkedBasic</span>
-          <span class="sw-terminal__sep">→</span>
-          <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedBasic()">{{ checkedBasic() }}</span>
-        </p>
-        <p class="sw-terminal__line">
-          <span class="sw-terminal__key">checkedWithHelper</span>
-          <span class="sw-terminal__sep">→</span>
-          <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedWithHelper()">{{ checkedWithHelper() }}</span>
-        </p>
-        <p class="sw-terminal__line">
-          <span class="sw-terminal__key">checkedGreen</span>
-          <span class="sw-terminal__sep">→</span>
-          <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedGreen()">{{ checkedGreen() }}</span>
-        </p>
-        <p class="sw-terminal__line">
-          <span class="sw-terminal__key">checkedMD</span>
-          <span class="sw-terminal__sep">→</span>
-          <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedMD()">{{ checkedMD() }}</span>
-        </p>
-        <p class="sw-terminal__line">
-          <span class="sw-terminal__key">checkedPrimary</span>
-          <span class="sw-terminal__sep">→</span>
-          <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedPrimary()">{{ checkedPrimary() }}</span>
-        </p>
-        <p class="sw-terminal__line">
-          <span class="sw-terminal__key">checkedSecondary</span>
-          <span class="sw-terminal__sep">→</span>
-          <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedSecondary()">{{ checkedSecondary() }}</span>
-        </p>
-        <p class="sw-terminal__line">
-          <span class="sw-terminal__key">checkedSuccess</span>
-          <span class="sw-terminal__sep">→</span>
-          <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedSuccess()">{{ checkedSuccess() }}</span>
-        </p>
-        <p class="sw-terminal__line">
-          <span class="sw-terminal__key">checkedDanger</span>
-          <span class="sw-terminal__sep">→</span>
-          <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedDanger()">{{ checkedDanger() }}</span>
-        </p>
-        <p class="sw-terminal__line">
-          <span class="sw-terminal__key">checkedWarning</span>
-          <span class="sw-terminal__sep">→</span>
-          <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedWarning()">{{ checkedWarning() }}</span>
-        </p>
-        <p class="sw-terminal__line">
-          <span class="sw-terminal__key">checkedInfo</span>
-          <span class="sw-terminal__sep">→</span>
-          <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedInfo()">{{ checkedInfo() }}</span>
-        </p>
-        <p class="sw-terminal__line">
-          <span class="sw-terminal__key">checkedLight</span>
-          <span class="sw-terminal__sep">→</span>
-          <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedLight()">{{ checkedLight() }}</span>
-        </p>
-        <p class="sw-terminal__line">
-          <span class="sw-terminal__key">checkedDark</span>
-          <span class="sw-terminal__sep">→</span>
-          <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedDark()">{{ checkedDark() }}</span>
-        </p>
+      <div class="sw-terminal__body" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+        <div>
+          <p class="sw-terminal__line">
+            <span class="sw-terminal__key">checkedElegant</span>
+            <span class="sw-terminal__sep">→</span>
+            <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedElegant()">{{ checkedElegant() }}</span>
+          </p>
+          <p class="sw-terminal__line">
+            <span class="sw-terminal__key">checkedStandard</span>
+            <span class="sw-terminal__sep">→</span>
+            <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedStandard()">{{ checkedStandard() }}</span>
+          </p>
+          <p class="sw-terminal__line">
+            <span class="sw-terminal__key">checkedBasic</span>
+            <span class="sw-terminal__sep">→</span>
+            <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedBasic()">{{ checkedBasic() }}</span>
+          </p>
+          <p class="sw-terminal__line">
+            <span class="sw-terminal__key">checkedLabelBefore</span>
+            <span class="sw-terminal__sep">→</span>
+            <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedLabelBefore()">{{ checkedLabelBefore() }}</span>
+          </p>
+          <p class="sw-terminal__line">
+            <span class="sw-terminal__key">checkedWithHelper</span>
+            <span class="sw-terminal__sep">→</span>
+            <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedWithHelper()">{{ checkedWithHelper() }}</span>
+          </p>
+          <p class="sw-terminal__line">
+            <span class="sw-terminal__key">checkedWithError</span>
+            <span class="sw-terminal__sep">→</span>
+            <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedWithError()">{{ checkedWithError() }}</span>
+          </p>
+        </div>
+
+        <div>
+          <p class="sw-terminal__line">
+            <span class="sw-terminal__key">checkedXS</span>
+            <span class="sw-terminal__sep">→</span>
+            <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedXS()">{{ checkedXS() }}</span>
+          </p>
+          <p class="sw-terminal__line">
+            <span class="sw-terminal__key">checkedSM</span>
+            <span class="sw-terminal__sep">→</span>
+            <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedSM()">{{ checkedSM() }}</span>
+          </p>
+          <p class="sw-terminal__line">
+            <span class="sw-terminal__key">checkedMD</span>
+            <span class="sw-terminal__sep">→</span>
+            <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedMD()">{{ checkedMD() }}</span>
+          </p>
+          <p class="sw-terminal__line">
+            <span class="sw-terminal__key">checkedLG</span>
+            <span class="sw-terminal__sep">→</span>
+            <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedLG()">{{ checkedLG() }}</span>
+          </p>
+          <p class="sw-terminal__line">
+            <span class="sw-terminal__key">checkedXL</span>
+            <span class="sw-terminal__sep">→</span>
+            <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedXL()">{{ checkedXL() }}</span>
+          </p>
+          <p class="sw-terminal__line">
+            <span class="sw-terminal__key">checkedXXL</span>
+            <span class="sw-terminal__sep">→</span>
+            <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedXXL()">{{ checkedXXL() }}</span>
+          </p>
+        </div>
+
+        <div>
+          <p class="sw-terminal__line">
+            <span class="sw-terminal__key">checkedShadowSoft</span>
+            <span class="sw-terminal__sep">→</span>
+            <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedShadowSoft()">{{ checkedShadowSoft() }}</span>
+          </p>
+          <p class="sw-terminal__line">
+            <span class="sw-terminal__key">checkedShadowGlow</span>
+            <span class="sw-terminal__sep">→</span>
+            <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedShadowGlow()">{{ checkedShadowGlow() }}</span>
+          </p>
+          <p class="sw-terminal__line">
+            <span class="sw-terminal__key">checkedShadowNeon</span>
+            <span class="sw-terminal__sep">→</span>
+            <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedShadowNeon()">{{ checkedShadowNeon() }}</span>
+          </p>
+          <p class="sw-terminal__line">
+            <span class="sw-terminal__key">checkedShadowRetro</span>
+            <span class="sw-terminal__sep">→</span>
+            <span class="sw-terminal__value" [class.sw-terminal__value--true]="checkedShadowRetro()">{{ checkedShadowRetro() }}</span>
+          </p>
+        </div>
       </div>
     </div>
   </div>

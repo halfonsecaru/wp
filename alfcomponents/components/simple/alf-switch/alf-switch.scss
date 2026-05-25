@@ -22,6 +22,7 @@
   @include alf-typography-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
   @include alf-text-style-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
   @include alf-outline-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
+  // background and border mixins removed from wrapper because only the track should be colored
   @include alf-transform-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
 
   position: relative;
@@ -32,7 +33,10 @@
   &--disabled {
     cursor: not-allowed;
     pointer-events: none;
+    opacity: 0.5 !important;
   }
+
+
 
   // Internal wrapper
   &-wrapper {
@@ -52,37 +56,54 @@
     display: flex;
     align-items: center;
     flex-shrink: 0;
-    
+
     // MD defaults (2.5rem width x 1.25rem height is standard ratio 2:1)
     width: 2.5rem;
     height: 1.25rem;
     border-radius: 9999px;
 
-    // Unchecked: versión suavizada del color de la variante usando color-mix
-    background-color: color-mix(in srgb, var(--alf-sw-bg-color, #3b82f6) 30%, var(--alf-gray-200, #e9ecef));
-    
+    // ── APAGADO (UNCHECKED) ──
+    // Por defecto, cuando está apagado, usamos el color 'disabled' de la variante
+    background-color: var(--alf-sw-bg-disabled-color, var(--alf-gray-300, #cbd5e1));
+    background-image: var(--alf-sw-bg-disabled-img, none);
     border-width: var(--alf-sw-border-width, 1px);
     border-style: var(--alf-sw-border-style, solid);
-    border-color: var(--alf-sw-border-color, transparent);
-    
-    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    border-color: var(--alf-sw-border-disabled-color, var(--alf-gray-300, #cbd5e1));
 
-    @include alf-shadows-css-vars(
-      $prefix: '--alf-sw',
+    // Pseudo-elemento para transición suave de fondos degradados (variante 3D)
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: inherit;
+      background-color: var(--alf-sw-bg-color, #3b82f6);
+      background-image: var(--alf-sw-bg-img, none);
+      opacity: 0;
+      filter: brightness(1) contrast(1);
+      transition: opacity 0.3s ease, filter 0.2s ease;
+      z-index: 0;
+    }
+
+    transition: background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+
+    @include alf-shadows-css-vars($prefix: '--alf-sw',
       $disabled-selectors: '.alf-sw--disabled &',
       $focus-selectors: '.alf-sw:focus-within &, .alf-sw:focus-visible &'
     );
 
-    .alf-sw:hover & {
-      background-color: color-mix(in srgb, var(--alf-sw-bg-hover-color, var(--alf-sw-bg-color, #2563eb)) 50%, white);
-      border-color: var(--alf-sw-border-hover-color, var(--alf-sw-border-color, transparent));
+    .alf-sw:hover:not(.alf-sw--checked) & {
+      // Sombra interactiva al hacer hover aunque esté apagado
       box-shadow: var(--alf-sw-shadows-hover-box-shadow, var(--alf-sw-shadows-box-shadow, none));
     }
 
-    .alf-sw:active & {
-      background-color: color-mix(in srgb, var(--alf-sw-bg-active-color, var(--alf-sw-bg-color, #1d4ed8)) 60%, white);
-      border-color: var(--alf-sw-border-active-color, var(--alf-sw-border-color, transparent));
-      box-shadow: var(--alf-sw-shadows-active-box-shadow, var(--alf-sw-shadows-hover-box-shadow, var(--alf-sw-shadows-box-shadow, none)));
+    .alf-sw:active:not(.alf-sw--checked) & {
+      // Efecto active apagado
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
     }
   }
 
@@ -95,36 +116,120 @@
     height: 1rem;
     border-radius: 50%;
     background-color: #ffffff;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
+    z-index: 1; // Asegura que siempre esté por encima de la transición del fondo track
+
+    .alf-sw--outline & {
+      // Matches the text color of the variant (handles active/disabled states automatically)
+      background-color: var(--alf-sw-text-color, #ced4da);
+    }
   }
+
+
 
   // Disabled state track tint
-  &--disabled &-track {
-    background-color: color-mix(in srgb, var(--alf-sw-bg-color, #3b82f6) 20%, white) !important;
-    border-color: var(--alf-sw-border-disabled-color, transparent) !important;
-    opacity: 0.6;
-  }
 
-  // Checked state: color completo de la variante
+  // Checked state: color completo de la variante (usando pseudo-elemento para transición suave)
   &--checked &-track {
-    background-color: var(--alf-sw-bg-color, #3b82f6);
     border-color: var(--alf-sw-border-color, transparent);
+
+    &::before {
+      opacity: 1;
+    }
   }
 
   &--checked:hover &-track {
-    background-color: var(--alf-sw-bg-hover-color, var(--alf-sw-bg-color, #2563eb));
     border-color: var(--alf-sw-border-hover-color, var(--alf-sw-border-color, transparent));
+
+    &::before {
+      filter: brightness(1.08) contrast(1.02);
+    }
   }
 
   &--checked:active &-track {
-    background-color: var(--alf-sw-bg-active-color, var(--alf-sw-bg-hover-color, var(--alf-sw-bg-color, #1d4ed8)));
     border-color: var(--alf-sw-border-active-color, var(--alf-sw-border-color, transparent));
+
+    &::before {
+      filter: brightness(0.92) contrast(1.02);
+    }
+  }
+
+  // Desactivamos el pseudo-elemento en variantes outline, ghost y soft para evitar conflictos visuales
+  &--outline &-track::before,
+  &--ghost &-track::before,
+  &--soft &-track::before {
+    display: none;
+  }
+
+  // --- ESTADOS OUTLINE CON MIXIN REUTILIZABLE ---
+
+  // 1. Apagado (Unchecked)
+  &--outline &-track {
+    @include alf-premium-style('--alf-sw', 2%, 8%, 2%, 2%, false);
+  }
+
+  &--outline &-thumb {
+    @include alf-premium-style('--alf-sw', 2%, 8%, 2%, 2%, false);
+  }
+
+  // Hover gobernados por el padre (Apagado)
+  &--outline:not(.alf-sw--disabled):hover &-track {
+    @include alf-premium-style('--alf-sw', 5%, 12%, 5%, 5%, false);
+  }
+
+  // Active gobernados por el padre (Apagado)
+  &--outline:not(.alf-sw--disabled):active &-track,
+  &--outline:not(.alf-sw--disabled) &-wrapper:active &-track,
+  &--outline:not(.alf-sw--disabled) &-track:active {
+    @include alf-premium-style('--alf-sw', 8%, 18%, 8%, 8%, false);
+  }
+
+  // 2. Encendido (Checked)
+  &--outline.alf-sw--checked &-track {
+    @include alf-premium-style('--alf-sw', 5%, 80%, 10%, 10%, false);
+  }
+
+  &--outline.alf-sw--checked &-thumb {
+    @include alf-premium-style('--alf-sw', 80%, 0%, 80%, 80%, false);
+  }
+
+  // Hover gobernados por el padre (Encendido)
+  &--outline.alf-sw--checked:not(.alf-sw--disabled):hover &-track {
+    @include alf-premium-style('--alf-sw', 18%, 100%, 18%, 18%, false);
+  }
+
+  // Active gobernados por el padre (Encendido)
+  &--outline.alf-sw--checked:not(.alf-sw--disabled):active &-track,
+  &--outline.alf-sw--checked:not(.alf-sw--disabled) &-wrapper:active &-track,
+  &--outline.alf-sw--checked:not(.alf-sw--disabled) &-track:active {
+    @include alf-premium-style('--alf-sw', 25%, 100%, 25%, 25%, false);
+  }
+
+  // ── GHOST VARIANT OVERRIDES (SWAPPED FOR CORRECT TRANSPARENCY) ──
+  &--ghost &-track {
+    background-color: var(--alf-sw-bg-color); // Lighter brand color when off (8% opacity)
+    border-color: transparent;
+  }
+
+  &--ghost.alf-sw--checked &-track {
+    background-color: var(--alf-sw-bg-disabled-color); // Darker brand color when on (20% opacity)
+    border-color: transparent;
+  }
+
+  &--ghost.alf-sw--checked:not(.alf-sw--disabled):hover &-track {
+    background-color: color-mix(in srgb, var(--alf-sw-bg-disabled-color) 85%, var(--alf-sw-text-color, #0d6efd)); // Slightly darker premium hover
   }
 
   &--checked &-thumb {
     // Shifts rightward (Width 2.5rem - Thumb 1rem - spacing 4px = 1.25rem shift)
     transform: translateX(1.25rem);
+
+    // En variantes ghost y soft, el thumb encendido hereda el color de la marca
+    .alf-sw--ghost &,
+    .alf-sw--soft & {
+      background-color: var(--alf-sw-text-color, #ced4da);
+    }
   }
 
   // Label text
@@ -132,17 +237,49 @@
     // Definimos la variable para que el mixin la use en todos los estados (normal, hover, active)
     --alf-sw-typography-line-height: 1.25rem;
     @include alf-typography-css-vars('--alf-sw');
-    
+
     display: inline-block;
     font-family: inherit;
-    color: var(--alf-sw-text-color, inherit);
+
+    // Apagado (unchecked): usa el color disabled de la variante (que representa el estado apagado en el switch)
+    color: var(--alf-sw-text-disabled-color, var(--alf-gray-700, #495057));
     transition: color 0.3s ease;
-    
+
     // Fix text jitter/shifting during hover transitions
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     backface-visibility: hidden;
     transform: translateZ(0);
+  }
+
+  // Checked (on) gobernados por el padre
+  &--checked &-label-text {
+    color: var(--alf-sw-text-color, var(--alf-sw-text-active-color)) !important;
+  }
+
+  // Hover gobernados por el padre
+  &--checked:hover &-label-text {
+    color: var(--alf-sw-text-hover-color, var(--alf-sw-text-color, var(--alf-gray-700, #495057))) !important;
+  }
+
+  &:not(.alf-sw--checked):hover &-label-text {
+    color: var(--alf-sw-text-disabled-color, var(--alf-gray-700, #495057)) !important;
+  }
+
+  // Active gobernados por el padre
+  &--checked:active &-label-text,
+  &--checked &-wrapper:active &-label-text {
+    color: var(--alf-sw-text-active-color, var(--alf-sw-text-hover-color, var(--alf-sw-text-color))) !important;
+  }
+
+  &:not(.alf-sw--checked):active &-label-text,
+  &:not(.alf-sw--checked) &-wrapper:active &-label-text {
+    color: var(--alf-sw-text-disabled-color, var(--alf-gray-700, #495057)) !important;
+  }
+
+  // Disabled gobernados por el padre
+  &--disabled &-label-text {
+    color: var(--alf-sw-text-disabled-color, var(--alf-sw-text-color)) !important;
   }
 
   // Helper and errors
@@ -152,7 +289,7 @@
     padding-left: 2.75rem;
     font-size: 0.75rem;
     opacity: 0.7;
-    color: var(--alf-sw-text-color-default, inherit);
+    color: var(--alf-sw-text-color, inherit);
   }
 
   &-error {
@@ -162,7 +299,7 @@
   // Shape variants
   &--standard &-track {
     border-radius: 0.25rem;
-    
+
     .alf-sw-thumb {
       border-radius: 0.2rem;
     }
@@ -176,7 +313,7 @@
   &--xs &-track {
     width: 1.75rem;
     height: 0.85rem;
-    
+
     .alf-sw-thumb {
       width: 0.65rem;
       height: 0.65rem;
@@ -190,7 +327,7 @@
   &--sm &-track {
     width: 2.1rem;
     height: 1.05rem;
-    
+
     .alf-sw-thumb {
       width: 0.85rem;
       height: 0.85rem;
@@ -204,7 +341,7 @@
   &--md &-track {
     width: 2.5rem;
     height: 1.25rem;
-    
+
     .alf-sw-thumb {
       width: 1rem;
       height: 1rem;
@@ -218,7 +355,7 @@
   &--lg &-track {
     width: 3rem;
     height: 1.5rem;
-    
+
     .alf-sw-thumb {
       width: 1.2rem;
       height: 1.2rem;
@@ -232,7 +369,7 @@
   &--xl &-track {
     width: 3.7rem;
     height: 1.85rem;
-    
+
     .alf-sw-thumb {
       width: 1.5rem;
       height: 1.5rem;
@@ -246,7 +383,7 @@
   &--2xl &-track {
     width: 4.5rem;
     height: 2.25rem;
-    
+
     .alf-sw-thumb {
       width: 1.85rem;
       height: 1.85rem;
@@ -255,5 +392,11 @@
 
   &--checked.alf-sw--2xl &-thumb {
     transform: translateX(2.25rem);
+  }
+
+  // ── PREMIUM FROSTED-GLASS GLASSMORPHISM FOR GHOST & CRYSTAL VARIANTS ─────
+  &--ghost &-track,
+  &--crystal &-track {
+    @include alf-glassmorphism;
   }
 }

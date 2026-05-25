@@ -1,6 +1,10 @@
-import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { AlfCheckbox } from '@alfcomponents/components';
-import { AlfCheckboxVariantEnum, AlfColorVariantEnum, AlfSizeEnum } from '@alfcomponents/enums';
+import {
+  AlfColorVariantEnum,
+  AlfSizeEnum,
+  AlfCheckboxVariantEnum
+} from '@alfcomponents/enums';
 
 @Component({
   selector: 'app-alf-checkbox-viewer',
@@ -11,10 +15,22 @@ import { AlfCheckboxVariantEnum, AlfColorVariantEnum, AlfSizeEnum } from '@alfco
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AlfCheckboxViewer {
-  public readonly AlfCheckboxVariantEnum = AlfCheckboxVariantEnum;
   public readonly AlfColorVariantEnum = AlfColorVariantEnum;
+  public readonly AlfSizeEnum = AlfSizeEnum;
+  public readonly AlfCheckboxVariantEnum = AlfCheckboxVariantEnum;
 
-  public readonly solidVariants = [
+  public readonly selectedStyleGroup = signal<string>('elegant');
+  public readonly selectedLabelPosGroup = signal<string>('after');
+  public readonly selectedSizeGroup = signal<AlfSizeEnum>(AlfSizeEnum.MD);
+
+  public readonly selectedSolidElegantGroup = signal<string>('primary');
+  public readonly selectedSolidStandardGroup = signal<string>('primary');
+
+  public readonly checkedWithHelper = signal<boolean>(false);
+  public readonly checkedWithError = signal<boolean>(false);
+  public readonly dynamicSelected = signal<string>('Option A');
+
+  public readonly solidVariants: readonly AlfColorVariantEnum[] = [
     AlfColorVariantEnum.Primary,
     AlfColorVariantEnum.Secondary,
     AlfColorVariantEnum.Success,
@@ -22,23 +38,10 @@ export class AlfCheckboxViewer {
     AlfColorVariantEnum.Warning,
     AlfColorVariantEnum.Info,
     AlfColorVariantEnum.Dark,
-    AlfColorVariantEnum.Default,
+    AlfColorVariantEnum.Light
   ];
 
-  public readonly premiumVariants = [
-    AlfColorVariantEnum.PrimarySoft,
-    AlfColorVariantEnum.SuccessSoft,
-    AlfColorVariantEnum.PrimaryCrystal,
-    AlfColorVariantEnum.GradientPurple,
-    AlfColorVariantEnum.GradientSunset,
-  ];
-
-  public readonly checkboxStyles = [
-    { name: 'Elegant', value: AlfCheckboxVariantEnum.Elegant },
-    { name: 'Standard', value: AlfCheckboxVariantEnum.Standard },
-  ];
-
-  public readonly sizes = [
+  public readonly sizes: readonly AlfSizeEnum[] = [
     AlfSizeEnum.XS,
     AlfSizeEnum.SM,
     AlfSizeEnum.MD,
@@ -47,23 +50,18 @@ export class AlfCheckboxViewer {
     AlfSizeEnum.XXL
   ];
 
-  private readonly checkedStates = new Map<string, any>();
-
-  /**
-   * Helper to get/create a signal for a specific combination.
-   * This maintains internal state for all checkboxes in the demo.
-   */
-  public getChecked(style: string, variant: string) {
-    const key = `${style}-${variant}`;
-    if (!this.checkedStates.has(key)) {
-      // Default to checked for standard/premium variants to show off colors
-      this.checkedStates.set(key, signal(true));
-    }
-    return this.checkedStates.get(key);
-  }
-
-  /**
-   * For indeterminate demo
-   */
-  public readonly indeterminateSignal = signal(true);
+  public readonly getBadgeColorClass = (variant: string): string => {
+    const v = variant.toLowerCase();
+    if (v.includes('primary')) return 'primary';
+    if (v.includes('secondary') || v.includes('default')) return 'secondary';
+    if (v.includes('success')) return 'success';
+    if (v.includes('danger')) return 'danger';
+    if (v.includes('warning') || v.includes('sunset')) return 'warning';
+    if (v.includes('info') || v.includes('ocean')) return 'info';
+    if (v.includes('dark')) return 'dark';
+    if (v.includes('light')) return 'light';
+    if (v.includes('purple')) return 'primary';
+    if (v.includes('forest')) return 'success';
+    return 'primary';
+  };
 }

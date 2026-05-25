@@ -23,6 +23,7 @@ import { AlfButtonInterface, ButtonLink } from './interfaces/alf-button.interfac
 import { getAlfButtonDefaultConfig } from './predefined/alf-button.predefined';
 import { AlfButtonI18nLabels } from './i18n/alf-button.i18n';
 import { CommonModule } from '@angular/common';
+import { AlfComponentTypeEnum } from '@alfcomponents/base/defaultVariants';
 
 @Component({
   selector: 'alf-button',
@@ -34,17 +35,13 @@ import { CommonModule } from '@angular/common';
 })
 export class AlfButton extends AlfBaseConfiguration<AlfButtonInterface> {
 
-  // ── Configuración base ────────────────────────────────────────────────────
-
+  // A) Generales a todo el componente
   protected override readonly visualPrefix = visualprefixEnum.Buttons;
+  protected override readonly componentType = AlfComponentTypeEnum.Button;
   protected readonly internalId = generateUniqueId({ prefix: visualprefixEnum.ButtonsInternalId });
 
-  // ── Signals internos ──────────────────────────────────────────────────────
-
+  // B) Internos
   private lastClickTime = 0;
-
-  // ── ElementRef ────────────────────────────────────────────────────────────
-
   private readonly el = inject(ElementRef);
 
   // ── Inputs de variante / config ───────────────────────────────────────────
@@ -69,7 +66,7 @@ export class AlfButton extends AlfBaseConfiguration<AlfButtonInterface> {
    * 1. Obtenemos la configuración predefinida basada en variante y estilo
    */
   protected readonly predefinedConfig = computed(() => {
-    return getAlfButtonDefaultConfig(this.colorVariantComputed(), this.predefined());
+    return getAlfButtonDefaultConfig(this.colorVariantComputed());
   });
 
   /**

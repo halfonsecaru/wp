@@ -23,7 +23,7 @@ import {
     AlfTransformBaseInterface,
     AlfAnimateCssInterface,
 } from '@alfcomponents/interfaces';
-import { resolveVariantConfig } from './defaultVariants';
+import { AlfComponentTypeEnum, resolveVariantConfig } from './defaultVariants';
 
 
 
@@ -35,9 +35,10 @@ import { resolveVariantConfig } from './defaultVariants';
  * @returns Configuración visual base tipada como MainVisualStyleInterface.
  */
 export const getPredefinedVisualType = (
-    type: AlfColorVariantEnum = AlfColorVariantEnum.Default
+    type: AlfColorVariantEnum = AlfColorVariantEnum.Default,
+    componentType?: AlfComponentTypeEnum
 ): MainVisualStyleInterface => {
-    return resolveVariantConfig(type) as unknown as MainVisualStyleInterface;
+    return resolveVariantConfig(type, componentType) as unknown as MainVisualStyleInterface;
 };
 
 
@@ -75,8 +76,9 @@ const addStateToDeclarations = (
 export const visualBackgroundBase = <TPrefix extends string>(prefix: TPrefix, input: {
     readonly type: AlfColorVariantEnum;
     readonly backgrounds?: AlfBackgroundsInterface;
+    readonly componentType?: AlfComponentTypeEnum;
 }): string => {
-    const selectedVisual = getPredefinedVisualType(input.type);
+    const selectedVisual = getPredefinedVisualType(input.type, input.componentType);
     const predefinedBg = selectedVisual.backgrounds;
     const backgrounds = input.backgrounds;
     const declarations: string[] = [];
@@ -109,8 +111,9 @@ export const visualBackgroundBase = <TPrefix extends string>(prefix: TPrefix, in
 export const visualBorderBase = <TPrefix extends string>(prefix: TPrefix, input: {
     readonly type: AlfColorVariantEnum;
     readonly border?: AlfBorderInterface;
+    readonly componentType?: AlfComponentTypeEnum;
 }): string => {
-    const selectedVisual = getPredefinedVisualType(input.type);
+    const selectedVisual = getPredefinedVisualType(input.type, input.componentType);
     const predefinedBorder = selectedVisual.border;
     const border = input.border;
     const declarations: string[] = [];
@@ -170,8 +173,9 @@ export const visualBorderBase = <TPrefix extends string>(prefix: TPrefix, input:
 export const visualPaddingBase = <TPrefix extends string>(prefix: TPrefix, input: {
     readonly type: AlfColorVariantEnum;
     readonly padding?: AlfPaddingInterface;
+    readonly componentType?: AlfComponentTypeEnum;
 }): string => {
-    const selectedVisual = getPredefinedVisualType(input.type);
+    const selectedVisual = getPredefinedVisualType(input.type, input.componentType);
     const predefinedPadding = selectedVisual.padding;
     const padding = input.padding;
     const declarations: string[] = [];
@@ -205,8 +209,9 @@ export const visualPaddingBase = <TPrefix extends string>(prefix: TPrefix, input
 export const visualShadowsBase = <TPrefix extends string>(prefix: TPrefix, input: {
     readonly type: AlfColorVariantEnum;
     readonly shadows?: AlfShadowsInterface;
+    readonly componentType?: AlfComponentTypeEnum;
 }): string => {
-    const selectedVisual = getPredefinedVisualType(input.type);
+    const selectedVisual = getPredefinedVisualType(input.type, input.componentType);
     const predefinedShadows = selectedVisual.shadows;
     const shadows = input.shadows;
     const declarations: string[] = [];
@@ -281,8 +286,9 @@ export const visualDisplayAndLayoutBase = <TPrefix extends string>(prefix: TPref
 export const visualMarginBase = <TPrefix extends string>(prefix: TPrefix, input: {
     readonly type: AlfColorVariantEnum;
     readonly margin?: AlfMarginInterface;
+    readonly componentType?: AlfComponentTypeEnum;
 }): string => {
-    const selectedVisual = getPredefinedVisualType(input.type);
+    const selectedVisual = getPredefinedVisualType(input.type, input.componentType);
     const predefinedMargin = selectedVisual.margin;
     const margin = input.margin;
     const declarations: string[] = [];
@@ -318,8 +324,9 @@ export const visualMarginBase = <TPrefix extends string>(prefix: TPrefix, input:
 export const visualTransformBase = <TPrefix extends string>(prefix: TPrefix, input: {
     readonly type: AlfColorVariantEnum;
     readonly transform?: AlfTransformInterface;
+    readonly componentType?: AlfComponentTypeEnum;
 }): string => {
-    const selectedVisual = getPredefinedVisualType(input.type);
+    const selectedVisual = getPredefinedVisualType(input.type, input.componentType);
     const predefinedTransform = selectedVisual.transform;
     const transform = input.transform;
     const declarations: string[] = [];
@@ -354,8 +361,9 @@ export const visualTransformBase = <TPrefix extends string>(prefix: TPrefix, inp
 export const visualTextStyleBase = <TPrefix extends string>(prefix: TPrefix, input: {
     readonly type: AlfColorVariantEnum;
     readonly textStyle?: AlfTextStyleInterface;
+    readonly componentType?: AlfComponentTypeEnum;
 }): string => {
-    const selectedVisual = getPredefinedVisualType(input.type);
+    const selectedVisual = getPredefinedVisualType(input.type, input.componentType);
     const predefinedTextStyle = selectedVisual.textStyle;
     const textStyle = input.textStyle;
     const declarations: string[] = [];
@@ -387,8 +395,9 @@ export const visualTextStyleBase = <TPrefix extends string>(prefix: TPrefix, inp
 export const visualTypographyBase = <TPrefix extends string>(prefix: TPrefix, input: {
     readonly type: AlfColorVariantEnum;
     readonly typography?: AlfTypographyInterface;
+    readonly componentType?: AlfComponentTypeEnum;
 }): string => {
-    const selectedVisual = getPredefinedVisualType(input.type);
+    const selectedVisual = getPredefinedVisualType(input.type, input.componentType);
     const predefinedTypography = selectedVisual.typography;
     const typography = input.typography;
     const declarations: string[] = [];
@@ -424,8 +433,9 @@ export const visualTypographyBase = <TPrefix extends string>(prefix: TPrefix, in
 export const visualAnimationsBase = <TPrefix extends string>(prefix: TPrefix, input: {
     readonly type: AlfColorVariantEnum;
     readonly animations?: AlfAnimateCssInterface;
+    readonly componentType?: AlfComponentTypeEnum;
 }): string => {
-    const selectedVisual = getPredefinedVisualType(input.type);
+    const selectedVisual = getPredefinedVisualType(input.type, input.componentType);
     const anims = { ...selectedVisual.animations, ...input.animations };
     const declarations: string[] = [];
 
@@ -468,8 +478,9 @@ export const visualAnimationsClassBase = (input: {
 export const visualOutlineBase = <TPrefix extends string>(prefix: TPrefix, input: {
     readonly type: AlfColorVariantEnum;
     readonly outline?: AlfOutlineInterface;
+    readonly componentType?: AlfComponentTypeEnum;
 }): string => {
-    const selectedVisual = getPredefinedVisualType(input.type);
+    const selectedVisual = getPredefinedVisualType(input.type, input.componentType);
     const predefinedOutline = selectedVisual.outline;
     const outline = input.outline;
     const declarations: string[] = [];

@@ -1,6 +1,10 @@
-import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { AlfRadioButton } from '@alfcomponents/components';
-import { AlfRadioButtonVariantEnum, AlfColorVariantEnum, AlfSizeEnum } from '@alfcomponents/enums';
+import { 
+  AlfColorVariantEnum, 
+  AlfSizeEnum, 
+  AlfRadioButtonVariantEnum 
+} from '@alfcomponents/enums';
 
 @Component({
   selector: 'app-alf-radio-button-viewer',
@@ -11,10 +15,27 @@ import { AlfRadioButtonVariantEnum, AlfColorVariantEnum, AlfSizeEnum } from '@al
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AlfRadioButtonViewer {
-  public readonly AlfRadioButtonVariantEnum = AlfRadioButtonVariantEnum;
+  // Expose Enums to Template
   public readonly AlfColorVariantEnum = AlfColorVariantEnum;
+  public readonly AlfSizeEnum = AlfSizeEnum;
+  public readonly AlfRadioButtonVariantEnum = AlfRadioButtonVariantEnum;
 
-  public readonly solidVariants = [
+  // ── Reactive group states ──────────────────────────────────────────────────
+  public readonly selectedStyleGroup = signal<string>('elegant');
+  public readonly selectedLabelPosGroup = signal<string>('after');
+  public readonly selectedSizeGroup = signal<AlfSizeEnum>(AlfSizeEnum.MD);
+  
+  // States for demo groups
+  public readonly selectedSolidElegantGroup = signal<string>('primary');
+  public readonly selectedSolidStandardGroup = signal<string>('primary');
+
+  // Functional States
+  public readonly checkedWithHelper = signal<boolean>(false);
+  public readonly checkedWithError = signal<boolean>(false);
+  public readonly dynamicSelected = signal<string>('Option A');
+
+  // ── Lists for dynamic iterations ──────────────────────────────────────────
+  public readonly solidVariants: readonly AlfColorVariantEnum[] = [
     AlfColorVariantEnum.Primary,
     AlfColorVariantEnum.Secondary,
     AlfColorVariantEnum.Success,
@@ -22,23 +43,10 @@ export class AlfRadioButtonViewer {
     AlfColorVariantEnum.Warning,
     AlfColorVariantEnum.Info,
     AlfColorVariantEnum.Dark,
-    AlfColorVariantEnum.Default,
+    AlfColorVariantEnum.Light
   ];
 
-  public readonly premiumVariants = [
-    AlfColorVariantEnum.PrimarySoft,
-    AlfColorVariantEnum.SuccessSoft,
-    AlfColorVariantEnum.PrimaryCrystal,
-    AlfColorVariantEnum.GradientPurple,
-    AlfColorVariantEnum.GradientSunset,
-  ];
-
-  public readonly radioStyles = [
-    { name: 'Elegant', value: AlfRadioButtonVariantEnum.Elegant },
-    { name: 'Standard', value: AlfRadioButtonVariantEnum.Standard },
-  ];
-
-  public readonly sizes = [
+  public readonly sizes: readonly AlfSizeEnum[] = [
     AlfSizeEnum.XS,
     AlfSizeEnum.SM,
     AlfSizeEnum.MD,
@@ -47,23 +55,22 @@ export class AlfRadioButtonViewer {
     AlfSizeEnum.XXL
   ];
 
-  private readonly checkedStates = new Map<string, any>();
-
+  // ── Helper functions ──────────────────────────────────────────────────────
   /**
-   * Helper to get/create a signal for a specific combination.
-   * This maintains internal state for all radio buttons in the demo.
+   * Helper to return the specific color suffix for styling badges.
    */
-  public readonly getChecked = (style: string, variant: string) => {
-    const key = `${style}-${variant}`;
-    if (!this.checkedStates.has(key)) {
-      // Default to checked for primary variants to show off colors
-      this.checkedStates.set(key, signal(variant === AlfColorVariantEnum.Primary || variant === AlfColorVariantEnum.PrimarySoft));
-    }
-    return this.checkedStates.get(key);
+  public readonly getBadgeColorClass = (variant: string): string => {
+    const v = variant.toLowerCase();
+    if (v.includes('primary')) return 'primary';
+    if (v.includes('secondary') || v.includes('default')) return 'secondary';
+    if (v.includes('success')) return 'success';
+    if (v.includes('danger')) return 'danger';
+    if (v.includes('warning') || v.includes('sunset')) return 'warning';
+    if (v.includes('info') || v.includes('ocean')) return 'info';
+    if (v.includes('dark')) return 'dark';
+    if (v.includes('light')) return 'light';
+    if (v.includes('purple')) return 'primary';
+    if (v.includes('forest')) return 'success';
+    return 'primary';
   };
-
-  /**
-   * For Radio Group simulation
-   */
-  public readonly selectedGroupValue = signal('Option 1');
 }

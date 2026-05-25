@@ -57,8 +57,20 @@
 
   // --- 5. DISABLED STATE ---
   #{$disabled-selectors} {
-    background-color: var(#{$prefix}-bg-disabled-color, var(#{$prefix}-bg-disabled, $bgc));
-    background-image: var(#{$prefix}-bg-disabled-img, $bgi);
+    background-color: var(#{$prefix}-bg-disabled-color, var(#{$prefix}-bg-disabled, transparent));
+    background-image: var(#{$prefix}-bg-disabled-img, var(#{$prefix}-bg-disabled, none));
     opacity: 0.6;
   }
+}
+
+/**
+ * Aplica un efecto premium de glassmorphism / cristal esmerilado (frosted glass).
+ * Utiliza backdrop-filter con soporte y fallback para navegadores antiguos.
+ *
+ * @param {Number} $blur - Desenfoque del fondo (default: 8px)
+ * @param {Number} $saturate - Saturación de los colores filtrados (default: 140%)
+ */
+@mixin alf-glassmorphism($blur: 8px, $saturate: 140%) {
+  backdrop-filter: blur($blur) saturate($saturate) !important;
+  -webkit-backdrop-filter: blur($blur) saturate($saturate) !important;
 }

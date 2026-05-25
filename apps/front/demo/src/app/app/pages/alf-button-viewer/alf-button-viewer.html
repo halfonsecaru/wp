@@ -1,0 +1,309 @@
+<div class="btn-page">
+  <header class="btn-page__header">
+    <h1 class="btn-page__title">💎 AlfButton Elite Demo</h1>
+    <p class="btn-page__subtitle">Componente de botón interactivo de alto rendimiento integrado con el Elite Visual Engine.</p>
+  </header>
+
+  <div class="btn-grid">
+    <!-- 1. ESTILOS Y COMPORTAMIENTO -->
+    <div class="btn-card">
+      <h2 class="btn-card__title">
+        <span class="btn-card__dot btn-card__dot--blue"></span>
+        Comportamiento y Tipos
+      </h2>
+      <div class="btn-card__body">
+        <div class="btn-demo-row">
+          <div class="btn-demo-item">
+            <span class="btn-demo-label">Botón Estándar</span>
+            <alf-button label="Guardar Cambios" [colorVariant]="AlfColorVariantEnum.Primary" />
+          </div>
+          <div class="btn-demo-item">
+            <span class="btn-demo-label">Acción de Envío (Save predefined)</span>
+            <alf-button predefined="save" [colorVariant]="AlfColorVariantEnum.Success" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. ICONOGRAFÍA -->
+    <div class="btn-card">
+      <h2 class="btn-card__title">
+        <span class="btn-card__dot btn-card__dot--purple"></span>
+        Iconografía Integrada
+      </h2>
+      <div class="btn-card__body">
+        <div class="btn-demo-row" style="gap: 1rem;">
+          <div class="btn-demo-item">
+            <span class="btn-demo-label">Sin Icono</span>
+            <alf-button label="Enviar Correo" [colorVariant]="AlfColorVariantEnum.Primary" />
+          </div>
+          <div class="btn-demo-item">
+            <span class="btn-demo-label">Icono Izquierdo</span>
+            <alf-button label="Enviar" [iconLeft]="AlfIconsUnicodeIconEnum.Envelope" [colorVariant]="AlfColorVariantEnum.Primary" />
+          </div>
+          <div class="btn-demo-item">
+            <span class="btn-demo-label">Icono Derecho</span>
+            <alf-button label="Siguiente" [iconRight]="AlfIconsUnicodeIconEnum.ArrowRight" [colorVariant]="AlfColorVariantEnum.Primary" />
+          </div>
+          <div class="btn-demo-item">
+            <span class="btn-demo-label">Solo Icono</span>
+            <alf-button label="" [iconLeft]="AlfIconsUnicodeIconEnum.Settings" [colorVariant]="AlfColorVariantEnum.Primary" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TAMAÑOS (ANCHO COMPLETO) -->
+    <div class="btn-card btn-card--wide">
+      <h2 class="btn-card__title">
+        <span class="btn-card__dot btn-card__dot--cyan"></span>
+        Escala de Dimensiones (XS a 2XL)
+      </h2>
+      <div class="btn-card__body">
+        <div class="btn-demo-sizes">
+          @for (sz of sizes; track sz) {
+            <div class="btn-size-item">
+              <span class="btn-size-badge">{{ sz }}</span>
+              <alf-button [size]="sz" [label]="'Acción (' + sz + ')'" [colorVariant]="AlfColorVariantEnum.Primary" />
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. VARIANTES SÓLIDAS -->
+    <div class="btn-card btn-card--wide">
+      <h2 class="btn-card__title">
+        VARIANTES SÓLIDAS (SOLID COLORS)
+      </h2>
+      <div class="btn-card__body">
+        <div class="btn-demo-grid-4">
+          @for (variant of solidVariants; track variant) {
+            <div class="btn-size-item" style="align-items: flex-start; gap: 0.5rem;">
+              <span class="btn-variant-badge btn-variant-badge--{{ variant }}">{{ variant }}</span>
+              <alf-button 
+                [colorVariant]="variant" 
+                [label]="variant" />
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. VARIANTES OUTLINE -->
+    <div class="btn-card btn-card--wide">
+      <h2 class="btn-card__title">
+        VARIANTES BORDES (OUTLINES)
+      </h2>
+      <div class="btn-card__body">
+        <div class="btn-demo-grid-4">
+          @for (variant of outlineVariants; track variant) {
+            <div class="btn-size-item" style="align-items: flex-start; gap: 0.5rem;">
+              <span class="btn-variant-badge btn-variant-badge--{{ getBadgeColorClass(variant) }}">{{ variant }}</span>
+              <alf-button 
+                [colorVariant]="variant" 
+                label="Outline Action" />
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. VARIANTES GHOST -->
+    <div class="btn-card btn-card--wide">
+      <h2 class="btn-card__title">
+        VARIANTES FANTASMA (GHOSTS)
+      </h2>
+      <div class="btn-card__body">
+        <div class="btn-demo-grid-4">
+          @for (variant of ghostVariants; track variant) {
+            <div class="btn-size-item" style="align-items: flex-start; gap: 0.5rem;">
+              <span class="btn-variant-badge btn-variant-badge--{{ getBadgeColorClass(variant) }}">{{ variant }}</span>
+              <alf-button 
+                [colorVariant]="variant" 
+                label="Ghost Action" />
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. VARIANTES SOFT -->
+    <div class="btn-card btn-card--wide">
+      <h2 class="btn-card__title">
+        VARIANTES SUAVES (SOFT COLORS)
+      </h2>
+      <div class="btn-card__body">
+        <div class="btn-demo-grid-4">
+          @for (variant of softVariants; track variant) {
+            <div class="btn-size-item" style="align-items: flex-start; gap: 0.5rem;">
+              <span class="btn-variant-badge btn-variant-badge--{{ getBadgeColorClass(variant) }}">{{ variant }}</span>
+              <alf-button 
+                [colorVariant]="variant" 
+                label="Soft Action" />
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. VARIANTES CRYSTAL (GLASSMORPHISM) -->
+    <div class="btn-card btn-card--wide">
+      <h2 class="btn-card__title">
+        VARIANTES CRISTAL (CRYSTAL GLASSMORPHISM)
+      </h2>
+      <div class="btn-card__body" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border-radius: 0.75rem; padding: 2rem;">
+        <div class="btn-demo-grid-4">
+          @for (variant of crystalVariants; track variant) {
+            <div class="btn-size-item" style="align-items: flex-start; gap: 0.5rem;">
+              <span class="btn-variant-badge btn-variant-badge--{{ getBadgeColorClass(variant) }}" style="opacity: 0.8; color: white;">{{ variant }}</span>
+              <alf-button 
+                [colorVariant]="variant" 
+                label="Crystal Action" />
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. VARIANTES 3D -->
+    <div class="btn-card btn-card--wide">
+      <h2 class="btn-card__title">
+        VARIANTES TÁCTILES 3D (TACTILE DEPTH)
+      </h2>
+      <div class="btn-card__body">
+        <div class="btn-demo-grid-4">
+          @for (variant of depth3DVariants; track variant) {
+            <div class="btn-size-item" style="align-items: flex-start; gap: 0.5rem;">
+              <span class="btn-variant-badge btn-variant-badge--{{ getBadgeColorClass(variant) }}">{{ variant }}</span>
+              <alf-button 
+                [colorVariant]="variant" 
+                label="3D Depth" />
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- 10. VARIANTES DEGRADADO -->
+    <div class="btn-card btn-card--wide">
+      <h2 class="btn-card__title">
+        VARIANTES DEGRADADO (PREMIUM GRADIENTS)
+      </h2>
+      <div class="btn-card__body">
+        <div class="btn-demo-grid-4">
+          @for (variant of gradientVariants; track variant) {
+            <div class="btn-size-item" style="align-items: flex-start; gap: 0.5rem;">
+              <span class="btn-variant-badge btn-variant-badge--{{ getBadgeColorClass(variant) }}">{{ variant }}</span>
+              <alf-button 
+                [colorVariant]="variant" 
+                label="Gradient Button" />
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- 11. ESTADOS FUNCIONALES / ESCENARIOS -->
+    <div class="btn-card">
+      <h2 class="btn-card__title">
+        <span class="btn-card__dot btn-card__dot--amber"></span>
+        Estados Funcionales e Interactivos
+      </h2>
+      <div class="btn-card__body">
+        <div class="btn-demo-col">
+          <!-- Toggleable loading state -->
+          <div class="btn-demo-row" style="gap: 1.5rem;">
+            <alf-button 
+              [colorVariant]="AlfColorVariantEnum.Primary" 
+              [loading]="showLoading()"
+              label="Cargar Datos" />
+            
+            <alf-button 
+              [colorVariant]="AlfColorVariantEnum.Secondary" 
+              (onClick)="toggleLoading()"
+              [label]="showLoading() ? 'Desactivar Spinner' : 'Activar Spinner'" />
+          </div>
+
+          <!-- Disabled comparisons -->
+          <div class="btn-demo-row" style="gap: 1.5rem; margin-top: 1rem;">
+            <div class="btn-demo-item">
+              <span class="btn-demo-label">Bloqueado (Disabled)</span>
+              <alf-button [colorVariant]="AlfColorVariantEnum.Primary" label="Bloqueado" [disabled]="true" />
+            </div>
+            <div class="btn-demo-item">
+              <span class="btn-demo-label">Bloqueado Soft</span>
+              <alf-button [colorVariant]="AlfColorVariantEnum.PrimarySoft" label="Bloqueado Soft" [disabled]="true" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 12. DEBOUNCE CLICK SHOWCASE -->
+    <div class="btn-card">
+      <h2 class="btn-card__title">
+        <span class="btn-card__dot btn-card__dot--amber"></span>
+        Prevención de Doble Click (Debounce)
+      </h2>
+      <div class="btn-card__body">
+        <div class="btn-demo-col">
+          <p style="margin: 0 0 1rem; color: #475569; font-size: 0.9rem;">
+            Haz doble click muy rápido en ambos botones para ver la diferencia de comportamiento. El botón con protección de debounce solo registrará una acción.
+          </p>
+          <div class="btn-demo-row" style="gap: 1.5rem;">
+            <div class="btn-demo-item">
+              <span class="btn-demo-label">Sin Debounce (Normal)</span>
+              <alf-button 
+                [colorVariant]="AlfColorVariantEnum.Success" 
+                (onClick)="handleStandardClick()"
+                label="Normal Click" />
+            </div>
+
+            <div class="btn-demo-item">
+              <span class="btn-demo-label">Con Debounce 1000ms</span>
+              <alf-button 
+                [colorVariant]="AlfColorVariantEnum.Danger" 
+                [debounceTime]="1000"
+                (onClick)="handleDebouncedClick()"
+                label="Debounced Click" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 13. ESTADO REACTIVO -->
+    <div class="btn-card btn-card--wide btn-card--terminal">
+      <h2 class="btn-card__title btn-card__title--light">
+        <span class="btn-terminal-dot btn-terminal-dot--red"></span>
+        <span class="btn-terminal-dot btn-terminal-dot--yellow"></span>
+        <span class="btn-terminal-dot btn-terminal-dot--green"></span>
+        <span class="btn-terminal-title">Consola de Estado Reactiva (Clicks & Loading)</span>
+      </h2>
+      <div class="btn-terminal__body" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+        <div>
+          <p class="btn-terminal__line">
+            <span class="btn-terminal__key">clicksNormales</span>
+            <span class="btn-terminal__sep">→</span>
+            <span class="btn-terminal__value" [class.btn-terminal__value--true]="clickCount() > 0">{{ clickCount() }}</span>
+          </p>
+        </div>
+        <div>
+          <p class="btn-terminal__line">
+            <span class="btn-terminal__key">clicksDebounced</span>
+            <span class="btn-terminal__sep">→</span>
+            <span class="btn-terminal__value" [class.btn-terminal__value--true]="debounceClickCount() > 0">{{ debounceClickCount() }}</span>
+          </p>
+        </div>
+        <div>
+          <p class="btn-terminal__line">
+            <span class="btn-terminal__key">loadingState</span>
+            <span class="btn-terminal__sep">→</span>
+            <span class="btn-terminal__value" [class.btn-terminal__value--true]="showLoading()">{{ showLoading() }}</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

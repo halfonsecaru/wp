@@ -1,13 +1,229 @@
-.size-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  align-items: center;
+.rb-page {
+	padding: 2.5rem 2rem;
+	max-width: 1100px;
+	margin: 0 auto;
+
+	&__header {
+		margin-bottom: 2.5rem;
+	}
+
+	&__title {
+		font-size: 2.25rem;
+		font-weight: 800;
+		margin: 0 0 0.5rem;
+		background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+		-webkit-background-clip: text;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+
+	&__subtitle {
+		margin: 0;
+		color: #64748b;
+		font-size: 1rem;
+	}
 }
 
-.size-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
+.rb-grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 1.5rem;
+}
+
+// ── Cards ──────────────────────────────────────────────────────────────────
+
+.rb-card {
+	background: #ffffff;
+	border: 1px solid #e2e8f0;
+	border-radius: 1rem;
+	overflow: hidden;
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+	transition: box-shadow 0.2s ease;
+
+	&:hover {
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+	}
+
+	&--wide {
+		grid-column: 1 / -1;
+	}
+
+	&--terminal {
+		background: #0f172a;
+		border-color: #1e293b;
+	}
+
+	&__title {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		font-size: 0.8rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: #475569;
+		margin: 0;
+		padding: 1rem 1.25rem;
+		border-bottom: 1px solid #f1f5f9;
+
+		&--light {
+			color: #94a3b8;
+			border-bottom-color: #1e293b;
+		}
+	}
+
+	&__body {
+		padding: 1.5rem 1.25rem;
+	}
+
+	&__dot {
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		flex-shrink: 0;
+
+		&--blue   { background: #3b82f6; }
+		&--purple { background: #8b5cf6; }
+		&--amber  { background: #f59e0b; }
+		&--green  { background: #22c55e; }
+		&--cyan   { background: #06b6d4; }
+	}
+}
+
+// ── Demo layouts ───────────────────────────────────────────────────────────
+
+.rb-demo-row {
+	display: flex;
+	gap: 2rem;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.rb-demo-col {
+	display: flex;
+	flex-direction: column;
+	gap: 1.25rem;
+}
+
+.rb-demo-item {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.rb-demo-label {
+	font-size: 0.7rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	color: #94a3b8;
+}
+
+// ── Tamaños ────────────────────────────────────────────────────────────────
+
+.rb-demo-sizes {
+	display: flex;
+	align-items: center;
+	gap: 2.5rem;
+	flex-wrap: wrap;
+}
+
+.rb-demo-grid-4 {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 2.5rem 1.5rem;
+	justify-items: start;
+
+	.rb-size-item {
+		align-items: flex-start;
+	}
+}
+
+.rb-size-item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.rb-size-badge {
+	font-size: 0.7rem;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	color: #3b82f6;
+	background: #eff6ff;
+	padding: 0.2rem 0.5rem;
+	border-radius: 0.375rem;
+}
+
+.rb-variant-badge {
+	font-size: 0.68rem;
+	font-weight: 600;
+	letter-spacing: 0.05em;
+	padding: 0.18rem 0.5rem;
+	border-radius: 0.25rem;
+	display: inline-block;
+	text-transform: lowercase;
+
+	&--primary   { color: #3b82f6; background-color: #eff6ff; }
+	&--secondary { color: #4b5563; background-color: #f3f4f6; }
+	&--success   { color: #10b981; background-color: #ecfdf5; }
+	&--danger    { color: #ef4444; background-color: #fef2f2; }
+	&--warning   { color: #d97706; background-color: #fffbeb; }
+	&--info      { color: #0891b2; background-color: #ecfeff; }
+	&--dark      { color: #111827; background-color: #f3f4f6; }
+	&--light     { color: #9ca3af; background-color: #f9fafb; }
+}
+
+
+// ── Terminal ───────────────────────────────────────────────────────────────
+
+.rb-terminal-dot {
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	flex-shrink: 0;
+
+	&--red    { background: #ef4444; }
+	&--yellow { background: #f59e0b; }
+	&--green  { background: #22c55e; }
+}
+
+.rb-terminal-title {
+	margin-left: 0.5rem;
+}
+
+.rb-terminal__body {
+	padding: 1.25rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	font-family: 'Courier New', monospace;
+}
+
+.rb-terminal__line {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	margin: 0;
+}
+
+.rb-terminal__key {
+	font-size: 0.85rem;
+	color: #7dd3fc;
+}
+
+.rb-terminal__sep {
+	color: #475569;
+	font-size: 0.85rem;
+}
+
+.rb-terminal__value {
+	font-size: 0.85rem;
+	color: #f87171;
+	font-weight: 700;
+
+	&--true {
+		color: #4ade80;
+	}
 }

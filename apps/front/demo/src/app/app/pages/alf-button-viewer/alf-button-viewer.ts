@@ -1,52 +1,25 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { AlfSwitch } from '@alfcomponents/components';
-import { AlfColorVariantEnum, AlfSizeEnum, AlfLabelsPositionEnum } from '@alfcomponents/enums';
+import { ChangeDetectionStrategy, Component, signal, computed } from '@angular/core';
+import { AlfButton } from '@alfcomponents/components';
+import { AlfColorVariantEnum, AlfSizeEnum, AlfIconsUnicodeIconEnum } from '@alfcomponents/enums';
 
 @Component({
-  selector: 'app-alf-switch-viewer',
+  selector: 'app-alf-button-viewer',
   standalone: true,
-  imports: [AlfSwitch],
-  templateUrl: './alf-switch-viewer.html',
-  styleUrl: './alf-switch-viewer.scss',
+  imports: [AlfButton],
+  templateUrl: './alf-button-viewer.html',
+  styleUrl: './alf-button-viewer.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AlfSwitchViewer {
+export class AlfButtonViewer {
   // Expose Enums to Template
   public readonly AlfColorVariantEnum = AlfColorVariantEnum;
   public readonly AlfSizeEnum = AlfSizeEnum;
-  public readonly AlfLabelsPositionEnum = AlfLabelsPositionEnum;
+  public readonly AlfIconsUnicodeIconEnum = AlfIconsUnicodeIconEnum;
 
-  // ── Reactive state of individual examples ──────────────────────────────────
-  public readonly checkedElegant = signal<boolean>(true);
-  public readonly checkedStandard = signal<boolean>(false);
-  public readonly checkedBasic = signal<boolean>(false);
-  public readonly checkedLabelBefore = signal<boolean>(false);
-  public readonly checkedWithHelper = signal<boolean>(false);
-  public readonly checkedWithError = signal<boolean>(false);
-
-  public readonly checkedXS = signal<boolean>(false);
-  public readonly checkedSM = signal<boolean>(false);
-  public readonly checkedMD = signal<boolean>(false);
-  public readonly checkedLG = signal<boolean>(false);
-  public readonly checkedXL = signal<boolean>(false);
-  public readonly checkedXXL = signal<boolean>(false);
-
-  public readonly checkedGreen = signal<boolean>(true);
-  public readonly checkedRed = signal<boolean>(true);
-
-  public readonly checkedPrimary = signal<boolean>(true);
-  public readonly checkedSecondary = signal<boolean>(true);
-  public readonly checkedSuccess = signal<boolean>(true);
-  public readonly checkedDanger = signal<boolean>(true);
-  public readonly checkedWarning = signal<boolean>(true);
-  public readonly checkedInfo = signal<boolean>(true);
-  public readonly checkedLight = signal<boolean>(true);
-  public readonly checkedDark = signal<boolean>(true);
-
-  public readonly checkedShadowSoft = signal<boolean>(false);
-  public readonly checkedShadowGlow = signal<boolean>(false);
-  public readonly checkedShadowNeon = signal<boolean>(false);
-  public readonly checkedShadowRetro = signal<boolean>(false);
+  // ── Interactive state of examples ─────────────────────────────────────────
+  public readonly clickCount = signal<number>(0);
+  public readonly debounceClickCount = signal<number>(0);
+  public readonly showLoading = signal<boolean>(false);
 
   // ── Lists for dynamic iterations ──────────────────────────────────────────
   public readonly solidVariants: readonly AlfColorVariantEnum[] = [
@@ -136,17 +109,17 @@ export class AlfSwitchViewer {
     AlfSizeEnum.XXL
   ];
 
-  private readonly checkedStates: Map<string, any> = new Map<string, any>();
+  // ── Methods ────────────────────────────────────────────────────────────────
+  public readonly handleStandardClick = (): void => {
+    this.clickCount.update(c => c + 1);
+  };
 
-  /**
-   * Helper to get or create a signal for a specific dynamic variant in loops.
-   */
-  public readonly getChecked = (style: string, variant: string): any => {
-    const key = `${style}-${variant}`;
-    if (!this.checkedStates.has(key)) {
-      this.checkedStates.set(key, signal(true));
-    }
-    return this.checkedStates.get(key);
+  public readonly handleDebouncedClick = (): void => {
+    this.debounceClickCount.update(c => c + 1);
+  };
+
+  public readonly toggleLoading = (): void => {
+    this.showLoading.update(l => !l);
   };
 
   /**
@@ -167,5 +140,3 @@ export class AlfSwitchViewer {
     return 'primary';
   };
 }
-
-

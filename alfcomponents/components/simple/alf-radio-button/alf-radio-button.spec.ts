@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AlfRadioButton } from './alf-radio-button';
-import { AlfRadioButtonVariantEnum, AlfSizeEnum } from '@alfcomponents/enums';
+import { AlfRadioButtonVariantEnum, AlfSizeEnum, AlfColorVariantEnum } from '@alfcomponents/enums';
 
 describe('AlfRadioButton', () => {
   let component: AlfRadioButton;
@@ -23,11 +23,13 @@ describe('AlfRadioButton', () => {
 
   it('should select when clicked and not already selected', () => {
     const hostElement = fixture.nativeElement as HTMLElement;
-    hostElement.click();
+    hostElement.querySelector('label')?.click();
+    fixture.detectChanges();
     expect(component.checked()).toBe(true);
 
     // Clicking again should stay true (radio behavior)
-    hostElement.click();
+    hostElement.querySelector('label')?.click();
+    fixture.detectChanges();
     expect(component.checked()).toBe(true);
   });
 
@@ -36,13 +38,14 @@ describe('AlfRadioButton', () => {
     fixture.detectChanges();
 
     const hostElement = fixture.nativeElement as HTMLElement;
-    hostElement.click();
+    hostElement.querySelector('label')?.click();
+    fixture.detectChanges();
     expect(component.checked()).toBe(false);
   });
 
   it('should emit change when selected', () => {
     const spy = vi.fn();
-    component.change.subscribe(spy);
+    component.onCheckedChange.subscribe(spy);
 
     component.select();
     expect(spy).toHaveBeenCalled();
@@ -57,22 +60,18 @@ describe('AlfRadioButton', () => {
   });
 
   describe('Elite Variants', () => {
-    it('should resolve StandardPrimary correctly', () => {
-      fixture.componentRef.setInput('variant', 'standard-primary');
+    it('should resolve PrimaryOutline correctly', () => {
+      fixture.componentRef.setInput('variant', AlfColorVariantEnum.PrimaryOutline);
       fixture.detectChanges();
       
-      const config = (component as any).resolvedConfig();
-      expect(config.visualType).toBe('text');
-      expect(config.backgrounds.default.backgroundColor).toBe('transparent');
+      expect(component.isOutline()).toBe(true);
     });
 
-    it('should resolve SoftSuccess correctly', () => {
-      fixture.componentRef.setInput('variant', 'soft-success');
+    it('should resolve PrimarySoft correctly', () => {
+      fixture.componentRef.setInput('variant', AlfColorVariantEnum.PrimarySoft);
       fixture.detectChanges();
       
-      const config = (component as any).resolvedConfig();
-      expect(config.visualType).toBe('soft');
-      expect(config.backgrounds.default.backgroundColor).toContain('color-mix');
+      expect(component.isSoft()).toBe(true);
     });
   });
 

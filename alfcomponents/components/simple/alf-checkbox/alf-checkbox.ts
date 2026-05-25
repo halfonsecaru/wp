@@ -24,6 +24,8 @@ import {
   getAlfCheckboxDefaultConfig,
 } from './predefined/alf-checkbox.predefined';
 
+import { AlfComponentTypeEnum } from '@alfcomponents/base/defaultVariants';
+
 /**
  * AlfCheckbox Component
  * ✅ Elite Design System Standard.
@@ -43,6 +45,7 @@ export class AlfCheckbox extends AlfBaseConfiguration<AlfCheckboxInterface> {
   // ── 1. Attributes ─────────────────────────────────────────────────────────
 
   protected override readonly visualPrefix: string = visualprefixEnum.Checkbox;
+  protected override readonly componentType = AlfComponentTypeEnum.Checkbox;
   protected readonly internalId: string = generateUniqueId({ prefix: 'alf-cb' });
 
   private readonly el: ElementRef = inject(ElementRef);

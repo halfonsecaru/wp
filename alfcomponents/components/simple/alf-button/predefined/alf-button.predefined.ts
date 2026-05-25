@@ -7,7 +7,8 @@ import {
 import { AlfButtonInterface } from '../interfaces/alf-button.interface';
 import { getAlfButtonLabel, AlfButtonI18nLabels } from '../i18n/alf-button.i18n';
 import { SupportedLanguage } from '@alfcomponents/i18n/i18n-utils';
-import { resolveVariantConfig } from '@alfcomponents/base/defaultVariants';
+import { AlfComponentTypeEnum, resolveVariantConfig } from '@alfcomponents/base/defaultVariants';
+import { AlfPaddingInterface } from '@alfcomponents/interfaces';
 
 export const getAlfButtonDefaultConfig = (
   variant: AlfColorVariantEnum,
@@ -15,36 +16,46 @@ export const getAlfButtonDefaultConfig = (
   lang?: SupportedLanguage
 ): AlfButtonInterface => {
 
+  const paddingBase: AlfPaddingInterface = {
+    default: {
+      paddingLeft: AlfPxEnum.Px15,
+      paddingRight: AlfPxEnum.Px15,
+      paddingTop: AlfPxEnum.Px18,
+      paddingBottom: AlfPxEnum.Px18,
+    },
+    hover: {
+      paddingLeft: AlfPxEnum.Px15,
+      paddingRight: AlfPxEnum.Px15,
+      paddingTop: AlfPxEnum.Px18,
+      paddingBottom: AlfPxEnum.Px18,
+    },
+    focus: {
+      paddingLeft: AlfPxEnum.Px15,
+      paddingRight: AlfPxEnum.Px15,
+      paddingTop: AlfPxEnum.Px18,
+      paddingBottom: AlfPxEnum.Px18,
+    },
+    active: {
+      paddingLeft: AlfPxEnum.Px15,
+      paddingRight: AlfPxEnum.Px15,
+      paddingTop: AlfPxEnum.Px18,
+      paddingBottom: AlfPxEnum.Px18,
+    },
+    disabled: {
+      paddingLeft: AlfPxEnum.Px15,
+      paddingRight: AlfPxEnum.Px15,
+      paddingTop: AlfPxEnum.Px18,
+      paddingBottom: AlfPxEnum.Px18,
+    }
+  }
   return {
     type: AlfButtonTypeEnum.Button,
     disabled: false,
     loading: false,
-    debounceTime: 0,
+    debounceTime: 0.100,
     cursor: AlfCursorEnum.Pointer,
-    ...resolveVariantConfig(variant),
-    padding: {
-      default: {
-        paddingLeft: AlfPxEnum.Px20,
-        paddingRight: AlfPxEnum.Px20
-      },
-      hover: {
-        paddingLeft: AlfPxEnum.Px20,
-        paddingRight: AlfPxEnum.Px20
-      },
-      focus: {
-        paddingLeft: AlfPxEnum.Px20,
-        paddingRight: AlfPxEnum.Px20
-      },
-      active: {
-        paddingLeft: AlfPxEnum.Px20,
-        paddingRight: AlfPxEnum.Px20
-      },
-      disabled: {
-        paddingLeft: AlfPxEnum.Px20,
-        paddingRight: AlfPxEnum.Px20
-      },
-    },
-    colorVariant: variant,
+    ...resolveVariantConfig(variant, AlfComponentTypeEnum.Button),
+    padding: paddingBase,
     label: labelKey ? getAlfButtonLabel(labelKey, lang) : 'Button',
   };
 };

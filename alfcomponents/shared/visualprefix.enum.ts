@@ -12,6 +12,7 @@ export enum visualprefixEnum {
 
     // InternalIds
     ButtonsInternalId = '-alf-btn-id',
+    SwitchInternalId = '-alf-sw-id',
     // Directivas
     Ripple = '--alf-ripple',
     Tooltip = '--alf-tooltip',

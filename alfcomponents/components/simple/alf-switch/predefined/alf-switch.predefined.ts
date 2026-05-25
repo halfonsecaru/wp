@@ -4,7 +4,7 @@ import {
   AlfColorVariantEnum
 } from '@alfcomponents/enums';
 import { AlfSwitchInterface } from '../interfaces/alf-switch.interface';
-import { resolveVariantConfig } from '../../../../base/defaultVariants';
+import { AlfComponentTypeEnum, resolveVariantConfig } from '../../../../base/defaultVariants';
 
 /**
  * Default base configuration for the alf-switch component.
@@ -31,7 +31,7 @@ export const getAlfSwitchDefaultConfig = (
   variant?: AlfColorVariantEnum
 ): AlfSwitchInterface => {
   const v = variant ?? AlfColorVariantEnum.Primary;
-  const variantConfig = resolveVariantConfig(v);
+  const variantConfig: Partial<AlfSwitchInterface> = resolveVariantConfig(v, AlfComponentTypeEnum.Switch) as Partial<AlfSwitchInterface>;
   
   return {
     ...ALF_SWITCH_DEFAULT_BASE,

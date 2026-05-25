@@ -13,7 +13,7 @@ import {
 } from '@alfcomponents/enums';
 import { AlfInputInterface } from '../interfaces/alf-input.interface';
 import { AlfBorderInterface, AlfDisplayAndLayoutInterface, AlfPaddingInterface, AlfBorderBaseInterface } from '@alfcomponents/interfaces';
-import { resolveVariantConfig } from '@alfcomponents/base/defaultVariants';
+import { AlfComponentTypeEnum, resolveVariantConfig } from '@alfcomponents/base/defaultVariants';
 
 /**
  * Configuración base por defecto para el componente alf-input.
@@ -120,12 +120,12 @@ export const getAlfInputDefaultConfiguration = (
   if (appearance === 'outline') {
     return {
       ...base,
-      ...(variant !== AlfColorVariantEnum.Default ? resolveVariantConfig(transformSolidToOutline(variant)) : {}),
+      ...(variant !== AlfColorVariantEnum.Default ? resolveVariantConfig(transformSolidToOutline(variant), AlfComponentTypeEnum.Input) : {}),
     };
   } else if (appearance === 'fill' || appearance === 'standard') {
     const isStd = appearance === 'standard';
     const variantConfig = variant !== AlfColorVariantEnum.Default ? transformSolidToOutline(variant) : AlfColorVariantEnum.PrimaryOutline;
-    const config = resolveVariantConfig(variantConfig);
+    const config = resolveVariantConfig(variantConfig, AlfComponentTypeEnum.Input);
 
     return {
       ...config,

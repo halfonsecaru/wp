@@ -24,17 +24,19 @@
 @let animationsClass = animationsClassComputed();
 @let customClass = customClassComputed();
 @let customStyle = customStyleComputed();
+@let isHollow = isOutline();
+@let aria = ariaComputed();
 
 <div 
   class="alf-sw" 
-  [class]="'alf-sw--' + switchStyle + ' ' + 'alf-sw--' + switchSize + ' ' + (isChecked ? 'alf-sw--checked' : '') + ' ' + (isComponentDisabled ? 'alf-sw--disabled' : '') + ' ' + customClass + ' ' + animationsClass" 
-  [style]="displayAndLayoutStyle + marginStyle + customStyle"
+  [class]="'alf-sw--' + switchStyle + ' ' + 'alf-sw--' + switchSize + ' ' + (isChecked ? 'alf-sw--checked' : '') + ' ' + (isComponentDisabled ? 'alf-sw--disabled' : '') + ' ' + (isHollow ? 'alf-sw--outline' : '') + ' ' + (isGhost() ? 'alf-sw--ghost' : '') + ' ' + (isCrystal() ? 'alf-sw--crystal' : '') + ' ' + customClass + ' ' + animationsClass" 
+  [style]="displayAndLayoutStyle + marginStyle + textStyle + customStyle + backgroundsStyle + borderStyle"
 >
   <label 
     class="alf-sw-wrapper" 
     [class.alf-sw-wrapper--label-before]="labelPos === 'before'" 
-    (click)="onLabelClick($event)"
     [style]="paddingStyle"
+    (click)="$event.preventDefault(); toggle()"
   >
     <input 
       type="checkbox" 
@@ -44,14 +46,18 @@
       [disabled]="isComponentDisabled"
       (keydown)="onInputKeydown($event)" 
       [attr.aria-checked]="isChecked"
+      [attr.aria-label]="aria?.ariaLabel || labelText"
+      [attr.aria-labelledby]="aria?.ariaLabelledBy"
+      [attr.aria-describedby]="aria?.ariaDescribedBy || (internalId + '-description')"
       [style]="outlineStyle"
     />
 
     <div 
       class="alf-sw-track"
-      [style]="backgroundsStyle + borderStyle + shadowsStyle + transformStyle + animationsStyle"
+      [style]="shadowsStyle + transformStyle + animationsStyle"
     >
-      <span class="alf-sw-thumb"></span>
+      <span class="alf-sw-thumb"
+      ></span>
     </div>
 
     @if (labelText) {
@@ -64,7 +70,7 @@
 </div>
 
 @if (helperText || errorMsg) {
-<div class="alf-sw-description">
+<div [id]="internalId + '-description'" class="alf-sw-description">
   @if (errorMsg) {
   <span class="alf-sw-error">{{ errorMsg }}</span>
   } @else {

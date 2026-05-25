@@ -8,10 +8,10 @@
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  justify-content: center;
   align-content: center;
   flex-direction: row;
   flex-wrap: nowrap;
+  justify-content: flex-start;
 
   @include alf-transition;
 
@@ -35,6 +35,8 @@
   cursor: pointer;
   user-select: none;
   width: auto;
+  height: auto !important;
+  overflow: visible !important;
 
   &--disabled {
     cursor: not-allowed;
@@ -74,10 +76,10 @@
     // Estilo Base (Unchecked)
     background-color: transparent;
 
-    border-width: var(--alf-rb-border-width, 1px);
-    border-style: var(--alf-rb-border-style, solid);
+    border-width: 1px !important;
+    border-style: solid !important;
     border-color: var(--alf-rb-border-color, var(--alf-gray-300, #d1d5db));
-    
+
     @include alf-transition;
   }
 
@@ -86,8 +88,8 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 55%;
-    height: 55%;
+    width: 65%;
+    height: 65%;
     border-radius: inherit;
     background-color: var(--alf-rb-border-color, var(--alf-rb-bg-color, currentColor));
     opacity: 0;
@@ -100,7 +102,7 @@
   // Estado Seleccionado
   &--checked &-circle {
     border-color: var(--alf-rb-border-color);
-    
+
     .alf-rb-dot {
       opacity: 1;
       transform: translate(-50%, -50%) scale(1);
@@ -124,11 +126,14 @@
 
   // Texto del Label
   &-label-text {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
     font-family: inherit;
-    line-height: 1.25rem;
+    line-height: normal;
     color: var(--alf-rb-bg-color, var(--alf-rb-border-color, inherit)) !important;
     @include alf-transition;
-    margin-top: -1px;
+    margin-top: -4px;
   }
 
   // Descripciones y Helpers
@@ -153,7 +158,9 @@
 
   &--elegant &-circle {
     border-radius: 50%;
-  }  // ── SIZES ─────────────────────────────────────────────────────────────────
+  }
+
+  // ── SIZES ─────────────────────────────────────────────────────────────────
 
   &--xs &-circle {
     width: 0.85rem;

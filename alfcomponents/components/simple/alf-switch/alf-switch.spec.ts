@@ -69,6 +69,22 @@ describe('AlfSwitch', () => {
       const config = (component as any).resolvedConfig();
       expect(config.colorVariant).toBe(AlfColorVariantEnum.Success);
     });
+
+    it('should resolve Primary3D variant correctly', () => {
+      fixture.componentRef.setInput('variant', AlfColorVariantEnum.Primary3D);
+      fixture.detectChanges();
+      
+      const config = (component as any).resolvedConfig();
+      expect(config.colorVariant).toBe(AlfColorVariantEnum.Primary3D);
+    });
+
+    it('should resolve GradientPurple variant correctly', () => {
+      fixture.componentRef.setInput('variant', AlfColorVariantEnum.GradientPurple);
+      fixture.detectChanges();
+      
+      const config = (component as any).resolvedConfig();
+      expect(config.colorVariant).toBe(AlfColorVariantEnum.GradientPurple);
+    });
   });
 
   describe('Validation & Messages', () => {

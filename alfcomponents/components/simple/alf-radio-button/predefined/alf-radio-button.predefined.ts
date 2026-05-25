@@ -4,7 +4,7 @@ import {
   AlfColorVariantEnum,
 } from '@alfcomponents/enums';
 import { AlfRadioButtonInterface } from '../interfaces/alf-radio-button.interface';
-import { resolveVariantConfig } from '@alfcomponents/base/defaultVariants';
+import { AlfComponentTypeEnum, resolveVariantConfig } from '@alfcomponents/base/defaultVariants';
 
 /**
  * Configuración base por defecto para el componente alf-radio-button.
@@ -24,7 +24,7 @@ export const getAlfRadioButtonDefaultConfig = (
   variant?: AlfColorVariantEnum
 ): AlfRadioButtonInterface => {
   const v = variant ?? AlfColorVariantEnum.Secondary;
-  const variantConfig = resolveVariantConfig(v);
+  const variantConfig = resolveVariantConfig(v, AlfComponentTypeEnum.RadioButton) as Partial<AlfRadioButtonInterface>;
 
   return {
     ...ALF_RADIO_BUTTON_DEFAULT,

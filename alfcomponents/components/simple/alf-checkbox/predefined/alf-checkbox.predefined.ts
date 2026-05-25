@@ -5,7 +5,7 @@ import {
   AlfColorEnum
 } from '@alfcomponents/enums';
 import { AlfCheckboxInterface } from '../interfaces/alf-checkbox.interface';
-import { resolveVariantConfig } from '@alfcomponents/base/defaultVariants';
+import { AlfComponentTypeEnum, resolveVariantConfig } from '@alfcomponents/base/defaultVariants';
 
 /**
  * Default base configuration for the alf-checkbox component.
@@ -28,7 +28,7 @@ export const getAlfCheckboxDefaultConfig = (
 ): AlfCheckboxInterface => {
   // If no variant is provided, we default to Transparent to keep it clean
   const v = variant ?? AlfColorVariantEnum.Secondary;
-  const variantConfig = resolveVariantConfig(v);
+  const variantConfig = resolveVariantConfig(v, AlfComponentTypeEnum.Checkbox) as AlfCheckboxInterface;
   
   return {
     ...ALF_CHECKBOX_DEFAULT,

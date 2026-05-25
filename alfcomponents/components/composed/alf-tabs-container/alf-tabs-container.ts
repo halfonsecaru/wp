@@ -44,6 +44,9 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
    */
   public override readonly inputConfig = input<AlfTabsContainerConfigInterface>(ALF_TABS_CONTAINER_DEFAULT, { alias: 'config' });
 
+
+  
+
   /**
    * Final configuration merge.
    * Resolves hierarchy: Inputs > InputConfig > Design System Defaults.

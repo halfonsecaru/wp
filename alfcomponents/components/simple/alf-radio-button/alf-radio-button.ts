@@ -23,6 +23,8 @@ import {
   getAlfRadioButtonDefaultConfig,
 } from './predefined/alf-radio-button.predefined';
 
+import { AlfComponentTypeEnum } from '@alfcomponents/base/defaultVariants';
+
 /**
  * AlfRadioButton Component
  * ✅ Elite Design System Standard.
@@ -42,6 +44,7 @@ export class AlfRadioButton extends AlfBaseConfiguration<AlfRadioButtonInterface
   // ── 1. Attributes ─────────────────────────────────────────────────────────
 
   protected override readonly visualPrefix: string = visualprefixEnum.RadioButton;
+  protected override readonly componentType = AlfComponentTypeEnum.RadioButton;
   protected readonly internalId: string = generateUniqueId({ prefix: 'alf-rb' });
 
   private readonly el: ElementRef = inject(ElementRef);
