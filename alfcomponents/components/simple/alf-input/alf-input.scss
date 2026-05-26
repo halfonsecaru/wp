@@ -85,7 +85,8 @@
   }
 
   &::placeholder {
-    color: var(--alf-cool-gray, #94a3b8);
+    color: var(--alf-inp-text-color, var(--alf-cool-gray, #94a3b8));
+    opacity: 0.5;
     transition: opacity 0.2s ease;
   }
 }
@@ -118,16 +119,18 @@
     top: 0;
     left: 10px;
     transform: translateY(-75%) scale(0.75);
-    color: var(--alf-inp-border-color, var(--alf-cool-gray, #94a3b8));
+    color: var(--alf-inp-text-color, var(--alf-cool-gray, #94a3b8));
     background: transparent;
     padding: 0 6px;
     font-weight: 600;
   }
 }
 
-
-
-
+.alf-input--focused {
+  .alf-input__label--float {
+    color: var(--alf-inp-border-color, var(--alf-cool-gray, #94a3b8));
+  }
+}
 
 .alf-input--error {
   .alf-input__label--float {
@@ -211,5 +214,98 @@
 @keyframes alf-spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+.alf-input--ghost,
+.alf-input--soft,
+.alf-input--crystal {
+  .alf-input__label {
+    color: var(--alf-inp-text-color, var(--alf-cool-gray, #94a3b8));
+
+    &--float {
+      color: var(--alf-inp-text-color, var(--alf-cool-gray, #94a3b8));
+    }
+  }
+}
+
+// Variantes sólidas, 3D y Gradientes: label en reposo = blanco (sobre fondo coloreado)
+// label flotado = fondo transparente + color del borde (visible sobre el input de color)
+.alf-input--solid,
+.alf-input--3d,
+.alf-input--gradient {
+  .alf-input__label {
+    color: var(--alf-inp-text-color, #ffffff);
+
+    &--float {
+      color: var(--alf-inp-border-color, var(--alf-inp-text-color, #ffffff));
+      background: transparent;
+      border-radius: 3px;
+      transform: translateY(-90%) scale(0.75);
+    }
+  }
+}
+
+.alf-input--standard {
+  align-items: flex-end !important;
+  padding-left: 4px !important; // Reducido al mínimo para estar más a la izquierda
+  padding-bottom: 4px !important; // Pegado al máximo abajo
+
+  .alf-input__field-wrap {
+    padding-left: 0;
+    align-items: flex-end;
+  }
+
+  .alf-input__field {
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 0px;
+    margin-bottom: 2px;
+    color: var(--alf-inp-border-color, #1e293b);
+
+    &::placeholder {
+      color: var(--alf-inp-border-color, var(--alf-cool-gray, #94a3b8));
+      opacity: 0.5;
+    }
+  }
+
+  .alf-input__prefix {
+    margin-left: 0px;
+    margin-right: 6px;
+    margin-bottom: 2px; // Alinear con la base del input
+  }
+
+  .alf-input__label {
+    left: 4px;
+    top: auto;
+    bottom: 6px;
+    transform: none;
+    color: var(--alf-inp-border-color, var(--alf-cool-gray, #94a3b8));
+
+    &--has-prefix {
+      left: 32px; // Dejar espacio para el emoji cuando no flote
+    }
+
+    &--float {
+      left: 4px; // Volver a la izquierda cuando flote
+      top: auto;
+      bottom: 26px;
+      transform: scale(0.75);
+      padding: 0;
+      color: var(--alf-inp-border-color, var(--alf-cool-gray, #94a3b8));
+    }
+  }
+
+  // Compensación para evitar que el incremento de 1px del borde inferior desplace el layout
+  &:hover,
+  &.alf-input--focused {
+    margin-bottom: -1px;
+  }
+}
+
+.alf-input--solid,
+.alf-input--dark {
+  .alf-input__field {
+    color: var(--alf-inp-text-color, #ffffff);
   }
 }

@@ -4,7 +4,6 @@ import {
   computed,
   effect,
   ElementRef,
-  inject,
   input,
   model,
   output,
@@ -23,7 +22,8 @@ import {
   alfMinValidator,
   alfMaxValidator,
   alfUrlValidator,
-  alfPatternValidator
+  alfPatternValidator,
+  resolveAlfColorVariant
 } from '@alfcomponents/shared';
 import { AlfColorVariantEnum, AlfInputTypeEnum, AlfInputAppearanceEnum, AlfInputAdornmentEnum, AlfColorEnum } from '@alfcomponents/enums';
 
@@ -42,6 +42,11 @@ import { AlfComponentTypeEnum } from '@alfcomponents/base/defaultVariants';
   templateUrl: './alf-input.html',
   styleUrl: './alf-input.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '[class.alf-input--solid]': 'isSolid()',
+    '[class.alf-input--3d]': 'is3D()',
+    '[class.alf-input--gradient]': 'isGradient()',
+  },
 })
 export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
 
@@ -168,28 +173,16 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
     const inputCfg = this.inputConfig();
 
     // Resolve variant with fallbacks
-    let variantEnum = AlfColorVariantEnum.Default;
-    if (v) {
-      if (typeof v === 'string') {
-        const normalized = v.toLowerCase().replace(/-([a-z])/g, (g) => g[1].toUpperCase());
-        variantEnum = (AlfColorVariantEnum as any)[normalized.charAt(0).toUpperCase() + normalized.slice(1)] ?? AlfColorVariantEnum.Default;
-      } else {
-        variantEnum = v as unknown as AlfColorVariantEnum;
-      }
-    }
+    const variantEnum = resolveAlfColorVariant(v);
 
-
-    // Auto-transform to Outline for Input because inputs are outlined by default
     let finalColorVariant = variantEnum;
     if (finalColorVariant === AlfColorVariantEnum.Default) {
       finalColorVariant = AlfColorVariantEnum.SecondaryOutline;
-    } else if (!finalColorVariant.toString().toLowerCase().includes('outline')) {
-      finalColorVariant = (finalColorVariant.toString() + 'Outline') as AlfColorVariantEnum;
     }
 
     const app = (this.appearance() ?? inputCfg?.appearance ?? AlfInputAppearanceEnum.Outline) as AlfInputAppearanceEnum;
     const base = getAlfInputDefaultConfiguration(finalColorVariant, app);
-    
+
     const final: AlfInputInterface = {
       ...base,
       ...inputCfg,
@@ -284,6 +277,58 @@ export class AlfInput extends AlfBaseConfiguration<AlfInputInterface> {
     if (app) return app === AlfInputAppearanceEnum.Outline;
     return this.colorVariantComputed().toString().toLowerCase().includes('outline') ||
       this.colorVariantComputed() === AlfColorVariantEnum.Default;
+  });
+
+  /** Resolves if the current variant is standard (bottom line only) */
+  public readonly isStandard = computed(() => {
+    const app = this.appearance() ?? this.resolvedConfig()?.appearance;
+    return app === AlfInputAppearanceEnum.Standard;
+  });
+
+  /** Resolves if the current variant is filled */
+  public readonly isFilled = computed(() => {
+    const app = this.appearance() ?? this.resolvedConfig()?.appearance;
+    return app === AlfInputAppearanceEnum.Fill;
+  });
+
+  /** Resolves if the variant has a filled solid dark background */
+  public readonly isSolid = computed(() => {
+    const app = this.appearance() ?? this.resolvedConfig()?.appearance;
+    if (app === AlfInputAppearanceEnum.Outline || app === AlfInputAppearanceEnum.Standard) {
+      return false;
+    }
+
+    const v = this.colorVariantComputed().toString().toLowerCase();
+    return !v.includes('outline') &&
+      !v.includes('ghost') &&
+      !v.includes('soft') &&
+      !v.includes('crystal') &&
+      !v.includes('depth') &&
+      !v.includes('3d') &&
+      !v.includes('gradient') &&
+      v !== 'default';
+  });
+
+  /** Resolves if the variant is a 3D style (solid colored with 3D effect) */
+  public readonly is3D = computed(() => {
+    const app = this.appearance() ?? this.resolvedConfig()?.appearance;
+    if (app === AlfInputAppearanceEnum.Outline || app === AlfInputAppearanceEnum.Standard) {
+      return false;
+    }
+
+    const v = this.colorVariantComputed().toString().toLowerCase();
+    return v.includes('3d') || v.includes('depth');
+  });
+
+  /** Resolves if the variant is a gradient style */
+  public readonly isGradient = computed(() => {
+    const app = this.appearance() ?? this.resolvedConfig()?.appearance;
+    if (app === AlfInputAppearanceEnum.Outline || app === AlfInputAppearanceEnum.Standard) {
+      return false;
+    }
+
+    const v = this.colorVariantComputed().toString().toLowerCase();
+    return v.includes('gradient');
   });
 
   public readonly labelComputed = computed(() =>

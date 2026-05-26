@@ -232,3 +232,21 @@ alf-input {
   margin-top: 0.75rem;
 }
 
+.inp-select-combo {
+  &:hover {
+    border-color: #6366f1 !important;
+    box-shadow: 0 6px 16px rgba(99, 102, 241, 0.1) !important;
+  }
+
+  &:focus {
+    border-color: #4f46e5 !important;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15) !important;
+  }
+}
+
+.inp-select-wrapper:hover .inp-select-arrow {
+  transform: translateY(-50%) scale(1.1) !important;
+  color: #4f46e5 !important;
+}
+
+

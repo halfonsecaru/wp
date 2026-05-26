@@ -1,7 +1,33 @@
 <div class="inp-page">
-  <header class="inp-page__header">
-    <h1 class="inp-page__title">💎 AlfInput Elite Demo</h1>
-    <p class="inp-page__subtitle">Componente de entrada de texto premium integrado con el Elite Visual Engine.</p>
+  <header class="inp-page__header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2.5rem;">
+    <div>
+      <h1 class="inp-page__title">💎 AlfInput Elite Demo</h1>
+      <p class="inp-page__subtitle">Componente de entrada de texto premium integrado con el Elite Visual Engine.</p>
+    </div>
+
+    <!-- Selector de Apariencia Premium -->
+    <div class="appearance-selector" style="display: flex; background: #f1f5f9; padding: 4px; border-radius: 12px; gap: 4px; border: 1px solid #e2e8f0; box-shadow: inset 0 2px 4px rgba(0,0,0,0.04);">
+      <button 
+        type="button"
+        (click)="selectedAppearance.set(AlfInputAppearanceEnum.Outline)"
+        [style.background]="selectedAppearance() === AlfInputAppearanceEnum.Outline ? '#ffffff' : 'transparent'"
+        [style.color]="selectedAppearance() === AlfInputAppearanceEnum.Outline ? '#4f46e5' : '#64748b'"
+        [style.font-weight]="selectedAppearance() === AlfInputAppearanceEnum.Outline ? '600' : '400'"
+        style="border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s ease; display: flex; align-items: center; gap: 6px;"
+      >
+        🔲 Outline
+      </button>
+      <button 
+        type="button"
+        (click)="selectedAppearance.set(AlfInputAppearanceEnum.Standard)"
+        [style.background]="selectedAppearance() === AlfInputAppearanceEnum.Standard ? '#ffffff' : 'transparent'"
+        [style.color]="selectedAppearance() === AlfInputAppearanceEnum.Standard ? '#4f46e5' : '#64748b'"
+        [style.font-weight]="selectedAppearance() === AlfInputAppearanceEnum.Standard ? '600' : '400'"
+        style="border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s ease; display: flex; align-items: center; gap: 6px;"
+      >
+        ➖ Standard
+      </button>
+    </div>
   </header>
 
   <div class="inp-grid">
@@ -16,6 +42,7 @@
           <alf-input 
             label="Usuario" 
             [required]="true"
+            [appearance]="selectedAppearance()"
             prefix="👩‍💼"
             placeholder="Introduce tu usuario..." 
             [value]="valStandard()" 
@@ -33,16 +60,179 @@
       </h2>
       <div class="inp-card__body">
         <div class="inp-demo-col">
-          <alf-input type="password" label="Contraseña" placeholder="Tu contraseña segura" [value]="valPassword()" (onInput)="valPassword.set($event)" />
-          <alf-input type="email" label="Correo Electrónico" placeholder="usuario@empresa.com" [value]="valEmail()" (onInput)="valEmail.set($event)" />
+          <alf-input type="password" [appearance]="selectedAppearance()" label="Contraseña" placeholder="Tu contraseña segura" [value]="valPassword()" (onInput)="valPassword.set($event)" />
+          <alf-input type="email" [appearance]="selectedAppearance()" label="Correo Electrónico" placeholder="usuario@empresa.com" [value]="valEmail()" (onInput)="valEmail.set($event)" />
         </div>
       </div>
     </div>
 
-    <!-- 3. VARIANTES SÓLIDAS -->
+    <!-- 3. VARIANTES OUTLINE -->
     <div class="inp-card inp-card--wide">
       <h2 class="inp-card__title">
-        VARIANTES DE COLOR
+        <span class="inp-card__dot inp-card__dot--blue"></span>
+        VARIANTES OUTLINE (Borde Fino Premium)
+      </h2>
+      <div class="inp-card__body">
+        <div class="inp-demo-col" style="gap: 2rem;">
+          <div class="inp-demo-grid-4">
+            @for (variant of outlineVariants; track variant) {
+              @let inpSignal = getValue('outline', variant);
+              <div class="inp-size-item" style="align-items: stretch; gap: 0.5rem; width: 100%;">
+                <span class="inp-variant-badge inp-variant-badge--outline" style="align-self: flex-start;">{{ variant }}</span>
+                <alf-input 
+                  [variant]="variant" 
+                  [appearance]="selectedAppearance()"
+                  [label]="variant" 
+                  placeholder="Escribe..."
+                  [value]="inpSignal()"
+                  (onInput)="inpSignal.set($event)" />
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. VARIANTES GHOST -->
+    <div class="inp-card inp-card--wide">
+      <h2 class="inp-card__title">
+        <span class="inp-card__dot inp-card__dot--purple"></span>
+        VARIANTES GHOST (Minimalista Transparente)
+      </h2>
+      <div class="inp-card__body">
+        <div class="inp-demo-col" style="gap: 2rem;">
+          <div class="inp-demo-grid-4">
+            @for (variant of ghostVariants; track variant) {
+              @let inpSignal = getValue('ghost', variant);
+              <div class="inp-size-item" style="align-items: stretch; gap: 0.5rem; width: 100%;">
+                <span class="inp-variant-badge inp-variant-badge--ghost" style="align-self: flex-start;">{{ variant }}</span>
+                <alf-input 
+                  [variant]="variant" 
+                  [appearance]="selectedAppearance()"
+                  [label]="variant" 
+                  placeholder="Escribe..."
+                  [value]="inpSignal()"
+                  (onInput)="inpSignal.set($event)" />
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. VARIANTES SOFT -->
+    <div class="inp-card inp-card--wide">
+      <h2 class="inp-card__title">
+        <span class="inp-card__dot inp-card__dot--amber"></span>
+        VARIANTES SOFT (Fondo Pastel Elegante)
+      </h2>
+      <div class="inp-card__body">
+        <div class="inp-demo-col" style="gap: 2rem;">
+          <div class="inp-demo-grid-4">
+            @for (variant of softVariants; track variant) {
+              @let inpSignal = getValue('soft', variant);
+              <div class="inp-size-item" style="align-items: stretch; gap: 0.5rem; width: 100%;">
+                <span class="inp-variant-badge inp-variant-badge--soft" style="align-self: flex-start;">{{ variant }}</span>
+                <alf-input 
+                  [variant]="variant" 
+                  [appearance]="selectedAppearance()"
+                  [label]="variant" 
+                  placeholder="Escribe..."
+                  [value]="inpSignal()"
+                  (onInput)="inpSignal.set($event)" />
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. VARIANTES CRYSTAL -->
+    <div class="inp-card inp-card--wide">
+      <h2 class="inp-card__title">
+        <span class="inp-card__dot inp-card__dot--cyan"></span>
+        VARIANTES CRYSTAL (Glassmorphic Neumorfismo)
+      </h2>
+      <div class="inp-card__body">
+        <div class="inp-demo-col" style="gap: 2rem;">
+          <div class="inp-demo-grid-4">
+            @for (variant of crystalVariants; track variant) {
+              @let inpSignal = getValue('crystal', variant);
+              <div class="inp-size-item" style="align-items: stretch; gap: 0.5rem; width: 100%;">
+                <span class="inp-variant-badge inp-variant-badge--crystal" style="align-self: flex-start;">{{ variant }}</span>
+                <alf-input 
+                  [variant]="variant" 
+                  [appearance]="selectedAppearance()"
+                  [label]="variant" 
+                  placeholder="Escribe..."
+                  [value]="inpSignal()"
+                  (onInput)="inpSignal.set($event)" />
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. VARIANTES 3D -->
+    <div class="inp-card inp-card--wide">
+      <h2 class="inp-card__title">
+        <span class="inp-card__dot inp-card__dot--rose"></span>
+        VARIANTES 3D (Relieve de Profundidad)
+      </h2>
+      <div class="inp-card__body">
+        <div class="inp-demo-col" style="gap: 2rem;">
+          <div class="inp-demo-grid-4">
+            @for (variant of depthVariants; track variant) {
+              @let inpSignal = getValue('depth', variant);
+              <div class="inp-size-item" style="align-items: stretch; gap: 0.5rem; width: 100%;">
+                <span class="inp-variant-badge inp-variant-badge--depth" style="align-self: flex-start;">{{ variant }}</span>
+                <alf-input 
+                  [variant]="variant" 
+                  [appearance]="selectedAppearance()"
+                  [label]="variant" 
+                  placeholder="Escribe..."
+                  [value]="inpSignal()"
+                  (onInput)="inpSignal.set($event)" />
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. VARIANTES DEGRADADAS -->
+    <div class="inp-card inp-card--wide">
+      <h2 class="inp-card__title">
+        <span class="inp-card__dot inp-card__dot--green"></span>
+        GRADIENTES PREMIUM (Futuristas Élite)
+      </h2>
+      <div class="inp-card__body">
+        <div class="inp-demo-col" style="gap: 2rem;">
+          <div class="inp-demo-grid-4">
+            @for (variant of gradientVariants; track variant) {
+              @let inpSignal = getValue('gradient', variant);
+              <div class="inp-size-item" style="align-items: stretch; gap: 0.5rem; width: 100%;">
+                <span class="inp-variant-badge inp-variant-badge--gradient" style="align-self: flex-start;">{{ variant }}</span>
+                <alf-input 
+                  [variant]="variant" 
+                  [appearance]="selectedAppearance()"
+                  [label]="variant" 
+                  placeholder="Escribe..."
+                  [value]="inpSignal()"
+                  (onInput)="inpSignal.set($event)" />
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. VARIANTES SÓLIDAS -->
+    <div class="inp-card inp-card--wide">
+      <h2 class="inp-card__title">
+        <span class="inp-card__dot inp-card__dot--emerald"></span>
+        VARIANTES SÓLIDAS DE COLOR (Fondo Relleno)
       </h2>
       <div class="inp-card__body">
         <div class="inp-demo-col" style="gap: 2rem;">
@@ -50,11 +240,12 @@
             @for (variant of solidVariants; track variant) {
               @let inpSignal = getValue('solid', variant);
               <div class="inp-size-item" style="align-items: stretch; gap: 0.5rem; width: 100%;">
-                <span class="inp-variant-badge inp-variant-badge--{{ variant }}" style="align-self: flex-start;">{{ variant }}</span>
+                <span class="inp-variant-badge inp-variant-badge--solid" style="align-self: flex-start;">{{ variant }}</span>
                 <alf-input 
                   [variant]="variant" 
+                  [appearance]="selectedAppearance()"
                   [label]="variant" 
-                  placeholder="Escribe algo..."
+                  placeholder="Escribe..."
                   [value]="inpSignal()"
                   (onInput)="inpSignal.set($event)" />
               </div>
@@ -72,11 +263,11 @@
       </h2>
       <div class="inp-card__body">
         <div class="inp-demo-col">
-          <alf-input label="Con Ayuda" helperText="Este texto te ayuda a entender el campo" placeholder="Escribe..." [value]="valHelper()" (onInput)="valHelper.set($event)" />
-          <alf-input label="Con Error" error="El formato es incorrecto" [value]="valError()" (onInput)="valError.set($event)" />
+          <alf-input [appearance]="selectedAppearance()" label="Con Ayuda" helperText="Este texto te ayuda a entender el campo" placeholder="Escribe..." [value]="valHelper()" (onInput)="valHelper.set($event)" />
+          <alf-input [appearance]="selectedAppearance()" label="Con Error" error="El formato es incorrecto" [value]="valError()" (onInput)="valError.set($event)" />
           
-          <alf-input label="Deshabilitado" [disabled]="true" [value]="valDisabled()" />
-          <alf-input label="Solo Lectura" [readonly]="true" [value]="valReadonly()" />
+          <alf-input [appearance]="selectedAppearance()" label="Deshabilitado" [disabled]="true" [value]="valDisabled()" />
+          <alf-input [appearance]="selectedAppearance()" label="Solo Lectura" [readonly]="true" [value]="valReadonly()" />
         </div>
       </div>
     </div>
