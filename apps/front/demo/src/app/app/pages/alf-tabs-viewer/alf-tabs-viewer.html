@@ -1,0 +1,120 @@
+<div class="tabs-page">
+  <header class="tabs-page__header">
+    <h1 class="tabs-page__title">AlfTabsContainer Showcase</h1>
+    <p class="tabs-page__subtitle">Interactive demo for the composed tabs container with glassmorphism, transitions, fluidHeight, and premium design patterns.</p>
+  </header>
+
+  <div class="tabs-grid">
+    <!-- Showcase 1: Variants & Appearance -->
+    <section class="tabs-card tabs-card--wide">
+      <h2 class="tabs-card__title">
+        <span class="tabs-card__dot tabs-card__dot--blue"></span>
+        Component Variants & Predefined Styling
+      </h2>
+      <div class="tabs-card__body">
+        <div class="variants-showcase">
+          @for (item of variants; track item.value) {
+            <div class="variant-item">
+              <span class="variant-label">{{ item.label }}</span>
+              <alf-tabs-container [variant]="item.value">
+                <alf-tab label="Overview" iconLeft="💡">
+                  <div class="tab-demo-content">
+                    <h4>Overview Content for {{ item.label }}</h4>
+                    <p>This tab displays general details and is initialized using the <code>{{ item.value }}</code> variant configuration of the Alfonizer Pro framework.</p>
+                  </div>
+                </alf-tab>
+                <alf-tab label="Analytics" iconLeft="📈">
+                  <div class="tab-demo-content">
+                    <h4>Analytics View</h4>
+                    <p>Real-time telemetry and layout properties rendered dynamically inside the tab slot.</p>
+                  </div>
+                </alf-tab>
+                <alf-tab label="Settings" iconLeft="⚙️">
+                  <div class="tab-demo-content">
+                    <h4>Configuration</h4>
+                    <p>Adjust parameters and behavioral signals of the host component directly.</p>
+                  </div>
+                </alf-tab>
+              </alf-tabs-container>
+            </div>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Showcase 2: Fluid Height & Dynamic Transition -->
+    <section class="tabs-card">
+      <h2 class="tabs-card__title">
+        <span class="tabs-card__dot tabs-card__dot--purple"></span>
+        Fluid Height Transition
+      </h2>
+      <div class="tabs-card__body">
+        <p class="tabs-demo-desc">Switch between tabs to see the smooth CSS transition of the container's height based on content size.</p>
+        <alf-tabs-container variant="primary" [fluid]="true">
+          <alf-tab label="Short Content">
+            <div class="tab-demo-content" style="padding: 1rem 0;">
+              <h4>Compact Panel</h4>
+              <p>This tab has a short description paragraph.</p>
+            </div>
+          </alf-tab>
+          <alf-tab label="Medium Content">
+            <div class="tab-demo-content" style="padding: 1rem 0;">
+              <h4>Standard Panel</h4>
+              <p>This tab contains a moderate amount of information to demonstrate height updates.</p>
+              <p>Height adjusts seamlessly using modern CSS variables and web animation mechanics.</p>
+            </div>
+          </alf-tab>
+          <alf-tab label="Tall Content">
+            <div class="tab-demo-content" style="padding: 1rem 0;">
+              <h4>Large Panel</h4>
+              <p>This is a much taller pane designed to show how the container stretches smoothly when this tab gets activated.</p>
+              <p>Our custom ResizeObserver logic ensures that the height is perfectly recalculated and transition animations run cleanly every time.</p>
+              <p>Perfect for forms, step flows, or lazy-loaded grids where height varies dynamically.</p>
+            </div>
+          </alf-tab>
+        </alf-tabs-container>
+      </div>
+    </section>
+
+    <!-- Showcase 3: Nested Tabs Structure -->
+    <section class="tabs-card">
+      <h2 class="tabs-card__title">
+        <span class="tabs-card__dot tabs-card__dot--amber"></span>
+        Nested Tab Containers
+      </h2>
+      <div class="tabs-card__body">
+        <p class="tabs-demo-desc">Deeply nested tabs with proper state hierarchy and isolated height computation.</p>
+        
+        <alf-tabs-container variant="secondary" [(activeIndex)]="nestedActiveIndex1" [fluid]="true">
+          <alf-tab label="First Category">
+            <div class="tab-demo-content" style="padding: 1rem 0;">
+              <h4 style="margin-bottom: 1rem;">Primary Level - Category 1</h4>
+              
+              <alf-tabs-container variant="success" [(activeIndex)]="nestedActiveIndex2" [fluid]="true">
+                <alf-tab label="Sub-Tab A" iconLeft="📁">
+                  <div class="tab-demo-content" style="padding: 0.5rem 0;">
+                    <h5>Nested Content A</h5>
+                    <p>Inside Sub-Tab A, the height is measured independently.</p>
+                  </div>
+                </alf-tab>
+                <alf-tab label="Sub-Tab B" iconLeft="📂">
+                  <div class="tab-demo-content" style="padding: 0.5rem 0;">
+                    <h5>Nested Content B</h5>
+                    <p>Inside Sub-Tab B, demonstrating nested structural isolation.</p>
+                  </div>
+                </alf-tab>
+              </alf-tabs-container>
+            </div>
+          </alf-tab>
+          
+          <alf-tab label="Second Category">
+            <div class="tab-demo-content" style="padding: 1rem 0;">
+              <h4>Primary Level - Category 2</h4>
+              <p>Flat static panel at the top-level categories menu.</p>
+            </div>
+          </alf-tab>
+        </alf-tabs-container>
+      </div>
+    </section>
+  </div>
+</div>
