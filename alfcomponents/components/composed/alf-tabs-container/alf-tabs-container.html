@@ -1,92 +1,70 @@
-@let currentConfig = finalConfig();
+@let bgStyle = createBackgroundsStyle();
+@let borderStyle = createBorderStyle();
+@let paddingStyle = createPaddingStyle();
+@let shadowStyle = createShadowsStyle();
+@let typographyStyle = createTypographyStyle();
+@let textStyle = createTextStyle();
+@let displayStyle = createDisplayAndLayoutStyle();
+@let marginStyle = createMarginStyle();
+@let outlineStyle = createOutlineStyle();
+@let transformStyle = createTransformStyle();
+@let animStyle = createAnimationsStyle();
+@let customStyle = customStyleComputed();
+@let customClass = customClassComputed();
 
-<!-- Estilos de Layout y Base -->
-@let backgroundsStyle = createBackgroundsStyle(); @let borderStyle = createBorderStyle(); @let displayAndLayoutStyle = createDisplayAndLayoutStyle();
-@let marginStyle = createMarginStyle(); @let outlineStyle = createOutlineStyle(); @let paddingStyle = createPaddingStyle(); @let shadowsStyle =
-createShadowsStyle();
-
-<!-- Tipografía y Texto -->
-@let typographyStyle = createTypographyStyle(); @let textStyle = createTextStyle();
-
-<!-- Transformaciones y Animaciones -->
-@let transformStyle = createTransformStyle(); @let animationsStyle = createAnimationsStyle(); @let animationsClass = animationsClassComputed();
-
-<!-- Animaciones de Contenido -->
-@let contentAnimStyle = contentAnimationsStyle(); @let contentAnimClass = contentAnimationsClass();
-
-<!-- Overrides Personalizados y Estado -->
-@let customClass = customClassComputed(); @let customStyle = customStyleComputed(); @let animating = isAnimating();
-@let fluid = isFluidHeight();
-
-<div
-  [class]="'alf-tabs-container ' + customClass + ' ' + animationsClass"
-  [style]="
-    backgroundsStyle + 
-    borderStyle + 
-    displayAndLayoutStyle + 
-    marginStyle + 
-    outlineStyle + 
-    paddingStyle + 
-    shadowsStyle + 
-    typographyStyle + 
-    textStyle + 
-    transformStyle +
-    animationsStyle +
-    customStyle
-  "
+<div 
+  class="alf-tabs-container {{ customClass }}" 
+  [style]="bgStyle + borderStyle + shadowStyle + marginStyle + customStyle"
 >
-  <!-- Navegación de pestañas -->
-  <div
-    class="alf-tabs-header-container"
-    [class.alf-tabs-header-container--can-left]="headerMetrics().canLeft"
-    [class.alf-tabs-header-container--can-right]="headerMetrics().canRight"
-  >
+  <div class="alf-tabs-header-wrapper">
     @if (headerMetrics().canLeft) {
-    <alf-button
-      class="alf-tabs-arrow alf-tabs-arrow--left"
-      [inputConfig]="arrowLeftConfig()"
-      (onClick)="scrollLeft()"
-      aria-label="Deslizar izquierda"
-    />
+      <button class="alf-tabs-arrow alf-tabs-arrow--left" (click)="scrollLeft()">
+        ‹
+      </button>
     }
 
-    <div class="alf-tabs-header-scroll" #headerScroll (scroll)="updateScrollMetrics()">
-      <nav class="alf-tabs-navigation" role="tablist">
-        @for (tab of navigationTabs(); track tab.label; let i = $index) {
-        <alf-button
-          #tabButton
-          [inputConfig]="tab.configuration"
-          (onClick)="setActiveTab(i)"
-          [isActive]="activeIndex() === i"
-          role="tab"
-          [attr.aria-selected]="activeIndex() === i"
-        />
+    <div 
+      #headerScroll 
+      class="alf-tabs-header-scroll" 
+      (scroll)="onScroll()"
+    >
+      <div class="alf-tabs-header-nav" role="tablist">
+        @for (tab of navigationTabs(); track $index) {
+          <button 
+            #tabButton
+            class="alf-tab-header-button"
+            [class.alf-tab-active]="tab.isActive"
+            (click)="setActiveTab($index)"
+            [attr.aria-selected]="activeIndex() === $index"
+            role="tab"
+          >
+            @if (tab.iconLeft) {
+              <span class="alf-tab-icon-left">{{ tab.iconLeft }}</span>
+            }
+            <span class="alf-tab-label">{{ tab.label }}</span>
+            @if (tab.iconRight) {
+              <span class="alf-tab-icon-right">{{ tab.iconRight }}</span>
+            }
+          </button>
         }
-        <!-- Slider animado -->
         <div #slider class="alf-tabs-slider"></div>
-      </nav>
+      </div>
     </div>
 
     @if (headerMetrics().canRight) {
-    <alf-button
-      class="alf-tabs-arrow alf-tabs-arrow--right"
-      [inputConfig]="arrowRightConfig()"
-      (onClick)="scrollRight()"
-      aria-label="Deslizar derecha"
-    />
+      <button class="alf-tabs-arrow alf-tabs-arrow--right" (click)="scrollRight()">
+        ›
+      </button>
     }
   </div>
 
-  <!-- Contenedor de Contenido (Grid Stack) -->
-  <div
-    #contentContainer
-    class="alf-tabs-content"
-    role="tabpanel"
-    [class]="contentAnimationsClass()"
-    [style]="'display: grid; grid-template-columns: minmax(0, 1fr); position: relative; ' + contentAnimationsStyle()"
+  <div 
+    #contentContainer 
+    class="alf-tabs-content-container {{ contentAnimationsClass() }}"
+    [style]="contentAnimationsStyle()"
     (touchstart)="onTouchStart($event)"
     (touchend)="onTouchEnd($event)"
   >
-    <ng-content />
+    <ng-content></ng-content>
   </div>
 </div>

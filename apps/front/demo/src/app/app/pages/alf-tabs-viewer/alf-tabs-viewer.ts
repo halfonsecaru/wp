@@ -29,4 +29,9 @@ export class AlfTabsViewer {
     { label: 'Warning 3D', value: AlfColorVariantEnum.Warning3D },
     { label: 'Gradient Purple', value: AlfColorVariantEnum.GradientPurple }
   ];
+
+  public readonly manyTabs: readonly { label: string; lines: string[] }[] = Array.from({ length: 20 }, (_, i) => ({
+    label: `Tab ${i + 1}`,
+    lines: Array.from({ length: i + 1 }, (_, lineIdx) => `Esta es la línea de contenido número ${lineIdx + 1} de la pestaña ${i + 1}.`)
+  }));
 }

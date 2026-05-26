@@ -13,6 +13,7 @@ import {
   AlfAnimationTypeEnum,
   AlfFontWeightEnum,
   AlfCursorEnum,
+  AlfShadowEnum
 } from '@alfcomponents/enums';
 import { AlfTabsContainerConfigInterface, AlfSingleTabInterface } from '../interfaces/alf-tabs.interface';
 
@@ -67,10 +68,22 @@ export const ALF_TABS_CONTAINER_DEFAULT: AlfTabsContainerConfigInterface = {
     }
   },
   backgrounds: {
-    default: { backgroundColor: AlfColorEnum.Transparent },
-    hover: { backgroundColor: AlfColorEnum.Transparent },
-    active: { backgroundColor: AlfColorEnum.Transparent },
-    focus: { backgroundColor: AlfColorEnum.Transparent }
+    default: {
+      backgroundColor: AlfColorEnum.White,
+      backgroundImage: 'none'
+    },
+    hover: {
+      backgroundColor: AlfColorEnum.Transparent,
+      backgroundImage: 'none'
+    },
+    active: {
+      backgroundColor: AlfColorEnum.Transparent,
+      backgroundImage: 'none'
+    },
+    focus: {
+      backgroundColor: AlfColorEnum.Transparent,
+      backgroundImage: 'none'
+    }
   },
   displayAndLayout: {
     default: {
@@ -175,3 +188,4 @@ export const getAlfTabDefaultConfig = (
     }
   };
 };
+

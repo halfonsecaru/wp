@@ -12,6 +12,9 @@
         Component Variants & Predefined Styling
       </h2>
       <div class="tabs-card__body">
+        <p class="tabs-demo-desc" style="margin-bottom: 1.5rem; color: var(--alf-color-gray-600, #4b5563);">
+          <strong>Nota de Diseño:</strong> Solo están permitidas las variantes cromáticas principales (sólidas). Las variantes avanzadas (como Soft, Outline, Crystal, 3D y degradados) se comportan y heredan el color de su variante sólida base para mantener la consistencia y la legibilidad.
+        </p>
         <div class="variants-showcase">
           @for (item of variants; track item.value) {
             <div class="variant-item">
@@ -113,6 +116,39 @@
               <p>Flat static panel at the top-level categories menu.</p>
             </div>
           </alf-tab>
+        </alf-tabs-container>
+      </div>
+    </section>
+
+    <!-- Showcase 4: Scrollable Tabs (20+ Tabs) -->
+    <section class="tabs-card tabs-card--wide">
+      <h2 class="tabs-card__title">
+        <span class="tabs-card__dot tabs-card__dot--blue"></span>
+        Horizontal Scroll & Slider Alignment (20+ Tabs)
+      </h2>
+      <div class="tabs-card__body">
+        <p class="tabs-demo-desc">Verifying smooth navigation, alignment of the sliding indicator, and absolute-positioned arrows with backdrop blur and fading effects.</p>
+        <alf-tabs-container variant="primary" [fluid]="true">
+          @for (tab of manyTabs; track tab.label; let i = $index) {
+            <alf-tab [label]="tab.label" [iconLeft]="i % 3 === 0 ? '⭐️' : (i % 3 === 1 ? '🔥' : '✨')">
+              <div class="tab-demo-content" style="padding: 1rem 0;">
+                <h4>{{ tab.label }} Active View ({{ tab.lines.length }} líneas)</h4>
+                
+                <div style="margin: 1rem 0; display: flex; flex-direction: column; gap: 6px; border-left: 3px solid var(--alf-color-primary, #3b82f6); padding-left: 12px;">
+                  @for (line of tab.lines; track $index) {
+                    <p style="margin: 0; color: var(--alf-color-gray-600, #4b5563); font-size: 0.9rem; line-height: 1.4;">
+                      {{ line }}
+                    </p>
+                  }
+                </div>
+
+                <div style="margin-top: 1rem; display: flex; gap: 8px;">
+                  <span style="background: var(--alf-color-gray-100, #f3f4f6); padding: 4px 12px; border-radius: 9999px; font-size: 0.8rem;">Index: {{ i }}</span>
+                  <span style="background: var(--alf-color-primary-soft, #eff6ff); color: var(--alf-color-primary, #3b82f6); padding: 4px 12px; border-radius: 9999px; font-size: 0.8rem;">Líneas: {{ tab.lines.length }}</span>
+                </div>
+              </div>
+            </alf-tab>
+          }
         </alf-tabs-container>
       </div>
     </section>
