@@ -17,5 +17,6 @@ export enum visualprefixEnum {
     Ripple = '--alf-ripple',
     Tooltip = '--alf-tooltip',
     Loading = '--alf-loading',
-    Popover = '--alf-popover'
+    Popover = '--alf-popover',
+    TabsContainerInternalId = "TabsContainerInternalId"
 }

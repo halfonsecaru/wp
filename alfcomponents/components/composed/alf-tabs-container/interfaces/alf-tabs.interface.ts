@@ -12,7 +12,8 @@ import {
   AlfShadowsInterface, 
   AlfTextStyleInterface, 
   AlfTypographyInterface, 
-  AlfAnimateCssInterface 
+  AlfAnimateCssInterface,
+  AlfBaseCommonConfigInterface
 } from "@alfcomponents/interfaces";
 import { AlfTabsStyleEnum } from "../enums/alf-tabs.enum";
 import { InjectionToken } from "@angular/core";
@@ -26,7 +27,7 @@ export interface AlfTabsParentInterface {
 
 export const ALF_TABS_CONTAINER_TOKEN = new InjectionToken<AlfTabsParentInterface>('ALF_TABS_CONTAINER_TOKEN');
 
-export interface AlfSingleTabInterface {
+export interface AlfSingleTabInterface extends AlfBaseCommonConfigInterface {
     readonly id: string;
     readonly label: string;
     readonly tabName?: string;
@@ -46,7 +47,8 @@ export interface AlfSingleTabInterface {
     readonly displayAndLayout?: AlfDisplayAndLayoutInterface;
 }
 
-export interface AlfTabsContainerConfigInterface {
+export interface AlfTabsContainerConfigInterface extends AlfBaseCommonConfigInterface {
+    readonly id?: string;
     readonly tabsStyle?: AlfTabsStyleEnum;
     readonly tab?: AlfSingleTabInterface[];
     readonly colorVariant?: AlfColorVariantEnum;

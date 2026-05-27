@@ -318,8 +318,6 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
   });
 
 
-
-
   public readonly animationsClassComputed = computed(() =>
     visualAnimationsClassBase({
       animations: this.animationsComputed(),
@@ -334,15 +332,17 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
     visualBorderBase(this.visualPrefix, {
       type: this.colorVariantComputed(),
       border: this.borderComputed(),
+      componentType: this.componentType,
     }),
   );
 
-  public readonly createBackgroundsStyle = computed(() =>
-    visualBackgroundBase(this.visualPrefix, {
+  public readonly createBackgroundsStyle = computed(() => {
+    return visualBackgroundBase(this.visualPrefix, {
       type: this.colorVariantComputed(),
       backgrounds: this.backgroundsComputed(),
-    }),
-  );
+      componentType: this.componentType,
+    });
+  });
 
 
 
@@ -357,6 +357,7 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
     visualMarginBase(this.visualPrefix, {
       type: this.colorVariantComputed(),
       margin: this.marginComputed(),
+      componentType: this.componentType,
     }),
   );
 
@@ -364,6 +365,7 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
     visualOutlineBase(this.visualPrefix, {
       type: this.colorVariantComputed(),
       outline: this.outlineComputed(),
+      componentType: this.componentType,
     }),
   );
 
@@ -371,6 +373,7 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
     visualPaddingBase(this.visualPrefix, {
       type: this.colorVariantComputed(),
       padding: this.paddingComputed(),
+      componentType: this.componentType,
     }),
   );
 
@@ -378,6 +381,7 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
     visualShadowsBase(this.visualPrefix, {
       type: this.colorVariantComputed(),
       shadows: this.shadowsComputed(),
+      componentType: this.componentType,
     }),
   );
 
@@ -385,6 +389,7 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
     visualTextStyleBase(this.visualPrefix, {
       type: this.colorVariantComputed(),
       textStyle: this.textStyleComputed(),
+      componentType: this.componentType,
     }),
   );
 
@@ -392,6 +397,7 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
     visualTransformBase(this.visualPrefix, {
       type: this.colorVariantComputed(),
       transform: this.transformComputed(),
+      componentType: this.componentType,
     }),
   );
 
@@ -399,6 +405,7 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
     visualTypographyBase(this.visualPrefix, {
       type: this.colorVariantComputed(),
       typography: this.typographyComputed(),
+      componentType: this.componentType,
     }),
   );
 
@@ -406,6 +413,7 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
     visualAnimationsBase(this.visualPrefix, {
       type: this.colorVariantComputed(),
       animations: this.animationsComputed(),
+      componentType: this.componentType,
     }),
   );
 

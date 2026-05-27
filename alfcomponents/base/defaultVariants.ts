@@ -58,6 +58,7 @@ export enum AlfComponentTypeEnum {
     RadioButton = 'RadioButton',
     Input = 'Input',
     Textarea = 'Textarea',
+    Tabs = 'alf-tabs',
     Default = 'Default',
 }
 
@@ -431,7 +432,7 @@ export const resolveVariantConfig = (
     if (!variant) {
         variant = AlfColorVariantEnum.Transparent;
     }
-    if(componentType === AlfComponentTypeEnum.RadioButton || componentType === AlfComponentTypeEnum.Checkbox) {
+    if(componentType === AlfComponentTypeEnum.RadioButton || componentType === AlfComponentTypeEnum.Checkbox || componentType === AlfComponentTypeEnum.Tabs) {
         if(variant.toLowerCase().includes('primary')){
             variant = AlfColorVariantEnum.Primary;
         }

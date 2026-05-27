@@ -143,6 +143,8 @@
   }
 
   .alf-tabs-content-container {
+    @include alf-background-css-vars('--alf-tabs-content');
+
     position: relative;
     width: 100%;
     // Altura controlada por JS a través de la variable CSS

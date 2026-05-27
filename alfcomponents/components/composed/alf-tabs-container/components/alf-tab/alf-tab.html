@@ -8,9 +8,7 @@ customClassComputed(); @let customStyle = customStyleComputed();
   [style.display]="isActive() || isExiting() ? null : 'none'"
   [style.pointer-events]="isActive() ? 'auto' : 'none'"
   [style.width]="'100%'"
-  [style]="
-    bgStyle + paddingStyle + textStyle + layoutStyle + animationStyle() + customStyle
-  "
+  [style]="bgStyle + paddingStyle + textStyle + layoutStyle + animationStyle() + customStyle"
 >
   <div #contentInner class="alf-tab-content-inner">
     <ng-content />

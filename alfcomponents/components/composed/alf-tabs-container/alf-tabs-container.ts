@@ -1,7 +1,7 @@
 import { Component, contentChildren, effect, input, signal, computed, viewChild, ElementRef, viewChildren, untracked, afterNextRender, forwardRef, inject, booleanAttribute, model, Injector } from '@angular/core';
 import { AlfTabComponent } from './components/alf-tab/alf-tab';
 import { AlfButton } from '../../simple/alf-button/alf-button';
-import { visualprefixEnum } from '@alfcomponents/shared';
+import { generateUniqueId, visualprefixEnum } from '@alfcomponents/shared';
 import {
   AlfColorVariantEnum,
   AlfColorEnum,
@@ -15,8 +15,10 @@ import {
   AlfFontSizeEnum
 } from '@alfcomponents/enums';
 import { AlfBaseConfiguration } from '@alfcomponents/base';
+import { AlfComponentTypeEnum } from '@alfcomponents/base/defaultVariants';
+import { visualBackgroundBase } from '@alfcomponents/base/base-visual';
 import { AlfTabsContainerConfigInterface, ALF_TABS_CONTAINER_TOKEN } from './interfaces/alf-tabs.interface';
-import { getAlfTabDefaultConfig, ALF_TABS_CONTAINER_DEFAULT } from './predefined/alf-tabs-container.predefined';
+import { ALF_TABS_CONTAINER_DEFAULT, getAlfTabDefaultConfig } from './predefined/alf-tabs-container.predefined';
 
 @Component({
   selector: 'alf-tabs-container',
@@ -32,6 +34,7 @@ import { getAlfTabDefaultConfig, ALF_TABS_CONTAINER_DEFAULT } from './predefined
   ]
 })
 export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsContainerConfigInterface> {
+
 
   // ==========================================
   // 1. Effects
@@ -58,6 +61,7 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
     const active = this.activeIndex();
     const currentTabs = this.tabs();
     const contentAnim = this.finalConfig()?.contentAnimations;
+    const contentBg = this.finalConfig()?.backgrounds;
 
     currentTabs.forEach((tab, index) => {
       const isActive = index === active;
@@ -65,6 +69,9 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
 
       if (contentAnim) {
         tab.parentContentAnimations.set(contentAnim);
+      }
+      if (contentBg) {
+        tab.parentContentBackgrounds.set(contentBg);
       }
     });
 
@@ -75,8 +82,11 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
   // 2. Attributes (Properties, Injections)
   // ==========================================
   protected override readonly visualPrefix: string = visualprefixEnum.TabsContainer;
+  protected override readonly componentType = AlfComponentTypeEnum.Tabs;
   private readonly parentTab = inject(AlfTabComponent, { optional: true });
   private readonly injector = inject(Injector);
+  private readonly internalId = generateUniqueId({ prefix: visualprefixEnum.TabsContainerInternalId });
+
   private resizeObserver?: ResizeObserver;
   private currentHeightAnimation: Animation | null = null;
   private _touchStartX = 0;
@@ -85,8 +95,8 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
   // ==========================================
   // 3. Signals (Inputs, Models, State)
   // ==========================================
-  public readonly variant = input<AlfColorVariantEnum | undefined>(undefined);
-  public override readonly inputConfig = input<AlfTabsContainerConfigInterface>(ALF_TABS_CONTAINER_DEFAULT, { alias: 'config' });
+  public override readonly colorVariant = input<AlfColorVariantEnum>();
+  public override readonly inputConfig = input<AlfTabsContainerConfigInterface>(undefined, { alias: 'config' });
   public readonly fluidHeightInput = input(false, {
     alias: 'fluid',
     transform: booleanAttribute
@@ -108,69 +118,38 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
   // ==========================================
   // 4. Computed
   // ==========================================
-  public readonly finalConfig = computed<AlfTabsContainerConfigInterface>(() => {
-    const rawV = (this.colorVariant() ?? this.variant() ?? this.inputConfig()?.colorVariant) as string;
-    
-    let v: AlfColorVariantEnum | undefined;
-    if (rawV) {
-      const lowerV = rawV.toLowerCase();
-      const coreVariants: Record<string, AlfColorVariantEnum> = {
-        primary: AlfColorVariantEnum.Primary,
-        secondary: AlfColorVariantEnum.Secondary,
-        success: AlfColorVariantEnum.Success,
-        danger: AlfColorVariantEnum.Danger,
-        warning: AlfColorVariantEnum.Warning,
-        info: AlfColorVariantEnum.Info,
-        light: AlfColorVariantEnum.Light,
-        dark: AlfColorVariantEnum.Dark,
-        transparent: AlfColorVariantEnum.Transparent
-      };
-      
-      v = coreVariants[lowerV] ?? (rawV as AlfColorVariantEnum);
-    }
+  
+  protected readonly isDisabled = computed(() => {
+    return this.disabledComputed() ?? this.predefinedConfig()?.disabled ?? false;
+  });
 
-    const cfg = {
-      ...getAlfTabDefaultConfig(v),
-      ...this.inputConfig(),
-    };
+  protected readonly predefinedConfig = computed(() => {
+    
+    return getAlfTabDefaultConfig(this.colorVariantComputed());
+  });
+
+  public override readonly resolvedConfig = computed(() => {
+    const predefined = this.predefinedConfig();
+    const manual = this.inputConfig();
+    const variant = this.colorVariantComputed();
 
     return {
-      ...cfg,
-      fluidHeight: this.fluidHeightInput() ?? cfg?.fluidHeight,
-      contentAnimations: cfg?.contentAnimations,
+      ...predefined,
+      ...manual,
+      colorVariant: variant,
+      fluidHeight: this.fluidHeightInput() ?? manual?.fluidHeight ?? predefined.fluidHeight,
+      contentAnimations: manual?.contentAnimations ?? predefined.contentAnimations,
     };
   });
 
-  public override readonly resolvedConfig = this.finalConfig;
+  public readonly finalConfig = this.resolvedConfig;
 
-  public readonly customStyleComputed = computed(() => {
-    let styles = '';
-    
-    const v = this.colorVariantComputed().toString().toLowerCase();
-    const match = v.match(/(primary|secondary|success|danger|warning|info|light|dark)/i);
-    const baseColor = match ? match[1] : 'primary';
-    
-    const hexColorMap: Record<string, string> = {
-      primary: '#0d6efd',
-      success: '#198754',
-      danger: '#dc3545',
-      warning: '#ffc107',
-      info: '#0dcaf0',
-      light: '#e9ecef',
-      dark: '#212529',
-      secondary: '#6c757d',
-      transparent: '#0d6efd'
-    };
+  public readonly containerId = computed(() =>
+    this.resolvedConfig()?.id ?? this.internalId
+  );
 
-    const sliderColor = hexColorMap[baseColor] ?? '#0d6efd';
-    styles += `--alf-tabs-slider-color: ${sliderColor};`;
+  public readonly cursorStyle = computed(() => this.cursorComputed());
 
-    if (this.colorVariantComputed().toString().toLowerCase().includes('crystal')) {
-      styles += 'backdrop-filter: blur(12px) saturate(180%); background-color: rgba(255, 255, 255, 0.3) !important;';
-    }
-
-    return styles;
-  });
 
   public readonly isFluidHeight = computed(() => {
     const fromInput = this.fluidHeightInput();
@@ -218,6 +197,13 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
     this.activeIndex();
     return anim;
   });
+
+  public readonly contentBackgroundsStyle = computed(() =>
+    visualBackgroundBase('--alf-tabs-content', {
+      type: this.colorVariantComputed(),
+      backgrounds: this.backgroundsComputed(),
+    }),
+  );
 
   // ==========================================
   // 5. Lifecycle Hooks
