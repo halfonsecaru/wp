@@ -21,11 +21,10 @@ import { AlfComponentTypeEnum, resolveVariantConfig } from '@alfcomponents/base/
 /**
  * Configuración por defecto para el contenedor de pestañas.
  */
-export const ALF_TABS_CONTAINER_DEFAULT: AlfTabsContainerConfigInterface = {
+export const ALF_TABS_CONTAINER_DEFAULT: Partial<AlfTabsContainerConfigInterface> = {
   tabsStyle: AlfTabsStyleEnum.Underline,
   tab: [],
   disabled: false,
-  colorVariant: AlfColorVariantEnum.Transparent,
   typography: {
     default: {
       fontWeight: AlfFontWeightEnum.SemiBold,
@@ -55,23 +54,3 @@ export const ALF_TABS_CONTAINER_DEFAULT: AlfTabsContainerConfigInterface = {
   }
 };
 
-/**
- * Configuración por defecto para el contenido de una pestaña individual.
- */
-export const ALF_TAB_CONTENT_DEFAULT: Partial<AlfSingleTabInterface> = {
-};
-
-/**
- * Obtiene la configuración por defecto para el contenedor delegando en el motor Élite.
- */
-export const getAlfTabDefaultConfig = (
-  variant: AlfColorVariantEnum = AlfColorVariantEnum.Transparent
-): AlfTabsContainerConfigInterface => {
-
-  console.log(variant);
-  return {
-    ...resolveVariantConfig(variant, AlfComponentTypeEnum.Tabs),
-    ...ALF_TABS_CONTAINER_DEFAULT,
-    colorVariant: variant,
-  };
-};

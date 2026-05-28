@@ -53,7 +53,7 @@
       </h2>
       <div class="tabs-card__body">
         <p class="tabs-demo-desc">Switch between tabs to see the smooth CSS transition of the container's height based on content size.</p>
-        <alf-tabs-container variant="primary" [fluid]="true">
+        <alf-tabs-container variant="primary">
           <alf-tab label="Short Content">
             <div class="tab-demo-content" style="padding: 1rem 0;">
               <h4>Compact Panel</h4>
@@ -88,12 +88,12 @@
       <div class="tabs-card__body">
         <p class="tabs-demo-desc">Deeply nested tabs with proper state hierarchy and isolated height computation.</p>
         
-        <alf-tabs-container variant="secondary" [(activeIndex)]="nestedActiveIndex1" [fluid]="true">
+        <alf-tabs-container variant="secondary">
           <alf-tab label="First Category">
             <div class="tab-demo-content" style="padding: 1rem 0;">
               <h4 style="margin-bottom: 1rem;">Primary Level - Category 1</h4>
               
-              <alf-tabs-container variant="success" [(activeIndex)]="nestedActiveIndex2" [fluid]="true">
+              <alf-tabs-container variant="success">
                 <alf-tab label="Sub-Tab A" iconLeft="📁">
                   <div class="tab-demo-content" style="padding: 0.5rem 0;">
                     <h5>Nested Content A</h5>
@@ -128,7 +128,7 @@
       </h2>
       <div class="tabs-card__body">
         <p class="tabs-demo-desc">Verifying smooth navigation, alignment of the sliding indicator, and absolute-positioned arrows with backdrop blur and fading effects.</p>
-        <alf-tabs-container variant="primary" [fluid]="true">
+        <alf-tabs-container variant="primary">
           @for (tab of manyTabs; track tab.label; let i = $index) {
             <alf-tab [label]="tab.label" [iconLeft]="i % 3 === 0 ? '⭐️' : (i % 3 === 1 ? '🔥' : '✨')">
               <div class="tab-demo-content" style="padding: 1rem 0;">

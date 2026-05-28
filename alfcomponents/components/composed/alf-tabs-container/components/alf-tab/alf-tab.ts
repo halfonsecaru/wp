@@ -3,7 +3,6 @@ import { AlfSingleTabInterface, ALF_TABS_CONTAINER_TOKEN } from '../../interface
 import { visualprefixEnum } from '@alfcomponents/shared';
 import { AlfColorVariantEnum } from '@alfcomponents/enums';
 import { AlfAnimateCssInterface, AlfBackgroundsInterface } from '@alfcomponents/interfaces';
-import { ALF_TAB_CONTENT_DEFAULT } from '../../predefined/alf-tabs-container.predefined';
 import { AlfBaseButtonConfiguration } from '../../../../simple/alf-button/base/alf-base-button-configuration';
 import { AlfComponentTypeEnum, resolveVariantConfig } from '@alfcomponents/base/defaultVariants';
 
@@ -54,20 +53,11 @@ export class AlfTabComponent extends AlfBaseButtonConfiguration<AlfSingleTabInte
   // ==========================================
   // 4. Computed
   // ==========================================
-  protected readonly predefinedConfig = computed(() => {
-    return ALF_TAB_CONTENT_DEFAULT;
-  });
 
   public override readonly resolvedConfig = computed(() => {
-    const predefined = this.predefinedConfig();
     const manual = this.inputConfig();
-    const variant = this.colorVariantComputed();
-
     return {
-      ...predefined,
       ...manual,
-      colorVariant: variant,
-      tabName: this.tabName() ?? manual?.tabName ?? predefined.tabName ?? 'Tab',
     };
   });
 
@@ -77,23 +67,23 @@ export class AlfTabComponent extends AlfBaseButtonConfiguration<AlfSingleTabInte
     return this.resolvedConfig()?.animations || this.parentContentAnimations();
   });
 
-  protected override readonly backgroundsComputed = computed(() => {
-    // Obtenemos los backgrounds resueltos de la clase base mediante resolveVariantConfig
-    const variant = this.colorVariantComputed() ?? AlfColorVariantEnum.Default;
-    const base = resolveVariantConfig(variant, this.componentType).backgroundsBase;
-    const resolved = this.resolvedConfig()?.backgrounds || {};
-    const user = this.backgrounds() || {};
-    const parentBg = this.parentContentBackgrounds() || {};
+  // protected override readonly backgroundsComputed = computed(() => {
+  //   // Obtenemos los backgrounds resueltos de la clase base mediante resolveVariantConfig
+  //   const variant = this.colorVariantComputed() ?? AlfColorVariantEnum.Default;
+  //   const base = resolveVariantConfig(variant, this.componentType).backgroundsBase;
+  //   const resolved = this.resolvedConfig()?.backgrounds || {};
+  //   const user = this.backgrounds() || {};
+  //   const parentBg = this.parentContentBackgrounds() || {};
 
-    // Hacemos merge priorizando: directos del usuario > configuración del tab > del padre > base del motor
-    return {
-      default: { ...base?.default, ...parentBg?.default, ...resolved?.default, ...user?.default },
-      hover: { ...base?.hover, ...parentBg?.hover, ...resolved?.hover, ...user?.hover },
-      focus: { ...base?.focus, ...parentBg?.focus, ...resolved?.focus, ...user?.focus },
-      active: { ...base?.active, ...parentBg?.active, ...resolved?.active, ...user?.active },
-      disabled: { ...base?.disabled, ...parentBg?.disabled, ...resolved?.disabled, ...user?.disabled },
-    };
-  });
+  //   // Hacemos merge priorizando: directos del usuario > configuración del tab > del padre > base del motor
+  //   return {
+  //     // default: { ...base?.default, ...parentBg?.default, ...resolved?.default, ...user?.default },
+  //     // hover: { ...base?.hover, ...parentBg?.hover, ...resolved?.hover, ...user?.hover },
+  //     // focus: { ...base?.focus, ...parentBg?.focus, ...resolved?.focus, ...user?.focus },
+  //     // active: { ...base?.active, ...parentBg?.active, ...resolved?.active, ...user?.active },
+  //     // disabled: { ...base?.disabled, ...parentBg?.disabled, ...resolved?.disabled, ...user?.disabled },
+  //   };
+  // });
 
   protected readonly currentAnimationClass = computed(() => {
     const anims = this.effectiveAnimations();

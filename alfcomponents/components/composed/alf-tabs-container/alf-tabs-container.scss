@@ -3,15 +3,10 @@
 :host {
   display: block;
   width: 100%;
+
 }
 
 .alf-tabs-container {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  position: relative;
-  overflow: hidden;
-
   @include alf-transition;
   @include alf-padding-css-vars('--alf-tabs');
   @include alf-margin-css-vars('--alf-tabs');
@@ -23,11 +18,19 @@
   @include alf-shadows-css-vars('--alf-tabs');
   @include alf-background-css-vars('--alf-tabs');
 
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+
+
+
   .alf-tabs-header-wrapper {
     position: relative;
     display: flex;
     align-items: center;
-    border-bottom: 1px solid var(--alf-color-gray-200, #e5e7eb);
+    border-bottom: 1px solid var(--alf-tabs-border-color, #e5e7eb);
     width: 100%;
   }
 
@@ -106,7 +109,6 @@
     font-family: inherit;
     font-size: 0.9375rem;
     font-weight: 500;
-    color: var(--alf-color-gray-500, #6b7280);
     transition: color 0.3s ease, background-color 0.3s ease;
     display: flex;
     align-items: center;

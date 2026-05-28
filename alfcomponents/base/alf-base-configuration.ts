@@ -337,6 +337,7 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
   );
 
   public readonly createBackgroundsStyle = computed(() => {
+    console.log(this.colorVariantComputed());
     return visualBackgroundBase(this.visualPrefix, {
       type: this.colorVariantComputed(),
       backgrounds: this.backgroundsComputed(),

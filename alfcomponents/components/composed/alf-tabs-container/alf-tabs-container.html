@@ -1,3 +1,4 @@
+<!-- Esto se hace para generar las variables iniciales del componente. Pero aun no estan definidos los colores y demás. es solo para agregar como se van a llamar las variables. -->
 @let bgStyle = createBackgroundsStyle();
 @let borderStyle = createBorderStyle();
 @let paddingStyle = createPaddingStyle();
@@ -13,15 +14,15 @@
 @let customClass = customClassComputed();
 @let animClass = animationsClassComputed();
 @let id = containerId();
-@let disabled = isDisabled();
+@let disabled = isDisabled() ?? true;
 @let cursor = cursorStyle();
-{{ borderStyle }}
-{{componentType}}
+{{bgStyle }}
+<!--   [style]="bgStyle + borderStyle + paddingStyle + shadowStyle + typographyStyle + textStyle + displayStyle + marginStyle + outlineStyle + transformStyle + animStyle + customStyle" -->
 <div 
   style="min-width: 428px; min-height: 428px;"
   [attr.id]="id"
-  [style]="bgStyle + borderStyle + paddingStyle + shadowStyle + typographyStyle + textStyle + displayStyle + marginStyle + outlineStyle + transformStyle + animStyle + customStyle"
   [style.cursor]="disabled ? 'not-allowed' : cursor"
+  [style]="bgStyle "
   [class]="'alf-tabs-container ' + componentType + ' ' + animClass + ' ' + customClass"
 >
   <!-- <div class="alf-tabs-header-wrapper">
