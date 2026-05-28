@@ -16,22 +16,8 @@
 @let ripple = rippleComputed();
 @let tooltip = tooltipComputed();
 
-<!-- Estilos del Motor Élite en formato string de CSS inline -->
-@let backgroundsStyle = createBackgroundsStyle();
-@let borderStyle = createBorderStyle();
-@let paddingStyle = createPaddingStyle();
-@let shadowsStyle = createShadowsStyle();
-@let typographyStyle = createTypographyStyle();
-@let textStyle = createTextStyle();
-@let transformStyle = createTransformStyle();
-@let animationsStyle = createAnimationsStyle();
-@let displayAndLayoutStyle = createDisplayAndLayoutStyle();
-@let marginStyle = createMarginStyle();
-@let outlineStyle = createOutlineStyle();
-
 @let animationsClass = animationsClassComputed();
 @let customClass = customClassComputed();
-@let customStyle = customStyleComputed();
 
 <div 
   [class]="'alf-input ' + animationsClass + ' ' + customClass"
@@ -51,7 +37,7 @@
   [class.alf-input--gradient]="isGradient()"
   [alfRipple]="ripple"
   [alfTooltipText]="tooltip"
-  [style]="displayAndLayoutStyle + marginStyle + paddingStyle + outlineStyle + transformStyle + animationsStyle + typographyStyle + textStyle + customStyle + backgroundsStyle + borderStyle + shadowsStyle"
+  [style]="combinedStyles()"
 >
 
   @if (config?.prefix) {

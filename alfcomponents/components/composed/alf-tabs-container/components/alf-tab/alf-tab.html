@@ -1,5 +1,4 @@
-@let bgStyle = createBackgroundsStyle(); @let paddingStyle = createPaddingStyle(); @let textStyle = createTextStyle(); @let layoutStyle = createDisplayAndLayoutStyle(); @let customClass =
-customClassComputed(); @let customStyle = customStyleComputed();
+@let customClass = customClassComputed();
 
 <div
   [class]="'alf-tab-content ' + customClass + ' ' + currentAnimationClass()"
@@ -8,7 +7,7 @@ customClassComputed(); @let customStyle = customStyleComputed();
   [style.display]="isActive() || isExiting() ? null : 'none'"
   [style.pointer-events]="isActive() ? 'auto' : 'none'"
   [style.width]="'100%'"
-  [style]="bgStyle + paddingStyle + textStyle + layoutStyle + animationStyle() + customStyle"
+  [style]="combinedStyles() + ' ' + animationStyle()"
 >
   <div #contentInner class="alf-tab-content-inner">
     <ng-content />

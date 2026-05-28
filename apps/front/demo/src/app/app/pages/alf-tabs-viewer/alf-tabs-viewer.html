@@ -16,26 +16,51 @@
           <strong>Nota de Diseño:</strong> Solo están permitidas las variantes cromáticas principales (sólidas). Las variantes avanzadas (como Soft, Outline, Crystal, 3D y degradados) se comportan y heredan el color de su variante sólida base para mantener la consistencia y la legibilidad.
         </p>
         <div class="variants-showcase">
+          <!-- Ejemplo sin variante -->
+          <div class="variant-item">
+            <span class="variant-label">Default (Sin Variante)</span>
+            <alf-tabs-container>
+              <alf-tab label="Overview" iconLeft="📦">
+                <div class="tab-demo-content">
+                  <h4>Default Content (No Variant)</h4>
+                  <p>Este contenedor de pestañas no tiene ninguna variante definida. Utiliza exclusivamente los estilos y configuraciones predefinidas de la librería.</p>
+                </div>
+              </alf-tab>
+              <alf-tab label="Details" iconLeft="🛠️">
+                <div class="tab-demo-content">
+                  <h4>Details Panel</h4>
+                  <p>Aquí se muestran los detalles técnicos y características de la configuración por defecto.</p>
+                </div>
+              </alf-tab>
+              <alf-tab label="Settings" iconLeft="⚙️">
+                <div class="tab-demo-content">
+                  <h4>Settings Panel</h4>
+                  <p>Opciones y preferencias asociadas a este panel.</p>
+                </div>
+              </alf-tab>
+            </alf-tabs-container>
+          </div>
+
           @for (item of variants; track item.value) {
             <div class="variant-item">
               <span class="variant-label">{{ item.label }}</span>
-              <alf-tabs-container [variant]="item.value">
+              <alf-tabs-container [colorVariant]="item.value">
                 <alf-tab label="Overview" iconLeft="💡">
                   <div class="tab-demo-content">
                     <h4>Overview Content for {{ item.label }}</h4>
                     <p>This tab displays general details and is initialized using the <code>{{ item.value }}</code> variant configuration of the Alfonizer Pro framework.</p>
                   </div>
                 </alf-tab>
-                <alf-tab label="Analytics" iconLeft="📈">
+                <alf-tab label="Details" iconLeft="🛠️">
                   <div class="tab-demo-content">
-                    <h4>Analytics View</h4>
-                    <p>Real-time telemetry and layout properties rendered dynamically inside the tab slot.</p>
+                    <h4>Details for {{ item.label }}</h4>
+                    <p>Technical details, outline borders, and background inherited styling are verified here.</p>
                   </div>
                 </alf-tab>
                 <alf-tab label="Settings" iconLeft="⚙️">
                   <div class="tab-demo-content">
-                    <h4>Configuration</h4>
-                    <p>Adjust parameters and behavioral signals of the host component directly.</p>
+                    <h4>Settings for {{ item.label }}</h4>
+                    <p>Customize behavior and explore interactions of the tabs component.</p>
                   </div>
                 </alf-tab>
               </alf-tabs-container>
@@ -45,7 +70,7 @@
       </div>
     </section>
 
-    <!-- Showcase 2: Fluid Height & Dynamic Transition -->
+    <!-- Showcase 2: Fluid Height & Dynamic Transition
     <section class="tabs-card">
       <h2 class="tabs-card__title">
         <span class="tabs-card__dot tabs-card__dot--purple"></span>
@@ -78,8 +103,9 @@
         </alf-tabs-container>
       </div>
     </section>
+    -->
 
-    <!-- Showcase 3: Nested Tabs Structure -->
+    <!-- Showcase 3: Nested Tabs Structure
     <section class="tabs-card">
       <h2 class="tabs-card__title">
         <span class="tabs-card__dot tabs-card__dot--amber"></span>
@@ -119,6 +145,7 @@
         </alf-tabs-container>
       </div>
     </section>
+    -->
 
     <!-- Showcase 4: Scrollable Tabs (20+ Tabs) -->
     <section class="tabs-card tabs-card--wide">
@@ -128,7 +155,7 @@
       </h2>
       <div class="tabs-card__body">
         <p class="tabs-demo-desc">Verifying smooth navigation, alignment of the sliding indicator, and absolute-positioned arrows with backdrop blur and fading effects.</p>
-        <alf-tabs-container variant="primary">
+        <alf-tabs-container colorVariant="Primary">
           @for (tab of manyTabs; track tab.label; let i = $index) {
             <alf-tab [label]="tab.label" [iconLeft]="i % 3 === 0 ? '⭐️' : (i % 3 === 1 ? '🔥' : '✨')">
               <div class="tab-demo-content" style="padding: 1rem 0;">

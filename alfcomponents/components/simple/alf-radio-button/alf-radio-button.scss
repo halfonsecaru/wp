@@ -70,8 +70,10 @@
     border-radius: 50%;
 
     // Aplicación de variables Élite de Borde y Sombra
+    @include alf-background-css-vars('--alf-rb', '&--disabled', ':focus-within');
     @include alf-border-css-vars('--alf-rb', '&--disabled', ':focus-within');
     @include alf-shadows-css-vars('--alf-rb', '&--disabled');
+    @include alf-transform-css-vars('--alf-rb', '&--disabled');
 
     // Estilo Base (Unchecked)
     background-color: transparent;

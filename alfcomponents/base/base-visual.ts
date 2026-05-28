@@ -27,19 +27,19 @@ import { AlfComponentTypeEnum, resolveVariantConfig } from './defaultVariants';
 
 
 
-/**
- * Obtiene la configuración visual predefinida (PredefinedConfig) para una variante dada.
- * Actúa como puente entre el enum de variante y la configuración base unificada.
- *
- * @param type Variante de color solicitada.
- * @returns Configuración visual base tipada como MainVisualStyleInterface.
- */
-export const getPredefinedVisualType = (
-    type: AlfColorVariantEnum = AlfColorVariantEnum.Default,
-    componentType?: AlfComponentTypeEnum
-): MainVisualStyleInterface => {
-    return resolveVariantConfig(type, componentType) as unknown as MainVisualStyleInterface;
-};
+// /**
+//  * Obtiene la configuración visual predefinida (PredefinedConfig) para una variante dada.
+//  * Actúa como puente entre el enum de variante y la configuración base unificada.
+//  *
+//  * @param type Variante de color solicitada.
+//  * @returns Configuración visual base tipada como MainVisualStyleInterface.
+//  */
+// export const getPredefinedVisualType = (
+//     type: AlfColorVariantEnum = AlfColorVariantEnum.Default,
+//     componentType?: AlfComponentTypeEnum
+// ): MainVisualStyleInterface => {
+//     return resolveVariantConfig(type, componentType) as unknown as MainVisualStyleInterface;
+// };
 
 
 
@@ -77,8 +77,9 @@ export const visualBackgroundBase = <TPrefix extends string>(prefix: TPrefix, in
     readonly type: AlfColorVariantEnum;
     readonly backgrounds?: AlfBackgroundsInterface;
     readonly componentType?: AlfComponentTypeEnum;
+    readonly resolvedVariant?: any;
 }): string => {
-    const selectedVisual = getPredefinedVisualType(input.type, input.componentType);
+    const selectedVisual = input.resolvedVariant || (resolveVariantConfig(input.type, input.componentType) as unknown as MainVisualStyleInterface);
     const predefinedBg = selectedVisual.backgrounds;
     const backgrounds = input.backgrounds;
     const declarations: string[] = [];
@@ -112,8 +113,9 @@ export const visualBorderBase = <TPrefix extends string>(prefix: TPrefix, input:
     readonly type: AlfColorVariantEnum;
     readonly border?: AlfBorderInterface;
     readonly componentType?: AlfComponentTypeEnum;
+    readonly resolvedVariant?: any;
 }): string => {
-    const selectedVisual = getPredefinedVisualType(input.type, input.componentType);
+    const selectedVisual = input.resolvedVariant || (resolveVariantConfig(input.type, input.componentType) as unknown as MainVisualStyleInterface);
     const predefinedBorder = selectedVisual.border;
     const border = input.border;
     const declarations: string[] = [];
@@ -174,8 +176,9 @@ export const visualPaddingBase = <TPrefix extends string>(prefix: TPrefix, input
     readonly type: AlfColorVariantEnum;
     readonly padding?: AlfPaddingInterface;
     readonly componentType?: AlfComponentTypeEnum;
+    readonly resolvedVariant?: any;
 }): string => {
-    const selectedVisual = getPredefinedVisualType(input.type, input.componentType);
+    const selectedVisual = input.resolvedVariant || (resolveVariantConfig(input.type, input.componentType) as unknown as MainVisualStyleInterface);
     const predefinedPadding = selectedVisual.padding;
     const padding = input.padding;
     const declarations: string[] = [];
@@ -210,8 +213,9 @@ export const visualShadowsBase = <TPrefix extends string>(prefix: TPrefix, input
     readonly type: AlfColorVariantEnum;
     readonly shadows?: AlfShadowsInterface;
     readonly componentType?: AlfComponentTypeEnum;
+    readonly resolvedVariant?: any;
 }): string => {
-    const selectedVisual = getPredefinedVisualType(input.type, input.componentType);
+    const selectedVisual = input.resolvedVariant || (resolveVariantConfig(input.type, input.componentType) as unknown as MainVisualStyleInterface);
     const predefinedShadows = selectedVisual.shadows;
     const shadows = input.shadows;
     const declarations: string[] = [];
@@ -287,8 +291,9 @@ export const visualMarginBase = <TPrefix extends string>(prefix: TPrefix, input:
     readonly type: AlfColorVariantEnum;
     readonly margin?: AlfMarginInterface;
     readonly componentType?: AlfComponentTypeEnum;
+    readonly resolvedVariant?: any;
 }): string => {
-    const selectedVisual = getPredefinedVisualType(input.type, input.componentType);
+    const selectedVisual = input.resolvedVariant || (resolveVariantConfig(input.type, input.componentType) as unknown as MainVisualStyleInterface);
     const predefinedMargin = selectedVisual.margin;
     const margin = input.margin;
     const declarations: string[] = [];
@@ -325,8 +330,9 @@ export const visualTransformBase = <TPrefix extends string>(prefix: TPrefix, inp
     readonly type: AlfColorVariantEnum;
     readonly transform?: AlfTransformInterface;
     readonly componentType?: AlfComponentTypeEnum;
+    readonly resolvedVariant?: any;
 }): string => {
-    const selectedVisual = getPredefinedVisualType(input.type, input.componentType);
+    const selectedVisual = input.resolvedVariant || (resolveVariantConfig(input.type, input.componentType) as unknown as MainVisualStyleInterface);
     const predefinedTransform = selectedVisual.transform;
     const transform = input.transform;
     const declarations: string[] = [];
@@ -362,8 +368,9 @@ export const visualTextStyleBase = <TPrefix extends string>(prefix: TPrefix, inp
     readonly type: AlfColorVariantEnum;
     readonly textStyle?: AlfTextStyleInterface;
     readonly componentType?: AlfComponentTypeEnum;
+    readonly resolvedVariant?: any;
 }): string => {
-    const selectedVisual = getPredefinedVisualType(input.type, input.componentType);
+    const selectedVisual = input.resolvedVariant || (resolveVariantConfig(input.type, input.componentType) as unknown as MainVisualStyleInterface);
     const predefinedTextStyle = selectedVisual.textStyle;
     const textStyle = input.textStyle;
     const declarations: string[] = [];
@@ -396,8 +403,9 @@ export const visualTypographyBase = <TPrefix extends string>(prefix: TPrefix, in
     readonly type: AlfColorVariantEnum;
     readonly typography?: AlfTypographyInterface;
     readonly componentType?: AlfComponentTypeEnum;
+    readonly resolvedVariant?: any;
 }): string => {
-    const selectedVisual = getPredefinedVisualType(input.type, input.componentType);
+    const selectedVisual = input.resolvedVariant || (resolveVariantConfig(input.type, input.componentType) as unknown as MainVisualStyleInterface);
     const predefinedTypography = selectedVisual.typography;
     const typography = input.typography;
     const declarations: string[] = [];
@@ -434,8 +442,9 @@ export const visualAnimationsBase = <TPrefix extends string>(prefix: TPrefix, in
     readonly type: AlfColorVariantEnum;
     readonly animations?: AlfAnimateCssInterface;
     readonly componentType?: AlfComponentTypeEnum;
+    readonly resolvedVariant?: any;
 }): string => {
-    const selectedVisual = getPredefinedVisualType(input.type, input.componentType);
+    const selectedVisual = input.resolvedVariant || (resolveVariantConfig(input.type, input.componentType) as unknown as MainVisualStyleInterface);
     const anims = { ...selectedVisual.animations, ...input.animations };
     const declarations: string[] = [];
 
@@ -479,8 +488,9 @@ export const visualOutlineBase = <TPrefix extends string>(prefix: TPrefix, input
     readonly type: AlfColorVariantEnum;
     readonly outline?: AlfOutlineInterface;
     readonly componentType?: AlfComponentTypeEnum;
+    readonly resolvedVariant?: any;
 }): string => {
-    const selectedVisual = getPredefinedVisualType(input.type, input.componentType);
+    const selectedVisual = input.resolvedVariant || (resolveVariantConfig(input.type, input.componentType) as unknown as MainVisualStyleInterface);
     const predefinedOutline = selectedVisual.outline;
     const outline = input.outline;
     const declarations: string[] = [];

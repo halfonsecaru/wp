@@ -1,31 +1,18 @@
-<!-- Esto se hace para generar las variables iniciales del componente. Pero aun no estan definidos los colores y demás. es solo para agregar como se van a llamar las variables. -->
-@let bgStyle = createBackgroundsStyle();
-@let borderStyle = createBorderStyle();
-@let paddingStyle = createPaddingStyle();
-@let shadowStyle = createShadowsStyle();
-@let typographyStyle = createTypographyStyle();
-@let textStyle = createTextStyle();
-@let displayStyle = createDisplayAndLayoutStyle();
-@let marginStyle = createMarginStyle();
-@let outlineStyle = createOutlineStyle();
-@let transformStyle = createTransformStyle();
-@let animStyle = createAnimationsStyle();
-@let customStyle = customStyleComputed();
+@let styles = combinedStyles();
 @let customClass = customClassComputed();
 @let animClass = animationsClassComputed();
 @let id = containerId();
 @let disabled = isDisabled() ?? true;
 @let cursor = cursorStyle();
-{{bgStyle }}
-<!--   [style]="bgStyle + borderStyle + paddingStyle + shadowStyle + typographyStyle + textStyle + displayStyle + marginStyle + outlineStyle + transformStyle + animStyle + customStyle" -->
+
 <div 
   style="min-width: 428px; min-height: 428px;"
   [attr.id]="id"
   [style.cursor]="disabled ? 'not-allowed' : cursor"
-  [style]="bgStyle "
+  [style]="styles"
   [class]="'alf-tabs-container ' + componentType + ' ' + animClass + ' ' + customClass"
 >
-  <!-- <div class="alf-tabs-header-wrapper">
+  <div class="alf-tabs-header-wrapper">
     @if (headerMetrics().canLeft) {
       <button class="alf-tabs-arrow alf-tabs-arrow--left" (click)="scrollLeft()">
         ‹
@@ -75,5 +62,5 @@
     (touchend)="onTouchEnd($event)"
   >
     <ng-content></ng-content>
-  </div> -->
+  </div>
 </div>

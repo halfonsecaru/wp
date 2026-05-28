@@ -9,21 +9,8 @@
 @let leftIcon = iconLeftComputed();
 @let rightIcon = iconRightComputed();
 
-@let cfg = resolvedConfig();
-@let bgStyle = createBackgroundsStyle();
-@let borderStyle = createBorderStyle();
-@let paddingStyle = createPaddingStyle();
-@let shadowStyle = createShadowsStyle();
-@let typographyStyle = createTypographyStyle();
-@let textStyle = createTextStyle();
-@let displayStyle = createDisplayAndLayoutStyle();
-@let marginStyle = createMarginStyle();
-@let outlineStyle = createOutlineStyle();
-@let transformStyle = createTransformStyle();
-@let animStyle = createAnimationsStyle();
 @let animClass = animationsClassComputed();
 @let customClass = customClassComputed();
-@let customStyle = customStyleComputed();
 @let cursor = cursorComputed();
 
 @if (link) {
@@ -35,7 +22,7 @@
     [attr.tabindex]="disabled ? -1 : null"
     [alfTooltipText]="tooltip"
     [alfRipple]="ripple"
-    [style]="bgStyle + borderStyle + paddingStyle + shadowStyle + typographyStyle + textStyle + displayStyle + marginStyle + outlineStyle + transformStyle + animStyle + customStyle"
+    [style]="combinedStyles()"
     [style.cursor]="disabled ? 'not-allowed' : cursor"
     [class]="'alf-button ' + animClass + ' ' + customClass"
     [class.alf-button--disabled]="disabled"
@@ -60,7 +47,7 @@
     [disabled]="disabled"
     [alfTooltipText]="tooltip"
     [alfRipple]="ripple"
-    [style]="bgStyle + borderStyle + paddingStyle + shadowStyle + typographyStyle + textStyle + displayStyle + marginStyle + outlineStyle + transformStyle + animStyle + customStyle"
+    [style]="combinedStyles()"
     [style.cursor]="disabled ? 'not-allowed' : cursor"
     [class]="'alf-button ' + animClass + ' ' + customClass"
     [class.alf-button--disabled]="disabled"

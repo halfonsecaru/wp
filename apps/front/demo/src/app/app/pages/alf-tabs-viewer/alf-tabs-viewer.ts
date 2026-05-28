@@ -17,17 +17,18 @@ export class AlfTabsViewer {
 
   public readonly variants: readonly { label: string; value: AlfColorVariantEnum }[] = [
     { label: 'Primary', value: AlfColorVariantEnum.Primary },
-    { label: 'Secondary', value: AlfColorVariantEnum.Secondary },
-    { label: 'Success', value: AlfColorVariantEnum.Success },
-    { label: 'Danger', value: AlfColorVariantEnum.Danger },
-    { label: 'Warning', value: AlfColorVariantEnum.Warning },
-    { label: 'Info', value: AlfColorVariantEnum.Info },
-    { label: 'Dark', value: AlfColorVariantEnum.Dark },
     { label: 'Primary Outline', value: AlfColorVariantEnum.PrimaryOutline },
-    { label: 'Success Soft', value: AlfColorVariantEnum.SuccessSoft },
-    { label: 'Danger Crystal', value: AlfColorVariantEnum.DangerCrystal },
-    { label: 'Warning 3D', value: AlfColorVariantEnum.Warning3D },
-    { label: 'Gradient Purple', value: AlfColorVariantEnum.GradientPurple }
+    // { label: 'Secondary', value: AlfColorVariantEnum.Secondary },
+    // { label: 'Success', value: AlfColorVariantEnum.Success },
+    // { label: 'Danger', value: AlfColorVariantEnum.Danger },
+    // { label: 'Warning', value: AlfColorVariantEnum.Warning },
+    // { label: 'Info', value: AlfColorVariantEnum.Info },
+    // { label: 'Dark', value: AlfColorVariantEnum.Dark },
+    // { label: 'Primary Outline', value: AlfColorVariantEnum.PrimaryOutline },
+    // { label: 'Success Soft', value: AlfColorVariantEnum.SuccessSoft },
+    // { label: 'Danger Crystal', value: AlfColorVariantEnum.DangerCrystal },
+    // { label: 'Warning 3D', value: AlfColorVariantEnum.Warning3D },
+    // { label: 'Gradient Purple', value: AlfColorVariantEnum.GradientPurple }
   ];
 
   public readonly manyTabs: readonly { label: string; lines: string[] }[] = Array.from({ length: 20 }, (_, i) => ({

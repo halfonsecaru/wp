@@ -36,7 +36,6 @@ export const getAlfDefaultConfig = <T extends object>(
 
     return {
         ...defaultComponentConfig,
-        ...resolveVariantConfig(variant, componentType),
         ...inputConfig,
         colorVariant: variant,
     };

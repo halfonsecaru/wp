@@ -3,23 +3,9 @@
 @let ripple = rippleComputed();
 @let cursor = cursorComputed();
 
-<!-- 2. Estilos del Motor Élite -->
-@let backgroundsStyle = createBackgroundsStyle();
-@let borderStyle = createBorderStyle();
-@let paddingStyle = createPaddingStyle();
-@let shadowsStyle = createShadowsStyle();
-@let typographyStyle = createTypographyStyle();
-@let textStyle = createTextStyle();
-@let transformStyle = createTransformStyle();
-@let animationsStyle = createAnimationsStyle();
-@let displayAndLayoutStyle = createDisplayAndLayoutStyle();
-@let marginStyle = createMarginStyle();
-@let outlineStyle = createOutlineStyle();
-
 <!-- 3. Metadatos y Personalización -->
 @let animationsClass = animationsClassComputed();
 @let customClass = customClassComputed();
-@let customStyle = customStyleComputed();
 
 <!-- 4. Estado Core del Radio -->
 @let isRadioButtonDisabled = isComponentDisabled();
@@ -43,19 +29,7 @@
   [class.alf-rb--focused]="isFocused"
   (mouseenter)="hovered.set(true)"
   (mouseleave)="hovered.set(false)"
-  [style]="
-    backgroundsStyle + 
-    borderStyle + 
-    displayAndLayoutStyle + 
-    marginStyle + 
-    outlineStyle + 
-    paddingStyle + 
-    shadowsStyle + 
-    typographyStyle + 
-    textStyle + 
-    animationsStyle +
-    customStyle
-  "
+  [style]="combinedStyles()"
 >
   <label 
     class="alf-rb-wrapper"
@@ -86,12 +60,6 @@
       class="alf-rb-circle"
       [alfRipple]="ripple"
       [alfTooltipText]="tooltip"
-      [style]="
-        backgroundsStyle + 
-        borderStyle + 
-        shadowsStyle + 
-        transformStyle
-      "
     >
       <div class="alf-rb-ripple-bg"></div>
       <div class="alf-rb-dot"></div>

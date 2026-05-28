@@ -428,47 +428,33 @@ export const resolveVariantConfig = (
     variant?: AlfColorVariantEnum,
     componentType?: AlfComponentTypeEnum
 ): PredefinedConfig => {
-
-    if (!variant) {
-        variant = AlfColorVariantEnum.Transparent;
-    }
-  
-    if (componentType === AlfComponentTypeEnum.RadioButton || componentType === AlfComponentTypeEnum.Checkbox) {
-        if (variant.toLowerCase().includes('primary')) {
-            variant = AlfColorVariantEnum.Primary;
-        }
-        else if (variant.toLowerCase().includes('secondary')) {
-            variant = AlfColorVariantEnum.Secondary;
-        }
-        else if (variant.toLowerCase().includes('danger')) {
-            variant = AlfColorVariantEnum.Danger;
-        }
-        else if (variant.toLowerCase().includes('success')) {
-            variant = AlfColorVariantEnum.Success;
-        }
-        else if (variant.toLowerCase().includes('warning')) {
-            variant = AlfColorVariantEnum.Warning;
-        }
-        else if (variant.toLowerCase().includes('info')) {
-            variant = AlfColorVariantEnum.Info;
-        }
-        else if (variant.toLowerCase().includes('light')) {
-            variant = AlfColorVariantEnum.Light;
-        }
-        else if (variant.toLowerCase().includes('dark')) {
-            variant = AlfColorVariantEnum.Dark;
-        } else {
-            variant = AlfColorVariantEnum.Secondary;
+    if (!variant || variant === AlfColorVariantEnum.Transparent || variant === AlfColorVariantEnum.Default) {
+        return {
+            marginBase: undefined,
+            paddingBase: undefined,
+            displayAndLayoutBase: undefined,
+            shadowsBase: undefined,
+            transformBase: undefined,
+            backgroundsBase: undefined,
+            typographyBase: undefined,
+            borderBase: undefined,
+            animationsBase: undefined,
+            ripple: undefined,
+            textStyleBase: undefined,
+            outlineBase: undefined
         }
     }
 
-    // esto son los componenetes que usan el color de fondo del outline que no sea blanco.
+    console.log("la variante deberia ser ", variant);
+    
+   
     const outlinedFilledComponents = [
         AlfComponentTypeEnum.RadioButton,
         AlfComponentTypeEnum.Checkbox,
         AlfComponentTypeEnum.Switch,
         AlfComponentTypeEnum.Tabs,
     ];
+
 
 
     const v = resolveAlfColorVariant(variant);
@@ -478,6 +464,7 @@ export const resolveVariantConfig = (
         case AlfColorVariantEnum.Primary:
             if (outlinedFilledComponents.includes(componentType)) {
                 // aqui debemos poner como lo teniamos definido antes
+                
                 return defaultConstruct(AlfColorEnum.Primary, AlfColorEnum.PrimaryHover, AlfColorEnum.PrimaryHover, AlfColorEnum.PrimaryDisabled, AlfColorEnum.PrimaryHover, AlfColorEnum.Primary, AlfColorEnum.PrimaryHover, AlfColorEnum.Primary, AlfColorEnum.PrimaryHover, AlfPxEnum.Px1, AlfColorEnum.Primary, AlfColorEnum.PrimaryHover, AlfColorEnum.Primary, AlfColorEnum.PrimaryDisabled, AlfColorEnum.Primary);
             }
             
@@ -491,10 +478,10 @@ export const resolveVariantConfig = (
             return defaultConstruct(AlfColorEnum.Primary3DText, AlfColorEnum.Primary3DTextHover, AlfColorEnum.Primary3DTextHover, AlfColorEnum.PrimaryDisabled, AlfColorEnum.Primary3DTextHover, AlfColorEnum.Primary3D, AlfColorEnum.Primary3DHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None);
         case AlfColorVariantEnum.PrimaryOutline:
             if (outlinedFilledComponents.includes(componentType)) {
-                return defaultConstruct(AlfColorEnum.PrimaryOutlineText, AlfColorEnum.PrimaryOutlineTextHover, AlfColorEnum.PrimaryOutlineTextHover, AlfColorEnum.PrimaryOutlineDisabled, AlfColorEnum.PrimaryOutlineTextHover, AlfColorEnum.PrimaryOutlineBg, AlfColorEnum.PrimaryOutlineBgHover, AlfColorEnum.PrimaryOutline, AlfColorEnum.PrimaryOutlineHover, AlfPxEnum.Px1, AlfColorEnum.PrimaryOutlineText, AlfColorEnum.PrimaryOutlineTextHover, AlfColorEnum.PrimaryOutlineText, AlfColorEnum.PrimaryOutlineDisabled, AlfColorEnum.PrimaryOutlineText);
+                return defaultConstruct(AlfColorEnum.PrimaryOutlineText, AlfColorEnum.PrimaryOutlineTextHover, AlfColorEnum.PrimaryOutlineTextHover, AlfColorEnum.PrimaryOutlineDisabled, AlfColorEnum.PrimaryOutlineTextHover, AlfColorEnum.PrimaryOutlineBgHover, AlfColorEnum.PrimaryOutlineBgHover, AlfColorEnum.PrimaryOutline, AlfColorEnum.PrimaryOutlineHover, AlfPxEnum.Px015, AlfColorEnum.PrimaryOutlineText, AlfColorEnum.PrimaryOutlineTextHover, AlfColorEnum.PrimaryOutlineText, AlfColorEnum.PrimaryOutlineDisabled, AlfColorEnum.PrimaryOutlineText);
             }
 
-            return defaultConstruct(AlfColorEnum.PrimaryOutlineText, AlfColorEnum.PrimaryOutlineTextHover, AlfColorEnum.PrimaryOutlineTextHover, AlfColorEnum.PrimaryOutlineDisabled, AlfColorEnum.PrimaryOutlineTextHover, AlfColorEnum.PrimaryOutlineBg, AlfColorEnum.PrimaryOutlineBgHover, AlfColorEnum.PrimaryOutline, AlfColorEnum.PrimaryOutlineHover, AlfPxEnum.Px1);
+            return defaultConstruct(AlfColorEnum.PrimaryOutlineText, AlfColorEnum.PrimaryOutlineTextHover, AlfColorEnum.PrimaryOutlineTextHover, AlfColorEnum.PrimaryOutlineDisabled, AlfColorEnum.PrimaryOutlineTextHover, AlfColorEnum.PrimaryOutlineBgHover, AlfColorEnum.PrimaryOutlineBgHover, AlfColorEnum.PrimaryOutline, AlfColorEnum.PrimaryOutlineHover, AlfPxEnum.Px015);
         case AlfColorVariantEnum.PrimarySoft:
             if (outlinedFilledComponents.includes(componentType)) {
                 return defaultConstruct(AlfColorEnum.PrimarySoftText, AlfColorEnum.PrimarySoftTextHover, AlfColorEnum.PrimarySoftFocus, AlfColorEnum.PrimarySoftDisabled, AlfColorEnum.PrimarySoftActive, AlfColorEnum.PrimarySoft, AlfColorEnum.PrimarySoftHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None, AlfColorEnum.PrimarySoftText, AlfColorEnum.PrimarySoftTextHover, AlfColorEnum.PrimarySoftText, AlfColorEnum.PrimaryDisabled, AlfColorEnum.PrimarySoftText);

@@ -3,23 +3,9 @@
 @let ripple = rippleComputed();
 @let cursor = cursorComputed();
 
-<!-- 2. Estilos del Motor Élite -->
-@let backgroundsStyle = createBackgroundsStyle();
-@let borderStyle = createBorderStyle();
-@let paddingStyle = createPaddingStyle();
-@let shadowsStyle = createShadowsStyle();
-@let typographyStyle = createTypographyStyle();
-@let textStyle = createTextStyle();
-@let transformStyle = createTransformStyle();
-@let animationsStyle = createAnimationsStyle();
-@let displayAndLayoutStyle = createDisplayAndLayoutStyle();
-@let marginStyle = createMarginStyle();
-@let outlineStyle = createOutlineStyle();
-
 <!-- 3. Metadatos y Personalización -->
 @let animationsClass = animationsClassComputed();
 @let customClass = customClassComputed();
-@let customStyle = customStyleComputed();
 
 <!-- 4. Estado Core del Checkbox -->
 @let isCheckboxDisabled = isComponentDisabled();
@@ -46,20 +32,7 @@
   [class.alf-cb--focused]="isFocused"
   (mouseenter)="hovered.set(true)"
   (mouseleave)="hovered.set(false)"
-  [style]="
-    backgroundsStyle + 
-    borderStyle + 
-    paddingStyle + 
-    shadowsStyle + 
-    typographyStyle + 
-    textStyle + 
-    displayAndLayoutStyle + 
-    marginStyle + 
-    outlineStyle + 
-    transformStyle + 
-    animationsStyle + 
-    customStyle
-  "
+  [style]="combinedStyles()"
 >
   <label
     class="alf-cb-wrapper"
@@ -92,13 +65,6 @@
       class="alf-cb-box" 
       [alfRipple]="ripple" 
       [alfTooltipText]="tooltip"
-      [style]="
-        backgroundsStyle + 
-        borderStyle + 
-        paddingStyle + 
-        shadowsStyle + 
-        transformStyle
-      "
     >
       @if (isIndeterminate || (isChecked && resolvedConfig()?.iconSelected)) {
         <span class="alf-cb-icon">{{ icon }}</span>

@@ -1,41 +1,24 @@
-@let config = configComputed(); 
+@let styles = combinedStyles();
+@let customClass = customClassComputed();
+@let animationsClass = animationsClassComputed();
 @let isChecked = checked(); 
 @let isComponentDisabled = disabledComputed();
-@let switchStyle = config?.switchStyle ?? 'elegant'; 
+@let switchStyle = configComputed()?.switchStyle ?? 'elegant'; 
 @let switchSize = size() ?? 'md';
-@let labelPos = config?.labelPosition ?? 'after'; 
-@let labelText = config?.labelText ?? '';
-@let helperText = config?.helperText ?? ''; 
-@let errorMsg = config?.error ?? '';
-
-<!-- Estilos del Motor Élite en formato string de CSS inline -->
-@let backgroundsStyle = createBackgroundsStyle();
-@let borderStyle = createBorderStyle();
-@let paddingStyle = createPaddingStyle();
-@let shadowsStyle = createShadowsStyle();
-@let typographyStyle = createTypographyStyle();
-@let textStyle = createTextStyle();
-@let transformStyle = createTransformStyle();
-@let animationsStyle = createAnimationsStyle();
-@let displayAndLayoutStyle = createDisplayAndLayoutStyle();
-@let marginStyle = createMarginStyle();
-@let outlineStyle = createOutlineStyle();
-
-@let animationsClass = animationsClassComputed();
-@let customClass = customClassComputed();
-@let customStyle = customStyleComputed();
+@let labelPos = configComputed()?.labelPosition ?? 'after'; 
+@let labelText = configComputed()?.labelText ?? '';
+@let helperText = configComputed()?.helperText ?? ''; 
+@let errorMsg = configComputed()?.error ?? '';
 @let isHollow = isOutline();
-@let aria = ariaComputed();
 
 <div 
   class="alf-sw" 
   [class]="'alf-sw--' + switchStyle + ' ' + 'alf-sw--' + switchSize + ' ' + (isChecked ? 'alf-sw--checked' : '') + ' ' + (isComponentDisabled ? 'alf-sw--disabled' : '') + ' ' + (isHollow ? 'alf-sw--outline' : '') + ' ' + (isGhost() ? 'alf-sw--ghost' : '') + ' ' + (isCrystal() ? 'alf-sw--crystal' : '') + ' ' + customClass + ' ' + animationsClass" 
-  [style]="displayAndLayoutStyle + marginStyle + textStyle + customStyle + backgroundsStyle + borderStyle"
+  [style]="styles"
 >
   <label 
     class="alf-sw-wrapper" 
     [class.alf-sw-wrapper--label-before]="labelPos === 'before'" 
-    [style]="paddingStyle"
     (click)="$event.preventDefault(); toggle()"
   >
     <input 
@@ -46,25 +29,17 @@
       [disabled]="isComponentDisabled"
       (keydown)="onInputKeydown($event)" 
       [attr.aria-checked]="isChecked"
-      [attr.aria-label]="aria?.ariaLabel || labelText"
-      [attr.aria-labelledby]="aria?.ariaLabelledBy"
-      [attr.aria-describedby]="aria?.ariaDescribedBy || (internalId + '-description')"
-      [style]="outlineStyle"
+      [attr.aria-label]="ariaComputed()?.ariaLabel || labelText"
+      [attr.aria-labelledby]="ariaComputed()?.ariaLabelledBy"
+      [attr.aria-describedby]="ariaComputed()?.ariaDescribedBy || (internalId + '-description')"
     />
 
-    <div 
-      class="alf-sw-track"
-      [style]="shadowsStyle + transformStyle + animationsStyle"
-    >
-      <span class="alf-sw-thumb"
-      ></span>
+    <div class="alf-sw-track">
+      <span class="alf-sw-thumb"></span>
     </div>
 
     @if (labelText) {
-    <span 
-      class="alf-sw-label-text"
-      [style]="typographyStyle + textStyle"
-    >{{ labelText }}</span>
+      <span class="alf-sw-label-text">{{ labelText }}</span>
     }
   </label>
 </div>
@@ -72,9 +47,9 @@
 @if (helperText || errorMsg) {
 <div [id]="internalId + '-description'" class="alf-sw-description">
   @if (errorMsg) {
-  <span class="alf-sw-error">{{ errorMsg }}</span>
+    <span class="alf-sw-error">{{ errorMsg }}</span>
   } @else {
-  <span class="alf-sw-helper">{{ helperText }}</span>
+    <span class="alf-sw-helper">{{ helperText }}</span>
   }
 </div>
 }

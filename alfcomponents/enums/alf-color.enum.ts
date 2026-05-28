@@ -577,7 +577,7 @@ export enum AlfColorEnum {
   PrimaryOutlineDisabled = 'var(--alf-primary-outline-disabled, #9dbdf2)',
   PrimaryOutlineActive = 'var(--alf-primary-outline-active, #0a55c7ff)',
   PrimaryOutlineBg = 'var(--alf-primary-outline-bg, transparent)',
-  PrimaryOutlineBgHover = 'var(--alf-primary-outline-bg-hover, rgba(13, 110, 253, 0.08))',
+  PrimaryOutlineBgHover = 'var(--alf-primary-outline-bg-hover, rgba(13, 110, 253, 0.04))',
 
   SecondaryOutline = 'var(--alf-secondary-outline, #6c757d)',
   SecondaryOutlineHover = 'var(--alf-secondary-outline-hover, #4a5055ff)',
@@ -587,7 +587,7 @@ export enum AlfColorEnum {
   SecondaryOutlineDisabled = 'var(--alf-secondary-outline-disabled, #b1b6ba)',
   SecondaryOutlineActive = 'var(--alf-secondary-outline-active, #4a5055ff)',
   SecondaryOutlineBg = 'var(--alf-secondary-outline-bg, transparent)',
-  SecondaryOutlineBgHover = 'var(--alf-secondary-outline-bg-hover, rgba(108, 117, 125, 0.08))',
+  SecondaryOutlineBgHover = 'var(--alf-secondary-outline-bg-hover, rgba(108, 117, 125, 0.04))',
 
   SuccessOutline = 'var(--alf-success-outline, #198754)',
   SuccessOutlineHover = 'var(--alf-success-outline-hover, #125b39ff)',
@@ -597,7 +597,7 @@ export enum AlfColorEnum {
   SuccessOutlineDisabled = 'var(--alf-success-outline-disabled, #9bcbab)',
   SuccessOutlineActive = 'var(--alf-success-outline-active, #125b39ff)',
   SuccessOutlineBg = 'var(--alf-success-outline-bg, transparent)',
-  SuccessOutlineBgHover = 'var(--alf-success-outline-bg-hover, rgba(25, 135, 84, 0.08))',
+  SuccessOutlineBgHover = 'var(--alf-success-outline-bg-hover, rgba(25, 135, 84, 0.04))',
 
   DangerOutline = 'var(--alf-danger-outline, #dc3545)',
   DangerOutlineHover = 'var(--alf-danger-outline-hover, #bb2d3b)',
@@ -607,7 +607,7 @@ export enum AlfColorEnum {
   DangerOutlineDisabled = 'var(--alf-danger-outline-disabled, #eea1a8)',
   DangerOutlineActive = 'var(--alf-danger-outline-active, #bb2d3b)',
   DangerOutlineBg = 'var(--alf-danger-outline-bg, transparent)',
-  DangerOutlineBgHover = 'var(--alf-danger-outline-bg-hover, rgba(220, 53, 69, 0.08))',
+  DangerOutlineBgHover = 'var(--alf-danger-outline-bg-hover, rgba(220, 53, 69, 0.04))',
 
   WarningOutline = 'var(--alf-warning-outline, #ffc107)',
   WarningOutlineHover = 'var(--alf-warning-outline-hover, #d5a926ff)',
@@ -617,7 +617,7 @@ export enum AlfColorEnum {
   WarningOutlineDisabled = 'var(--alf-warning-outline-disabled, #fcdd85)',
   WarningOutlineActive = 'var(--alf-warning-outline-active, #d5a926ff)',
   WarningOutlineBg = 'var(--alf-warning-outline-bg, transparent)',
-  WarningOutlineBgHover = 'var(--alf-warning-outline-bg-hover, rgba(255, 193, 7, 0.08))',
+  WarningOutlineBgHover = 'var(--alf-warning-outline-bg-hover, rgba(255, 193, 7, 0.04))',
 
   InfoOutline = 'var(--alf-info-outline, #0dcaf0)',
   InfoOutlineHover = 'var(--alf-info-outline-hover, #2bb9d6ff)',
@@ -627,7 +627,7 @@ export enum AlfColorEnum {
   InfoOutlineDisabled = 'var(--alf-info-outline-disabled, #92e6f7)',
   InfoOutlineActive = 'var(--alf-info-outline-active, #2bb9d6ff)',
   InfoOutlineBg = 'var(--alf-info-outline-bg, transparent)',
-  InfoOutlineBgHover = 'var(--alf-info-outline-bg-hover, rgba(13, 202, 240, 0.08))',
+  InfoOutlineBgHover = 'var(--alf-info-outline-bg-hover, rgba(13, 202, 240, 0.04))',
 
   LightOutline = 'var(--alf-light-outline, #6c757d)',
   LightOutlineHover = 'var(--alf-light-outline-hover, #495057)',
@@ -637,7 +637,7 @@ export enum AlfColorEnum {
   LightOutlineDisabled = 'var(--alf-light-outline-disabled, #e6e9eb)',
   LightOutlineActive = 'var(--alf-light-outline-active, #495057)',
   LightOutlineBg = 'var(--alf-light-outline-bg, transparent)',
-  LightOutlineBgHover = 'var(--alf-light-outline-bg-hover, rgba(248, 249, 250, 0.2))',
+  LightOutlineBgHover = 'var(--alf-light-outline-bg-hover, rgba(248, 249, 250, 0.1))',
 
   DarkOutline = 'var(--alf-dark-outline, #212529)',
   DarkOutlineHover = 'var(--alf-dark-outline-hover, #0f0f0f)',
@@ -647,7 +647,7 @@ export enum AlfColorEnum {
   DarkOutlineDisabled = 'var(--alf-dark-outline-disabled, #90969b)',
   DarkOutlineActive = 'var(--alf-dark-outline-active, #0f0f0f)',
   DarkOutlineBg = 'var(--alf-dark-outline-bg, transparent)',
-  DarkOutlineBgHover = 'var(--alf-dark-outline-bg-hover, rgba(33, 37, 41, 0.08))',
+  DarkOutlineBgHover = 'var(--alf-dark-outline-bg-hover, rgba(33, 37, 41, 0.04))',
 
   // ===== GHOST MODALITY =====
   PrimaryGhost = 'var(--alf-primary-ghost, rgba(13, 110, 253, 0.08))',

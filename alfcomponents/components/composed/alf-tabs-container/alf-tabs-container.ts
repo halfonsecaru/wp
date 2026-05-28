@@ -1,6 +1,6 @@
 import { Component, contentChildren, effect, input, signal, computed, viewChild, ElementRef, viewChildren, untracked, afterNextRender, forwardRef, inject, booleanAttribute, model, Injector } from '@angular/core';
 import { AlfTabComponent } from './components/alf-tab/alf-tab';
-import { generateUniqueId, visualprefixEnum, resolveAlfColorVariant } from '@alfcomponents/shared';
+import { generateUniqueId, visualprefixEnum } from '@alfcomponents/shared';
 import {
   AlfColorVariantEnum,
 } from '@alfcomponents/enums';
@@ -34,117 +34,88 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
   private readonly internalId = generateUniqueId({ prefix: visualprefixEnum.TabsContainerInternalId });
   public override readonly colorVariant = input<AlfColorVariantEnum>();
 
-  // private readonly parentTab = inject(AlfTabComponent, { optional: true });
-  // private readonly injector = inject(Injector);
-  // private resizeObserver?: ResizeObserver;
-  // private currentHeightAnimation: Animation | null = null;
-  // private _touchStartX = 0;
-  // private _touchStartY = 0;
+  private readonly parentTab = inject(AlfTabComponent, { optional: true });
+  private readonly injector = inject(Injector);
+  private resizeObserver?: ResizeObserver;
+  private currentHeightAnimation: Animation | null = null;
+  private _touchStartX = 0;
+  private _touchStartY = 0;
 
-  // // ==========================================
-  // // 1. Effects
-  // // ==========================================
-  // protected readonly resizeEffect = effect((onCleanup) => {
-  //   const scrollEl = this.headerScrollRef()?.nativeElement;
-  //   if (!scrollEl) return;
+  // ==========================================
+  // 1. Effects
+  // ==========================================
+  protected readonly resizeEffect = effect((onCleanup) => {
+    const scrollEl = this.headerScrollRef()?.nativeElement;
+    if (!scrollEl) return;
 
-  //   this.resizeObserver = new ResizeObserver(this.onResizeObserverTick);
-  //   this.resizeObserver.observe(scrollEl);
-  //   this.updateScrollMetrics();
+    this.resizeObserver = new ResizeObserver(this.onResizeObserverTick);
+    this.resizeObserver.observe(scrollEl);
+    this.updateScrollMetrics();
 
-  //   onCleanup(this.cleanupResizeObserver);
-  // });
+    onCleanup(this.cleanupResizeObserver);
+  });
 
-  // protected readonly animateSlider = effect(() => {
-  //   this.activeIndex();
-  //   this.buttonRefs();
+  protected readonly animateSlider = effect(() => {
+    this.activeIndex();
+    this.buttonRefs();
 
-  //   untracked(this.executeSliderUpdate);
-  // });
+    untracked(this.executeSliderUpdate);
+  });
 
-  // protected readonly syncActiveTab = effect(() => {
-  //   const active = this.activeIndex();
-  //   const currentTabs = this.tabs();
-  //   const contentAnim = this.finalConfig()?.contentAnimations;
-  //   const contentBg = this.finalConfig()?.backgrounds;
+  protected readonly syncActiveTab = effect(() => {
+    const active = this.activeIndex();
+    const currentTabs = this.tabs();
+    const contentAnim = this.finalConfig()?.contentAnimations;
+    const contentBg = this.finalConfig()?.backgrounds;
 
-  //   currentTabs.forEach((tab, index) => {
-  //     const isActive = index === active;
-  //     tab.setActive(isActive);
+    currentTabs.forEach((tab, index) => {
+      const isActive = index === active;
+      tab.setActive(isActive);
 
-  //     if (contentAnim) {
-  //       tab.parentContentAnimations.set(contentAnim);
-  //     }
-  //     if (contentBg) {
-  //       tab.parentContentBackgrounds.set(contentBg);
-  //     }
-  //   });
+      if (contentAnim) {
+        tab.parentContentAnimations.set(contentAnim);
+      }
+      if (contentBg) {
+        tab.parentContentBackgrounds.set(contentBg);
+      }
+    });
 
-  //   untracked(this.executeTabHeightMeasurement);
-  // });
-
-
-
-  // // ==========================================
-  // // 3. Signals (Inputs, Models, State)
-  // // ==========================================
-  // 
-  // public override readonly inputConfig = input<AlfTabsContainerConfigInterface>(undefined, { alias: 'config' });
+    untracked(this.executeTabHeightMeasurement);
+  });
 
 
-  // public readonly activeIndex = model<number>(0);
-  // public readonly isAnimating = signal<boolean>(false);
-  // public readonly containerHeight = signal<string>('auto');
-  // protected readonly headerMetrics = signal({ canLeft: false, canRight: false });
 
-  // protected readonly tabs = contentChildren(forwardRef(() => AlfTabComponent), { descendants: false });
-  // protected readonly nestedContainers = contentChildren(forwardRef(() => AlfTabsContainerComponent), { descendants: false });
+  // ==========================================
+  // 3. Signals (Inputs, Models, State)
+  // ==========================================
+  
+  public override readonly inputConfig = input<AlfTabsContainerConfigInterface>(undefined, { alias: 'config' });
+  public readonly fluidHeightInput = input<boolean | undefined>(undefined, { alias: 'fluidHeight' });
 
-  // protected readonly headerScrollRef = viewChild<ElementRef<HTMLDivElement>>('headerScroll');
-  // protected readonly sliderRef = viewChild<ElementRef<HTMLDivElement>>('slider');
-  // public readonly contentContainer = viewChild<ElementRef<HTMLDivElement>>('contentContainer');
-  // protected readonly buttonRefs = viewChildren('tabButton', { read: ElementRef });
 
-  // // ==========================================
-  // // 4. Computed
-  // // ==========================================
+  public readonly activeIndex = model<number>(0);
+  public readonly isAnimating = signal<boolean>(false);
+  public readonly containerHeight = signal<string>('auto');
+  protected readonly headerMetrics = signal({ canLeft: false, canRight: false });
+
+  protected readonly tabs = contentChildren(forwardRef(() => AlfTabComponent), { descendants: false });
+  protected readonly nestedContainers = contentChildren(forwardRef(() => AlfTabsContainerComponent), { descendants: false });
+
+  protected readonly headerScrollRef = viewChild<ElementRef<HTMLDivElement>>('headerScroll');
+  protected readonly sliderRef = viewChild<ElementRef<HTMLDivElement>>('slider');
+  public readonly contentContainer = viewChild<ElementRef<HTMLDivElement>>('contentContainer');
+  protected readonly buttonRefs = viewChildren('tabButton', { read: ElementRef });
+
+  // ==========================================
+  // 4. Computed
+  // ==========================================
+
+
 
   protected readonly predefinedConfigComputed = computed(() => {
-    const v = this.colorVariant() ?? this.variant() ?? this.inputConfig()?.colorVariant;
-    const inputConfig = this.inputConfig();
-
-    let resolver = undefined;
-    switch (v) {
-      case AlfColorVariantEnum.Primary:
-        resolver = resolveAlfColorVariant(AlfColorVariantEnum.PrimaryOutline);
-        break;
-      case AlfColorVariantEnum.Secondary:
-        resolver = resolveAlfColorVariant(AlfColorVariantEnum.SecondaryOutline);
-        break;
-      case AlfColorVariantEnum.Success:
-        resolver = resolveAlfColorVariant(AlfColorVariantEnum.SuccessOutline);
-        break;
-      case AlfColorVariantEnum.Danger:
-        resolver = resolveAlfColorVariant(AlfColorVariantEnum.DangerOutline);
-        break;
-      case AlfColorVariantEnum.Warning:
-        resolver = resolveAlfColorVariant(AlfColorVariantEnum.WarningOutline);
-        break;
-      case AlfColorVariantEnum.Info:
-        resolver = resolveAlfColorVariant(AlfColorVariantEnum.InfoOutline);
-        break;
-      case AlfColorVariantEnum.Light:
-        resolver = resolveAlfColorVariant(AlfColorVariantEnum.LightOutline);
-        break;
-      case AlfColorVariantEnum.Dark:
-        resolver = resolveAlfColorVariant(AlfColorVariantEnum.DarkOutline);
-        break;
-      default:
-        resolver = v;
-    }
-    
-    return getAlfDefaultConfig(resolver, this.componentType, ALF_TABS_CONTAINER_DEFAULT, this.inputConfig() ?? {});
-
+    const rawV = this.colorVariant() ?? this.inputConfig()?.colorVariant;
+ 
+    return getAlfDefaultConfig(rawV, this.componentType, ALF_TABS_CONTAINER_DEFAULT, this.inputConfig() ?? {});
   });
 
   protected override readonly colorVariantComputed = computed(() => {
@@ -157,21 +128,21 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
 
 
 
-  // public override readonly resolvedConfig = computed(() => {
-  //   const predefined = this.predefinedConfig();
-  //   const manual = this.inputConfig();
-  //   const variant = this.colorVariantComputed();
+  public override readonly resolvedConfig = computed(() => {
+    const predefined = this.predefinedConfigComputed();
+    const manual = this.inputConfig();
+    const variant = this.colorVariantComputed();
 
-  //   return {
-  //     ...predefined,
-  //     ...manual,
-  //     colorVariant: variant,
-  //     fluidHeight: this.fluidHeightInput() ?? manual?.fluidHeight ?? predefined.fluidHeight,
-  //     contentAnimations: manual?.contentAnimations ?? predefined?.contentAnimations,
-  //   };
-  // });
+    return {
+      ...predefined,
+      ...manual,
+      colorVariant: variant,
+      fluidHeight: this.fluidHeightInput() ?? manual?.fluidHeight ?? predefined?.fluidHeight,
+      contentAnimations: manual?.contentAnimations ?? predefined?.contentAnimations,
+    };
+  });
 
-  // public readonly finalConfig = this.resolvedConfig;
+  public readonly finalConfig = this.resolvedConfig;
 
   public readonly containerId = computed(() =>
     this.resolvedConfig()?.id ?? this.internalId
@@ -180,265 +151,265 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
   public readonly cursorStyle = computed(() => this.cursorComputed());
 
 
-  // public readonly isFluidHeight = computed(() => {
-  //   const fromInput = this.fluidHeightInput();
-  //   const config = this.finalConfig();
-  //   const fromConfig = config?.fluidHeight;
+  public readonly isFluidHeight = computed(() => {
+    const fromInput = this.fluidHeightInput();
+    const config = this.finalConfig();
+    const fromConfig = config?.fluidHeight;
 
-  //   if (fromInput || fromConfig) return true;
+    if (fromInput || fromConfig) return true;
 
-  //   return this.nestedContainers().length === 0;
-  // });
+    return this.nestedContainers().length === 0;
+  });
 
-  // public readonly navigationTabs = computed(() => {
-  //   const currentTabs = this.tabs();
-  //   const activeIdx = this.activeIndex();
+  public readonly navigationTabs = computed(() => {
+    const currentTabs = this.tabs();
+    const activeIdx = this.activeIndex();
 
-  //   return currentTabs.map((tab, index) => {
-  //     const isActive = index === activeIdx;
-  //     const tabLabel = tab.finalLabel();
+    return currentTabs.map((tab, index) => {
+      const isActive = index === activeIdx;
+      const tabLabel = tab.finalLabel();
 
-  //     return {
-  //       label: tabLabel,
-  //       iconLeft: tab.iconLeft(),
-  //       iconRight: tab.iconRight(),
-  //       isActive
-  //     };
-  //   });
-  // });
+      return {
+        label: tabLabel,
+        iconLeft: tab.iconLeft(),
+        iconRight: tab.iconRight(),
+        isActive
+      };
+    });
+  });
 
 
 
-  // public readonly contentAnimationsStyle = computed(() => {
-  //   const anim = this.finalConfig()?.contentAnimations;
-  //   const baseStyles = 'position: relative; overflow: hidden;';
-  //   if (!anim) return baseStyles;
+  public readonly contentAnimationsStyle = computed(() => {
+    const anim = this.finalConfig()?.contentAnimations;
+    const baseStyles = 'position: relative; overflow: hidden;';
+    if (!anim) return baseStyles;
 
-  //   const declarations: string[] = [baseStyles];
-  //   if (anim.duration) declarations.push(`--animate-duration: ${anim.duration};`);
-  //   if (anim.delay) declarations.push(`--animate-delay: ${anim.delay};`);
-  //   return declarations.join(' ');
-  // });
+    const declarations: string[] = [baseStyles];
+    if (anim.duration) declarations.push(`--animate-duration: ${anim.duration};`);
+    if (anim.delay) declarations.push(`--animate-delay: ${anim.delay};`);
+    return declarations.join(' ');
+  });
 
-  // public readonly contentAnimationsClass = computed(() => {
-  //   const anim = this.finalConfig()?.contentAnimations?.enterStage ?? '';
-  //   if (!anim) return '';
-  //   this.activeIndex();
-  //   return anim;
-  // });
+  public readonly contentAnimationsClass = computed(() => {
+    const anim = this.finalConfig()?.contentAnimations?.enterStage ?? '';
+    if (!anim) return '';
+    this.activeIndex();
+    return anim;
+  });
 
-  // public readonly contentBackgroundsStyle = computed(() =>
-  //   visualBackgroundBase('--alf-tabs-content', {
-  //     type: this.colorVariantComputed(),
-  //     backgrounds: this.backgroundsComputed(),
-  //   }),
-  // );
+  public readonly contentBackgroundsStyle = computed(() =>
+    visualBackgroundBase('--alf-tabs-content', {
+      type: this.colorVariantComputed(),
+      backgrounds: this.backgroundsComputed(),
+    }),
+  );
 
-  // // ==========================================
-  // // 5. Lifecycle Hooks
-  // // ==========================================
-  // constructor() {
-  //   super();
-  // }
+  // ==========================================
+  // 5. Lifecycle Hooks
+  // ==========================================
+  constructor() {
+    super();
+  }
 
-  // // ==========================================
-  // // 6. Functions (Arrow Functions)
-  // // ==========================================
-  // protected readonly executeSliderUpdate = (): void => {
-  //   this.updateSlider();
-  // };
+  // ==========================================
+  // 6. Functions (Arrow Functions)
+  // ==========================================
+  protected readonly executeSliderUpdate = (): void => {
+    this.updateSlider();
+  };
 
-  // protected readonly executeTabHeightMeasurement = (): void => {
-  //   afterNextRender(this.onTabHeightMeasured, { injector: this.injector });
-  // };
+  protected readonly executeTabHeightMeasurement = (): void => {
+    afterNextRender(this.onTabHeightMeasured, { injector: this.injector });
+  };
 
-  // protected readonly onResizeObserverTick = (): void => {
-  //   this.updateScrollMetrics();
-  // };
+  protected readonly onResizeObserverTick = (): void => {
+    this.updateScrollMetrics();
+  };
 
-  // protected readonly cleanupResizeObserver = (): void => {
-  //   this.resizeObserver?.disconnect();
-  // };
+  protected readonly cleanupResizeObserver = (): void => {
+    this.resizeObserver?.disconnect();
+  };
 
-  // private readonly applyHeight = (container: HTMLElement, value: string): void => {
-  //   container.style.setProperty('--alf-tabs-content-height', value);
-  // };
+  private readonly applyHeight = (container: HTMLElement, value: string): void => {
+    container.style.setProperty('--alf-tabs-content-height', value);
+  };
 
-  // private readonly measureNaturalHeight = (): number => {
-  //   const activeIdx = this.activeIndex();
-  //   const allTabs = this.tabs();
-  //   const activeTab = allTabs[activeIdx];
-  //   if (!activeTab) return 0;
+  private readonly measureNaturalHeight = (): number => {
+    const activeIdx = this.activeIndex();
+    const allTabs = this.tabs();
+    const activeTab = allTabs[activeIdx];
+    if (!activeTab) return 0;
 
-  //   const container = this.contentContainer()?.nativeElement;
-  //   if (!container) return 0;
+    const container = this.contentContainer()?.nativeElement;
+    if (!container) return 0;
 
-  //   const savedToken = container.style.getPropertyValue('--alf-tabs-content-height');
-  //   container.style.setProperty('--alf-tabs-content-height', 'auto');
+    const savedToken = container.style.getPropertyValue('--alf-tabs-content-height');
+    container.style.setProperty('--alf-tabs-content-height', 'auto');
 
-  //   const savedDisplays: { el: HTMLElement; display: string }[] = [];
-  //   for (let i = 0; i < allTabs.length; i++) {
-  //     if (i !== activeIdx) {
-  //       const el = allTabs[i].elementRef.nativeElement;
-  //       savedDisplays.push({ el, display: el.style.display });
-  //       el.style.display = 'none';
-  //     }
-  //   }
+    const savedDisplays: { el: HTMLElement; display: string }[] = [];
+    for (let i = 0; i < allTabs.length; i++) {
+      if (i !== activeIdx) {
+        const el = allTabs[i].elementRef.nativeElement;
+        savedDisplays.push({ el, display: el.style.display });
+        el.style.display = 'none';
+      }
+    }
 
-  //   // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-  //   container.offsetHeight; // Reflow
-  //   const naturalHeight = container.scrollHeight;
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    container.offsetHeight; // Reflow
+    const naturalHeight = container.scrollHeight;
 
-  //   container.style.setProperty('--alf-tabs-content-height', savedToken || 'auto');
-  //   for (const saved of savedDisplays) {
-  //     saved.el.style.display = saved.display;
-  //   }
+    container.style.setProperty('--alf-tabs-content-height', savedToken || 'auto');
+    for (const saved of savedDisplays) {
+      saved.el.style.display = saved.display;
+    }
 
-  //   return naturalHeight;
-  // };
+    return naturalHeight;
+  };
 
-  // public readonly onTabHeightMeasured = (): void => {
-  //   if (!this.isFluidHeight()) return;
-  //   const container = this.contentContainer()?.nativeElement;
-  //   if (!container) return;
+  public readonly onTabHeightMeasured = (): void => {
+    if (!this.isFluidHeight()) return;
+    const container = this.contentContainer()?.nativeElement;
+    if (!container) return;
 
-  //   if (this.currentHeightAnimation) {
-  //     this.currentHeightAnimation.cancel();
-  //     this.currentHeightAnimation = null;
-  //   }
+    if (this.currentHeightAnimation) {
+      this.currentHeightAnimation.cancel();
+      this.currentHeightAnimation = null;
+    }
 
-  //   const startHeight = container.offsetHeight;
-  //   const endHeight = this.measureNaturalHeight();
+    const startHeight = container.offsetHeight;
+    const endHeight = this.measureNaturalHeight();
 
-  //   if (endHeight === 0) return;
+    if (endHeight === 0) return;
 
-  //   if (startHeight === 0 || Math.abs(startHeight - endHeight) < 2) {
-  //     this.applyHeight(container, `${endHeight}px`);
-  //     return;
-  //   }
+    if (startHeight === 0 || Math.abs(startHeight - endHeight) < 2) {
+      this.applyHeight(container, `${endHeight}px`);
+      return;
+    }
 
-  //   this.isAnimating.set(true);
-  //   this.applyHeight(container, `${startHeight}px`);
+    this.isAnimating.set(true);
+    this.applyHeight(container, `${startHeight}px`);
 
-  //   const anim = container.animate([
-  //     { height: `${startHeight}px` },
-  //     { height: `${endHeight}px` }
-  //   ], {
-  //     duration: 350,
-  //     easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
-  //     fill: 'none'
-  //   });
+    const anim = container.animate([
+      { height: `${startHeight}px` },
+      { height: `${endHeight}px` }
+    ], {
+      duration: 350,
+      easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+      fill: 'none'
+    });
 
-  //   this.currentHeightAnimation = anim;
-  //   anim.onfinish = this.onHeightAnimationFinish(container, endHeight);
-  // };
+    this.currentHeightAnimation = anim;
+    anim.onfinish = this.onHeightAnimationFinish(container, endHeight);
+  };
 
-  // private readonly onHeightAnimationFinish = (container: HTMLElement, endHeight: number): () => void => {
-  //   return (): void => {
-  //     this.applyHeight(container, `${endHeight}px`);
-  //     this.currentHeightAnimation = null;
-  //     this.isAnimating.set(false);
+  private readonly onHeightAnimationFinish = (container: HTMLElement, endHeight: number): () => void => {
+    return (): void => {
+      this.applyHeight(container, `${endHeight}px`);
+      this.currentHeightAnimation = null;
+      this.isAnimating.set(false);
 
-  //     if (this.parentTab) {
-  //       this.parentTab.reportHeight();
-  //     }
-  //   };
-  // };
+      if (this.parentTab) {
+        this.parentTab.reportHeight();
+      }
+    };
+  };
 
-  // protected readonly updateScrollMetrics = (): void => {
-  //   const el = this.headerScrollRef()?.nativeElement;
-  //   if (!el) return;
+  protected readonly updateScrollMetrics = (): void => {
+    const el = this.headerScrollRef()?.nativeElement;
+    if (!el) return;
 
-  //   const { scrollLeft, scrollWidth, clientWidth } = el;
-  //   this.headerMetrics.set({
-  //     canLeft: scrollLeft > 1,
-  //     canRight: scrollLeft + clientWidth < scrollWidth - 1
-  //   });
+    const { scrollLeft, scrollWidth, clientWidth } = el;
+    this.headerMetrics.set({
+      canLeft: scrollLeft > 1,
+      canRight: scrollLeft + clientWidth < scrollWidth - 1
+    });
 
-  //   this.updateSlider(false);
-  // };
+    this.updateSlider(false);
+  };
 
-  // public readonly scrollLeft = (): void => {
-  //   const el = this.headerScrollRef()?.nativeElement;
-  //   if (!el) return;
-  //   el.scrollBy({ left: -200, behavior: 'smooth' });
-  // };
+  public readonly scrollLeft = (): void => {
+    const el = this.headerScrollRef()?.nativeElement;
+    if (!el) return;
+    el.scrollBy({ left: -200, behavior: 'smooth' });
+  };
 
-  // public readonly scrollRight = (): void => {
-  //   const el = this.headerScrollRef()?.nativeElement;
-  //   if (!el) return;
-  //   el.scrollBy({ left: 200, behavior: 'smooth' });
-  // };
+  public readonly scrollRight = (): void => {
+    const el = this.headerScrollRef()?.nativeElement;
+    if (!el) return;
+    el.scrollBy({ left: 200, behavior: 'smooth' });
+  };
 
-  // protected readonly onScroll = (): void => {
-  //   this.updateScrollMetrics();
-  // };
+  protected readonly onScroll = (): void => {
+    this.updateScrollMetrics();
+  };
 
-  // public readonly updateSlider = (animate: boolean = true): void => {
-  //   const active = this.activeIndex();
-  //   const buttons = this.buttonRefs();
-  //   const slider = this.sliderRef()?.nativeElement;
+  public readonly updateSlider = (animate: boolean = true): void => {
+    const active = this.activeIndex();
+    const buttons = this.buttonRefs();
+    const slider = this.sliderRef()?.nativeElement;
 
-  //   if (!slider || buttons.length === 0) return;
+    if (!slider || buttons.length === 0) return;
 
-  //   const targetButton = buttons[active]?.nativeElement;
-  //   if (!targetButton) return;
+    const targetButton = buttons[active]?.nativeElement;
+    if (!targetButton) return;
 
-  //   const width = targetButton.offsetWidth;
-  //   const left = targetButton.offsetLeft;
+    const width = targetButton.offsetWidth;
+    const left = targetButton.offsetLeft;
 
-  //   if (width === 0) return;
+    if (width === 0) return;
 
-  //   if (animate) {
-  //     slider.animate([
-  //       { width: slider.style.width || '0px', left: slider.style.left || '0px' },
-  //       { width: `${width}px`, left: `${left}px` }
-  //     ], {
-  //       duration: 300,
-  //       easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
-  //       fill: 'forwards'
-  //     });
-  //   }
+    if (animate) {
+      slider.animate([
+        { width: slider.style.width || '0px', left: slider.style.left || '0px' },
+        { width: `${width}px`, left: `${left}px` }
+      ], {
+        duration: 300,
+        easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+        fill: 'forwards'
+      });
+    }
 
-  //   slider.style.width = `${width}px`;
-  //   slider.style.left = `${left}px`;
-  // };
+    slider.style.width = `${width}px`;
+    slider.style.left = `${left}px`;
+  };
 
-  // public readonly setActiveTab = (index: number): void => {
-  //   const oldIndex = this.activeIndex();
-  //   if (oldIndex !== index) {
-  //     const tabs = this.tabs();
-  //     const oldTab = tabs[oldIndex];
+  public readonly setActiveTab = (index: number): void => {
+    const oldIndex = this.activeIndex();
+    if (oldIndex !== index) {
+      const tabs = this.tabs();
+      const oldTab = tabs[oldIndex];
 
-  //     if (oldTab) {
-  //       oldTab.playExitAnimation();
-  //     }
+      if (oldTab) {
+        oldTab.playExitAnimation();
+      }
 
-  //     this.activeIndex.set(index);
-  //   }
-  // };
+      this.activeIndex.set(index);
+    }
+  };
 
-  // public readonly onTouchStart = (event: TouchEvent): void => {
-  //   this._touchStartX = event.touches[0].clientX;
-  //   this._touchStartY = event.touches[0].clientY;
-  // };
+  public readonly onTouchStart = (event: TouchEvent): void => {
+    this._touchStartX = event.touches[0].clientX;
+    this._touchStartY = event.touches[0].clientY;
+  };
 
-  // public readonly onTouchEnd = (event: TouchEvent): void => {
-  //   const touchEndX = event.changedTouches[0].clientX;
-  //   const touchEndY = event.changedTouches[0].clientY;
+  public readonly onTouchEnd = (event: TouchEvent): void => {
+    const touchEndX = event.changedTouches[0].clientX;
+    const touchEndY = event.changedTouches[0].clientY;
 
-  //   const deltaX = touchEndX - this._touchStartX;
-  //   const deltaY = touchEndY - this._touchStartY;
+    const deltaX = touchEndX - this._touchStartX;
+    const deltaY = touchEndY - this._touchStartY;
 
-  //   if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 60) {
-  //     const active = this.activeIndex();
-  //     const total = this.tabs().length;
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 60) {
+      const active = this.activeIndex();
+      const total = this.tabs().length;
 
-  //     if (deltaX > 0 && active > 0) {
-  //       this.setActiveTab(active - 1);
-  //     } else if (deltaX < 0 && active < total - 1) {
-  //       this.setActiveTab(active + 1);
-  //     }
-  //   }
-  // };
+      if (deltaX > 0 && active > 0) {
+        this.setActiveTab(active - 1);
+      } else if (deltaX < 0 && active < total - 1) {
+        this.setActiveTab(active + 1);
+      }
+    }
+  };
 }

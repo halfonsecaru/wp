@@ -17,13 +17,11 @@
   @include alf-transition;
 
   @include alf-display-layout-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
-  @include alf-padding-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
   @include alf-margin-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
   @include alf-typography-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
   @include alf-text-style-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
   @include alf-outline-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
   // background and border mixins removed from wrapper because only the track should be colored
-  @include alf-transform-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
 
   position: relative;
   cursor: pointer;
@@ -45,6 +43,8 @@
     gap: 0.75rem;
     cursor: inherit;
 
+    @include alf-padding-css-vars('--alf-sw', '.alf-sw--disabled &', '.alf-sw:focus-within &, .alf-sw:focus-visible &');
+
     &--label-before {
       flex-direction: row-reverse;
     }
@@ -56,6 +56,9 @@
     display: flex;
     align-items: center;
     flex-shrink: 0;
+
+    @include alf-transform-css-vars('--alf-sw', '.alf-sw--disabled &', '.alf-sw:focus-within &, .alf-sw:focus-visible &');
+    @include alf-animations-css-vars('--alf-sw');
 
     // MD defaults (2.5rem width x 1.25rem height is standard ratio 2:1)
     width: 2.5rem;
