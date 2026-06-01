@@ -11,7 +11,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { AlfBaseConfiguration } from '@alfcomponents/base/alf-base-configuration';
-import { generateUniqueId, visualprefixEnum } from '@alfcomponents/shared';
+import { generateUniqueId, visualprefixEnum, resolveAlfColorVariant } from '@alfcomponents/shared';
 import {
   AlfRadioButtonVariantEnum,
   AlfColorVariantEnum,
@@ -86,6 +86,11 @@ export class AlfRadioButton extends AlfBaseConfiguration<AlfRadioButtonInterface
   public readonly focused = signal<boolean>(false);
   public readonly hovered = signal<boolean>(false);
 
+  protected override readonly colorVariantComputed = computed(() => {
+    const v = this.colorVariant() ?? this.variant() ?? this.inputConfig()?.colorVariant;
+    return resolveAlfColorVariant(v);
+  });
+
   // ── 4. Computed (Reactive Engine) ─────────────────────────────────────────
 
   /**
@@ -93,7 +98,7 @@ export class AlfRadioButton extends AlfBaseConfiguration<AlfRadioButtonInterface
    * Resolves hierarchy: Inputs > InputConfig > Design System Defaults.
    */
   public readonly finalConfig = computed<AlfRadioButtonInterface>(() => {
-    const rawV = (this.colorVariant() ?? this.variant() ?? this.inputConfig()?.colorVariant) as string;
+    const rawV = this.colorVariantComputed() as string;
     
     // Mapeo manual ultra-robusto para las variantes core si vienen como string
     let v: AlfColorVariantEnum | undefined;

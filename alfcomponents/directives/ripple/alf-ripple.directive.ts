@@ -76,7 +76,8 @@ export class AlfRippleDirective {
       this.renderer.setStyle(rippleHost, 'pointer-events', 'none');
       this.renderer.setStyle(rippleHost, 'z-index', '0');
 
-      if (window.getComputedStyle(element).position === 'static') {
+      const computedStyle = (typeof window !== 'undefined' && window.getComputedStyle) ? window.getComputedStyle(element) : null;
+      if (computedStyle && computedStyle.position === 'static') {
         this.renderer.setStyle(element, 'position', 'relative');
       }
       this.renderer.appendChild(element, rippleHost);

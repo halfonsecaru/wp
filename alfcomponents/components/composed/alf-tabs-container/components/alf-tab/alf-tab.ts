@@ -1,7 +1,7 @@
 import { Component, input, signal, computed, inject, ElementRef, viewChild, OnDestroy } from '@angular/core';
 import { AlfSingleTabInterface, ALF_TABS_CONTAINER_TOKEN } from '../../interfaces/alf-tabs.interface';
 import { visualprefixEnum } from '@alfcomponents/shared';
-import { AlfColorVariantEnum } from '@alfcomponents/enums';
+import { AlfColorVariantEnum, AlfCursorEnum } from '@alfcomponents/enums';
 import { AlfAnimateCssInterface, AlfBackgroundsInterface } from '@alfcomponents/interfaces';
 import { AlfBaseButtonConfiguration } from '../../../../simple/alf-button/base/alf-base-button-configuration';
 import { AlfComponentTypeEnum, resolveVariantConfig } from '@alfcomponents/base/defaultVariants';
@@ -41,6 +41,7 @@ export class AlfTabComponent extends AlfBaseButtonConfiguration<AlfSingleTabInte
   public override readonly inputConfig = input<AlfSingleTabInterface>(undefined);
   public readonly tabName = input<string>('');
   public readonly expandHeight = input<boolean>(false);
+  public readonly closable = input<boolean>(false);
   
   private readonly _isActive = signal<boolean>(false);
   public readonly isActive = this._isActive.asReadonly();
@@ -53,6 +54,12 @@ export class AlfTabComponent extends AlfBaseButtonConfiguration<AlfSingleTabInte
   // ==========================================
   // 4. Computed
   // ==========================================
+
+  public readonly isDisabled = computed(() => this.disabledComputed());
+
+  protected override readonly cursorComputed = computed(() => {
+    return this.cursor() ?? this.resolvedConfig()?.cursor ?? AlfCursorEnum.Default;
+  });
 
   public override readonly resolvedConfig = computed(() => {
     const manual = this.inputConfig();

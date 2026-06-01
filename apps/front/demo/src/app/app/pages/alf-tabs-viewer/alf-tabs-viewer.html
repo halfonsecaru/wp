@@ -70,15 +70,17 @@
       </div>
     </section>
 
-    <!-- Showcase 2: Fluid Height & Dynamic Transition
+    <!-- Showcase 2: Fluid Height & Dynamic Transition -->
     <section class="tabs-card">
       <h2 class="tabs-card__title">
         <span class="tabs-card__dot tabs-card__dot--purple"></span>
         Fluid Height Transition
       </h2>
       <div class="tabs-card__body">
-        <p class="tabs-demo-desc">Switch between tabs to see the smooth CSS transition of the container's height based on content size.</p>
-        <alf-tabs-container variant="primary">
+        <p class="tabs-demo-desc" style="color: var(--alf-color-gray-600, #4b5563); margin-bottom: 1rem;">
+          Switch between tabs to see the smooth, magnetic-stretch animation of the container's height based on content size.
+        </p>
+        <alf-tabs-container colorVariant="outline-primary">
           <alf-tab label="Short Content">
             <div class="tab-demo-content" style="padding: 1rem 0;">
               <h4>Compact Panel</h4>
@@ -103,59 +105,112 @@
         </alf-tabs-container>
       </div>
     </section>
-    -->
 
-    <!-- Showcase 3: Nested Tabs Structure
+    <!-- Showcase 3: Dynamic & Closable Tabs -->
     <section class="tabs-card">
       <h2 class="tabs-card__title">
-        <span class="tabs-card__dot tabs-card__dot--amber"></span>
-        Nested Tab Containers
+        <span class="tabs-card__dot tabs-card__dot--red"></span>
+        Dynamic & Closable Tabs
       </h2>
       <div class="tabs-card__body">
-        <p class="tabs-demo-desc">Deeply nested tabs with proper state hierarchy and isolated height computation.</p>
-        
-        <alf-tabs-container variant="secondary">
-          <alf-tab label="First Category">
-            <div class="tab-demo-content" style="padding: 1rem 0;">
-              <h4 style="margin-bottom: 1rem;">Primary Level - Category 1</h4>
-              
-              <alf-tabs-container variant="success">
-                <alf-tab label="Sub-Tab A" iconLeft="📁">
-                  <div class="tab-demo-content" style="padding: 0.5rem 0;">
-                    <h5>Nested Content A</h5>
-                    <p>Inside Sub-Tab A, the height is measured independently.</p>
-                  </div>
-                </alf-tab>
-                <alf-tab label="Sub-Tab B" iconLeft="📂">
-                  <div class="tab-demo-content" style="padding: 0.5rem 0;">
-                    <h5>Nested Content B</h5>
-                    <p>Inside Sub-Tab B, demonstrating nested structural isolation.</p>
-                  </div>
-                </alf-tab>
-              </alf-tabs-container>
+        <p class="tabs-demo-desc" style="color: var(--alf-color-gray-600, #4b5563); margin-bottom: 1rem;">
+          Add new tabs dynamically and close them using the chic cross button. The active indicator syncs perfectly.
+        </p>
+        <div style="margin-bottom: 1.5rem; display: flex; gap: 8px;">
+          <button 
+            style="background: var(--alf-color-primary, #3b82f6); color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 500; cursor: pointer; transition: all 0.2s ease;"
+            (click)="addTab()"
+          >
+            + Add Tab
+          </button>
+        </div>
+
+        @if (dynamicTabs().length > 0) {
+          <alf-tabs-container 
+            [(activeIndex)]="dynamicActiveIndex" 
+            colorVariant="outline-danger"
+            (tabClose)="handleCloseTab($event)"
+          >
+            @for (tab of dynamicTabs(); track tab.id) {
+              <alf-tab [label]="tab.label" [closable]="tab.closable">
+                <div class="tab-demo-content" style="padding: 1rem 0;">
+                  <h4>{{ tab.label }} Content</h4>
+                  <p>{{ tab.content }}</p>
+                </div>
+              </alf-tab>
+            }
+          </alf-tabs-container>
+        } @else {
+          <div style="text-align: center; padding: 2rem; border: 2px dashed var(--alf-color-gray-200, #e5e7eb); border-radius: 8px; color: var(--alf-color-gray-500, #6b7280);">
+            No tabs remaining. Click "+ Add Tab" above to create one!
+          </div>
+        }
+      </div>
+    </section>
+
+    <!-- Showcase 4: Layout Orientation & Keyboard Activation -->
+    <section class="tabs-card tabs-card--wide">
+      <h2 class="tabs-card__title">
+        <span class="tabs-card__dot tabs-card__dot--amber"></span>
+        Vertical Layout & WAI-ARIA Keyboard Configuration
+      </h2>
+      <div class="tabs-card__body">
+        <p class="tabs-demo-desc" style="color: var(--alf-color-gray-600, #4b5563); margin-bottom: 1.5rem;">
+          Toggle horizontal/vertical alignment and manual/automatic keyboard activation. In manual activation, arrow keys focus tab headers, but they only activate on Space or Enter.
+        </p>
+
+        <div style="margin-bottom: 1.5rem; display: flex; gap: 12px; flex-wrap: wrap;">
+          <button 
+            style="background: var(--alf-color-gray-100, #f3f4f6); color: var(--alf-color-gray-800, #1f2937); border: 1px solid var(--alf-color-gray-200, #e5e7eb); padding: 8px 16px; border-radius: 6px; font-weight: 500; cursor: pointer; transition: all 0.2s ease;"
+            (click)="toggleOrientation()"
+          >
+            Orientation: {{ demoOrientation() | uppercase }}
+          </button>
+          <button 
+            style="background: var(--alf-color-gray-100, #f3f4f6); color: var(--alf-color-gray-800, #1f2937); border: 1px solid var(--alf-color-gray-200, #e5e7eb); padding: 8px 16px; border-radius: 6px; font-weight: 500; cursor: pointer; transition: all 0.2s ease;"
+            (click)="toggleKeyboard()"
+          >
+            Keyboard Mode: {{ demoKeyboard() | uppercase }}
+          </button>
+        </div>
+
+        <alf-tabs-container 
+          [orientation]="demoOrientation()"
+          [keyboardActivation]="demoKeyboard()"
+          colorVariant="outline-primary"
+        >
+          <alf-tab label="General Profile" iconLeft="👤">
+            <div class="tab-demo-content">
+              <h4>General Profile Settings</h4>
+              <p>Configure user bio, upload profile picture avatars, and update display names across our unified corporate portal.</p>
             </div>
           </alf-tab>
-          
-          <alf-tab label="Second Category">
-            <div class="tab-demo-content" style="padding: 1rem 0;">
-              <h4>Primary Level - Category 2</h4>
-              <p>Flat static panel at the top-level categories menu.</p>
+          <alf-tab label="System Security" iconLeft="🔒">
+            <div class="tab-demo-content">
+              <h4>Security Configurations</h4>
+              <p>Enable multi-factor authentication, generate unique OAuth tokens, view active login sessions, and modify master passwords.</p>
+            </div>
+          </alf-tab>
+          <alf-tab label="Preferences" iconLeft="🎨">
+            <div class="tab-demo-content">
+              <h4>UX & UI Preferences</h4>
+              <p>Switch between dark/light workspace color themes, set sound notification alerts, and filter localized calendar setups.</p>
             </div>
           </alf-tab>
         </alf-tabs-container>
       </div>
     </section>
-    -->
+
 
     <!-- Showcase 4: Scrollable Tabs (20+ Tabs) -->
     <section class="tabs-card tabs-card--wide">
       <h2 class="tabs-card__title">
         <span class="tabs-card__dot tabs-card__dot--blue"></span>
-        Horizontal Scroll & Slider Alignment (20+ Tabs)
+        Horizontal Scroll & Slider Alignment (20+ Tabs) - Outline Success Showcase
       </h2>
       <div class="tabs-card__body">
-        <p class="tabs-demo-desc">Verifying smooth navigation, alignment of the sliding indicator, and absolute-positioned arrows with backdrop blur and fading effects.</p>
-        <alf-tabs-container colorVariant="Primary">
+        <p class="tabs-demo-desc">Verifying smooth navigation, alignment of the sliding indicator, and absolute-positioned arrows with backdrop blur and fading effects using the **Success Outline** variant.</p>
+        <alf-tabs-container colorVariant="outline-success">
           @for (tab of manyTabs; track tab.label; let i = $index) {
             <alf-tab [label]="tab.label" [iconLeft]="i % 3 === 0 ? '⭐️' : (i % 3 === 1 ? '🔥' : '✨')">
               <div class="tab-demo-content" style="padding: 1rem 0;">

@@ -7,7 +7,10 @@
   @include alf-typography-css-vars('--alf-tab-content');
   @include alf-display-layout-css-vars('--alf-tab-content');
   
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
   width: 100%;
   min-width: 0;
   box-sizing: border-box;

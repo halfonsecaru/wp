@@ -42,6 +42,14 @@ export const ALF_TABS_CONTAINER_DEFAULT: Partial<AlfTabsContainerConfigInterface
     duration: '0.4s',
     delay: '0.1s',
   },
+  border: {
+    default: {
+      borderWidth: AlfPxEnum.Px1,
+      borderStyle: AlfBorderStyleEnum.Solid,
+      borderColor: AlfColorEnum.CoolGray,
+      borderRadius: AlfRadiusEnum.Lg
+    }
+  },
   displayAndLayout: {
     default: {
       display: AlfDisplayEnum.Flex,

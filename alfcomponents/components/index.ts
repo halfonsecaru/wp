@@ -26,3 +26,13 @@ export * from './composed/alf-tabs-container/components/alf-tab/alf-tab';
 export * from './composed/alf-tabs-container/interfaces/alf-tabs.interface';
 export * from './composed/alf-tabs-container/enums/alf-tabs.enum';
 export * from './composed/alf-tabs-container/predefined/alf-tabs-container.predefined';
+
+export * from './composed/alf-autocomplete/alf-autocomplete';
+export * from './composed/alf-autocomplete/interfaces/alf-autocomplete.interface';
+export * from './composed/alf-autocomplete/enums/alf-autocomplete.enum';
+export * from './composed/alf-autocomplete/predefined/alf-autocomplete.predefined';
+
+export * from './composed/alf-card/alf-card';
+export * from './composed/alf-card/interfaces/alf-card.interface';
+export * from './composed/alf-card/enums/alf-card.enum';
+export * from './composed/alf-card/predefined/alf-card.predefined';

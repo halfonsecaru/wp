@@ -31,5 +31,13 @@ export const routes: Routes = [
   {
     path: 'buttons',
     loadComponent: () => import('./app/pages/alf-button-viewer/alf-button-viewer').then(m => m.AlfButtonViewer)
+  },
+  {
+    path: 'card',
+    loadComponent: () => import('./app/pages/alf-card-viewer/alf-card-viewer').then(m => m.AlfCardViewer)
+  },
+  {
+    path: 'autocomplete',
+    loadComponent: () => import('./app/pages/alf-autocomplete-viewer/alf-autocomplete-viewer').then(m => m.AlfAutocompleteViewer)
   }
 ];

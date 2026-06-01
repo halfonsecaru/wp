@@ -9,7 +9,18 @@ import { AlfCodeComponent } from './alf-code';
 // Mock Prism.js
 const mockPrism = {
   highlightElement: vi.fn(),
-  highlightAll: vi.fn()
+  highlightAll: vi.fn(),
+  highlight: vi.fn().mockImplementation((code) => code.replace(/</g, '&lt;').replace(/>/g, '&gt;')),
+  languages: {
+    typescript: {},
+    python: {},
+    javascript: {},
+    css: {},
+    html: {},
+    json: {},
+    bash: {},
+    markup: {}
+  }
 };
 
 // Asignar mock global
@@ -47,6 +58,7 @@ line 10`;
     // Reset Prism mock before each test
     mockPrism.highlightElement.mockClear();
     mockPrism.highlightAll.mockClear();
+    mockPrism.highlight.mockClear();
 
     await TestBed.configureTestingModule({
       imports: [AlfCodeComponent]
@@ -398,14 +410,11 @@ line 10`;
   // ========================================
 
   describe('Syntax Highlighting', () => {
-    it('should call Prism.highlightElement after view init', async () => {
+    it('should call Prism.highlight on rendering', () => {
       fixture.componentRef.setInput('code', sampleCode);
       fixture.detectChanges();
 
-      // Wait for setTimeout in applyHighlighting (100ms)
-      await new Promise(resolve => setTimeout(resolve, 150));
-
-      expect(mockPrism.highlightElement).toHaveBeenCalled();
+      expect(mockPrism.highlight).toHaveBeenCalled();
     });
 
     it('should apply correct language class to code element for python', () => {

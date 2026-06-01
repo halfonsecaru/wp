@@ -4,7 +4,7 @@ import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@ang
 import { By } from '@angular/platform-browser';
 import { vi, describe, it, expect, beforeEach, beforeAll } from 'vitest';
 import { AlfLoadingDirective } from './alf-loading.directive';
-import { AlfSpinner } from '../../components/alf-spinner/alf-spinner';
+import { AlfSpinner } from '../../components/simple/alf-spinner/alf-spinner';
 import { AlfLoadingInterface } from '../../interfaces/alf-loading.interface';
 import { AlfLoadingModeEnum, AlfColorEnum, AlfOpacityEnum, AlfSpinnerStrokeWidthEnum } from '../../enums';
 

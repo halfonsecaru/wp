@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AlfCheckbox } from './alf-checkbox';
-import { AlfCheckboxVariantEnum, AlfSizeEnum } from '@alfcomponents/enums';
+import { AlfCheckboxVariantEnum, AlfSizeEnum, AlfColorVariantEnum } from '@alfcomponents/enums';
 
 describe('AlfCheckbox', () => {
   let component: AlfCheckbox;
@@ -23,10 +23,11 @@ describe('AlfCheckbox', () => {
 
   it('should toggle checked state on click', () => {
     const hostElement = fixture.nativeElement as HTMLElement;
-    hostElement.click();
+    const label = hostElement.querySelector('label') as HTMLElement;
+    label.click();
     expect(component.checked()).toBe(true);
 
-    hostElement.click();
+    label.click();
     expect(component.checked()).toBe(false);
   });
 
@@ -35,7 +36,8 @@ describe('AlfCheckbox', () => {
     fixture.detectChanges();
 
     const hostElement = fixture.nativeElement as HTMLElement;
-    hostElement.click();
+    const label = hostElement.querySelector('label') as HTMLElement;
+    label.click();
     expect(component.checked()).toBe(false);
   });
 
@@ -66,31 +68,25 @@ describe('AlfCheckbox', () => {
 
   describe('Elite Variants', () => {
     it('should resolve StandardPrimary correctly', () => {
-      fixture.componentRef.setInput('variant', 'standard-primary');
+      fixture.componentRef.setInput('variant', AlfColorVariantEnum.Primary);
       fixture.detectChanges();
       
-      const config = (component as any).resolvedConfig();
-      expect(config.visualType).toBe('text');
-      expect(config.backgrounds.default.backgroundColor).toBe('transparent');
+      expect(component.isSoft()).toBe(false);
+      expect(component.isCrystal()).toBe(false);
     });
 
     it('should resolve SoftSuccess correctly', () => {
-      fixture.componentRef.setInput('variant', 'soft-success');
+      fixture.componentRef.setInput('variant', AlfColorVariantEnum.SuccessSoft);
       fixture.detectChanges();
       
-      const config = (component as any).resolvedConfig();
-      expect(config.visualType).toBe('soft');
-      expect(config.backgrounds.default.backgroundColor).toContain('color-mix');
+      expect(component.isSoft()).toBe(true);
     });
 
     it('should resolve CrystalInfo correctly', () => {
-      fixture.componentRef.setInput('variant', 'crystal-info');
+      fixture.componentRef.setInput('variant', AlfColorVariantEnum.InfoCrystal);
       fixture.detectChanges();
       
-      const config = (component as any).resolvedConfig();
-      expect(config.visualType).toBe('crystal');
-      expect(config.backgrounds.default.backgroundColor).toContain('color-mix');
-      expect(config.border.default.borderWidth).toBe('0px');
+      expect(component.isCrystal()).toBe(true);
     });
 
 

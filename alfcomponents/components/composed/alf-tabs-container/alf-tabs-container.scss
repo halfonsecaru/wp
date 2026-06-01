@@ -97,10 +97,11 @@
     position: relative;
     width: max-content;
     min-width: 100%;
-    align-items: center;
+    align-items: stretch;
   }
 
   .alf-tab-header-button {
+    box-sizing: border-box;
     background: transparent;
     border: none;
     cursor: pointer;
@@ -118,9 +119,34 @@
     flex: 1 0 auto;   // grow to fill width, but do not shrink below content size
     color: var(--alf-tabs-text-color-default, inherit);
 
+    .alf-tab-icon-left {
+      margin-right: 8px;
+      display: inline-flex;
+      align-items: center;
+      line-height: 1;
+    }
+
+    .alf-tab-icon-right {
+      margin-left: 8px;
+      display: inline-flex;
+      align-items: center;
+      line-height: 1;
+    }
+
     &:hover {
       color: var(--alf-tabs-text-color-hover, var(--alf-color-gray-900, #111827));
       background-color: var(--alf-color-gray-50, #f9fafb);
+    }
+
+    &.alf-tab-disabled, &[disabled] {
+      cursor: not-allowed;
+      opacity: 0.5;
+      pointer-events: none;
+
+      &:hover {
+        background-color: transparent;
+        color: var(--alf-tabs-text-color-default, inherit);
+      }
     }
 
     &.alf-tab-active {
@@ -146,17 +172,104 @@
     border-top-right-radius: 4px;
   }
 
+  .alf-tab-close-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    padding: 2px;
+    font-size: 1.1rem;
+    line-height: 1;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    color: var(--alf-color-gray-400, #9ca3af);
+    transition: all 0.2s ease;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.08);
+      color: var(--alf-color-danger, #ef4444);
+      transform: scale(1.15) rotate(90deg);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+
   .alf-tabs-content-container {
     @include alf-background-css-vars('--alf-tabs-content');
 
     position: relative;
     width: 100%;
+    padding: 16px;
+    box-sizing: border-box;
     // Altura controlada por JS a través de la variable CSS
     height: var(--alf-tabs-content-height, auto);
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     align-items: start;
     margin-top: 16px;
+  }
+
+  &.alf-tabs-container--vertical {
+    flex-direction: row;
+
+    .alf-tabs-header-wrapper {
+      flex-direction: column;
+      width: 220px;
+      min-width: 180px;
+      border-bottom: none;
+      border-right: 1px solid var(--alf-tabs-border-color, #e5e7eb);
+      align-items: stretch;
+    }
+
+    .alf-tabs-header-scroll {
+      overflow-x: hidden;
+      overflow-y: auto;
+      width: 100%;
+    }
+
+    .alf-tabs-header-nav {
+      flex-direction: column;
+      width: 100%;
+      min-width: 100%;
+      align-items: stretch;
+    }
+
+    .alf-tab-header-button {
+      width: 100%;
+      flex: none;
+      justify-content: flex-start;
+      padding: 12px 24px;
+      height: auto;
+      min-height: 48px;
+      text-align: left;
+
+      .alf-tab-close-btn {
+        margin-left: auto;
+      }
+    }
+
+    .alf-tabs-slider {
+      bottom: auto;
+      right: -1px;
+      left: auto;
+      width: 3px;
+      height: 0;
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      transition: top 300ms cubic-bezier(0.4, 0, 0.2, 1), height 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .alf-tabs-content-container {
+      flex: 1;
+      margin-top: 0;
+      margin-left: 16px;
+    }
   }
 
 }

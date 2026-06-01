@@ -148,6 +148,8 @@
     "build:demo": "ng build --project=demo --configuration production",
     "test:alfbutton:button": "npx vitest run alfcomponents/components/alf-button/alf-button.spec.ts",
     "test:alfcomponents": "npx vitest run alfcomponents/",
+    "test": "npx vitest run",
+    "test:watch": "npx vitest",
     "wp:down": "git pull origin main",
     "wp:up": "git add . && git commit -m \"wp: sync up\" && git push origin main"
   }

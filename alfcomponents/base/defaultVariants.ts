@@ -59,6 +59,8 @@ export enum AlfComponentTypeEnum {
     Input = 'Input',
     Textarea = 'Textarea',
     Tabs = 'alf-tabs',
+    Autocomplete = 'Autocomplete',
+    Card = 'Card',
     Default = 'Default',
 }
 
@@ -516,7 +518,7 @@ export const resolveVariantConfig = (
             return defaultConstruct(AlfColorEnum.Secondary3DText, AlfColorEnum.Secondary3DTextHover, AlfColorEnum.Secondary3DTextHover, AlfColorEnum.SecondaryDisabled, AlfColorEnum.Secondary3DTextHover, AlfColorEnum.Secondary3D, AlfColorEnum.Secondary3DHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None);
         case AlfColorVariantEnum.SecondaryOutline:
             if (outlinedFilledComponents.includes(componentType)) {
-                return defaultConstruct(AlfColorEnum.SecondaryOutlineText, AlfColorEnum.SecondaryOutlineTextHover, AlfColorEnum.SecondaryOutlineTextHover, AlfColorEnum.SecondaryOutlineDisabled, AlfColorEnum.SecondaryOutlineTextHover, AlfColorEnum.SecondaryOutlineBg, AlfColorEnum.SecondaryOutlineBgHover, AlfColorEnum.SecondaryOutline, AlfColorEnum.SecondaryOutlineHover, AlfPxEnum.Px1, AlfColorEnum.SecondaryOutlineText, AlfColorEnum.SecondaryOutlineTextHover, AlfColorEnum.SecondaryOutlineText, AlfColorEnum.SecondaryOutlineDisabled, AlfColorEnum.SecondaryOutlineText);
+                return defaultConstruct(AlfColorEnum.SecondaryOutlineText, AlfColorEnum.SecondaryOutlineTextHover, AlfColorEnum.SecondaryOutlineTextHover, AlfColorEnum.SecondaryOutlineDisabled, AlfColorEnum.SecondaryOutlineTextHover, AlfColorEnum.SecondaryOutlineBgHover, AlfColorEnum.SecondaryOutlineBgHover, AlfColorEnum.SecondaryOutline, AlfColorEnum.SecondaryOutlineHover, AlfPxEnum.Px1, AlfColorEnum.SecondaryOutlineText, AlfColorEnum.SecondaryOutlineTextHover, AlfColorEnum.SecondaryOutlineText, AlfColorEnum.SecondaryOutlineDisabled, AlfColorEnum.SecondaryOutlineText);
             }
 
             return defaultConstruct(AlfColorEnum.SecondaryOutlineText, AlfColorEnum.SecondaryOutlineTextHover, AlfColorEnum.SecondaryOutlineTextHover, AlfColorEnum.SecondaryOutlineDisabled, AlfColorEnum.SecondaryOutlineTextHover, AlfColorEnum.SecondaryOutlineBg, AlfColorEnum.SecondaryOutlineBgHover, AlfColorEnum.SecondaryOutline, AlfColorEnum.SecondaryOutlineHover, AlfPxEnum.Px1);
@@ -554,7 +556,7 @@ export const resolveVariantConfig = (
             return defaultConstruct(AlfColorEnum.Success3DText, AlfColorEnum.Success3DTextHover, AlfColorEnum.Success3DTextHover, AlfColorEnum.SuccessDisabled, AlfColorEnum.Success3DTextHover, AlfColorEnum.Success3D, AlfColorEnum.Success3DHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None);
         case AlfColorVariantEnum.SuccessOutline:
             if (outlinedFilledComponents.includes(componentType)) {
-                return defaultConstruct(AlfColorEnum.SuccessOutlineText, AlfColorEnum.SuccessOutlineTextHover, AlfColorEnum.SuccessOutlineTextHover, AlfColorEnum.SuccessOutlineDisabled, AlfColorEnum.SuccessOutlineTextHover, AlfColorEnum.SuccessOutlineBg, AlfColorEnum.SuccessOutlineBgHover, AlfColorEnum.SuccessOutline, AlfColorEnum.SuccessOutlineHover, AlfPxEnum.Px1, AlfColorEnum.SuccessOutlineText, AlfColorEnum.SuccessOutlineTextHover, AlfColorEnum.SuccessOutlineText, AlfColorEnum.SuccessOutlineDisabled, AlfColorEnum.SuccessOutlineText);
+                return defaultConstruct(AlfColorEnum.SuccessOutlineText, AlfColorEnum.SuccessOutlineTextHover, AlfColorEnum.SuccessOutlineTextHover, AlfColorEnum.SuccessOutlineDisabled, AlfColorEnum.SuccessOutlineTextHover, AlfColorEnum.SuccessOutlineBgHover, AlfColorEnum.SuccessOutlineBgHover, AlfColorEnum.SuccessOutline, AlfColorEnum.SuccessOutlineHover, AlfPxEnum.Px1, AlfColorEnum.SuccessOutlineText, AlfColorEnum.SuccessOutlineTextHover, AlfColorEnum.SuccessOutlineText, AlfColorEnum.SuccessOutlineDisabled, AlfColorEnum.SuccessOutlineText);
             }
 
             return defaultConstruct(AlfColorEnum.SuccessOutlineText, AlfColorEnum.SuccessOutlineTextHover, AlfColorEnum.SuccessOutlineTextHover, AlfColorEnum.SuccessOutlineDisabled, AlfColorEnum.SuccessOutlineTextHover, AlfColorEnum.SuccessOutlineBg, AlfColorEnum.SuccessOutlineBgHover, AlfColorEnum.SuccessOutline, AlfColorEnum.SuccessOutlineHover, AlfPxEnum.Px1);
@@ -592,7 +594,7 @@ export const resolveVariantConfig = (
             return defaultConstruct(AlfColorEnum.Danger3DText, AlfColorEnum.Danger3DTextHover, AlfColorEnum.Danger3DTextHover, AlfColorEnum.DangerDisabled, AlfColorEnum.Danger3DTextHover, AlfColorEnum.Danger3D, AlfColorEnum.Danger3DHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None);
         case AlfColorVariantEnum.DangerOutline:
             if (outlinedFilledComponents.includes(componentType)) {
-                return defaultConstruct(AlfColorEnum.DangerOutlineText, AlfColorEnum.DangerOutlineTextHover, AlfColorEnum.DangerOutlineTextHover, AlfColorEnum.DangerOutlineDisabled, AlfColorEnum.DangerOutlineTextHover, AlfColorEnum.DangerOutlineBg, AlfColorEnum.DangerOutlineBgHover, AlfColorEnum.DangerOutline, AlfColorEnum.DangerOutlineHover, AlfPxEnum.Px1, AlfColorEnum.DangerOutlineText, AlfColorEnum.DangerOutlineTextHover, AlfColorEnum.DangerOutlineText, AlfColorEnum.DangerOutlineDisabled, AlfColorEnum.DangerOutlineText);
+                return defaultConstruct(AlfColorEnum.DangerOutlineText, AlfColorEnum.DangerOutlineTextHover, AlfColorEnum.DangerOutlineTextHover, AlfColorEnum.DangerOutlineDisabled, AlfColorEnum.DangerOutlineTextHover, AlfColorEnum.DangerOutlineBgHover, AlfColorEnum.DangerOutlineBgHover, AlfColorEnum.DangerOutline, AlfColorEnum.DangerOutlineHover, AlfPxEnum.Px1, AlfColorEnum.DangerOutlineText, AlfColorEnum.DangerOutlineTextHover, AlfColorEnum.DangerOutlineText, AlfColorEnum.DangerOutlineDisabled, AlfColorEnum.DangerOutlineText);
             }
 
             return defaultConstruct(AlfColorEnum.DangerOutlineText, AlfColorEnum.DangerOutlineTextHover, AlfColorEnum.DangerOutlineTextHover, AlfColorEnum.DangerOutlineDisabled, AlfColorEnum.DangerOutlineTextHover, AlfColorEnum.DangerOutlineBg, AlfColorEnum.DangerOutlineBgHover, AlfColorEnum.DangerOutline, AlfColorEnum.DangerOutlineHover, AlfPxEnum.Px1);
@@ -630,7 +632,7 @@ export const resolveVariantConfig = (
             return defaultConstruct(AlfColorEnum.Warning3DText, AlfColorEnum.Warning3DTextHover, AlfColorEnum.Warning3DTextHover, AlfColorEnum.WarningDisabled, AlfColorEnum.Warning3DTextHover, AlfColorEnum.Warning3D, AlfColorEnum.Warning3DHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None);
         case AlfColorVariantEnum.WarningOutline:
             if (outlinedFilledComponents.includes(componentType)) {
-                return defaultConstruct(AlfColorEnum.WarningOutlineText, AlfColorEnum.WarningOutlineTextHover, AlfColorEnum.WarningOutlineTextHover, AlfColorEnum.WarningOutlineDisabled, AlfColorEnum.WarningOutlineTextHover, AlfColorEnum.WarningOutlineBg, AlfColorEnum.WarningOutlineBgHover, AlfColorEnum.WarningOutline, AlfColorEnum.WarningOutlineHover, AlfPxEnum.Px1, AlfColorEnum.WarningOutlineText, AlfColorEnum.WarningOutlineTextHover, AlfColorEnum.WarningOutlineText, AlfColorEnum.WarningOutlineDisabled, AlfColorEnum.WarningOutlineText);
+                return defaultConstruct(AlfColorEnum.WarningOutlineText, AlfColorEnum.WarningOutlineTextHover, AlfColorEnum.WarningOutlineTextHover, AlfColorEnum.WarningOutlineDisabled, AlfColorEnum.WarningOutlineTextHover, AlfColorEnum.WarningOutlineBgHover, AlfColorEnum.WarningOutlineBgHover, AlfColorEnum.WarningOutline, AlfColorEnum.WarningOutlineHover, AlfPxEnum.Px1, AlfColorEnum.WarningOutlineText, AlfColorEnum.WarningOutlineTextHover, AlfColorEnum.WarningOutlineText, AlfColorEnum.WarningOutlineDisabled, AlfColorEnum.WarningOutlineText);
             }
 
             return defaultConstruct(AlfColorEnum.WarningOutlineText, AlfColorEnum.WarningOutlineTextHover, AlfColorEnum.WarningOutlineTextHover, AlfColorEnum.WarningOutlineDisabled, AlfColorEnum.WarningOutlineTextHover, AlfColorEnum.WarningOutlineBg, AlfColorEnum.WarningOutlineBgHover, AlfColorEnum.WarningOutline, AlfColorEnum.WarningOutlineHover, AlfPxEnum.Px1);
@@ -668,7 +670,7 @@ export const resolveVariantConfig = (
             return defaultConstruct(AlfColorEnum.Info3DText, AlfColorEnum.Info3DTextHover, AlfColorEnum.Info3DTextHover, AlfColorEnum.InfoDisabled, AlfColorEnum.Info3DTextHover, AlfColorEnum.Info3D, AlfColorEnum.Info3DHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None);
         case AlfColorVariantEnum.InfoOutline:
             if (outlinedFilledComponents.includes(componentType)) {
-                return defaultConstruct(AlfColorEnum.InfoOutlineText, AlfColorEnum.InfoOutlineTextHover, AlfColorEnum.InfoOutlineTextHover, AlfColorEnum.InfoOutlineDisabled, AlfColorEnum.InfoOutlineTextHover, AlfColorEnum.InfoOutlineBg, AlfColorEnum.InfoOutlineBgHover, AlfColorEnum.InfoOutline, AlfColorEnum.InfoOutlineHover, AlfPxEnum.Px1, AlfColorEnum.InfoOutlineText, AlfColorEnum.InfoOutlineTextHover, AlfColorEnum.InfoOutlineText, AlfColorEnum.InfoOutlineDisabled, AlfColorEnum.InfoOutlineText);
+                return defaultConstruct(AlfColorEnum.InfoOutlineText, AlfColorEnum.InfoOutlineTextHover, AlfColorEnum.InfoOutlineTextHover, AlfColorEnum.InfoOutlineDisabled, AlfColorEnum.InfoOutlineTextHover, AlfColorEnum.InfoOutlineBgHover, AlfColorEnum.InfoOutlineBgHover, AlfColorEnum.InfoOutline, AlfColorEnum.InfoOutlineHover, AlfPxEnum.Px1, AlfColorEnum.InfoOutlineText, AlfColorEnum.InfoOutlineTextHover, AlfColorEnum.InfoOutlineText, AlfColorEnum.InfoOutlineDisabled, AlfColorEnum.InfoOutlineText);
             }
 
             return defaultConstruct(AlfColorEnum.InfoOutlineText, AlfColorEnum.InfoOutlineTextHover, AlfColorEnum.InfoOutlineTextHover, AlfColorEnum.InfoOutlineDisabled, AlfColorEnum.InfoOutlineTextHover, AlfColorEnum.InfoOutlineBg, AlfColorEnum.InfoOutlineBgHover, AlfColorEnum.InfoOutline, AlfColorEnum.InfoOutlineHover, AlfPxEnum.Px1);
@@ -706,7 +708,7 @@ export const resolveVariantConfig = (
             return defaultConstruct(AlfColorEnum.Dark3DText, AlfColorEnum.Dark3DTextHover, AlfColorEnum.Dark3DTextHover, AlfColorEnum.DarkDisabled, AlfColorEnum.Dark3DTextHover, AlfColorEnum.Dark3D, AlfColorEnum.Dark3DHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None);
         case AlfColorVariantEnum.DarkOutline:
             if (outlinedFilledComponents.includes(componentType)) {
-                return defaultConstruct(AlfColorEnum.DarkOutlineText, AlfColorEnum.DarkOutlineTextHover, AlfColorEnum.DarkOutlineTextHover, AlfColorEnum.DarkOutlineDisabled, AlfColorEnum.DarkOutlineTextHover, AlfColorEnum.DarkOutlineBg, AlfColorEnum.DarkOutlineBgHover, AlfColorEnum.DarkOutline, AlfColorEnum.DarkOutlineHover, AlfPxEnum.Px1, AlfColorEnum.DarkOutlineText, AlfColorEnum.DarkOutlineTextHover, AlfColorEnum.DarkOutlineText, AlfColorEnum.DarkOutlineDisabled, AlfColorEnum.DarkOutlineText);
+                return defaultConstruct(AlfColorEnum.DarkOutlineText, AlfColorEnum.DarkOutlineTextHover, AlfColorEnum.DarkOutlineTextHover, AlfColorEnum.DarkOutlineDisabled, AlfColorEnum.DarkOutlineTextHover, AlfColorEnum.DarkOutlineBgHover, AlfColorEnum.DarkOutlineBgHover, AlfColorEnum.DarkOutline, AlfColorEnum.DarkOutlineHover, AlfPxEnum.Px1, AlfColorEnum.DarkOutlineText, AlfColorEnum.DarkOutlineTextHover, AlfColorEnum.DarkOutlineText, AlfColorEnum.DarkOutlineDisabled, AlfColorEnum.DarkOutlineText);
             }
 
             return defaultConstruct(AlfColorEnum.DarkOutlineText, AlfColorEnum.DarkOutlineTextHover, AlfColorEnum.DarkOutlineTextHover, AlfColorEnum.DarkOutlineDisabled, AlfColorEnum.DarkOutlineTextHover, AlfColorEnum.DarkOutlineBg, AlfColorEnum.DarkOutlineBgHover, AlfColorEnum.DarkOutline, AlfColorEnum.DarkOutlineHover, AlfPxEnum.Px1);
@@ -744,7 +746,7 @@ export const resolveVariantConfig = (
             return defaultConstruct(AlfColorEnum.Light3DText, AlfColorEnum.Light3DTextHover, AlfColorEnum.Light3DTextHover, AlfColorEnum.LightDisabled, AlfColorEnum.Light3DTextHover, AlfColorEnum.Light3D, AlfColorEnum.Light3DHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None);
         case AlfColorVariantEnum.LightOutline:
             if (outlinedFilledComponents.includes(componentType)) {
-                return defaultConstruct(AlfColorEnum.LightOutlineText, AlfColorEnum.LightOutlineTextHover, AlfColorEnum.LightOutlineTextHover, AlfColorEnum.LightOutlineDisabled, AlfColorEnum.LightOutlineTextHover, AlfColorEnum.LightOutlineBg, AlfColorEnum.LightOutlineBgHover, AlfColorEnum.LightOutline, AlfColorEnum.LightOutlineHover, AlfPxEnum.Px1, AlfColorEnum.LightOutlineText, AlfColorEnum.LightOutlineTextHover, AlfColorEnum.LightOutlineText, AlfColorEnum.LightOutlineDisabled, AlfColorEnum.LightOutlineText);
+                return defaultConstruct(AlfColorEnum.LightOutlineText, AlfColorEnum.LightOutlineTextHover, AlfColorEnum.LightOutlineTextHover, AlfColorEnum.LightOutlineDisabled, AlfColorEnum.LightOutlineTextHover, AlfColorEnum.LightOutlineBgHover, AlfColorEnum.LightOutlineBgHover, AlfColorEnum.LightOutline, AlfColorEnum.LightOutlineHover, AlfPxEnum.Px1, AlfColorEnum.LightOutlineText, AlfColorEnum.LightOutlineTextHover, AlfColorEnum.LightOutlineText, AlfColorEnum.LightOutlineDisabled, AlfColorEnum.LightOutlineText);
             }
 
             return defaultConstruct(AlfColorEnum.LightOutlineText, AlfColorEnum.LightOutlineTextHover, AlfColorEnum.LightOutlineTextHover, AlfColorEnum.LightOutlineDisabled, AlfColorEnum.LightOutlineTextHover, AlfColorEnum.LightOutlineBg, AlfColorEnum.LightOutlineBgHover, AlfColorEnum.LightOutline, AlfColorEnum.LightOutlineHover, AlfPxEnum.Px1);

@@ -9,6 +9,8 @@ export enum visualprefixEnum {
     RadioButton = '--alf-rb',
     Input = '--alf-inp',
     Switch = '--alf-sw',
+    Autocomplete = '--alf-autocomplete',
+    Card = '--alf-card',
 
     // InternalIds
     ButtonsInternalId = '-alf-btn-id',
@@ -18,5 +20,7 @@ export enum visualprefixEnum {
     Tooltip = '--alf-tooltip',
     Loading = '--alf-loading',
     Popover = '--alf-popover',
-    TabsContainerInternalId = "--alf-tabs-id"
+    TabsContainerInternalId = "--alf-tabs-id",
+    AutocompleteInternalId = '--alf-autocomplete-id',
+    CardInternalId = '--alf-card-id'
 }

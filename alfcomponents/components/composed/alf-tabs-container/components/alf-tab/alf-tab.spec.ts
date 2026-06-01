@@ -1,17 +1,18 @@
+import { describe, beforeEach, it, expect } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AlfTab } from './alf-tab';
+import { AlfTabComponent } from './alf-tab';
 
-describe('AlfTab', () => {
-  let component: AlfTab;
-  let fixture: ComponentFixture<AlfTab>;
+describe('AlfTabComponent', () => {
+  let component: AlfTabComponent;
+  let fixture: ComponentFixture<AlfTabComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AlfTab],
+      imports: [AlfTabComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AlfTab);
+    fixture = TestBed.createComponent(AlfTabComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
@@ -20,3 +21,4 @@ describe('AlfTab', () => {
     expect(component).toBeTruthy();
   });
 });
+

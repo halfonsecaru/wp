@@ -106,7 +106,7 @@ describe('AlfRippleDirective', () => {
         left: 0, top: 0, width: 100, height: 100
       } as DOMRect);
 
-      container.nativeElement.click();
+      container.nativeElement.dispatchEvent(new MouseEvent('mousedown', { clientX: 50, clientY: 50 }));
       fixture.detectChanges();
 
       expect(container.nativeElement.querySelector('.alf-ripple-host')).toBeTruthy();
@@ -132,12 +132,11 @@ describe('AlfRippleDirective', () => {
 
       const animateSpy = vi.spyOn(HTMLElement.prototype, 'animate');
 
-      container.nativeElement.click();
+      container.nativeElement.dispatchEvent(new MouseEvent('mousedown', { clientX: 50, clientY: 50 }));
       fixture.detectChanges();
 
       const span = container.nativeElement.querySelector('.alf-ripple-host span');
-      // Usamos White (CSS válido) en vez de Red500 (Tailwind class, JSDOM lo rechaza)
-      expect(span.style.backgroundColor).toBe(AlfColorEnum.White);
+      expect(span.style.backgroundColor).toBe('rgb(255, 255, 255)');
 
       // Verificamos duración
       expect(animateSpy).toHaveBeenCalledWith(
@@ -155,7 +154,7 @@ describe('AlfRippleDirective', () => {
       fixture.detectChanges();
 
       const container = fixture.debugElement.query(By.css('.ripple-container'));
-      container.nativeElement.click();
+      container.nativeElement.dispatchEvent(new MouseEvent('mousedown', { clientX: 50, clientY: 50 }));
       fixture.detectChanges();
 
       expect(container.nativeElement.querySelector('.alf-ripple-host')).toBeFalsy();
@@ -189,7 +188,7 @@ describe('AlfRippleDirective', () => {
         } as any;
       });
 
-      container.nativeElement.click();
+      container.nativeElement.dispatchEvent(new MouseEvent('mousedown', { clientX: 50, clientY: 50 }));
       fixture.detectChanges();
 
       expect(container.nativeElement.querySelector('.alf-ripple-host span')).toBeTruthy();

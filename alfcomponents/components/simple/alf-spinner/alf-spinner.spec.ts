@@ -1,8 +1,9 @@
+import { describe, beforeEach, it, expect } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Component } from '@angular/core';
 import { AlfSpinner } from './alf-spinner';
-import { AlfSpinnerStrokeWidthEnum } from '../../enums';
+import { AlfSpinnerStrokeWidthEnum } from '@alfcomponents/enums';
 
 describe('AlfSpinner', () => {
   let component: AlfSpinner;

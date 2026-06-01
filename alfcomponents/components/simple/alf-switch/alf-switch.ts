@@ -1,8 +1,8 @@
 import { AlfBaseConfiguration } from '@alfcomponents/base/alf-base-configuration';
 import { ChangeDetectionStrategy, Component, computed, input, model, output, ViewEncapsulation } from '@angular/core';
 import { AlfSwitchInterface } from './interfaces/alf-switch.interface';
-import { generateUniqueId, visualprefixEnum } from '@alfcomponents/shared';
-import { AlfLabelsPositionEnum } from '@alfcomponents/enums';
+import { generateUniqueId, visualprefixEnum, resolveAlfColorVariant } from '@alfcomponents/shared';
+import { AlfLabelsPositionEnum, AlfColorVariantEnum } from '@alfcomponents/enums';
 import { getAlfSwitchDefaultConfig } from './predefined/alf-switch.predefined';
 
 import { AlfComponentTypeEnum } from '@alfcomponents/base/defaultVariants';
@@ -31,6 +31,7 @@ export class AlfSwitch extends AlfBaseConfiguration<AlfSwitchInterface> {
 
   // B) Inputs & Models
   public override readonly inputConfig = input<AlfSwitchInterface>(undefined, { alias: 'config' });
+  public readonly variant = input<AlfColorVariantEnum | undefined>(undefined);
 
   public readonly switchStyle = input<'standard' | 'elegant' | undefined>(undefined);
   public readonly error = input<string | undefined>(undefined);
@@ -44,6 +45,11 @@ export class AlfSwitch extends AlfBaseConfiguration<AlfSwitchInterface> {
 
   // C) Events
   public readonly onCheckedChange = output<boolean>();
+
+  protected override readonly colorVariantComputed = computed(() => {
+    const v = this.colorVariant() ?? this.variant() ?? this.inputConfig()?.colorVariant;
+    return resolveAlfColorVariant(v);
+  });
 
   // D) Centralized Config Resolution
   public readonly finalConfig = computed<AlfSwitchInterface>(() => {
