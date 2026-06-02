@@ -1,1 +1,47 @@
-<!-- alf-autocomplete component template -->
+<div class="alf-autocomplete-trigger-wrapper">
+  <alf-input
+    [config]="inputTriggerConfigComputed()"
+    [value]="inputValueComputed()"
+    [colorVariant]="inputTriggerConfigComputed().colorVariant"
+    [appearance]="inputTriggerConfigComputed().appearance"
+    (click)="onTriggerClick()"
+    (keydown)="onTriggerKeydown($event)">
+  </alf-input>
+</div>
+
+<ng-template #panelTemplate>
+  <div class="alf-autocomplete-panel" [id]="containerId()">
+    @if (resolvedConfig().searchable) {
+      <div class="alf-autocomplete-search-container">
+        <alf-input
+          [config]="searchInputConfigComputed()"
+          [value]="searchTerm()"
+          (onInput)="onSearchTermChange($event)">
+        </alf-input>
+      </div>
+    }
+
+    <ul class="alf-autocomplete-options-list" role="listbox" id="alf-select-listbox">
+      @for (option of filteredOptions(); track $index) {
+        @let isSelected = resolvedConfig().multiple ? (value() && value().includes(option.value)) : (value() === option.value);
+        @let isFocused = focusedIndex() === $index;
+        <li
+          [id]="'alf-option-' + $index"
+          class="alf-autocomplete-option"
+          [class.alf-autocomplete-option--selected]="isSelected"
+          [class.alf-autocomplete-option--focused]="isFocused"
+          [class.alf-autocomplete-option--disabled]="option.disabled"
+          role="option"
+          [aria-selected]="isSelected"
+          (click)="selectOption(option)">
+          <span class="alf-autocomplete-option-label">{{ option.label }}</span>
+          @if (isSelected) {
+            <span class="alf-autocomplete-option-check">✓</span>
+          }
+        </li>
+      } @empty {
+        <li class="alf-autocomplete-no-options">No se encontraron opciones</li>
+      }
+    </ul>
+  </div>
+</ng-template>

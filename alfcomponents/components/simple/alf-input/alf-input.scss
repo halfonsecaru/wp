@@ -42,6 +42,21 @@
       padding-left: 0;
     }
   }
+
+  &--has-suffix {
+    .alf-input__field-wrap {
+      padding-right: 8px;
+    }
+    .alf-input__label {
+      max-width: calc(100% - 42px);
+    }
+  }
+
+  &--has-prefix.alf-input--has-suffix {
+    .alf-input__label {
+      max-width: calc(100%);
+    }
+  }
 }
 
 
@@ -149,7 +164,8 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-left: 12px;
+  margin-left: 8px;
+  margin-right: 8px;
 }
 
 .alf-input__suffix-btn {
@@ -176,8 +192,8 @@
 }
 
 .alf-input__suffix-icon {
-  font-size: 0.875rem;
-  color: #64748b;
+  font-size: 0.7rem;
+  color: var(--alf-inp-text-color, #64748b);
 }
 
 .alf-input__spinner {

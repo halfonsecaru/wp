@@ -27,6 +27,7 @@
   [class.alf-input--error]="errorMsg" 
   [class.alf-input--has-value]="val.length > 0"
   [class.alf-input--has-prefix]="config?.prefix"
+  [class.alf-input--has-suffix]="showClear() || showPasswordToggle() || isComponentLoading || config?.suffix"
   [class.alf-input--ghost]="isGhost()"
   [class.alf-input--soft]="isSoft()"
   [class.alf-input--crystal]="isCrystal()"

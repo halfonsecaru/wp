@@ -430,7 +430,9 @@ export const resolveVariantConfig = (
     variant?: AlfColorVariantEnum,
     componentType?: AlfComponentTypeEnum
 ): PredefinedConfig => {
-    if (!variant || variant === AlfColorVariantEnum.Transparent || variant === AlfColorVariantEnum.Default) {
+    const v = resolveAlfColorVariant(variant);
+
+    if (!v || v === AlfColorVariantEnum.Transparent || v === AlfColorVariantEnum.Default) {
         return {
             marginBase: undefined,
             paddingBase: undefined,
@@ -447,9 +449,6 @@ export const resolveVariantConfig = (
         }
     }
 
-    console.log("la variante deberia ser ", variant);
-    
-   
     const outlinedFilledComponents = [
         AlfComponentTypeEnum.RadioButton,
         AlfComponentTypeEnum.Checkbox,
@@ -459,9 +458,7 @@ export const resolveVariantConfig = (
 
 
 
-    const v = resolveAlfColorVariant(variant);
-
-    switch (v) {
+    switch (v as any) {
         // FAMILY: PRIMARY
         case AlfColorVariantEnum.Primary:
             if (outlinedFilledComponents.includes(componentType)) {
