@@ -454,6 +454,7 @@ export const resolveVariantConfig = (
         AlfComponentTypeEnum.Checkbox,
         AlfComponentTypeEnum.Switch,
         AlfComponentTypeEnum.Tabs,
+        AlfComponentTypeEnum.Card,
     ];
 
 

@@ -1,0 +1,8 @@
+@if (resolvedSrc()) {
+  <img
+    [src]="resolvedSrc()"
+    [alt]="resolvedAlt()"
+  />
+} @else {
+  <ng-content />
+}

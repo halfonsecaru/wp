@@ -1,0 +1,9 @@
+@use '../../../../../styles/mixins' as *;
+
+:host {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+
+  @include alf-padding-css-vars('--alf-card-title');
+}

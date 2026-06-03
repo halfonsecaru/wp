@@ -1,19 +1,257 @@
 <div class="viewer-page">
   <header class="viewer-page__header">
     <h1 class="viewer-page__title">AlfCard Showcase</h1>
-    <p class="viewer-page__subtitle">Skeleton demo for the <code>alf-card</code> composed component — ready for implementation.</p>
+    <p class="viewer-page__subtitle">
+      Demo de los sub-componentes de <code>alf-card</code>:
+      <code>alf-card-title</code>, <code>alf-card-body</code>,
+      <code>alf-card-img</code> y <code>alf-card-actions</code>.
+    </p>
   </header>
 
   <div class="viewer-grid">
+
+    <!-- ── Ejemplo completo ── -->
     <section class="viewer-card viewer-card--wide">
       <h2 class="viewer-card__title">
         <span class="viewer-card__dot viewer-card__dot--blue"></span>
-        Work In Progress
+        Card completa (title + img + body + actions)
       </h2>
       <div class="viewer-card__body">
-        <p class="viewer-desc">The <code>alf-card</code> component skeleton has been created. Implementation coming soon.</p>
-        <alf-card></alf-card>
+        <div class="demo-row">
+
+          <alf-card>
+            <alf-card-img
+              src="https://picsum.photos/seed/alf1/600/300"
+              alt="Demo image"
+            />
+            <alf-card-title>
+              <h3 style="margin:0; font-size:1.1rem; font-weight:700;">Tarjeta de ejemplo</h3>
+            </alf-card-title>
+            <alf-card-body>
+              <p style="margin:0; color:#64748b; font-size:0.9rem;">
+                Este es el cuerpo de la tarjeta. Aquí va el contenido principal.
+              </p>
+            </alf-card-body>
+            <alf-card-actions>
+              <alf-button [colorVariant]="AlfColorVariantEnum.Primary">Aceptar</alf-button>
+              <alf-button [colorVariant]="AlfColorVariantEnum.PrimaryOutline">Cancelar</alf-button>
+            </alf-card-actions>
+          </alf-card>
+
+          <alf-card>
+            <alf-card-img
+              src="https://picsum.photos/seed/alf2/600/300"
+              alt="Demo image 2"
+            />
+            <alf-card-title>
+              <h3 style="margin:0; font-size:1.1rem; font-weight:700;">Segunda tarjeta</h3>
+            </alf-card-title>
+            <alf-card-body>
+              <p style="margin:0; color:#64748b; font-size:0.9rem;">
+                Otro ejemplo de tarjeta con los mismos sub-componentes.
+              </p>
+            </alf-card-body>
+            <alf-card-actions>
+              <alf-button [colorVariant]="AlfColorVariantEnum.Success">Ver más</alf-button>
+            </alf-card-actions>
+          </alf-card>
+
+        </div>
       </div>
     </section>
+
+    <!-- ── Tarjetas Interactivas y Enlaces ── -->
+    <section class="viewer-card viewer-card--wide">
+      <h2 class="viewer-card__title">
+        <span class="viewer-card__dot viewer-card__dot--amber"></span>
+        Tarjetas Interactivas y Enlaces (Premium hover & keyboard accessibility)
+      </h2>
+      <div class="viewer-card__body">
+        <div class="demo-row">
+
+          <!-- Clickable Card -->
+          <alf-card [clickable]="true" (onClick)="onCardClick($event)">
+            <alf-card-img
+              src="https://picsum.photos/seed/alfinteractive1/600/300"
+              alt="Clickable image"
+            />
+            <alf-card-title>
+              <h3 style="margin:0; font-size:1.1rem; font-weight:700;">Tarjeta Clickable</h3>
+            </alf-card-title>
+            <alf-card-body>
+              <p style="margin:0; color:#64748b; font-size:0.9rem;">
+                Esta tarjeta tiene <code>[clickable]="true"</code>. Pasa el cursor por encima para ver el efecto hover premium y haz click para disparar un evento.
+              </p>
+            </alf-card-body>
+            <alf-card-actions>
+              <alf-button [colorVariant]="AlfColorVariantEnum.Primary" (onClick)="$event.stopPropagation(); onCardClick($event)">
+                Acción Interna
+              </alf-button>
+            </alf-card-actions>
+          </alf-card>
+
+          <!-- Link Card -->
+          <alf-card [href]="'https://angular.dev'" target="_blank">
+            <alf-card-img
+              src="https://picsum.photos/seed/alflink1/600/300"
+              alt="Link image"
+            />
+            <alf-card-title>
+              <h3 style="margin:0; font-size:1.1rem; font-weight:700;">Tarjeta de Enlace (Link)</h3>
+            </alf-card-title>
+            <alf-card-body>
+              <p style="margin:0; color:#64748b; font-size:0.9rem;">
+                Esta tarjeta tiene <code>[href]="'https://angular.dev'"</code> y <code>target="_blank"</code>. Se comporta como un enlace accesible por teclado.
+              </p>
+            </alf-card-body>
+          </alf-card>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Solo alf-card-title ── -->
+    <section class="viewer-card">
+      <h2 class="viewer-card__title">
+        <span class="viewer-card__dot viewer-card__dot--purple"></span>
+        alf-card-title
+      </h2>
+      <div class="viewer-card__body">
+        <p class="viewer-desc">Slot para el título de la card.</p>
+        <alf-card>
+          <alf-card-title>
+            <h3 style="margin:0; font-size:1rem; font-weight:700;">Solo el título</h3>
+          </alf-card-title>
+        </alf-card>
+      </div>
+    </section>
+
+    <!-- ── Solo alf-card-body ── -->
+    <section class="viewer-card">
+      <h2 class="viewer-card__title">
+        <span class="viewer-card__dot viewer-card__dot--amber"></span>
+        alf-card-body
+      </h2>
+      <div class="viewer-card__body">
+        <p class="viewer-desc">Slot para el contenido principal.</p>
+        <alf-card>
+          <alf-card-body>
+            <p style="margin:0; color:#64748b; font-size:0.9rem; line-height:1.6;">
+              Este es el body del card. Puede contener cualquier contenido HTML.
+            </p>
+          </alf-card-body>
+        </alf-card>
+      </div>
+    </section>
+
+    <!-- ── Solo alf-card-img ── -->
+    <section class="viewer-card">
+      <h2 class="viewer-card__title">
+        <span class="viewer-card__dot viewer-card__dot--red"></span>
+        alf-card-img
+      </h2>
+      <div class="viewer-card__body">
+        <p class="viewer-desc">Slot para la imagen con src/alt directos.</p>
+        <alf-card>
+          <alf-card-img
+            src="https://picsum.photos/seed/alf3/600/200"
+            alt="Imagen demo"
+          />
+        </alf-card>
+      </div>
+    </section>
+
+    <!-- ── Solo alf-card-actions ── -->
+    <section class="viewer-card">
+      <h2 class="viewer-card__title">
+        <span class="viewer-card__dot viewer-card__dot--blue"></span>
+        alf-card-actions
+      </h2>
+      <div class="viewer-card__body">
+        <p class="viewer-desc">Slot para los botones de acción.</p>
+        <alf-card>
+          <alf-card-actions>
+            <alf-button [colorVariant]="AlfColorVariantEnum.Primary">Guardar</alf-button>
+            <alf-button [colorVariant]="AlfColorVariantEnum.DangerOutline">Eliminar</alf-button>
+            <alf-button [colorVariant]="AlfColorVariantEnum.PrimaryGhost">Cancelar</alf-button>
+          </alf-card-actions>
+        </alf-card>
+      </div>
+    </section>
+
+    <!-- ── Variantes Outline ── -->
+    <section class="viewer-card viewer-card--wide">
+      <h2 class="viewer-card__title">
+        <span class="viewer-card__dot viewer-card__dot--purple"></span>
+        Variantes Outline
+      </h2>
+      <div class="viewer-card__body">
+        <p class="viewer-desc">El input <code>colorVariant</code> aplicado al <code>alf-card</code> con variantes outline.</p>
+        <div class="demo-row">
+
+          <alf-card [colorVariant]="AlfColorVariantEnum.PrimaryOutline">
+            <alf-card-title>
+              <h3 style="margin:0; font-size:1rem; font-weight:700;">Primary Outline</h3>
+            </alf-card-title>
+            <alf-card-body>
+              <p style="margin:0; font-size:0.875rem;">Variante <code>PrimaryOutline</code>.</p>
+            </alf-card-body>
+            <alf-card-actions>
+              <alf-button [colorVariant]="AlfColorVariantEnum.PrimaryOutline">Acción</alf-button>
+            </alf-card-actions>
+          </alf-card>
+
+          <alf-card [colorVariant]="AlfColorVariantEnum.SecondaryOutline">
+            <alf-card-title>
+              <h3 style="margin:0; font-size:1rem; font-weight:700;">Secondary Outline</h3>
+            </alf-card-title>
+            <alf-card-body>
+              <p style="margin:0; font-size:0.875rem;">Variante <code>SecondaryOutline</code>.</p>
+            </alf-card-body>
+            <alf-card-actions>
+              <alf-button [colorVariant]="AlfColorVariantEnum.SecondaryOutline">Acción</alf-button>
+            </alf-card-actions>
+          </alf-card>
+
+          <alf-card [colorVariant]="AlfColorVariantEnum.SuccessOutline">
+            <alf-card-title>
+              <h3 style="margin:0; font-size:1rem; font-weight:700;">Success Outline</h3>
+            </alf-card-title>
+            <alf-card-body>
+              <p style="margin:0; font-size:0.875rem;">Variante <code>SuccessOutline</code>.</p>
+            </alf-card-body>
+            <alf-card-actions>
+              <alf-button [colorVariant]="AlfColorVariantEnum.SuccessOutline">Acción</alf-button>
+            </alf-card-actions>
+          </alf-card>
+
+          <alf-card [colorVariant]="AlfColorVariantEnum.DangerOutline">
+            <alf-card-title>
+              <h3 style="margin:0; font-size:1rem; font-weight:700;">Danger Outline</h3>
+            </alf-card-title>
+            <alf-card-body>
+              <p style="margin:0; font-size:0.875rem;">Variante <code>DangerOutline</code>.</p>
+            </alf-card-body>
+            <alf-card-actions>
+              <alf-button [colorVariant]="AlfColorVariantEnum.DangerOutline">Acción</alf-button>
+            </alf-card-actions>
+          </alf-card>
+
+          <alf-card [colorVariant]="AlfColorVariantEnum.WarningOutline">
+            <alf-card-title>
+              <h3 style="margin:0; font-size:1rem; font-weight:700;">Warning Outline</h3>
+            </alf-card-title>
+            <alf-card-body>
+              <p style="margin:0; font-size:0.875rem;">Variante <code>WarningOutline</code>.</p>
+            </alf-card-body>
+            <alf-card-actions>
+              <alf-button [colorVariant]="AlfColorVariantEnum.WarningOutline">Acción</alf-button>
+            </alf-card-actions>
+          </alf-card>
+
+        </div>
+      </div>
+    </section>
+
   </div>
 </div>

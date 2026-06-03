@@ -1,0 +1,13 @@
+@use '../../../../../styles/mixins' as *;
+
+:host {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
+
+  @include alf-padding-css-vars('--alf-card-actions');
+  @include alf-border-css-vars('--alf-card-actions');
+}

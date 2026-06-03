@@ -1,0 +1,13 @@
+:host {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+
+  img, ::ng-deep img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+}

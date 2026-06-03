@@ -11,6 +11,10 @@ export enum visualprefixEnum {
     Switch = '--alf-sw',
     Autocomplete = '--alf-autocomplete',
     Card = '--alf-card',
+    CardTitle = '--alf-card-title',
+    CardBody = '--alf-card-body',
+    CardImg = '--alf-card-img',
+    CardActions = '--alf-card-actions',
 
     // InternalIds
     ButtonsInternalId = '-alf-btn-id',
