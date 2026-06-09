@@ -1,4 +1,6 @@
 export * from './simple/alf-spinner/alf-spinner';
+export * from './base/base';
+export * from './base/base.directive';
 export * from './simple/alf-button/alf-button';
 export * from './simple/alf-button/interfaces/alf-button.interface';
 export * from './simple/alf-button/predefined/alf-button.predefined';

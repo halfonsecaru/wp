@@ -1,0 +1,43 @@
+@let bg = background();
+@let bd = border();
+@let ot = outline();
+@let sd = shadows();
+@let an = animations();
+@let mg = margin();
+@let pd = padding();
+@let ty = typography();
+@let ts = textStyle();
+@let tr = transform();
+@let dl = displayAndLayout();
+@let cr = cursor();
+@let sz = size();
+@let ds = disabled();
+@let tt = tooltip();
+@let rp = ripple();
+@let ar = aria();
+@let cc = customClass();
+@let cs = customStyle();
+
+<div
+  [alfBackground]="bg ? bg : null"
+  [alfBorder]="bd ? bd : null"
+  [alfOutline]="ot ? ot : null"
+  [alfShadows]="sd ? sd : null"
+  [alfAnimations]="an ? an : null"
+  [alfMargin]="mg ? mg : null"
+  [alfPadding]="pd ? pd : null"
+  [alfTypography]="ty ? ty : null"
+  [alfTextStyle]="ts ? ts : null"
+  [alfTransform]="tr ? tr : null"
+  [alfDisplayAndLayout]="dl ? dl : null"
+  [alfCursor]="cr ? cr : null"
+  [alfSize]="sz ? sz : null"
+  [alfDisabled]="ds"
+  [alfTooltipText]="tt ? tt : null"
+  [alfRipple]="rp !== undefined ? rp : null"
+  [alfAria]="ar ? ar : null"
+  [class]="'alf-base-container' + (cc ? ' ' + cc : '')"
+  [style]="cs ? cs : null"
+>
+  <ng-content></ng-content>
+</div>

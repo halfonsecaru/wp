@@ -1,0 +1,70 @@
+@mixin alf-padding-style {
+  // --- 1. BASE / DEFAULT STATE ---
+  $p: var(--alf-padding, 0px);
+  $pt: var(--alf-padding-top, $p);
+  $pr: var(--alf-padding-right, $p);
+  $pb: var(--alf-padding-bottom, $p);
+  $pl: var(--alf-padding-left, $p);
+
+  padding-top: $pt;
+  padding-right: $pr;
+  padding-bottom: $pb;
+  padding-left: $pl;
+
+  // --- 2. HOVER STATE ---
+  &:hover {
+    $hp: var(--alf-padding-hover, $p);
+    $hpt: var(--alf-padding-top-hover, var(--alf-padding-top, $hp));
+    $hpr: var(--alf-padding-right-hover, var(--alf-padding-right, $hp));
+    $hpb: var(--alf-padding-bottom-hover, var(--alf-padding-bottom, $hp));
+    $hpl: var(--alf-padding-left-hover, var(--alf-padding-left, $hp));
+
+    padding-top: $hpt;
+    padding-right: $hpr;
+    padding-bottom: $hpb;
+    padding-left: $hpl;
+  }
+
+  // --- 3. ACTIVE STATE ---
+  &:active {
+    $hp: var(--alf-padding-hover, $p);
+    $ap: var(--alf-padding-active, $hp);
+    $apt: var(--alf-padding-top-active, var(--alf-padding-top-hover, var(--alf-padding-top, $ap)));
+    $apr: var(--alf-padding-right-active, var(--alf-padding-right-hover, var(--alf-padding-right, $ap)));
+    $apb: var(--alf-padding-bottom-active, var(--alf-padding-bottom-hover, var(--alf-padding-bottom, $ap)));
+    $apl: var(--alf-padding-left-active, var(--alf-padding-left-hover, var(--alf-padding-left, $ap)));
+
+    padding-top: $apt;
+    padding-right: $apr;
+    padding-bottom: $apb;
+    padding-left: $apl;
+  }
+
+  // --- 4. FOCUS STATE ---
+  &:focus, &:focus-visible {
+    $fp: var(--alf-padding-focus, $p);
+    $fpt: var(--alf-padding-top-focus, var(--alf-padding-top, $fp));
+    $fpr: var(--alf-padding-right-focus, var(--alf-padding-right, $fp));
+    $fpb: var(--alf-padding-bottom-focus, var(--alf-padding-bottom, $fp));
+    $fpl: var(--alf-padding-left-focus, var(--alf-padding-left, $fp));
+
+    padding-top: $fpt;
+    padding-right: $fpr;
+    padding-bottom: $fpb;
+    padding-left: $fpl;
+  }
+
+  // --- 5. DISABLED STATE ---
+  &:disabled, &.disabled {
+    $dp: var(--alf-padding-disabled, $p);
+    $dpt: var(--alf-padding-top-disabled, var(--alf-padding-top, $dp));
+    $dpr: var(--alf-padding-right-disabled, var(--alf-padding-right, $dp));
+    $dpb: var(--alf-padding-bottom-disabled, var(--alf-padding-bottom, $dp));
+    $dpl: var(--alf-padding-left-disabled, var(--alf-padding-left, $dp));
+
+    padding-top: $dpt;
+    padding-right: $dpr;
+    padding-bottom: $dpb;
+    padding-left: $dpl;
+  }
+}

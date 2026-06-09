@@ -1,0 +1,154 @@
+@mixin alf-display-and-layout-style {
+  // --- 1. BASE / DEFAULT STATE ---
+  display:         var(--alf-dl-display,         block);
+  position:        var(--alf-dl-position,        static);
+  top:             var(--alf-dl-top,             auto);
+  right:           var(--alf-dl-right,           auto);
+  bottom:          var(--alf-dl-bottom,          auto);
+  left:            var(--alf-dl-left,            auto);
+  z-index:         var(--alf-dl-z-index,         auto);
+  box-sizing:      var(--alf-dl-box-sizing,      border-box);
+  width:           var(--alf-dl-width,           auto);
+  height:          var(--alf-dl-height,          auto);
+  min-width:       var(--alf-dl-min-width,       0);
+  max-width:       var(--alf-dl-max-width,       none);
+  min-height:      var(--alf-dl-min-height,      0);
+  max-height:      var(--alf-dl-max-height,      none);
+  overflow:        var(--alf-dl-overflow,        visible);
+  overflow-x:      var(--alf-dl-overflow-x,      visible);
+  overflow-y:      var(--alf-dl-overflow-y,      visible);
+  visibility:      var(--alf-dl-visibility,      visible);
+  object-fit:      var(--alf-dl-object-fit,      fill);
+  flex-direction:  var(--alf-dl-flex-direction,  row);
+  justify-content: var(--alf-dl-justify-content, flex-start);
+  align-items:     var(--alf-dl-align-items,     stretch);
+  gap:             var(--alf-dl-gap,             0);
+  flex-wrap:       var(--alf-dl-flex-wrap,       nowrap);
+  opacity:         var(--alf-dl-opacity,         1);
+  pointer-events:  var(--alf-dl-pointer-events,  auto);
+  cursor:          var(--alf-dl-cursor,          auto);
+
+  // --- 2. HOVER STATE ---
+  &:hover {
+    display:         var(--alf-dl-display-hover,         var(--alf-dl-display,         block));
+    position:        var(--alf-dl-position-hover,        var(--alf-dl-position,        static));
+    top:             var(--alf-dl-top-hover,             var(--alf-dl-top,             auto));
+    right:           var(--alf-dl-right-hover,           var(--alf-dl-right,           auto));
+    bottom:          var(--alf-dl-bottom-hover,          var(--alf-dl-bottom,          auto));
+    left:            var(--alf-dl-left-hover,            var(--alf-dl-left,            auto));
+    z-index:         var(--alf-dl-z-index-hover,         var(--alf-dl-z-index,         auto));
+    box-sizing:      var(--alf-dl-box-sizing-hover,      var(--alf-dl-box-sizing,      border-box));
+    width:           var(--alf-dl-width-hover,           var(--alf-dl-width,           auto));
+    height:          var(--alf-dl-height-hover,          var(--alf-dl-height,          auto));
+    min-width:       var(--alf-dl-min-width-hover,       var(--alf-dl-min-width,       0));
+    max-width:       var(--alf-dl-max-width-hover,       var(--alf-dl-max-width,       none));
+    min-height:      var(--alf-dl-min-height-hover,      var(--alf-dl-min-height,      0));
+    max-height:      var(--alf-dl-max-height-hover,      var(--alf-dl-max-height,      none));
+    overflow:        var(--alf-dl-overflow-hover,        var(--alf-dl-overflow,        visible));
+    overflow-x:      var(--alf-dl-overflow-x-hover,      var(--alf-dl-overflow-x,      visible));
+    overflow-y:      var(--alf-dl-overflow-y-hover,      var(--alf-dl-overflow-y,      visible));
+    visibility:      var(--alf-dl-visibility-hover,      var(--alf-dl-visibility,      visible));
+    object-fit:      var(--alf-dl-object-fit-hover,      var(--alf-dl-object-fit,      fill));
+    flex-direction:  var(--alf-dl-flex-direction-hover,  var(--alf-dl-flex-direction,  row));
+    justify-content: var(--alf-dl-justify-content-hover, var(--alf-dl-justify-content, flex-start));
+    align-items:     var(--alf-dl-align-items-hover,     var(--alf-dl-align-items,     stretch));
+    gap:             var(--alf-dl-gap-hover,             var(--alf-dl-gap,             0));
+    flex-wrap:       var(--alf-dl-flex-wrap-hover,       var(--alf-dl-flex-wrap,       nowrap));
+    opacity:         var(--alf-dl-opacity-hover,         var(--alf-dl-opacity,         1));
+    pointer-events:  var(--alf-dl-pointer-events-hover,  var(--alf-dl-pointer-events,  auto));
+    cursor:          var(--alf-dl-cursor-hover,          var(--alf-dl-cursor,          auto));
+  }
+
+  // --- 3. ACTIVE STATE ---
+  &:active {
+    display:         var(--alf-dl-display-active,         var(--alf-dl-display-hover,         var(--alf-dl-display,         block)));
+    position:        var(--alf-dl-position-active,        var(--alf-dl-position-hover,        var(--alf-dl-position,        static)));
+    top:             var(--alf-dl-top-active,             var(--alf-dl-top-hover,             var(--alf-dl-top,             auto)));
+    right:           var(--alf-dl-right-active,           var(--alf-dl-right-hover,           var(--alf-dl-right,           auto)));
+    bottom:          var(--alf-dl-bottom-active,          var(--alf-dl-bottom-hover,          var(--alf-dl-bottom,          auto)));
+    left:            var(--alf-dl-left-active,            var(--alf-dl-left-hover,            var(--alf-dl-left,            auto)));
+    z-index:         var(--alf-dl-z-index-active,         var(--alf-dl-z-index-hover,         var(--alf-dl-z-index,         auto)));
+    box-sizing:      var(--alf-dl-box-sizing-active,      var(--alf-dl-box-sizing-hover,      var(--alf-dl-box-sizing,      border-box)));
+    width:           var(--alf-dl-width-active,           var(--alf-dl-width-hover,           var(--alf-dl-width,           auto)));
+    height:          var(--alf-dl-height-active,          var(--alf-dl-height-hover,          var(--alf-dl-height,          auto)));
+    min-width:       var(--alf-dl-min-width-active,       var(--alf-dl-min-width-hover,       var(--alf-dl-min-width,       0)));
+    max-width:       var(--alf-dl-max-width-active,       var(--alf-dl-max-width-hover,       var(--alf-dl-max-width,       none)));
+    min-height:      var(--alf-dl-min-height-active,      var(--alf-dl-min-height-hover,      var(--alf-dl-min-height,      0)));
+    max-height:      var(--alf-dl-max-height-active,      var(--alf-dl-max-height-hover,      var(--alf-dl-max-height,      none)));
+    overflow:        var(--alf-dl-overflow-active,        var(--alf-dl-overflow-hover,        var(--alf-dl-overflow,        visible)));
+    overflow-x:      var(--alf-dl-overflow-x-active,      var(--alf-dl-overflow-x-hover,      var(--alf-dl-overflow-x,      visible)));
+    overflow-y:      var(--alf-dl-overflow-y-active,      var(--alf-dl-overflow-y-hover,      var(--alf-dl-overflow-y,      visible)));
+    visibility:      var(--alf-dl-visibility-active,      var(--alf-dl-visibility-hover,      var(--alf-dl-visibility,      visible)));
+    object-fit:      var(--alf-dl-object-fit-active,      var(--alf-dl-object-fit-hover,      var(--alf-dl-object-fit,      fill)));
+    flex-direction:  var(--alf-dl-flex-direction-active,  var(--alf-dl-flex-direction-hover,  var(--alf-dl-flex-direction,  row)));
+    justify-content: var(--alf-dl-justify-content-active, var(--alf-dl-justify-content-hover, var(--alf-dl-justify-content, flex-start)));
+    align-items:     var(--alf-dl-align-items-active,     var(--alf-dl-align-items-hover,     var(--alf-dl-align-items,     stretch)));
+    gap:             var(--alf-dl-gap-active,             var(--alf-dl-gap-hover,             var(--alf-dl-gap,             0)));
+    flex-wrap:       var(--alf-dl-flex-wrap-active,       var(--alf-dl-flex-wrap-hover,       var(--alf-dl-flex-wrap,       nowrap)));
+    opacity:         var(--alf-dl-opacity-active,         var(--alf-dl-opacity-hover,         var(--alf-dl-opacity,         1)));
+    pointer-events:  var(--alf-dl-pointer-events-active,  var(--alf-dl-pointer-events-hover,  var(--alf-dl-pointer-events,  auto)));
+    cursor:          var(--alf-dl-cursor-active,          var(--alf-dl-cursor-hover,          var(--alf-dl-cursor,          auto)));
+  }
+
+  // --- 4. FOCUS STATE ---
+  &:focus, &:focus-visible {
+    display:         var(--alf-dl-display-focus,         var(--alf-dl-display,         block));
+    position:        var(--alf-dl-position-focus,        var(--alf-dl-position,        static));
+    top:             var(--alf-dl-top-focus,             var(--alf-dl-top,             auto));
+    right:           var(--alf-dl-right-focus,           var(--alf-dl-right,           auto));
+    bottom:          var(--alf-dl-bottom-focus,          var(--alf-dl-bottom,          auto));
+    left:            var(--alf-dl-left-focus,            var(--alf-dl-left,            auto));
+    z-index:         var(--alf-dl-z-index-focus,         var(--alf-dl-z-index,         auto));
+    box-sizing:      var(--alf-dl-box-sizing-focus,      var(--alf-dl-box-sizing,      border-box));
+    width:           var(--alf-dl-width-focus,           var(--alf-dl-width,           auto));
+    height:          var(--alf-dl-height-focus,          var(--alf-dl-height,          auto));
+    min-width:       var(--alf-dl-min-width-focus,       var(--alf-dl-min-width,       0));
+    max-width:       var(--alf-dl-max-width-focus,       var(--alf-dl-max-width,       none));
+    min-height:      var(--alf-dl-min-height-focus,      var(--alf-dl-min-height,      0));
+    max-height:      var(--alf-dl-max-height-focus,      var(--alf-dl-max-height,      none));
+    overflow:        var(--alf-dl-overflow-focus,        var(--alf-dl-overflow,        visible));
+    overflow-x:      var(--alf-dl-overflow-x-focus,      var(--alf-dl-overflow-x,      visible));
+    overflow-y:      var(--alf-dl-overflow-y-focus,      var(--alf-dl-overflow-y,      visible));
+    visibility:      var(--alf-dl-visibility-focus,      var(--alf-dl-visibility,      visible));
+    object-fit:      var(--alf-dl-object-fit-focus,      var(--alf-dl-object-fit,      fill));
+    flex-direction:  var(--alf-dl-flex-direction-focus,  var(--alf-dl-flex-direction,  row));
+    justify-content: var(--alf-dl-justify-content-focus, var(--alf-dl-justify-content, flex-start));
+    align-items:     var(--alf-dl-align-items-focus,     var(--alf-dl-align-items,     stretch));
+    gap:             var(--alf-dl-gap-focus,             var(--alf-dl-gap,             0));
+    flex-wrap:       var(--alf-dl-flex-wrap-focus,       var(--alf-dl-flex-wrap,       nowrap));
+    opacity:         var(--alf-dl-opacity-focus,         var(--alf-dl-opacity,         1));
+    pointer-events:  var(--alf-dl-pointer-events-focus,  var(--alf-dl-pointer-events,  auto));
+    cursor:          var(--alf-dl-cursor-focus,          var(--alf-dl-cursor,          auto));
+  }
+
+  // --- 5. DISABLED STATE ---
+  &:disabled, &.disabled {
+    display:         var(--alf-dl-display-disabled,         var(--alf-dl-display,         block));
+    position:        var(--alf-dl-position-disabled,        var(--alf-dl-position,        static));
+    top:             var(--alf-dl-top-disabled,             var(--alf-dl-top,             auto));
+    right:           var(--alf-dl-right-disabled,           var(--alf-dl-right,           auto));
+    bottom:          var(--alf-dl-bottom-disabled,          var(--alf-dl-bottom,          auto));
+    left:            var(--alf-dl-left-disabled,            var(--alf-dl-left,            auto));
+    z-index:         var(--alf-dl-z-index-disabled,         var(--alf-dl-z-index,         auto));
+    box-sizing:      var(--alf-dl-box-sizing-disabled,      var(--alf-dl-box-sizing,      border-box));
+    width:           var(--alf-dl-width-disabled,           var(--alf-dl-width,           auto));
+    height:          var(--alf-dl-height-disabled,          var(--alf-dl-height,          auto));
+    min-width:       var(--alf-dl-min-width-disabled,       var(--alf-dl-min-width,       0));
+    max-width:       var(--alf-dl-max-width-disabled,       var(--alf-dl-max-width,       none));
+    min-height:      var(--alf-dl-min-height-disabled,      var(--alf-dl-min-height,      0));
+    max-height:      var(--alf-dl-max-height-disabled,      var(--alf-dl-max-height,      none));
+    overflow:        var(--alf-dl-overflow-disabled,        var(--alf-dl-overflow,        visible));
+    overflow-x:      var(--alf-dl-overflow-x-disabled,      var(--alf-dl-overflow-x,      visible));
+    overflow-y:      var(--alf-dl-overflow-y-disabled,      var(--alf-dl-overflow-y,      visible));
+    visibility:      var(--alf-dl-visibility-disabled,      var(--alf-dl-visibility,      visible));
+    object-fit:      var(--alf-dl-object-fit-disabled,      var(--alf-dl-object-fit,      fill));
+    flex-direction:  var(--alf-dl-flex-direction-disabled,  var(--alf-dl-flex-direction,  row));
+    justify-content: var(--alf-dl-justify-content-disabled, var(--alf-dl-justify-content, flex-start));
+    align-items:     var(--alf-dl-align-items-disabled,     var(--alf-dl-align-items,     stretch));
+    gap:             var(--alf-dl-gap-disabled,             var(--alf-dl-gap,             0));
+    flex-wrap:       var(--alf-dl-flex-wrap-disabled,       var(--alf-dl-flex-wrap,       nowrap));
+    opacity:         var(--alf-dl-opacity-disabled,         var(--alf-dl-opacity,         1));
+    pointer-events:  var(--alf-dl-pointer-events-disabled,  var(--alf-dl-pointer-events,  auto));
+    cursor:          var(--alf-dl-cursor-disabled,          var(--alf-dl-cursor,          auto));
+  }
+}

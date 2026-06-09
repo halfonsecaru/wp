@@ -1,26 +1,15 @@
 <!-- 1. Comportamiento y Directivas -->
-@let tooltip = tooltipComputed();
-@let ripple = rippleComputed();
-@let cursor = cursorComputed();
+@let tooltip = tooltipComputed(); @let ripple = rippleComputed(); @let cursor = cursorComputed();
 
 <!-- 3. Metadatos y Personalización -->
-@let animationsClass = animationsClassComputed();
-@let customClass = customClassComputed();
+@let animationsClass = animationsClassComputed(); @let customClass = customClassComputed();
 
 <!-- 4. Estado Core del Radio -->
-@let isRadioButtonDisabled = isComponentDisabled();
-@let idRadio = internalId;
-@let labelText = labelComputed();
-@let labelPos = labelPositionComputed();
-@let aria = ariaComputed();
-@let isChecked = checked();
-@let size = sizeComputed();
-@let styleVariant = radioButtonStyleComputed();
-@let radioName = name();
-@let isHovered = hovered();
-@let isFocused = focused();
+@let isRadioButtonDisabled = isComponentDisabled(); @let idRadio = internalId; @let labelText = labelComputed(); @let labelPos =
+labelPositionComputed(); @let aria = ariaComputed(); @let isChecked = checked(); @let size = sizeComputed(); @let styleVariant =
+radioButtonStyleComputed(); @let radioName = name(); @let isHovered = hovered(); @let isFocused = focused();
 
-<div 
+<div
   class="alf-rb"
   [class]="'alf-rb--' + styleVariant + ' alf-rb--' + size + ' ' + customClass + ' ' + animationsClass"
   [class.alf-rb--checked]="isChecked"
@@ -31,7 +20,7 @@
   (mouseleave)="hovered.set(false)"
   [style]="combinedStyles()"
 >
-  <label 
+  <label
     class="alf-rb-wrapper"
     [class.alf-rb-wrapper--label-before]="labelPos === 'before'"
     [attr.for]="idRadio"
@@ -39,7 +28,7 @@
     (click)="onLabelClick($event)"
   >
     <!-- Input oculto para accesibilidad y estado -->
-    <input 
+    <input
       type="radio"
       hidden
       [id]="idRadio"
@@ -53,38 +42,29 @@
       [attr.aria-checked]="isChecked"
       [attr.aria-label]="aria?.ariaLabel || labelText"
       [attr.aria-describedby]="aria?.ariaDescribedBy || (idRadio + '-description')"
-    >
+    />
 
     <!-- Contenedor Visual (Circle) -->
-    <div 
-      class="alf-rb-circle"
-      [alfRipple]="ripple"
-      [alfTooltipText]="tooltip"
-    >
+    <div class="alf-rb-circle" [alfRipple]="ripple" [alfTooltipText]="tooltip">
       <div class="alf-rb-ripple-bg"></div>
       <div class="alf-rb-dot"></div>
     </div>
 
     <!-- Texto del Label -->
     @if (labelText) {
-      <span class="alf-rb-label-text">
-        {{ labelText }}
-      </span>
+    <span class="alf-rb-label-text"> {{ labelText }} </span>
     }
   </label>
 </div>
 
 <!-- Helper y Errores -->
-@let helper = resolvedConfig()?.helperText;
-@let errorMsg = resolvedConfig()?.error;
-
-@if (helper || errorMsg) {
-  <div [id]="idRadio + '-description'" class="alf-rb-description">
-    @if (errorMsg) {
-      <span class="alf-rb-error">{{ errorMsg }}</span>
-    } @else {
-      <span class="alf-rb-helper">{{ helper }}</span>
-    }
-  </div>
+@let helper = $safeNavigationMigration(resolvedConfig()?.helperText); @let errorMsg = $safeNavigationMigration(resolvedConfig()?.error); @if (helper
+|| errorMsg) {
+<div [id]="idRadio + '-description'" class="alf-rb-description">
+  @if (errorMsg) {
+  <span class="alf-rb-error">{{ errorMsg }}</span>
+  } @else {
+  <span class="alf-rb-helper">{{ helper }}</span>
+  }
+</div>
 }
-

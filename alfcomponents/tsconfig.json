@@ -8,12 +8,9 @@
     "emitDeclarationOnly": true,
     "moduleResolution": "bundler"
   },
-  "include": [
-    "**/*.ts"
-  ],
-  "exclude": [
-    "**/*.spec.ts",
-    "**/*.test.ts",
-    "../vitest.setup.ts"
-  ]
+  "include": ["**/*.ts"],
+  "exclude": ["**/*.spec.ts", "**/*.test.ts", "../vitest.setup.ts"],
+  "angularCompilerOptions": {
+    "strictTemplates": false
+  }
 }

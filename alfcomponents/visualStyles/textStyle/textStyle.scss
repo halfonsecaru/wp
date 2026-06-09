@@ -1,0 +1,64 @@
+@mixin alf-text-style {
+  // --- 1. BASE / DEFAULT STATE ---
+  color:           var(--alf-ts-color,           inherit);
+  font-size:       var(--alf-ts-font-size,       inherit);
+  font-weight:     var(--alf-ts-font-weight,     inherit);
+  line-height:     var(--alf-ts-line-height,     inherit);
+  letter-spacing:  var(--alf-ts-letter-spacing,  inherit);
+  opacity:         var(--alf-ts-opacity,         inherit);
+  text-shadow:     var(--alf-ts-text-shadow,     inherit);
+  text-decoration: var(--alf-ts-text-decoration, inherit);
+  text-transform:  var(--alf-ts-text-transform,  inherit);
+
+  // --- 2. HOVER STATE ---
+  &:hover {
+    color:           var(--alf-ts-color-hover,           var(--alf-ts-color,           inherit));
+    font-size:       var(--alf-ts-font-size-hover,       var(--alf-ts-font-size,       inherit));
+    font-weight:     var(--alf-ts-font-weight-hover,     var(--alf-ts-font-weight,     inherit));
+    line-height:     var(--alf-ts-line-height-hover,     var(--alf-ts-line-height,     inherit));
+    letter-spacing:  var(--alf-ts-letter-spacing-hover,  var(--alf-ts-letter-spacing,  inherit));
+    opacity:         var(--alf-ts-opacity-hover,         var(--alf-ts-opacity,         inherit));
+    text-shadow:     var(--alf-ts-text-shadow-hover,     var(--alf-ts-text-shadow,     inherit));
+    text-decoration: var(--alf-ts-text-decoration-hover, var(--alf-ts-text-decoration, inherit));
+    text-transform:  var(--alf-ts-text-transform-hover,  var(--alf-ts-text-transform,  inherit));
+  }
+
+  // --- 3. ACTIVE STATE ---
+  &:active {
+    color:           var(--alf-ts-color-active,           var(--alf-ts-color-hover,           var(--alf-ts-color,           inherit)));
+    font-size:       var(--alf-ts-font-size-active,       var(--alf-ts-font-size-hover,       var(--alf-ts-font-size,       inherit)));
+    font-weight:     var(--alf-ts-font-weight-active,     var(--alf-ts-font-weight-hover,     var(--alf-ts-font-weight,     inherit)));
+    line-height:     var(--alf-ts-line-height-active,     var(--alf-ts-line-height-hover,     var(--alf-ts-line-height,     inherit)));
+    letter-spacing:  var(--alf-ts-letter-spacing-active,  var(--alf-ts-letter-spacing-hover,  var(--alf-ts-letter-spacing,  inherit)));
+    opacity:         var(--alf-ts-opacity-active,         var(--alf-ts-opacity-hover,         var(--alf-ts-opacity,         inherit)));
+    text-shadow:     var(--alf-ts-text-shadow-active,     var(--alf-ts-text-shadow-hover,     var(--alf-ts-text-shadow,     inherit)));
+    text-decoration: var(--alf-ts-text-decoration-active, var(--alf-ts-text-decoration-hover, var(--alf-ts-text-decoration, inherit)));
+    text-transform:  var(--alf-ts-text-transform-active,  var(--alf-ts-text-transform-hover,  var(--alf-ts-text-transform,  inherit)));
+  }
+
+  // --- 4. FOCUS STATE ---
+  &:focus, &:focus-visible {
+    color:           var(--alf-ts-color-focus,           var(--alf-ts-color,           inherit));
+    font-size:       var(--alf-ts-font-size-focus,       var(--alf-ts-font-size,       inherit));
+    font-weight:     var(--alf-ts-font-weight-focus,     var(--alf-ts-font-weight,     inherit));
+    line-height:     var(--alf-ts-line-height-focus,     var(--alf-ts-line-height,     inherit));
+    letter-spacing:  var(--alf-ts-letter-spacing-focus,  var(--alf-ts-letter-spacing,  inherit));
+    opacity:         var(--alf-ts-opacity-focus,         var(--alf-ts-opacity,         inherit));
+    text-shadow:     var(--alf-ts-text-shadow-focus,     var(--alf-ts-text-shadow,     inherit));
+    text-decoration: var(--alf-ts-text-decoration-focus, var(--alf-ts-text-decoration, inherit));
+    text-transform:  var(--alf-ts-text-transform-focus,  var(--alf-ts-text-transform,  inherit));
+  }
+
+  // --- 5. DISABLED STATE ---
+  &:disabled, &.disabled {
+    color:           var(--alf-ts-color-disabled,           var(--alf-ts-color,           inherit));
+    font-size:       var(--alf-ts-font-size-disabled,       var(--alf-ts-font-size,       inherit));
+    font-weight:     var(--alf-ts-font-weight-disabled,     var(--alf-ts-font-weight,     inherit));
+    line-height:     var(--alf-ts-line-height-disabled,     var(--alf-ts-line-height,     inherit));
+    letter-spacing:  var(--alf-ts-letter-spacing-disabled,  var(--alf-ts-letter-spacing,  inherit));
+    opacity:         var(--alf-ts-opacity-disabled,         var(--alf-ts-opacity,         inherit));
+    text-shadow:     var(--alf-ts-text-shadow-disabled,     var(--alf-ts-text-shadow,     inherit));
+    text-decoration: var(--alf-ts-text-decoration-disabled, var(--alf-ts-text-decoration, inherit));
+    text-transform:  var(--alf-ts-text-transform-disabled,  var(--alf-ts-text-transform,  inherit));
+  }
+}

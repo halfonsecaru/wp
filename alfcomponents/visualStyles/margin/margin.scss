@@ -1,0 +1,70 @@
+@mixin alf-margin-style {
+  // --- 1. BASE / DEFAULT STATE ---
+  $m: var(--alf-margin, 0px);
+  $mt: var(--alf-margin-top, $m);
+  $mr: var(--alf-margin-right, $m);
+  $mb: var(--alf-margin-bottom, $m);
+  $ml: var(--alf-margin-left, $m);
+
+  margin-top: $mt;
+  margin-right: $mr;
+  margin-bottom: $mb;
+  margin-left: $ml;
+
+  // --- 2. HOVER STATE ---
+  &:hover {
+    $hm: var(--alf-margin-hover, $m);
+    $hmt: var(--alf-margin-top-hover, var(--alf-margin-top, $hm));
+    $hmr: var(--alf-margin-right-hover, var(--alf-margin-right, $hm));
+    $hmb: var(--alf-margin-bottom-hover, var(--alf-margin-bottom, $hm));
+    $hml: var(--alf-margin-left-hover, var(--alf-margin-left, $hm));
+
+    margin-top: $hmt;
+    margin-right: $hmr;
+    margin-bottom: $hmb;
+    margin-left: $hml;
+  }
+
+  // --- 3. ACTIVE STATE ---
+  &:active {
+    $hm: var(--alf-margin-hover, $m);
+    $am: var(--alf-margin-active, $hm);
+    $amt: var(--alf-margin-top-active, var(--alf-margin-top-hover, var(--alf-margin-top, $am)));
+    $amr: var(--alf-margin-right-active, var(--alf-margin-right-hover, var(--alf-margin-right, $am)));
+    $amb: var(--alf-margin-bottom-active, var(--alf-margin-bottom-hover, var(--alf-margin-bottom, $am)));
+    $aml: var(--alf-margin-left-active, var(--alf-margin-left-hover, var(--alf-margin-left, $am)));
+
+    margin-top: $amt;
+    margin-right: $amr;
+    margin-bottom: $amb;
+    margin-left: $aml;
+  }
+
+  // --- 4. FOCUS STATE ---
+  &:focus, &:focus-visible {
+    $fm: var(--alf-margin-focus, $m);
+    $fmt: var(--alf-margin-top-focus, var(--alf-margin-top, $fm));
+    $fmr: var(--alf-margin-right-focus, var(--alf-margin-right, $fm));
+    $fmb: var(--alf-margin-bottom-focus, var(--alf-margin-bottom, $fm));
+    $fml: var(--alf-margin-left-focus, var(--alf-margin-left, $fm));
+
+    margin-top: $fmt;
+    margin-right: $fmr;
+    margin-bottom: $fmb;
+    margin-left: $fml;
+  }
+
+  // --- 5. DISABLED STATE ---
+  &:disabled, &.disabled {
+    $dm: var(--alf-margin-disabled, $m);
+    $dmt: var(--alf-margin-top-disabled, var(--alf-margin-top, $dm));
+    $dmr: var(--alf-margin-right-disabled, var(--alf-margin-right, $dm));
+    $dmb: var(--alf-margin-bottom-disabled, var(--alf-margin-bottom, $dm));
+    $dml: var(--alf-margin-left-disabled, var(--alf-margin-left, $dm));
+
+    margin-top: $dmt;
+    margin-right: $dmr;
+    margin-bottom: $dmb;
+    margin-left: $dml;
+  }
+}

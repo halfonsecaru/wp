@@ -1,0 +1,44 @@
+@mixin alf-shadows-style {
+  // --- 1. BASE / DEFAULT STATE ---
+  $bs: var(--alf-box-shadow, none);
+  $ts: var(--alf-text-shadow, none);
+
+  box-shadow: $bs;
+  text-shadow: $ts;
+
+  // --- 2. HOVER STATE ---
+  &:hover {
+    $hbs: var(--alf-box-shadow-hover, $bs);
+    $hts: var(--alf-text-shadow-hover, $ts);
+
+    box-shadow: $hbs;
+    text-shadow: $hts;
+  }
+
+  // --- 3. ACTIVE STATE ---
+  &:active {
+    $abs: var(--alf-box-shadow-active, var(--alf-box-shadow-hover, $bs));
+    $ats: var(--alf-text-shadow-active, var(--alf-text-shadow-hover, $ts));
+
+    box-shadow: $abs;
+    text-shadow: $ats;
+  }
+
+  // --- 4. FOCUS STATE ---
+  &:focus, &:focus-visible {
+    $fbs: var(--alf-box-shadow-focus, $bs);
+    $fts: var(--alf-text-shadow-focus, $ts);
+
+    box-shadow: $fbs;
+    text-shadow: $fts;
+  }
+
+  // --- 5. DISABLED STATE ---
+  &:disabled, &.disabled {
+    $dbs: var(--alf-box-shadow-disabled, $bs);
+    $dts: var(--alf-text-shadow-disabled, $ts);
+
+    box-shadow: $dbs;
+    text-shadow: $dts;
+  }
+}

@@ -3,12 +3,12 @@
   "compilerOptions": {
     "composite": true,
     "outDir": "./dist/demo",
-    "module": "esnext",
-    "moduleResolution": "node"
+    "module": "esnext"
   },
-  "include": [
-    "src/**/*.ts"
-  ],
+  "include": ["src/**/*.ts"],
+  "angularCompilerOptions": {
+    "strictTemplates": false
+  },
   "references": [
     {
       "path": "../../../alfcomponents"

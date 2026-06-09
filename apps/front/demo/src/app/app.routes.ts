@@ -39,5 +39,9 @@ export const routes: Routes = [
   {
     path: 'autocomplete',
     loadComponent: () => import('./app/pages/alf-autocomplete-viewer/alf-autocomplete-viewer').then(m => m.AlfAutocompleteViewer)
+  },
+  {
+    path: 'base',
+    loadComponent: () => import('./app/pages/alf-base-viewer/alf-base-viewer').then(m => m.AlfBaseViewer)
   }
 ];

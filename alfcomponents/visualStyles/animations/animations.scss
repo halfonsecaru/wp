@@ -1,0 +1,17 @@
+@mixin alf-animations-style {
+  $name: var(--alf-anim-name, none);
+  $duration: var(--alf-anim-duration, 1s);
+  $delay: var(--alf-anim-delay, 0s);
+  $iteration: var(--alf-anim-iteration-count, 1);
+  $timing: var(--alf-anim-timing-function, ease);
+  $fill: var(--alf-anim-fill-mode, both);
+  $direction: var(--alf-anim-direction, normal);
+
+  animation-name: $name;
+  animation-duration: $duration;
+  animation-delay: $delay;
+  animation-iteration-count: $iteration;
+  animation-timing-function: $timing;
+  animation-fill-mode: $fill;
+  animation-direction: $direction;
+}

@@ -1,0 +1,48 @@
+.demo-section {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #0f172a;
+  border-radius: 12px;
+  color: #f8fafc;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+
+  h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #a78bfa;
+  }
+
+  p {
+    color: #94a3b8;
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+  }
+}
+
+alf-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 240px;
+  min-height: 64px;
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.demo-container {
+  border: 1px dashed #334155;
+  border-radius: 8px;
+  background: #1e293b;
+  display: inline-block;
+  padding: 1rem;
+}
+
+// Clase de ejemplo para customClass demo
+::ng-deep .mi-clase-personalizada {
+  background: linear-gradient(135deg, #064e3b, #065f46) !important;
+  border-color: #10b981 !important;
+}

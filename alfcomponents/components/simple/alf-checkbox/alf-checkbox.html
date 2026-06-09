@@ -1,26 +1,14 @@
 <!-- 1. Comportamiento y Directivas -->
-@let tooltip = tooltipComputed();
-@let ripple = rippleComputed();
-@let cursor = cursorComputed();
+@let tooltip = tooltipComputed(); @let ripple = rippleComputed(); @let cursor = cursorComputed();
 
 <!-- 3. Metadatos y Personalización -->
-@let animationsClass = animationsClassComputed();
-@let customClass = customClassComputed();
+@let animationsClass = animationsClassComputed(); @let customClass = customClassComputed();
 
 <!-- 4. Estado Core del Checkbox -->
-@let isCheckboxDisabled = isComponentDisabled();
-@let idCheckbox = internalId;
-@let labelText = labelComputed();
-@let labelPos = labelPositionComputed();
-@let aria = ariaComputed();
-@let isChecked = checked();
-@let isIndeterminate = indeterminate();
-@let size = sizeComputed();
-@let styleVariant = checkboxStyleComputed();
-@let icon = displayIcon();
-@let checkboxName = name();
-@let isHovered = hovered();
-@let isFocused = focused();
+@let isCheckboxDisabled = isComponentDisabled(); @let idCheckbox = internalId; @let labelText = labelComputed(); @let labelPos =
+labelPositionComputed(); @let aria = ariaComputed(); @let isChecked = checked(); @let isIndeterminate = indeterminate(); @let size = sizeComputed();
+@let styleVariant = checkboxStyleComputed(); @let icon = displayIcon(); @let checkboxName = name(); @let isHovered = hovered(); @let isFocused =
+focused();
 
 <div
   class="alf-cb"
@@ -41,7 +29,6 @@
     [style.cursor]="isCheckboxDisabled ? 'not-allowed' : cursor"
     (click)="onLabelClick($event)"
   >
-
     <!-- Input oculto para accesibilidad y estado -->
     <input
       type="checkbox"
@@ -61,48 +48,39 @@
     />
 
     <!-- Contenedor Visual (Box) -->
-    <div 
-      class="alf-cb-box" 
-      [alfRipple]="ripple" 
-      [alfTooltipText]="tooltip"
-    >
+    <div class="alf-cb-box" [alfRipple]="ripple" [alfTooltipText]="tooltip">
       @if (isIndeterminate || (isChecked && resolvedConfig()?.iconSelected)) {
-        <span class="alf-cb-icon">{{ icon }}</span>
+      <span class="alf-cb-icon">{{ icon }}</span>
       } @else if (isChecked) {
-        <div class="alf-cb-svg-wrapper">
-          @switch (styleVariant) {
-            @case ('standard') {
-              <svg class="std-svg" viewBox="0 0 24 24">
-                <path d="M5 13l4 4L19 7"></path>
-              </svg>
-            }
-            @default {
-              <svg class="elegant-svg" viewBox="0 0 24 24">
-                <path d="M5 13l4 4L19 7"></path>
-              </svg>
-            }
-          }
-        </div>
+      <div class="alf-cb-svg-wrapper">
+        @switch (styleVariant) { @case ('standard') {
+        <svg class="std-svg" viewBox="0 0 24 24">
+          <path d="M5 13l4 4L19 7"></path>
+        </svg>
+        } @default {
+        <svg class="elegant-svg" viewBox="0 0 24 24">
+          <path d="M5 13l4 4L19 7"></path>
+        </svg>
+        } }
+      </div>
       }
     </div>
 
     <!-- Texto del Label -->
     @if (labelText) {
-      <span class="alf-cb-label-text">{{ labelText }}</span>
+    <span class="alf-cb-label-text">{{ labelText }}</span>
     }
   </label>
 </div>
 
 <!-- Helper y Errores -->
-@let helper = resolvedConfig()?.helperText;
-@let errorMsg = resolvedConfig()?.error;
-
-@if (helper || errorMsg) {
-  <div [id]="idCheckbox + '-description'" class="alf-cb-description">
-    @if (errorMsg) {
-      <span class="alf-cb-error">{{ errorMsg }}</span>
-    } @else {
-      <span class="alf-cb-helper">{{ helper }}</span>
-    }
-  </div>
+@let helper = $safeNavigationMigration(resolvedConfig()?.helperText); @let errorMsg = $safeNavigationMigration(resolvedConfig()?.error); @if (helper
+|| errorMsg) {
+<div [id]="idCheckbox + '-description'" class="alf-cb-description">
+  @if (errorMsg) {
+  <span class="alf-cb-error">{{ errorMsg }}</span>
+  } @else {
+  <span class="alf-cb-helper">{{ helper }}</span>
+  }
+</div>
 }

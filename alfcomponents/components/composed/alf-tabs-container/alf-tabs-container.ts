@@ -1,10 +1,26 @@
-import { Component, contentChildren, effect, input, signal, computed, viewChild, ElementRef, viewChildren, untracked, afterNextRender, forwardRef, inject, booleanAttribute, model, Injector, output } from '@angular/core';
+import {
+  Component,
+  contentChildren,
+  effect,
+  input,
+  signal,
+  computed,
+  viewChild,
+  ElementRef,
+  viewChildren,
+  untracked,
+  afterNextRender,
+  forwardRef,
+  inject,
+  booleanAttribute,
+  model,
+  Injector,
+  output,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { AlfTabComponent } from './components/alf-tab/alf-tab';
 import { generateUniqueId, visualprefixEnum } from '@alfcomponents/shared';
-import {
-  AlfColorVariantEnum,
-  AlfCursorEnum,
-} from '@alfcomponents/enums';
+import { AlfColorVariantEnum, AlfCursorEnum } from '@alfcomponents/enums';
 import { AlfBaseConfiguration } from '@alfcomponents/base/alf-base-configuration';
 import { AlfComponentTypeEnum } from '@alfcomponents/base/defaultVariants';
 import { visualBackgroundBase } from '@alfcomponents/base/base-visual';
@@ -18,15 +34,15 @@ import { ALF_TABS_CONTAINER_DEFAULT } from './predefined/alf-tabs-container.pred
   imports: [],
   templateUrl: './alf-tabs-container.html',
   styleUrl: './alf-tabs-container.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [
     {
       provide: ALF_TABS_CONTAINER_TOKEN,
-      useExisting: forwardRef(() => AlfTabsContainerComponent)
-    }
-  ]
+      useExisting: forwardRef(() => AlfTabsContainerComponent),
+    },
+  ],
 })
 export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsContainerConfigInterface> {
-
   // // ==========================================
   // 1. Attributes (Properties, Injections, basicas para los stilos border, background, shadow, etc)
   // // ==========================================
@@ -91,12 +107,10 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
     untracked(this.executeTabHeightMeasurement);
   });
 
-
-
   // ==========================================
   // 3. Signals (Inputs, Models, State)
   // ==========================================
-  
+
   public override readonly inputConfig = input<AlfTabsContainerConfigInterface>(undefined, { alias: 'config' });
   public readonly fluidHeightInput = input<boolean | undefined>(undefined, { alias: 'fluidHeight' });
   public readonly orientation = input<'horizontal' | 'vertical'>('horizontal');
@@ -109,8 +123,14 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
   public readonly containerHeight = signal<string>('auto');
   protected readonly headerMetrics = signal({ canLeft: false, canRight: false });
 
-  protected readonly tabs = contentChildren(forwardRef(() => AlfTabComponent), { descendants: false });
-  protected readonly nestedContainers = contentChildren(forwardRef(() => AlfTabsContainerComponent), { descendants: false });
+  protected readonly tabs = contentChildren(
+    forwardRef(() => AlfTabComponent),
+    { descendants: false },
+  );
+  protected readonly nestedContainers = contentChildren(
+    forwardRef(() => AlfTabsContainerComponent),
+    { descendants: false },
+  );
 
   protected readonly headerScrollRef = viewChild<ElementRef<HTMLDivElement>>('headerScroll');
   protected readonly sliderRef = viewChild<ElementRef<HTMLDivElement>>('slider');
@@ -121,11 +141,9 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
   // 4. Computed
   // ==========================================
 
-
-
   protected readonly predefinedConfigComputed = computed(() => {
     const rawV = this.colorVariant() ?? this.inputConfig()?.colorVariant;
- 
+
     return getAlfDefaultConfig(rawV, this.componentType, ALF_TABS_CONTAINER_DEFAULT, this.inputConfig() ?? {});
   });
 
@@ -152,10 +170,8 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
       const userState = user?.[stateKey] || {};
 
       const hasVariant = this.colorVariantComputed() && this.colorVariantComputed() !== AlfColorVariantEnum.Default;
-      
-      return hasVariant 
-        ? { ...resolvedState, ...baseState, ...userState }
-        : { ...baseState, ...resolvedState, ...userState };
+
+      return hasVariant ? { ...resolvedState, ...baseState, ...userState } : { ...baseState, ...resolvedState, ...userState };
     };
 
     return {
@@ -187,12 +203,9 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
 
   public readonly finalConfig = this.resolvedConfig;
 
-  public readonly containerId = computed(() =>
-    this.resolvedConfig()?.id ?? this.internalId
-  );
+  public readonly containerId = computed(() => this.resolvedConfig()?.id ?? this.internalId);
 
   public readonly cursorStyle = computed(() => this.cursorComputed());
-
 
   public readonly isFluidHeight = computed(() => {
     const fromInput = this.fluidHeightInput();
@@ -218,12 +231,10 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
         iconRight: tab.iconRight(),
         isActive,
         disabled: tab.isDisabled(),
-        closable: tab.closable()
+        closable: tab.closable(),
       };
     });
   });
-
-
 
   public readonly contentAnimationsStyle = computed(() => {
     const anim = this.finalConfig()?.contentAnimations;
@@ -336,20 +347,17 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
     this.isAnimating.set(true);
     this.applyHeight(container, `${startHeight}px`);
 
-    const anim = container.animate([
-      { height: `${startHeight}px` },
-      { height: `${endHeight}px` }
-    ], {
+    const anim = container.animate([{ height: `${startHeight}px` }, { height: `${endHeight}px` }], {
       duration: 350,
       easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
-      fill: 'none'
+      fill: 'none',
     });
 
     this.currentHeightAnimation = anim;
     anim.onfinish = this.onHeightAnimationFinish(container, endHeight);
   };
 
-  private readonly onHeightAnimationFinish = (container: HTMLElement, endHeight: number): () => void => {
+  private readonly onHeightAnimationFinish = (container: HTMLElement, endHeight: number): (() => void) => {
     return (): void => {
       this.applyHeight(container, `${endHeight}px`);
       this.currentHeightAnimation = null;
@@ -368,7 +376,7 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
     const { scrollLeft, scrollWidth, clientWidth } = el;
     this.headerMetrics.set({
       canLeft: scrollLeft > 1,
-      canRight: scrollLeft + clientWidth < scrollWidth - 1
+      canRight: scrollLeft + clientWidth < scrollWidth - 1,
     });
 
     this.updateSlider(false);
@@ -417,27 +425,30 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
 
       if (animate && currentHeight > 0 && Math.abs(targetTop - currentTop) > 1) {
         const isMovingDown = targetTop > currentTop;
-        
+
         let midTop: number;
         let midHeight: number;
 
         if (isMovingDown) {
           midTop = currentTop + (targetTop - currentTop) * 0.15;
-          midHeight = (targetTop + targetHeight) - midTop;
+          midHeight = targetTop + targetHeight - midTop;
         } else {
           midTop = targetTop;
-          midHeight = (currentTop + currentHeight) - targetTop;
+          midHeight = currentTop + currentHeight - targetTop;
         }
 
-        slider.animate([
-          { top: `${currentTop}px`, height: `${currentHeight}px` },
-          { top: `${midTop}px`, height: `${midHeight}px` },
-          { top: `${targetTop}px`, height: `${targetHeight}px` }
-        ], {
-          duration: 320,
-          easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
-          fill: 'forwards'
-        });
+        slider.animate(
+          [
+            { top: `${currentTop}px`, height: `${currentHeight}px` },
+            { top: `${midTop}px`, height: `${midHeight}px` },
+            { top: `${targetTop}px`, height: `${targetHeight}px` },
+          ],
+          {
+            duration: 320,
+            easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+            fill: 'forwards',
+          },
+        );
       } else {
         slider.style.height = `${targetHeight}px`;
         slider.style.top = `${targetTop}px`;
@@ -460,27 +471,30 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
 
       if (animate && currentWidth > 0 && Math.abs(targetLeft - currentLeft) > 1) {
         const isMovingRight = targetLeft > currentLeft;
-        
+
         let midLeft: number;
         let midWidth: number;
 
         if (isMovingRight) {
           midLeft = currentLeft + (targetLeft - currentLeft) * 0.15;
-          midWidth = (targetLeft + targetWidth) - midLeft;
+          midWidth = targetLeft + targetWidth - midLeft;
         } else {
           midLeft = targetLeft;
-          midWidth = (currentLeft + currentWidth) - targetLeft;
+          midWidth = currentLeft + currentWidth - targetLeft;
         }
 
-        slider.animate([
-          { left: `${currentLeft}px`, width: `${currentWidth}px` },
-          { left: `${midLeft}px`, width: `${midWidth}px` },
-          { left: `${targetLeft}px`, width: `${targetWidth}px` }
-        ], {
-          duration: 320,
-          easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
-          fill: 'forwards'
-        });
+        slider.animate(
+          [
+            { left: `${currentLeft}px`, width: `${currentWidth}px` },
+            { left: `${midLeft}px`, width: `${midWidth}px` },
+            { left: `${targetLeft}px`, width: `${targetWidth}px` },
+          ],
+          {
+            duration: 320,
+            easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+            fill: 'forwards',
+          },
+        );
       } else {
         slider.style.width = `${targetWidth}px`;
         slider.style.left = `${targetLeft}px`;
@@ -551,7 +565,7 @@ export class AlfTabsContainerComponent extends AlfBaseConfiguration<AlfTabsConta
       if (isAuto) {
         this.setActiveTab(targetIndex);
       }
-      
+
       setTimeout(() => {
         const btn = this.buttonRefs()[targetIndex]?.nativeElement;
         if (btn) btn.focus();

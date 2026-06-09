@@ -1,4 +1,4 @@
-import { Component, input, signal, computed, inject, ElementRef, viewChild, OnDestroy } from '@angular/core';
+import { Component, input, signal, computed, inject, ElementRef, viewChild, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { AlfSingleTabInterface, ALF_TABS_CONTAINER_TOKEN } from '../../interfaces/alf-tabs.interface';
 import { visualprefixEnum } from '@alfcomponents/shared';
 import { AlfColorVariantEnum, AlfCursorEnum } from '@alfcomponents/enums';
@@ -12,15 +12,15 @@ import { AlfComponentTypeEnum, resolveVariantConfig } from '@alfcomponents/base/
   imports: [],
   templateUrl: './alf-tab.html',
   styleUrl: './alf-tab.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   host: {
     '[style.display]': 'isActive() || isExiting() ? "grid" : "none"',
     '[style.grid-area]': '"1/1"',
     '[style.width]': '"100%"',
-    '[style.min-width]': '"0"'
-  }
+    '[style.min-width]': '"0"',
+  },
 })
 export class AlfTabComponent extends AlfBaseButtonConfiguration<AlfSingleTabInterface> implements OnDestroy {
-
   // ==========================================
   // 1. Effects
   // ==========================================
@@ -42,13 +42,13 @@ export class AlfTabComponent extends AlfBaseButtonConfiguration<AlfSingleTabInte
   public readonly tabName = input<string>('');
   public readonly expandHeight = input<boolean>(false);
   public readonly closable = input<boolean>(false);
-  
+
   private readonly _isActive = signal<boolean>(false);
   public readonly isActive = this._isActive.asReadonly();
   protected readonly isExiting = signal<boolean>(false);
   public readonly parentContentAnimations = signal<AlfAnimateCssInterface | undefined>(undefined);
   public readonly parentContentBackgrounds = signal<AlfBackgroundsInterface | undefined>(undefined);
-  
+
   public readonly contentInner = viewChild<ElementRef<HTMLDivElement>>('contentInner');
 
   // ==========================================
@@ -106,7 +106,7 @@ export class AlfTabComponent extends AlfBaseButtonConfiguration<AlfSingleTabInte
     if (anim.duration) declarations.push(`--animate-duration: ${anim.duration};`);
 
     // Solo aplicamos delay en la entrada (isActive) para permitir que la salida (isExiting) sea inmediata
-    const delay = (this.isActive() && !this.isExiting()) ? (anim.delay || '0s') : '0s';
+    const delay = this.isActive() && !this.isExiting() ? anim.delay || '0s' : '0s';
     declarations.push(`--animate-delay: ${delay};`);
 
     return declarations.join(' ');

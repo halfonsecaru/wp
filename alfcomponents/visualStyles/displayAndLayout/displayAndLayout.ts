@@ -1,0 +1,172 @@
+import { Directive, input, computed } from '@angular/core';
+import { AlfDisplayAndLayoutInterface, AlfDisplayAndLayoutBaseInterface } from '@alfcomponents/interfaces';
+
+@Directive({
+  selector: '[alfDisplayAndLayout]',
+  standalone: true,
+  host: {
+    // --- TRANSITION ---
+    '[style.transition]': '"width 0.25s ease-in-out, height 0.25s ease-in-out, opacity 0.25s ease-in-out, top 0.25s ease-in-out, right 0.25s ease-in-out, bottom 0.25s ease-in-out, left 0.25s ease-in-out"',
+
+    // --- DEFAULT STATE ---
+    '[style.--alf-dl-display]':          'this.resolvedDL()?.default?.display          ?? undefined',
+    '[style.--alf-dl-position]':         'this.resolvedDL()?.default?.position         ?? undefined',
+    '[style.--alf-dl-top]':              'this.resolvedDL()?.default?.top              ?? undefined',
+    '[style.--alf-dl-right]':            'this.resolvedDL()?.default?.right            ?? undefined',
+    '[style.--alf-dl-bottom]':           'this.resolvedDL()?.default?.bottom           ?? undefined',
+    '[style.--alf-dl-left]':             'this.resolvedDL()?.default?.left             ?? undefined',
+    '[style.--alf-dl-z-index]':          'this.resolvedDL()?.default?.zIndex           ?? undefined',
+    '[style.--alf-dl-box-sizing]':       'this.resolvedDL()?.default?.boxSizing        ?? undefined',
+    '[style.--alf-dl-width]':            'this.resolvedDL()?.default?.width            ?? undefined',
+    '[style.--alf-dl-height]':           'this.resolvedDL()?.default?.height           ?? undefined',
+    '[style.--alf-dl-min-width]':        'this.resolvedDL()?.default?.minWidth         ?? undefined',
+    '[style.--alf-dl-max-width]':        'this.resolvedDL()?.default?.maxWidth         ?? undefined',
+    '[style.--alf-dl-min-height]':       'this.resolvedDL()?.default?.minHeight        ?? undefined',
+    '[style.--alf-dl-max-height]':       'this.resolvedDL()?.default?.maxHeight        ?? undefined',
+    '[style.--alf-dl-overflow]':         'this.resolvedDL()?.default?.overflow         ?? undefined',
+    '[style.--alf-dl-overflow-x]':       'this.resolvedDL()?.default?.overflowX        ?? undefined',
+    '[style.--alf-dl-overflow-y]':       'this.resolvedDL()?.default?.overflowY        ?? undefined',
+    '[style.--alf-dl-visibility]':       'this.resolvedDL()?.default?.visibility       ?? undefined',
+    '[style.--alf-dl-object-fit]':       'this.resolvedDL()?.default?.objectFit        ?? undefined',
+    '[style.--alf-dl-flex-direction]':   'this.resolvedDL()?.default?.flexDirection    ?? undefined',
+    '[style.--alf-dl-justify-content]':  'this.resolvedDL()?.default?.justifyContent   ?? undefined',
+    '[style.--alf-dl-align-items]':      'this.resolvedDL()?.default?.alignItems       ?? undefined',
+    '[style.--alf-dl-gap]':              'this.resolvedDL()?.default?.gap              ?? undefined',
+    '[style.--alf-dl-flex-wrap]':        'this.resolvedDL()?.default?.flexWrap         ?? undefined',
+    '[style.--alf-dl-opacity]':          'this.resolvedDL()?.default?.opacity          ?? undefined',
+    '[style.--alf-dl-pointer-events]':   'this.resolvedDL()?.default?.pointerEvents    ?? undefined',
+    '[style.--alf-dl-cursor]':           'this.resolvedDL()?.default?.cursor           ?? undefined',
+
+    // --- HOVER STATE ---
+    '[style.--alf-dl-display-hover]':          'this.resolvedDL()?.hover?.display          ?? undefined',
+    '[style.--alf-dl-position-hover]':         'this.resolvedDL()?.hover?.position         ?? undefined',
+    '[style.--alf-dl-top-hover]':              'this.resolvedDL()?.hover?.top              ?? undefined',
+    '[style.--alf-dl-right-hover]':            'this.resolvedDL()?.hover?.right            ?? undefined',
+    '[style.--alf-dl-bottom-hover]':           'this.resolvedDL()?.hover?.bottom           ?? undefined',
+    '[style.--alf-dl-left-hover]':             'this.resolvedDL()?.hover?.left             ?? undefined',
+    '[style.--alf-dl-z-index-hover]':          'this.resolvedDL()?.hover?.zIndex           ?? undefined',
+    '[style.--alf-dl-box-sizing-hover]':       'this.resolvedDL()?.hover?.boxSizing        ?? undefined',
+    '[style.--alf-dl-width-hover]':            'this.resolvedDL()?.hover?.width            ?? undefined',
+    '[style.--alf-dl-height-hover]':           'this.resolvedDL()?.hover?.height           ?? undefined',
+    '[style.--alf-dl-min-width-hover]':        'this.resolvedDL()?.hover?.minWidth         ?? undefined',
+    '[style.--alf-dl-max-width-hover]':        'this.resolvedDL()?.hover?.maxWidth         ?? undefined',
+    '[style.--alf-dl-min-height-hover]':       'this.resolvedDL()?.hover?.minHeight        ?? undefined',
+    '[style.--alf-dl-max-height-hover]':       'this.resolvedDL()?.hover?.maxHeight        ?? undefined',
+    '[style.--alf-dl-overflow-hover]':         'this.resolvedDL()?.hover?.overflow         ?? undefined',
+    '[style.--alf-dl-overflow-x-hover]':       'this.resolvedDL()?.hover?.overflowX        ?? undefined',
+    '[style.--alf-dl-overflow-y-hover]':       'this.resolvedDL()?.hover?.overflowY        ?? undefined',
+    '[style.--alf-dl-visibility-hover]':       'this.resolvedDL()?.hover?.visibility       ?? undefined',
+    '[style.--alf-dl-object-fit-hover]':       'this.resolvedDL()?.hover?.objectFit        ?? undefined',
+    '[style.--alf-dl-flex-direction-hover]':   'this.resolvedDL()?.hover?.flexDirection    ?? undefined',
+    '[style.--alf-dl-justify-content-hover]':  'this.resolvedDL()?.hover?.justifyContent   ?? undefined',
+    '[style.--alf-dl-align-items-hover]':      'this.resolvedDL()?.hover?.alignItems       ?? undefined',
+    '[style.--alf-dl-gap-hover]':              'this.resolvedDL()?.hover?.gap              ?? undefined',
+    '[style.--alf-dl-flex-wrap-hover]':        'this.resolvedDL()?.hover?.flexWrap         ?? undefined',
+    '[style.--alf-dl-opacity-hover]':          'this.resolvedDL()?.hover?.opacity          ?? undefined',
+    '[style.--alf-dl-pointer-events-hover]':   'this.resolvedDL()?.hover?.pointerEvents    ?? undefined',
+    '[style.--alf-dl-cursor-hover]':           'this.resolvedDL()?.hover?.cursor           ?? undefined',
+
+    // --- ACTIVE STATE ---
+    '[style.--alf-dl-display-active]':          'this.resolvedDL()?.active?.display          ?? undefined',
+    '[style.--alf-dl-position-active]':         'this.resolvedDL()?.active?.position         ?? undefined',
+    '[style.--alf-dl-top-active]':              'this.resolvedDL()?.active?.top              ?? undefined',
+    '[style.--alf-dl-right-active]':            'this.resolvedDL()?.active?.right            ?? undefined',
+    '[style.--alf-dl-bottom-active]':           'this.resolvedDL()?.active?.bottom           ?? undefined',
+    '[style.--alf-dl-left-active]':             'this.resolvedDL()?.active?.left             ?? undefined',
+    '[style.--alf-dl-z-index-active]':          'this.resolvedDL()?.active?.zIndex           ?? undefined',
+    '[style.--alf-dl-box-sizing-active]':       'this.resolvedDL()?.active?.boxSizing        ?? undefined',
+    '[style.--alf-dl-width-active]':            'this.resolvedDL()?.active?.width            ?? undefined',
+    '[style.--alf-dl-height-active]':           'this.resolvedDL()?.active?.height           ?? undefined',
+    '[style.--alf-dl-min-width-active]':        'this.resolvedDL()?.active?.minWidth         ?? undefined',
+    '[style.--alf-dl-max-width-active]':        'this.resolvedDL()?.active?.maxWidth         ?? undefined',
+    '[style.--alf-dl-min-height-active]':       'this.resolvedDL()?.active?.minHeight        ?? undefined',
+    '[style.--alf-dl-max-height-active]':       'this.resolvedDL()?.active?.maxHeight        ?? undefined',
+    '[style.--alf-dl-overflow-active]':         'this.resolvedDL()?.active?.overflow         ?? undefined',
+    '[style.--alf-dl-overflow-x-active]':       'this.resolvedDL()?.active?.overflowX        ?? undefined',
+    '[style.--alf-dl-overflow-y-active]':       'this.resolvedDL()?.active?.overflowY        ?? undefined',
+    '[style.--alf-dl-visibility-active]':       'this.resolvedDL()?.active?.visibility       ?? undefined',
+    '[style.--alf-dl-object-fit-active]':       'this.resolvedDL()?.active?.objectFit        ?? undefined',
+    '[style.--alf-dl-flex-direction-active]':   'this.resolvedDL()?.active?.flexDirection    ?? undefined',
+    '[style.--alf-dl-justify-content-active]':  'this.resolvedDL()?.active?.justifyContent   ?? undefined',
+    '[style.--alf-dl-align-items-active]':      'this.resolvedDL()?.active?.alignItems       ?? undefined',
+    '[style.--alf-dl-gap-active]':              'this.resolvedDL()?.active?.gap              ?? undefined',
+    '[style.--alf-dl-flex-wrap-active]':        'this.resolvedDL()?.active?.flexWrap         ?? undefined',
+    '[style.--alf-dl-opacity-active]':          'this.resolvedDL()?.active?.opacity          ?? undefined',
+    '[style.--alf-dl-pointer-events-active]':   'this.resolvedDL()?.active?.pointerEvents    ?? undefined',
+    '[style.--alf-dl-cursor-active]':           'this.resolvedDL()?.active?.cursor           ?? undefined',
+
+    // --- FOCUS STATE ---
+    '[style.--alf-dl-display-focus]':          'this.resolvedDL()?.focus?.display          ?? undefined',
+    '[style.--alf-dl-position-focus]':         'this.resolvedDL()?.focus?.position         ?? undefined',
+    '[style.--alf-dl-top-focus]':              'this.resolvedDL()?.focus?.top              ?? undefined',
+    '[style.--alf-dl-right-focus]':            'this.resolvedDL()?.focus?.right            ?? undefined',
+    '[style.--alf-dl-bottom-focus]':           'this.resolvedDL()?.focus?.bottom           ?? undefined',
+    '[style.--alf-dl-left-focus]':             'this.resolvedDL()?.focus?.left             ?? undefined',
+    '[style.--alf-dl-z-index-focus]':          'this.resolvedDL()?.focus?.zIndex           ?? undefined',
+    '[style.--alf-dl-box-sizing-focus]':       'this.resolvedDL()?.focus?.boxSizing        ?? undefined',
+    '[style.--alf-dl-width-focus]':            'this.resolvedDL()?.focus?.width            ?? undefined',
+    '[style.--alf-dl-height-focus]':           'this.resolvedDL()?.focus?.height           ?? undefined',
+    '[style.--alf-dl-min-width-focus]':        'this.resolvedDL()?.focus?.minWidth         ?? undefined',
+    '[style.--alf-dl-max-width-focus]':        'this.resolvedDL()?.focus?.maxWidth         ?? undefined',
+    '[style.--alf-dl-min-height-focus]':       'this.resolvedDL()?.focus?.minHeight        ?? undefined',
+    '[style.--alf-dl-max-height-focus]':       'this.resolvedDL()?.focus?.maxHeight        ?? undefined',
+    '[style.--alf-dl-overflow-focus]':         'this.resolvedDL()?.focus?.overflow         ?? undefined',
+    '[style.--alf-dl-overflow-x-focus]':       'this.resolvedDL()?.focus?.overflowX        ?? undefined',
+    '[style.--alf-dl-overflow-y-focus]':       'this.resolvedDL()?.focus?.overflowY        ?? undefined',
+    '[style.--alf-dl-visibility-focus]':       'this.resolvedDL()?.focus?.visibility       ?? undefined',
+    '[style.--alf-dl-object-fit-focus]':       'this.resolvedDL()?.focus?.objectFit        ?? undefined',
+    '[style.--alf-dl-flex-direction-focus]':   'this.resolvedDL()?.focus?.flexDirection    ?? undefined',
+    '[style.--alf-dl-justify-content-focus]':  'this.resolvedDL()?.focus?.justifyContent   ?? undefined',
+    '[style.--alf-dl-align-items-focus]':      'this.resolvedDL()?.focus?.alignItems       ?? undefined',
+    '[style.--alf-dl-gap-focus]':              'this.resolvedDL()?.focus?.gap              ?? undefined',
+    '[style.--alf-dl-flex-wrap-focus]':        'this.resolvedDL()?.focus?.flexWrap         ?? undefined',
+    '[style.--alf-dl-opacity-focus]':          'this.resolvedDL()?.focus?.opacity          ?? undefined',
+    '[style.--alf-dl-pointer-events-focus]':   'this.resolvedDL()?.focus?.pointerEvents    ?? undefined',
+    '[style.--alf-dl-cursor-focus]':           'this.resolvedDL()?.focus?.cursor           ?? undefined',
+
+    // --- DISABLED STATE ---
+    '[style.--alf-dl-display-disabled]':          'this.resolvedDL()?.disabled?.display          ?? undefined',
+    '[style.--alf-dl-position-disabled]':         'this.resolvedDL()?.disabled?.position         ?? undefined',
+    '[style.--alf-dl-top-disabled]':              'this.resolvedDL()?.disabled?.top              ?? undefined',
+    '[style.--alf-dl-right-disabled]':            'this.resolvedDL()?.disabled?.right            ?? undefined',
+    '[style.--alf-dl-bottom-disabled]':           'this.resolvedDL()?.disabled?.bottom           ?? undefined',
+    '[style.--alf-dl-left-disabled]':             'this.resolvedDL()?.disabled?.left             ?? undefined',
+    '[style.--alf-dl-z-index-disabled]':          'this.resolvedDL()?.disabled?.zIndex           ?? undefined',
+    '[style.--alf-dl-box-sizing-disabled]':       'this.resolvedDL()?.disabled?.boxSizing        ?? undefined',
+    '[style.--alf-dl-width-disabled]':            'this.resolvedDL()?.disabled?.width            ?? undefined',
+    '[style.--alf-dl-height-disabled]':           'this.resolvedDL()?.disabled?.height           ?? undefined',
+    '[style.--alf-dl-min-width-disabled]':        'this.resolvedDL()?.disabled?.minWidth         ?? undefined',
+    '[style.--alf-dl-max-width-disabled]':        'this.resolvedDL()?.disabled?.maxWidth         ?? undefined',
+    '[style.--alf-dl-min-height-disabled]':       'this.resolvedDL()?.disabled?.minHeight        ?? undefined',
+    '[style.--alf-dl-max-height-disabled]':       'this.resolvedDL()?.disabled?.maxHeight        ?? undefined',
+    '[style.--alf-dl-overflow-disabled]':         'this.resolvedDL()?.disabled?.overflow         ?? undefined',
+    '[style.--alf-dl-overflow-x-disabled]':       'this.resolvedDL()?.disabled?.overflowX        ?? undefined',
+    '[style.--alf-dl-overflow-y-disabled]':       'this.resolvedDL()?.disabled?.overflowY        ?? undefined',
+    '[style.--alf-dl-visibility-disabled]':       'this.resolvedDL()?.disabled?.visibility       ?? undefined',
+    '[style.--alf-dl-object-fit-disabled]':       'this.resolvedDL()?.disabled?.objectFit        ?? undefined',
+    '[style.--alf-dl-flex-direction-disabled]':   'this.resolvedDL()?.disabled?.flexDirection    ?? undefined',
+    '[style.--alf-dl-justify-content-disabled]':  'this.resolvedDL()?.disabled?.justifyContent   ?? undefined',
+    '[style.--alf-dl-align-items-disabled]':      'this.resolvedDL()?.disabled?.alignItems       ?? undefined',
+    '[style.--alf-dl-gap-disabled]':              'this.resolvedDL()?.disabled?.gap              ?? undefined',
+    '[style.--alf-dl-flex-wrap-disabled]':        'this.resolvedDL()?.disabled?.flexWrap         ?? undefined',
+    '[style.--alf-dl-opacity-disabled]':          'this.resolvedDL()?.disabled?.opacity          ?? undefined',
+    '[style.--alf-dl-pointer-events-disabled]':   'this.resolvedDL()?.disabled?.pointerEvents    ?? undefined',
+    '[style.--alf-dl-cursor-disabled]':           'this.resolvedDL()?.disabled?.cursor           ?? undefined',
+  }
+})
+export class AlfDisplayAndLayoutDirective {
+  public readonly alfDisplayAndLayout = input<AlfDisplayAndLayoutInterface | AlfDisplayAndLayoutBaseInterface | undefined>(undefined);
+
+  public readonly resolvedDL = computed<AlfDisplayAndLayoutInterface | undefined>(() => {
+    const dl = this.alfDisplayAndLayout();
+    if (!dl) return undefined;
+
+    if ('default' in dl) {
+      return dl as AlfDisplayAndLayoutInterface;
+    }
+
+    return {
+      default: dl as AlfDisplayAndLayoutBaseInterface,
+    };
+  });
+}

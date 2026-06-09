@@ -1,4 +1,16 @@
-import { Component, input, ElementRef, effect, AfterViewInit, ViewEncapsulation, signal, computed, output, viewChild } from '@angular/core';
+import {
+  Component,
+  input,
+  ElementRef,
+  effect,
+  AfterViewInit,
+  ViewEncapsulation,
+  signal,
+  computed,
+  output,
+  viewChild,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import * as Prism from 'prismjs';
 
 // Importar lenguajes comunes
@@ -12,16 +24,14 @@ import 'prismjs/components/prism-json';
 
 declare const window: any;
 
-
-
 /**
  * @component AlfCodeComponent
  * @description Componente para mostrar bloques de código con syntax highlighting
  * usando Prism.js y tema VS Code Dark Modern
- * 
+ *
  * @example
  * ```html
- * <alf-code 
+ * <alf-code
  *   title="Basic Usage"
  *   [code]="myCodeString"
  *   language="typescript"
@@ -35,7 +45,8 @@ declare const window: any;
   imports: [],
   templateUrl: './alf-code.html',
   styleUrl: './alf-code.scss',
-  encapsulation: ViewEncapsulation.None
+  changeDetection: ChangeDetectionStrategy.Eager,
+  encapsulation: ViewEncapsulation.None,
 })
 export class AlfCodeComponent {
   /** Título opcional del bloque de código */
@@ -64,7 +75,6 @@ export class AlfCodeComponent {
 
   /** Referencia al elemento de código */
   private readonly codeElement = viewChild<ElementRef<HTMLElement>>('codeElement');
-
 
   /** Estado del botón de copiar */
   protected copied = false;
@@ -117,8 +127,7 @@ export class AlfCodeComponent {
     }
   });
 
-  constructor() { }
-
+  constructor() {}
 
   private escapeHtml(text: string): string {
     const map: Record<string, string> = {
@@ -126,9 +135,9 @@ export class AlfCodeComponent {
       '<': '&lt;',
       '>': '&gt;',
       '"': '&quot;',
-      "'": '&#039;'
+      "'": '&#039;',
     };
-    return text.replace(/[&<>"']/g, m => map[m]);
+    return text.replace(/[&<>"']/g, (m) => map[m]);
   }
 
   /**
@@ -156,10 +165,9 @@ export class AlfCodeComponent {
     });
   }
 
-
   /** Alternar entre código completo y truncado */
   protected toggleExpand = (): void => {
-    this.isExpanded.update(v => !v);
+    this.isExpanded.update((v) => !v);
   };
 
   /** Manejar clic en tipo - emite evento para navegación */

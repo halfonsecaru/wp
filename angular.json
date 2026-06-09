@@ -41,14 +41,9 @@
                 "output": "/libs/angular/i18n/"
               }
             ],
-            "styles": [
-              "apps/front/web/src/styles.css",
-              "apps/front/web/src/styles.scss"
-            ],
+            "styles": ["apps/front/web/src/styles.css", "apps/front/web/src/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": [
-                "libs/angular/styles"
-              ]
+              "includePaths": ["libs/angular/styles"]
             }
           },
           "configurations": {
@@ -114,13 +109,9 @@
                 "output": "/"
               }
             ],
-            "styles": [
-              "apps/front/web/src/styles.scss"
-            ],
+            "styles": ["apps/front/web/src/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": [
-                "libs/angular/styles"
-              ]
+              "includePaths": ["libs/angular/styles"]
             }
           }
         }
@@ -155,10 +146,7 @@
                 "output": "/libs/angular/i18n/"
               }
             ],
-            "styles": [
-              "apps/front/demo/src/styles.css",
-              "apps/front/demo/src/styles.scss"
-            ]
+            "styles": ["apps/front/demo/src/styles.css", "apps/front/demo/src/styles.scss"]
           },
           "configurations": {
             "production": {
@@ -223,9 +211,7 @@
                 "output": "/"
               }
             ],
-            "styles": [
-              "apps/front/demo/src/styles.scss"
-            ]
+            "styles": ["apps/front/demo/src/styles.scss"]
           }
         }
       }
@@ -237,7 +223,7 @@
       "prefix": "alf",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "builder": "@angular/build:ng-packagr",
           "options": {
             "project": "alfcomponents/package.json"
           },
