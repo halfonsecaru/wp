@@ -68,7 +68,7 @@ describe('AlfCheckbox', () => {
 
   describe('Elite Variants', () => {
     it('should resolve StandardPrimary correctly', () => {
-      fixture.componentRef.setInput('variant', AlfColorVariantEnum.Primary);
+      fixture.componentRef.setInput('colorVariant', AlfColorVariantEnum.Primary);
       fixture.detectChanges();
       
       expect(component.isSoft()).toBe(false);
@@ -76,14 +76,14 @@ describe('AlfCheckbox', () => {
     });
 
     it('should resolve SoftSuccess correctly', () => {
-      fixture.componentRef.setInput('variant', AlfColorVariantEnum.SuccessSoft);
+      fixture.componentRef.setInput('colorVariant', AlfColorVariantEnum.SuccessSoft);
       fixture.detectChanges();
       
       expect(component.isSoft()).toBe(true);
     });
 
     it('should resolve CrystalInfo correctly', () => {
-      fixture.componentRef.setInput('variant', AlfColorVariantEnum.InfoCrystal);
+      fixture.componentRef.setInput('colorVariant', AlfColorVariantEnum.InfoCrystal);
       fixture.detectChanges();
       
       expect(component.isCrystal()).toBe(true);

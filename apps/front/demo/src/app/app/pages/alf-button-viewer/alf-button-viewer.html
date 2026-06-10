@@ -15,11 +15,11 @@
         <div class="btn-demo-row">
           <div class="btn-demo-item">
             <span class="btn-demo-label">Botón Estándar</span>
-            <alf-button label="Guardar Cambios" [colorVariant]="AlfColorVariantEnum.Primary" />
+            <alf-button label="Guardar Cambios" [variant]="AlfColorVariantEnum.Primary" />
           </div>
           <div class="btn-demo-item">
             <span class="btn-demo-label">Acción de Envío (Save predefined)</span>
-            <alf-button predefined="save" [colorVariant]="AlfColorVariantEnum.Success" />
+            <alf-button predefined="save" [variant]="AlfColorVariantEnum.Success" />
           </div>
         </div>
       </div>
@@ -35,19 +35,19 @@
         <div class="btn-demo-row" style="gap: 1rem;">
           <div class="btn-demo-item">
             <span class="btn-demo-label">Sin Icono</span>
-            <alf-button label="Enviar Correo" [colorVariant]="AlfColorVariantEnum.Primary" />
+            <alf-button label="Enviar Correo" [variant]="AlfColorVariantEnum.Primary" />
           </div>
           <div class="btn-demo-item">
             <span class="btn-demo-label">Icono Izquierdo</span>
-            <alf-button label="Enviar" [iconLeft]="AlfIconsUnicodeIconEnum.Envelope" [colorVariant]="AlfColorVariantEnum.Primary" />
+            <alf-button label="Enviar" [iconLeft]="AlfIconsUnicodeIconEnum.Envelope" [variant]="AlfColorVariantEnum.Primary" />
           </div>
           <div class="btn-demo-item">
             <span class="btn-demo-label">Icono Derecho</span>
-            <alf-button label="Siguiente" [iconRight]="AlfIconsUnicodeIconEnum.ArrowRight" [colorVariant]="AlfColorVariantEnum.Primary" />
+            <alf-button label="Siguiente" [iconRight]="AlfIconsUnicodeIconEnum.ArrowRight" [variant]="AlfColorVariantEnum.Primary" />
           </div>
           <div class="btn-demo-item">
             <span class="btn-demo-label">Solo Icono</span>
-            <alf-button label="" [iconLeft]="AlfIconsUnicodeIconEnum.Settings" [colorVariant]="AlfColorVariantEnum.Primary" />
+            <alf-button label="" [iconLeft]="AlfIconsUnicodeIconEnum.Settings" [variant]="AlfColorVariantEnum.Primary" />
           </div>
         </div>
       </div>
@@ -64,7 +64,7 @@
           @for (sz of sizes; track sz) {
             <div class="btn-size-item">
               <span class="btn-size-badge">{{ sz }}</span>
-              <alf-button [size]="sz" [label]="'Acción (' + sz + ')'" [colorVariant]="AlfColorVariantEnum.Primary" />
+              <alf-button [size]="sz" [label]="'Acción (' + sz + ')'" [variant]="AlfColorVariantEnum.Primary" />
             </div>
           }
         </div>
@@ -82,7 +82,7 @@
             <div class="btn-size-item" style="align-items: flex-start; gap: 0.5rem;">
               <span class="btn-variant-badge btn-variant-badge--{{ variant }}">{{ variant }}</span>
               <alf-button 
-                [colorVariant]="variant" 
+                [variant]="variant" 
                 [label]="variant" />
             </div>
           }
@@ -101,7 +101,7 @@
             <div class="btn-size-item" style="align-items: flex-start; gap: 0.5rem;">
               <span class="btn-variant-badge btn-variant-badge--{{ getBadgeColorClass(variant) }}">{{ variant }}</span>
               <alf-button 
-                [colorVariant]="variant" 
+                [variant]="variant" 
                 label="Outline Action" />
             </div>
           }
@@ -120,7 +120,7 @@
             <div class="btn-size-item" style="align-items: flex-start; gap: 0.5rem;">
               <span class="btn-variant-badge btn-variant-badge--{{ getBadgeColorClass(variant) }}">{{ variant }}</span>
               <alf-button 
-                [colorVariant]="variant" 
+                [variant]="variant" 
                 label="Ghost Action" />
             </div>
           }
@@ -139,7 +139,7 @@
             <div class="btn-size-item" style="align-items: flex-start; gap: 0.5rem;">
               <span class="btn-variant-badge btn-variant-badge--{{ getBadgeColorClass(variant) }}">{{ variant }}</span>
               <alf-button 
-                [colorVariant]="variant" 
+                [variant]="variant" 
                 label="Soft Action" />
             </div>
           }
@@ -158,7 +158,7 @@
             <div class="btn-size-item" style="align-items: flex-start; gap: 0.5rem;">
               <span class="btn-variant-badge btn-variant-badge--{{ getBadgeColorClass(variant) }}" style="opacity: 0.8; color: white;">{{ variant }}</span>
               <alf-button 
-                [colorVariant]="variant" 
+                [variant]="variant" 
                 label="Crystal Action" />
             </div>
           }
@@ -177,7 +177,7 @@
             <div class="btn-size-item" style="align-items: flex-start; gap: 0.5rem;">
               <span class="btn-variant-badge btn-variant-badge--{{ getBadgeColorClass(variant) }}">{{ variant }}</span>
               <alf-button 
-                [colorVariant]="variant" 
+                [variant]="variant" 
                 label="3D Depth" />
             </div>
           }
@@ -196,7 +196,7 @@
             <div class="btn-size-item" style="align-items: flex-start; gap: 0.5rem;">
               <span class="btn-variant-badge btn-variant-badge--{{ getBadgeColorClass(variant) }}">{{ variant }}</span>
               <alf-button 
-                [colorVariant]="variant" 
+                [variant]="variant" 
                 label="Gradient Button" />
             </div>
           }
@@ -215,12 +215,12 @@
           <!-- Toggleable loading state -->
           <div class="btn-demo-row" style="gap: 1.5rem;">
             <alf-button 
-              [colorVariant]="AlfColorVariantEnum.Primary" 
+              [variant]="AlfColorVariantEnum.Primary" 
               [loading]="showLoading()"
               label="Cargar Datos" />
             
             <alf-button 
-              [colorVariant]="AlfColorVariantEnum.Secondary" 
+              [variant]="AlfColorVariantEnum.Secondary" 
               (onClick)="toggleLoading()"
               [label]="showLoading() ? 'Desactivar Spinner' : 'Activar Spinner'" />
           </div>
@@ -229,11 +229,11 @@
           <div class="btn-demo-row" style="gap: 1.5rem; margin-top: 1rem;">
             <div class="btn-demo-item">
               <span class="btn-demo-label">Bloqueado (Disabled)</span>
-              <alf-button [colorVariant]="AlfColorVariantEnum.Primary" label="Bloqueado" [disabled]="true" />
+              <alf-button [variant]="AlfColorVariantEnum.Primary" label="Bloqueado" [isDisabled]="true" />
             </div>
             <div class="btn-demo-item">
               <span class="btn-demo-label">Bloqueado Soft</span>
-              <alf-button [colorVariant]="AlfColorVariantEnum.PrimarySoft" label="Bloqueado Soft" [disabled]="true" />
+              <alf-button [variant]="AlfColorVariantEnum.PrimarySoft" label="Bloqueado Soft" [isDisabled]="true" />
             </div>
           </div>
         </div>
@@ -255,7 +255,7 @@
             <div class="btn-demo-item">
               <span class="btn-demo-label">Sin Debounce (Normal)</span>
               <alf-button 
-                [colorVariant]="AlfColorVariantEnum.Success" 
+                [variant]="AlfColorVariantEnum.Success" 
                 (onClick)="handleStandardClick()"
                 label="Normal Click" />
             </div>
@@ -263,7 +263,7 @@
             <div class="btn-demo-item">
               <span class="btn-demo-label">Con Debounce 1000ms</span>
               <alf-button 
-                [colorVariant]="AlfColorVariantEnum.Danger" 
+                [variant]="AlfColorVariantEnum.Danger" 
                 [debounceTime]="1000"
                 (onClick)="handleDebouncedClick()"
                 label="Debounced Click" />

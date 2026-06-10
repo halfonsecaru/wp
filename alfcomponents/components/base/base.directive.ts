@@ -1,30 +1,1100 @@
-import { Directive, input } from '@angular/core';
+import { computed, Directive, effect, input, signal } from '@angular/core';
 import { AlfBackgroundsInterface, AlfBackgroundsBaseInterface, AlfBorderInterface, AlfBorderBaseInterface, AlfOutlineInterface, AlfOutlineBaseInterface, AlfShadowsInterface, AlfShadowsBaseInterface, AlfAnimateCssInterface, AlfMarginInterface, AlfMarginBaseInterface, AlfPaddingInterface, AlfPaddingBaseInterface, AlfTypographyInterface, AlfTypographyBaseInterface, AlfTextStyleInterface, AlfTextStyleStateBaseInterface, AlfTransformInterface, AlfTransformBaseInterface, AlfDisplayAndLayoutInterface, AlfDisplayAndLayoutBaseInterface, AlfRippleInterface, AlfAriaBaseInterface } from '@alfcomponents/interfaces';
-import { AlfCursorEnum, AlfSizeEnum } from '@alfcomponents/enums';
+import {
+  AlfAlignItemsEnum,
+  AlfAnimationTypeEnum,
+  AlfBorderStyleEnum,
+  AlfColorEnum,
+  AlfColorVariantEnum,
+  AlfCssPositionEnum,
+  AlfCursorEnum,
+  AlfDisplayEnum,
+  AlfFontFamilyEnum,
+  AlfFontSizeEnum,
+  AlfFontStyleEnum,
+  AlfFontWeightEnum,
+  AlfJustifyContentEnum,
+  AlfLetterSpacingEnum,
+  AlfLineHeightEnum,
+  AlfOpacityEnum,
+  AlfOverflowWrapEnum,
+  AlfPercentageEnum,
+  AlfPxEnum,
+  AlfRadiusEnum,
+  AlfShadowEnum,
+  AlfSizeEnum,
+  AlfTextAlignEnum,
+  AlfTextDecorationEnum,
+  AlfTextOverflowEnum,
+  AlfTextShadowEnum,
+  AlfTextTransformEnum,
+  AlfVerticalAlignEnum,
+  AlfVisibilityEnum,
+  AlfWhiteSpaceEnum,
+  AlfWordBreakEnum,
+  AlfBackgroundSizeEnum,
+  AlfPositionEnum,
+  AlfBackgroundRepeatEnum,
+  AlfBackgroundAttachmentEnum,
+  AlfBackgroundClipEnum
+} from '@alfcomponents/enums';
 import { AlfTooltipConfig } from '@alfcomponents/directives';
+
+export enum AlfComponentTypeEnum {
+  Button = 'Button',
+  Switch = 'Switch',
+  Checkbox = 'Checkbox',
+  RadioButton = 'RadioButton',
+  Input = 'Input',
+  Textarea = 'Textarea',
+  Tabs = 'alf-tabs',
+  Autocomplete = 'Autocomplete',
+  Card = 'Card',
+  Default = 'Default',
+}
+
+export interface PredefinedConfig {
+  marginBase: AlfMarginInterface;
+  paddingBase: AlfPaddingInterface;
+  displayAndLayoutBase: AlfDisplayAndLayoutInterface;
+  shadowsBase: AlfShadowsInterface;
+  transformBase: AlfTransformInterface;
+  backgroundsBase: AlfBackgroundsInterface;
+  typographyBase: AlfTypographyInterface;
+  borderBase: AlfBorderInterface;
+  animationsBase: AlfAnimateCssInterface;
+  ripple: AlfRippleInterface;
+  textStyleBase: AlfTextStyleInterface;
+  outlineBase: AlfOutlineInterface;
+}
+
+const backgroundInitial: AlfBackgroundsBaseInterface = {
+  backgroundColor: AlfColorEnum.Transparent,
+  backgroundSize: AlfBackgroundSizeEnum.Auto,
+  backgroundPosition: AlfPositionEnum.TopLeft,
+  backgroundRepeat: AlfBackgroundRepeatEnum.Repeat,
+  backgroundAttachment: AlfBackgroundAttachmentEnum.Scroll,
+  backgroundClip: AlfBackgroundClipEnum.BorderBox,
+  backgroundImage: 'none',
+};
+
+const marginInitial: AlfMarginBaseInterface = {
+  margin: AlfPxEnum.None
+};
+
+const paddingInitial: AlfPaddingBaseInterface = {
+  padding: AlfPxEnum.None
+};
+
+const textStyleInitial: AlfTextStyleStateBaseInterface = {
+  color: AlfColorEnum.Black,
+}
+
+
 
 @Directive()
 export abstract class AlfBaseDirective {
 
-  public readonly background       = input<AlfBackgroundsInterface      | AlfBackgroundsBaseInterface      | undefined>(undefined);
-  public readonly border           = input<AlfBorderInterface           | AlfBorderBaseInterface           | undefined>(undefined);
-  public readonly outline          = input<AlfOutlineInterface          | AlfOutlineBaseInterface          | undefined>(undefined);
-  public readonly shadows          = input<AlfShadowsInterface          | AlfShadowsBaseInterface          | undefined>(undefined);
-  public readonly margin           = input<AlfMarginInterface           | AlfMarginBaseInterface           | undefined>(undefined);
-  public readonly padding          = input<AlfPaddingInterface          | AlfPaddingBaseInterface          | undefined>(undefined);
-  public readonly typography       = input<AlfTypographyInterface       | AlfTypographyBaseInterface       | undefined>(undefined);
-  public readonly textStyle        = input<AlfTextStyleInterface        | AlfTextStyleStateBaseInterface   | undefined>(undefined);
-  public readonly transform        = input<AlfTransformInterface        | AlfTransformBaseInterface        | undefined>(undefined);
-  public readonly displayAndLayout = input<AlfDisplayAndLayoutInterface | AlfDisplayAndLayoutBaseInterface | undefined>(undefined);
+  private readonly visualPredefined = effect(() => {
+    if (this.activeVariant() && this.componentType()) {
 
-  public readonly ripple           = input<boolean | AlfRippleInterface | undefined>(undefined);
-  public readonly cursor           = input<AlfCursorEnum | undefined>(undefined);
-  public readonly size             = input<AlfSizeEnum | undefined>(undefined);
-  public readonly animations       = input<AlfAnimateCssInterface  | undefined>(undefined);
-  public readonly tooltip          = input<string | AlfTooltipConfig | undefined>(undefined);
-  
-  public readonly disabled         = input<boolean>(false);
-  public readonly aria             = input<AlfAriaBaseInterface | undefined>(undefined);
-  public readonly customClass      = input<string | undefined>(undefined);
-  public readonly customStyle      = input<string | undefined>(undefined);
+      const predefined = this.resolveVariantConfig(this.activeVariant()!, this.componentType()!);
+
+      let paddingConfig: AlfPaddingInterface | undefined = undefined;
+      let displayConfig: AlfDisplayAndLayoutInterface | undefined = undefined;
+      if (this.componentType() === AlfComponentTypeEnum.Button) {
+
+        paddingConfig = {
+          default: {
+            padding: AlfPxEnum.Px20
+          }
+        };
+
+        displayConfig = {
+          default: {
+            minWidth: AlfPxEnum.Px100
+          }
+        };
+      }
+
+      this._background.set(predefined.backgroundsBase);
+      this._border.set(predefined.borderBase);
+      this._outline.set(predefined.outlineBase);
+      this._shadows.set(predefined.shadowsBase);
+      this._margin.set(predefined.marginBase);
+      this._padding.set(paddingConfig ? paddingConfig : predefined.paddingBase);
+      this._typography.set(predefined.typographyBase);
+      this._textStyle.set(predefined.textStyleBase);
+      this._transform.set(predefined.transformBase);
+      this._displayAndLayout.set({
+        ...predefined.displayAndLayoutBase,
+        default: {
+          ...predefined.displayAndLayoutBase?.default,
+          ...displayConfig?.default
+        }
+      });
+    }
+  });
+
+  // Variantes
+  public readonly colorVariant = input<AlfColorVariantEnum | undefined>(undefined);
+  public readonly variant = input<AlfColorVariantEnum | undefined>(undefined);
+  public readonly activeVariant = computed(() => {
+    const v = this.colorVariant() ?? this.variant();
+    if (!v) return AlfColorVariantEnum.Secondary;
+    return v;
+  });
+  public readonly componentType = signal<AlfComponentTypeEnum>(AlfComponentTypeEnum.Default);
+
+
+  // **** Inputs signals **** //
+  public readonly background = input<AlfBackgroundsInterface | AlfBackgroundsBaseInterface | undefined>(undefined);
+  private readonly _background = signal<AlfBackgroundsInterface | AlfBackgroundsBaseInterface | undefined>(backgroundInitial);
+
+  public readonly border = input<AlfBorderInterface | AlfBorderBaseInterface | undefined>(undefined);
+  private readonly _border = signal<AlfBorderInterface | AlfBorderBaseInterface | undefined>(undefined);
+
+  public readonly outline = input<AlfOutlineInterface | AlfOutlineBaseInterface | undefined>(undefined);
+  private readonly _outline = signal<AlfOutlineInterface | AlfOutlineBaseInterface | undefined>(undefined);
+
+  public readonly shadows = input<AlfShadowsInterface | AlfShadowsBaseInterface | undefined>(undefined);
+  private readonly _shadows = signal<AlfShadowsInterface | AlfShadowsBaseInterface | undefined>(undefined);
+
+  public readonly margin = input<AlfMarginInterface | AlfMarginBaseInterface | undefined>(undefined);
+  private readonly _margin = signal<AlfMarginInterface | AlfMarginBaseInterface | undefined>(marginInitial);
+
+  public readonly padding = input<AlfPaddingInterface | AlfPaddingBaseInterface | undefined>(undefined);
+  private readonly _padding = signal<AlfPaddingInterface | AlfPaddingBaseInterface | undefined>(paddingInitial);
+
+  public readonly typography = input<AlfTypographyInterface | AlfTypographyBaseInterface | undefined>(undefined);
+  private readonly _typography = signal<AlfTypographyInterface | AlfTypographyBaseInterface | undefined>(undefined);
+
+  public readonly textStyle = input<AlfTextStyleInterface | AlfTextStyleStateBaseInterface | undefined>(undefined);
+  private readonly _textStyle = signal<AlfTextStyleInterface | AlfTextStyleStateBaseInterface | undefined>(textStyleInitial);
+
+  public readonly transform = input<AlfTransformInterface | AlfTransformBaseInterface | undefined>(undefined);
+  private readonly _transform = signal<AlfTransformInterface | AlfTransformBaseInterface | undefined>(undefined);
+
+  public readonly displayAndLayout = input<AlfDisplayAndLayoutInterface | AlfDisplayAndLayoutBaseInterface | undefined>(undefined);
+  private readonly _displayAndLayout = signal<AlfDisplayAndLayoutInterface | AlfDisplayAndLayoutBaseInterface | undefined>(undefined);
+
+  public readonly ripple = input<boolean | AlfRippleInterface | undefined>(undefined);
+  public readonly cursor = input<AlfCursorEnum | undefined>(undefined);
+  public readonly size = input<AlfSizeEnum | undefined>(undefined);
+  public readonly animations = input<AlfAnimateCssInterface | undefined>(undefined);
+  public readonly tooltip = input<string | AlfTooltipConfig | undefined>(undefined);
+
+  public readonly aria = input<AlfAriaBaseInterface | undefined>(undefined);
+  public readonly customClass = input<string | undefined>(undefined);
+  public readonly customStyle = input<string | undefined>(undefined);
+
+  public readonly disabled = input<boolean | undefined>(undefined);
+  public readonly isDisabledInput = input<boolean | undefined>(undefined, { alias: 'isDisabled' });
+  public readonly isDisabled = computed<boolean>(() => this.disabled() === true || this.isDisabledInput() === true);
+  public readonly isLoading = input<boolean | undefined>(undefined);
+
+  public readonly isSoft = computed<boolean>(() => this.activeVariant()?.toLowerCase().includes('soft') ?? false);
+  public readonly isCrystal = computed<boolean>(() => this.activeVariant()?.toLowerCase().includes('crystal') ?? false);
+
+  // Computed 
+  public readonly backgroundComputed = computed(() => {
+    return {
+      ...backgroundInitial,
+      ...this.background(),
+      ...this._background()
+    };
+  });
+
+  public readonly borderComputed = computed(() => {
+    return {
+      ...this.border(),
+      ...this._border()
+    };
+  });
+
+  public readonly outlineComputed = computed(() => {
+    return {
+      ...this.outline(),
+      ...this._outline()
+    };
+  });
+
+  public readonly shadowsComputed = computed(() => {
+    return {
+      ...this.shadows(),
+      ...this._shadows()
+    };
+  });
+
+  public readonly marginComputed = computed(() => {
+    return {
+      ...this.margin(),
+      ...this._margin()
+    };
+  });
+
+  public readonly paddingComputed = computed(() => {
+    return {
+      ...this.padding(),
+      ...this._padding()
+    };
+  });
+
+  public readonly typographyComputed = computed(() => {
+    return {
+      ...this.typography(),
+      ...this._typography()
+    };
+  });
+
+  public readonly textStyleComputed = computed(() => {
+    return {
+      ...this.textStyle(),
+      ...this._textStyle()
+    };
+  });
+
+  public readonly transformComputed = computed(() => {
+    return {
+      ...this.transform(),
+      ...this._transform()
+    };
+  });
+
+  public readonly displayAndLayoutComputed = computed(() => {
+    return {
+      ...this.displayAndLayout(),
+      ...this._displayAndLayout()
+    };
+  });
+
+  private readonly resolveAlfColorVariant = (v: any): AlfColorVariantEnum => {
+    if (!v) return AlfColorVariantEnum.Default;
+    if (typeof v === 'string') {
+      const values = Object.values(AlfColorVariantEnum) as string[];
+      if (values.includes(v)) return v as AlfColorVariantEnum;
+      const keys = Object.keys(AlfColorVariantEnum);
+      const cleanV = v.toLowerCase().replace(/[-_]/g, '');
+      let foundKey = keys.find(k => k.toLowerCase().replace(/[-_]/g, '') === cleanV);
+      if (!foundKey && v.includes('-')) {
+        const parts = v.split('-');
+        if (parts.length === 2) {
+          const reversed = `${parts[1]}-${parts[0]}`;
+          if (values.includes(reversed)) {
+            return reversed as AlfColorVariantEnum;
+          }
+        }
+      }
+      if (foundKey) {
+        return (AlfColorVariantEnum as any)[foundKey];
+      }
+      return AlfColorVariantEnum.Default;
+    }
+    return v;
+  };
+
+  private readonly buildTypographyBaseConfig = (main: AlfColorEnum, hover: AlfColorEnum, focus: AlfColorEnum, disabled: AlfColorEnum, active: AlfColorEnum): AlfTypographyInterface => {
+    const base: AlfTypographyBaseInterface = {
+      fontSize: AlfFontSizeEnum.Base,
+      fontWeight: AlfFontWeightEnum.Normal,
+      lineHeight: AlfLineHeightEnum.Normal,
+      textAlign: AlfTextAlignEnum.Left,
+      color: main,
+      letterSpacing: AlfLetterSpacingEnum.Normal,
+      whiteSpace: AlfWhiteSpaceEnum.Normal,
+      wordBreak: AlfWordBreakEnum.Normal,
+      textTransform: AlfTextTransformEnum.None,
+      textDecoration: AlfTextDecorationEnum.None,
+      fontStyle: AlfFontStyleEnum.Normal,
+      opacity: AlfOpacityEnum.Opacity100,
+      fontFamily: AlfFontFamilyEnum.System,
+      overflowWrap: AlfOverflowWrapEnum.Normal,
+      textOverflow: AlfTextOverflowEnum.Clip,
+      textShadow: AlfTextShadowEnum.None,
+      verticalAlign: AlfVerticalAlignEnum.Middle,
+    }
+
+    return {
+      default: base,
+      hover: {
+        ...base,
+        color: hover,
+      },
+      focus: {
+        ...base,
+        color: focus,
+      },
+      disabled: {
+        ...base,
+        color: disabled,
+      },
+      active: {
+        ...base,
+        color: active,
+      },
+    }
+  };
+
+
+  private readonly buildTransformBaseConfig = (): AlfTransformBaseInterface => ({
+    translateX: AlfPxEnum.None,
+    translateY: AlfPxEnum.None,
+    translateZ: AlfPxEnum.None,
+    scaleX: 1,
+    scaleY: 1,
+    scaleZ: 1,
+    scale: 1,
+    rotate: 0,
+    rotateX: 0,
+    rotateY: 0,
+    rotateZ: 0,
+    skewX: 0,
+    skewY: 0,
+    perspective: AlfPxEnum.None,
+    transformStyle: 'flat' as any,
+    backfaceVisibility: AlfVisibilityEnum.Visible
+  });
+
+
+  private readonly buildShadowsBaseConfig = (main: AlfColorEnum, hover: AlfColorEnum, focus: AlfColorEnum, disabled: AlfColorEnum, active: AlfColorEnum, shadowType: AlfShadowEnum = AlfShadowEnum.None): AlfShadowsInterface => {
+    // Derive state-specific shadow levels from the base shadowType
+    const hoverShadow = shadowType !== AlfShadowEnum.None ? AlfShadowEnum.Sm : AlfShadowEnum.None;
+    const activeShadow = AlfShadowEnum.None;
+    const disabledShadow = AlfShadowEnum.None;
+
+    return {
+      default: {
+        boxShadow: shadowType,
+        boxShadowColor: main,
+        boxShadowInset: false,
+        textShadow: AlfTextShadowEnum.None,
+        textShadowColor: main
+      },
+      hover: {
+        boxShadow: hoverShadow,
+        boxShadowColor: hover,
+        boxShadowInset: false,
+        textShadow: AlfTextShadowEnum.None,
+        textShadowColor: hover
+      },
+      focus: {
+        boxShadow: shadowType,
+        boxShadowColor: focus,
+        boxShadowInset: false,
+        textShadow: AlfTextShadowEnum.None,
+        textShadowColor: focus
+      },
+      disabled: {
+        boxShadow: disabledShadow,
+        boxShadowColor: disabled,
+        boxShadowInset: false,
+        textShadow: AlfTextShadowEnum.None,
+        textShadowColor: disabled
+      },
+      active: {
+        boxShadow: activeShadow,
+        boxShadowColor: active,
+        boxShadowInset: false,
+        textShadow: AlfTextShadowEnum.None,
+        textShadowColor: active
+      }
+    }
+  };
+
+
+  private readonly buildAnimationsBaseConfig = (): AlfAnimateCssInterface => ({
+    enterStage: AlfAnimationTypeEnum.FadeIn,
+    exitStage: AlfAnimationTypeEnum.FadeOut,
+    duration: '300ms',
+    delay: '0ms',
+    iterationCount: 1,
+    fillMode: 'both',
+    direction: 'normal'
+  });
+
+
+  private readonly buildPaddingBaseConfig = (): AlfPaddingInterface => {
+    const basePadding: AlfPaddingInterface = {
+      default: {
+        padding: AlfPxEnum.None,
+      },
+      hover: {
+        padding: AlfPxEnum.None,
+      },
+      focus: {
+        padding: AlfPxEnum.None,
+      },
+      disabled: {
+        padding: AlfPxEnum.None,
+      },
+      active: {
+        padding: AlfPxEnum.None,
+      }
+    };
+
+    return basePadding;
+  };
+
+  private readonly buildOutlineBaseConfig = (main: AlfColorEnum, hover: AlfColorEnum, focus: AlfColorEnum, disabled: AlfColorEnum, active: AlfColorEnum): AlfOutlineInterface => {
+    // AlfOutlineBaseInterface
+    const base: AlfOutlineInterface = {
+      default: {
+        outlineColor: AlfColorEnum.Transparent,
+        outlineWidth: AlfPxEnum.None,
+      },
+      hover: {
+        outlineColor: AlfColorEnum.Transparent,
+        outlineWidth: AlfPxEnum.None,
+      },
+      focus: {
+        outlineColor: AlfColorEnum.Transparent,
+        outlineWidth: AlfPxEnum.None,
+      },
+      disabled: {
+        outlineColor: AlfColorEnum.Transparent,
+        outlineWidth: AlfPxEnum.None,
+      },
+      active: {
+        outlineColor: AlfColorEnum.Transparent,
+        outlineWidth: AlfPxEnum.None,
+      }
+    };
+    return base;
+  };
+
+
+  private readonly buildMarginBaseConfig = (): AlfMarginInterface => {
+
+    const base: AlfMarginInterface = {
+      default: {
+        margin: AlfPxEnum.None,
+      },
+      hover: {
+        margin: AlfPxEnum.None,
+      },
+      focus: {
+        margin: AlfPxEnum.None,
+      },
+      disabled: {
+        margin: AlfPxEnum.None,
+      },
+      active: {
+        margin: AlfPxEnum.None,
+      }
+    };
+
+    return base;
+  };
+
+  private readonly buildDisplayAndLayoutBaseConfig = (): AlfDisplayAndLayoutInterface => {
+    const base: AlfDisplayAndLayoutBaseInterface =
+    {
+      display: AlfDisplayEnum.InlineFlex,
+      position: AlfCssPositionEnum.Relative,
+      cursor: AlfCursorEnum.Pointer,
+      justifyContent: AlfJustifyContentEnum.Center,
+      alignItems: AlfAlignItemsEnum.Center,
+      width: AlfPxEnum.auto,
+      height: AlfPxEnum.Px30,
+      overflow: 'hidden' as any,
+    };
+    return {
+      default: { ...base },
+      hover: { ...base },
+      focus: { ...base },
+      disabled: { ...base },
+      active: { ...base },
+    };
+  }
+
+  private readonly buildColorBackgroundConfig = (
+    main: AlfColorEnum,
+    hover: AlfColorEnum,
+    disabled?: AlfColorEnum
+  ): AlfBackgroundsInterface => {
+    const isGrad = (val: string) => val?.includes('gradient');
+    const state = (v: AlfColorEnum) => isGrad(v)
+      ? { backgroundImage: v, backgroundColor: AlfColorEnum.Transparent }
+      : { backgroundColor: v, backgroundImage: 'none' };
+
+    return {
+      default: state(main),
+      hover: state(hover),
+      focus: state(hover),
+      active: state(hover),
+      disabled: state(disabled)
+    };
+  };
+
+  private readonly buildColorBorderConfig = (
+    main: AlfColorEnum,
+    hover: AlfColorEnum,
+    width: AlfPxEnum = AlfPxEnum.Px015,
+    disabled?: AlfColorEnum
+  ): AlfBorderInterface => {
+    const base = {
+      borderColor: main,
+      borderStyle: AlfBorderStyleEnum.Solid,
+      borderWidth: width,
+      borderRadius: AlfRadiusEnum.Lg,
+    };
+
+    return {
+      default: base,
+      hover: { ...base, borderColor: hover },
+      focus: { ...base, borderColor: hover },
+      active: { ...base, borderColor: hover },
+      disabled: { ...base, borderColor: disabled ? disabled : AlfColorEnum.Gray300 },
+    };
+  };
+
+  private readonly buildTextStyleConfig = (main: AlfColorEnum, hover?: AlfColorEnum, focus?: AlfColorEnum, disabled?: AlfColorEnum, active?: AlfColorEnum): AlfTextStyleInterface => {
+    return {
+      default: {
+        color: main,
+        fontWeight: AlfFontWeightEnum.Normal,
+
+      },
+      hover: {
+        color: hover ? hover : main,
+        fontWeight: AlfFontWeightEnum.Normal,
+      },
+      focus: {
+
+        color: focus ? focus : main,
+        fontWeight: AlfFontWeightEnum.Normal,
+      },
+      disabled: {
+
+        color: disabled ? disabled : AlfColorEnum.PrimaryDisabled,
+        fontWeight: AlfFontWeightEnum.Normal,
+      },
+      active: {
+        color: active ? active : main,
+        fontWeight: AlfFontWeightEnum.Normal,
+      }
+    }
+  };
+
+  private readonly buildTransformConfig = (): AlfTransformInterface => ({
+    default: { ...this.buildTransformBaseConfig() },
+  });
+
+  // ── CONSTRUCTORES BASE: El ADN neutro del sistema ───────────────────────
+
+  private readonly defaultConstruct = (
+    main: AlfColorEnum,
+    hover: AlfColorEnum,
+    focus: AlfColorEnum,
+    disabled: AlfColorEnum,
+    active: AlfColorEnum,
+    backgroundDefault?: AlfColorEnum,
+    backgroundHover?: AlfColorEnum,
+    borderDefault?: AlfColorEnum,
+    borderHover?: AlfColorEnum,
+    borderWidth?: AlfPxEnum,
+    textStyleDefault?: AlfColorEnum,
+    textStyleHover?: AlfColorEnum,
+    textStyleFocus?: AlfColorEnum,
+    textStyleDisabled?: AlfColorEnum,
+    textStyleActive?: AlfColorEnum,
+    shadowType?: AlfShadowEnum,
+  ) => {
+    if (!backgroundDefault) {
+      backgroundDefault = AlfColorEnum.Transparent;
+    }
+    if (!backgroundHover) {
+      backgroundHover = AlfColorEnum.Transparent;
+    }
+    if (!borderDefault) {
+      borderDefault = AlfColorEnum.Transparent;
+    }
+    if (!borderHover) {
+      borderHover = AlfColorEnum.Transparent;
+    }
+    if (!borderWidth) {
+      const needsBorder = [
+        AlfComponentTypeEnum.RadioButton,
+        AlfComponentTypeEnum.Checkbox,
+        AlfComponentTypeEnum.Switch,
+        AlfComponentTypeEnum.Tabs,
+        AlfComponentTypeEnum.Card,
+      ].includes(this.componentType());
+      borderWidth = needsBorder ? AlfPxEnum.Px1 : AlfPxEnum.None;
+    }
+    const completed = {
+      paddingBase: this.buildPaddingBaseConfig(),
+      displayAndLayoutBase: this.buildDisplayAndLayoutBaseConfig(),
+      marginBase: this.buildMarginBaseConfig(),
+      animationsBase: this.buildAnimationsBaseConfig(),
+      transformBase: this.buildTransformConfig(),
+      typographyBase: this.buildTypographyBaseConfig(main, hover, focus, disabled, active),
+      borderBase: this.buildColorBorderConfig(borderDefault, borderHover, borderWidth, disabled),
+      textStyleBase: this.buildTextStyleConfig(
+        textStyleDefault ? textStyleDefault : main,
+        textStyleHover ? textStyleHover : hover,
+        textStyleFocus ? textStyleFocus : focus,
+        textStyleDisabled ? textStyleDisabled : disabled,
+        textStyleActive ? textStyleActive : active),
+      shadowsBase: this.buildShadowsBaseConfig(main, hover, focus, disabled, active, shadowType),
+      outlineBase: this.buildOutlineBaseConfig(main, hover, focus, disabled, active),
+      backgroundsBase: this.buildColorBackgroundConfig(backgroundDefault, backgroundHover, disabled),
+      ripple: { color: main }
+
+    }
+
+    return completed;
+  }
+
+  private readonly resolveVariantConfig = (
+    variant?: AlfColorVariantEnum,
+    componentType?: AlfComponentTypeEnum
+  ): PredefinedConfig => {
+    const v = this.resolveAlfColorVariant(variant);
+
+    if (!v || v === AlfColorVariantEnum.Transparent || v === AlfColorVariantEnum.Default) {
+      return {
+        marginBase: undefined,
+        paddingBase: undefined,
+        displayAndLayoutBase: undefined,
+        shadowsBase: undefined,
+        transformBase: undefined,
+        backgroundsBase: undefined,
+        typographyBase: undefined,
+        borderBase: undefined,
+        animationsBase: undefined,
+        ripple: undefined,
+        textStyleBase: undefined,
+        outlineBase: undefined
+      }
+    }
+
+    const outlinedFilledComponents = [
+      AlfComponentTypeEnum.RadioButton,
+      AlfComponentTypeEnum.Checkbox,
+      AlfComponentTypeEnum.Switch,
+      AlfComponentTypeEnum.Tabs,
+      AlfComponentTypeEnum.Card,
+    ];
+
+
+
+    switch (v as any) {
+
+      // FAMILY: PRIMARY
+      case AlfColorVariantEnum.Primary:
+        return this.defaultConstruct(AlfColorEnum.PrimaryText, AlfColorEnum.PrimaryTextHover, AlfColorEnum.PrimaryTextHover, AlfColorEnum.PrimaryTextDisabled, AlfColorEnum.PrimaryTextHover, AlfColorEnum.Primary, AlfColorEnum.PrimaryHover, AlfColorEnum.Primary, AlfColorEnum.PrimaryHover);
+      case AlfColorVariantEnum.Primary3D:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.Primary3DText, AlfColorEnum.Primary3DTextHover, AlfColorEnum.Primary3DTextHover, AlfColorEnum.PrimaryDisabled, AlfColorEnum.Primary3DTextHover, AlfColorEnum.Primary3D, AlfColorEnum.Primary3DHover, AlfColorEnum.Primary, AlfColorEnum.PrimaryHover, AlfPxEnum.Px1, AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.PrimaryDisabled, AlfColorEnum.White, AlfShadowEnum.Md);
+        }
+        return this.defaultConstruct(AlfColorEnum.Primary3DText, AlfColorEnum.Primary3DTextHover, AlfColorEnum.Primary3DTextHover, AlfColorEnum.PrimaryDisabled, AlfColorEnum.Primary3DTextHover, AlfColorEnum.Primary3D, AlfColorEnum.Primary3DHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None, undefined, undefined, undefined, undefined, undefined, AlfShadowEnum.Md);
+      case AlfColorVariantEnum.PrimaryOutline:
+        return this.defaultConstruct(AlfColorEnum.PrimaryOutlineText, AlfColorEnum.PrimaryOutlineTextHover, AlfColorEnum.PrimaryOutlineTextHover, AlfColorEnum.PrimaryOutlineDisabled, AlfColorEnum.PrimaryOutlineTextHover, AlfColorEnum.PrimaryOutlineBgHover, AlfColorEnum.PrimaryOutlineBgHover, AlfColorEnum.PrimaryOutline, AlfColorEnum.PrimaryOutlineHover, AlfPxEnum.Px015);
+      case AlfColorVariantEnum.PrimarySoft:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.PrimarySoftText, AlfColorEnum.PrimarySoftTextHover, AlfColorEnum.PrimarySoftFocus, AlfColorEnum.PrimarySoftDisabled, AlfColorEnum.PrimarySoftActive, AlfColorEnum.PrimarySoft, AlfColorEnum.PrimarySoftHover, AlfColorEnum.PrimarySoftText, AlfColorEnum.PrimarySoftTextHover, AlfPxEnum.Px1, AlfColorEnum.PrimarySoftText, AlfColorEnum.PrimarySoftTextHover, AlfColorEnum.PrimarySoftText, AlfColorEnum.PrimarySoftDisabled, AlfColorEnum.PrimarySoftText);
+        }
+        return this.defaultConstruct(AlfColorEnum.PrimarySoftText, AlfColorEnum.PrimarySoftTextHover, AlfColorEnum.PrimarySoftFocus, AlfColorEnum.PrimarySoftDisabled, AlfColorEnum.PrimarySoftActive, AlfColorEnum.PrimarySoft, AlfColorEnum.PrimarySoftHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None);
+      case AlfColorVariantEnum.PrimaryGhost:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.PrimaryGhostText, AlfColorEnum.PrimaryGhostTextHover, AlfColorEnum.PrimaryGhostFocus, AlfColorEnum.PrimaryGhostDisabled, AlfColorEnum.PrimaryGhostActive, AlfColorEnum.PrimaryGhostBgHover, AlfColorEnum.PrimaryGhostBgHover, AlfColorEnum.PrimaryGhostText, AlfColorEnum.PrimaryGhostTextHover, AlfPxEnum.Px1, AlfColorEnum.PrimaryGhostText, AlfColorEnum.PrimaryGhostTextHover, AlfColorEnum.PrimaryGhostText, AlfColorEnum.PrimaryGhostDisabled, AlfColorEnum.PrimaryGhostText);
+        }
+        return this.defaultConstruct(AlfColorEnum.PrimaryGhostText, AlfColorEnum.PrimaryGhostTextHover, AlfColorEnum.PrimaryGhostFocus, AlfColorEnum.PrimaryGhostDisabled, AlfColorEnum.PrimaryGhostActive, AlfColorEnum.PrimaryGhostBgHover, AlfColorEnum.PrimaryGhostBgHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None);
+      case AlfColorVariantEnum.PrimaryCrystal:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.PrimaryCrystalText, AlfColorEnum.PrimaryCrystalTextHover, AlfColorEnum.PrimaryCrystalFocus, AlfColorEnum.PrimaryCrystalDisabled, AlfColorEnum.PrimaryCrystalActive, AlfColorEnum.PrimaryCrystal, AlfColorEnum.PrimaryCrystalHover, AlfColorEnum.PrimaryCrystalText, AlfColorEnum.PrimaryCrystalTextHover, AlfPxEnum.Px1, AlfColorEnum.PrimaryCrystalText, AlfColorEnum.PrimaryCrystalTextHover, AlfColorEnum.PrimaryCrystalText, AlfColorEnum.PrimaryCrystalDisabled, AlfColorEnum.PrimaryCrystalText);
+        }
+        return this.defaultConstruct(AlfColorEnum.PrimaryCrystalText, AlfColorEnum.PrimaryCrystalTextHover, AlfColorEnum.PrimaryCrystalFocus, AlfColorEnum.PrimaryCrystalDisabled, AlfColorEnum.PrimaryCrystalActive, AlfColorEnum.PrimaryCrystal, AlfColorEnum.PrimaryCrystalHover, AlfColorEnum.White30, AlfColorEnum.White40);
+
+      // FAMILY: SECONDARY
+      case AlfColorVariantEnum.Secondary:
+        return this.defaultConstruct(AlfColorEnum.SecondaryText, AlfColorEnum.SecondaryTextHover, AlfColorEnum.SecondaryTextHover, AlfColorEnum.SecondaryTextDisabled, AlfColorEnum.SecondaryTextHover, AlfColorEnum.Secondary, AlfColorEnum.SecondaryHover, AlfColorEnum.Secondary, AlfColorEnum.SecondaryHover);
+      case AlfColorVariantEnum.Secondary3D:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.Secondary3DText, AlfColorEnum.Secondary3DTextHover, AlfColorEnum.Secondary3DTextHover, AlfColorEnum.SecondaryDisabled, AlfColorEnum.Secondary3DTextHover, AlfColorEnum.Secondary3D, AlfColorEnum.Secondary3DHover, AlfColorEnum.Secondary, AlfColorEnum.SecondaryHover, AlfPxEnum.Px1, AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.SecondaryDisabled, AlfColorEnum.White, AlfShadowEnum.Md);
+        }
+        return this.defaultConstruct(AlfColorEnum.Secondary3DText, AlfColorEnum.Secondary3DTextHover, AlfColorEnum.Secondary3DTextHover, AlfColorEnum.SecondaryDisabled, AlfColorEnum.Secondary3DTextHover, AlfColorEnum.Secondary3D, AlfColorEnum.Secondary3DHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None, undefined, undefined, undefined, undefined, undefined, AlfShadowEnum.Md);
+      case AlfColorVariantEnum.SecondaryOutline:
+        return this.defaultConstruct(AlfColorEnum.SecondaryOutlineText, AlfColorEnum.SecondaryOutlineTextHover, AlfColorEnum.SecondaryOutlineTextHover, AlfColorEnum.SecondaryOutlineDisabled, AlfColorEnum.SecondaryOutlineTextHover, AlfColorEnum.SecondaryOutlineBg, AlfColorEnum.SecondaryOutlineBgHover, AlfColorEnum.SecondaryOutline, AlfColorEnum.SecondaryOutlineHover, AlfPxEnum.Px1);
+      case AlfColorVariantEnum.SecondarySoft:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.SecondarySoftText, AlfColorEnum.SecondarySoftTextHover, AlfColorEnum.SecondarySoftFocus, AlfColorEnum.SecondarySoftDisabled, AlfColorEnum.SecondarySoftActive, AlfColorEnum.SecondarySoft, AlfColorEnum.SecondarySoftHover, AlfColorEnum.SecondarySoftText, AlfColorEnum.SecondarySoftTextHover, AlfPxEnum.Px1, AlfColorEnum.SecondarySoftText, AlfColorEnum.SecondarySoftTextHover, AlfColorEnum.SecondarySoftText, AlfColorEnum.SecondarySoftDisabled, AlfColorEnum.SecondarySoftText);
+        }
+        return this.defaultConstruct(AlfColorEnum.SecondarySoftText, AlfColorEnum.SecondarySoftTextHover, AlfColorEnum.SecondarySoftFocus, AlfColorEnum.SecondarySoftDisabled, AlfColorEnum.SecondarySoftActive, AlfColorEnum.SecondarySoft, AlfColorEnum.SecondarySoftHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None);
+      case AlfColorVariantEnum.SecondaryGhost:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.SecondaryGhostText, AlfColorEnum.SecondaryGhostTextHover, AlfColorEnum.SecondaryGhostFocus, AlfColorEnum.SecondaryGhostDisabled, AlfColorEnum.SecondaryGhostActive, AlfColorEnum.SecondaryGhostBgHover, AlfColorEnum.SecondaryGhostBgHover, AlfColorEnum.SecondaryGhostText, AlfColorEnum.SecondaryGhostTextHover, AlfPxEnum.Px1, AlfColorEnum.SecondaryGhostText, AlfColorEnum.SecondaryGhostTextHover, AlfColorEnum.SecondaryGhostText, AlfColorEnum.SecondaryGhostDisabled, AlfColorEnum.SecondaryGhostText);
+        }
+        return this.defaultConstruct(AlfColorEnum.SecondaryGhostText, AlfColorEnum.SecondaryGhostTextHover, AlfColorEnum.SecondaryGhostFocus, AlfColorEnum.SecondaryGhostDisabled, AlfColorEnum.SecondaryGhostActive, AlfColorEnum.SecondaryGhostBgHover, AlfColorEnum.SecondaryGhostBgHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None);
+      case AlfColorVariantEnum.SecondaryCrystal:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.SecondaryCrystalText, AlfColorEnum.SecondaryCrystalTextHover, AlfColorEnum.SecondaryCrystalFocus, AlfColorEnum.SecondaryCrystalDisabled, AlfColorEnum.SecondaryCrystalActive, AlfColorEnum.SecondaryCrystal, AlfColorEnum.SecondaryCrystalHover, AlfColorEnum.SecondaryCrystalText, AlfColorEnum.SecondaryCrystalTextHover, AlfPxEnum.Px1, AlfColorEnum.SecondaryCrystalText, AlfColorEnum.SecondaryCrystalTextHover, AlfColorEnum.SecondaryCrystalText, AlfColorEnum.SecondaryCrystalDisabled, AlfColorEnum.SecondaryCrystalText);
+        }
+        return this.defaultConstruct(AlfColorEnum.SecondaryCrystalText, AlfColorEnum.SecondaryCrystalTextHover, AlfColorEnum.SecondaryCrystalFocus, AlfColorEnum.SecondaryCrystalDisabled, AlfColorEnum.SecondaryCrystalActive, AlfColorEnum.SecondaryCrystal, AlfColorEnum.SecondaryCrystalHover, AlfColorEnum.White30, AlfColorEnum.White40);
+
+      // FAMILY: SUCCESS
+      case AlfColorVariantEnum.Success:
+        return this.defaultConstruct(AlfColorEnum.SuccessText, AlfColorEnum.SuccessTextHover, AlfColorEnum.SuccessTextHover, AlfColorEnum.SuccessTextDisabled, AlfColorEnum.SuccessTextHover, AlfColorEnum.Success, AlfColorEnum.SuccessHover, AlfColorEnum.Success, AlfColorEnum.SuccessHover);
+      case AlfColorVariantEnum.Success3D:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.Success3DText, AlfColorEnum.Success3DTextHover, AlfColorEnum.Success3DTextHover, AlfColorEnum.SuccessDisabled, AlfColorEnum.Success3DTextHover, AlfColorEnum.Success3D, AlfColorEnum.Success3DHover, AlfColorEnum.Success, AlfColorEnum.SuccessHover, AlfPxEnum.Px1, AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.SuccessDisabled, AlfColorEnum.White, AlfShadowEnum.Md);
+        }
+        return this.defaultConstruct(AlfColorEnum.Success3DText, AlfColorEnum.Success3DTextHover, AlfColorEnum.Success3DTextHover, AlfColorEnum.SuccessDisabled, AlfColorEnum.Success3DTextHover, AlfColorEnum.Success3D, AlfColorEnum.Success3DHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None, undefined, undefined, undefined, undefined, undefined, AlfShadowEnum.Md);
+      case AlfColorVariantEnum.SuccessOutline:
+        return this.defaultConstruct(AlfColorEnum.SuccessOutlineText, AlfColorEnum.SuccessOutlineTextHover, AlfColorEnum.SuccessOutlineTextHover, AlfColorEnum.SuccessOutlineDisabled, AlfColorEnum.SuccessOutlineTextHover, AlfColorEnum.SuccessOutlineBg, AlfColorEnum.SuccessOutlineBgHover, AlfColorEnum.SuccessOutline, AlfColorEnum.SuccessOutlineHover, AlfPxEnum.Px1);
+      case AlfColorVariantEnum.SuccessSoft:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.SuccessSoftText, AlfColorEnum.SuccessSoftTextHover, AlfColorEnum.SuccessSoftFocus, AlfColorEnum.SuccessSoftDisabled, AlfColorEnum.SuccessSoftActive, AlfColorEnum.SuccessSoft, AlfColorEnum.SuccessSoftHover, AlfColorEnum.SuccessSoftText, AlfColorEnum.SuccessSoftTextHover, AlfPxEnum.Px1, AlfColorEnum.SuccessSoftText, AlfColorEnum.SuccessSoftTextHover, AlfColorEnum.SuccessSoftText, AlfColorEnum.SuccessDisabled, AlfColorEnum.SuccessSoftText);
+        }
+        return this.defaultConstruct(AlfColorEnum.SuccessSoftText, AlfColorEnum.SuccessSoftTextHover, AlfColorEnum.SuccessSoftFocus, AlfColorEnum.SuccessSoftDisabled, AlfColorEnum.SuccessSoftActive, AlfColorEnum.SuccessSoft, AlfColorEnum.SuccessSoftHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None);
+
+      case AlfColorVariantEnum.SuccessGhost:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.SuccessGhostText, AlfColorEnum.SuccessGhostTextHover, AlfColorEnum.SuccessGhostFocus, AlfColorEnum.SuccessGhostDisabled, AlfColorEnum.SuccessGhostActive, AlfColorEnum.SuccessGhostBgHover, AlfColorEnum.SuccessGhostBgHover, AlfColorEnum.SuccessGhostText, AlfColorEnum.SuccessGhostTextHover, AlfPxEnum.Px1, AlfColorEnum.SuccessGhostText, AlfColorEnum.SuccessGhostTextHover, AlfColorEnum.SuccessGhostText, AlfColorEnum.SuccessGhostDisabled, AlfColorEnum.SuccessGhostText);
+        }
+        return this.defaultConstruct(AlfColorEnum.SuccessGhostText, AlfColorEnum.SuccessGhostTextHover, AlfColorEnum.SuccessGhostFocus, AlfColorEnum.SuccessGhostDisabled, AlfColorEnum.SuccessGhostActive, AlfColorEnum.SuccessGhostBgHover, AlfColorEnum.SuccessGhostBgHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None);
+      case AlfColorVariantEnum.SuccessCrystal:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.SuccessCrystalText, AlfColorEnum.SuccessCrystalTextHover, AlfColorEnum.SuccessCrystalFocus, AlfColorEnum.SuccessCrystalDisabled, AlfColorEnum.SuccessCrystalActive, AlfColorEnum.SuccessCrystal, AlfColorEnum.SuccessCrystalHover, AlfColorEnum.SuccessCrystalText, AlfColorEnum.SuccessCrystalTextHover, AlfPxEnum.Px1, AlfColorEnum.SuccessCrystalText, AlfColorEnum.SuccessCrystalTextHover, AlfColorEnum.SuccessCrystalText, AlfColorEnum.SuccessCrystalDisabled, AlfColorEnum.SuccessCrystalText);
+        }
+        return this.defaultConstruct(AlfColorEnum.SuccessCrystalText, AlfColorEnum.SuccessCrystalTextHover, AlfColorEnum.SuccessCrystalFocus, AlfColorEnum.SuccessCrystalDisabled, AlfColorEnum.SuccessCrystalActive, AlfColorEnum.SuccessCrystal, AlfColorEnum.SuccessCrystalHover, AlfColorEnum.White30, AlfColorEnum.White40);
+
+      // FAMILY: DANGER
+      case AlfColorVariantEnum.Danger:
+        return this.defaultConstruct(AlfColorEnum.DangerText, AlfColorEnum.DangerTextHover, AlfColorEnum.DangerTextHover, AlfColorEnum.DangerTextDisabled, AlfColorEnum.DangerTextHover, AlfColorEnum.Danger, AlfColorEnum.DangerHover, AlfColorEnum.Danger, AlfColorEnum.DangerHover);
+      case AlfColorVariantEnum.Danger3D:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.Danger3DText, AlfColorEnum.Danger3DTextHover, AlfColorEnum.Danger3DTextHover, AlfColorEnum.DangerDisabled, AlfColorEnum.Danger3DTextHover, AlfColorEnum.Danger3D, AlfColorEnum.Danger3DHover, AlfColorEnum.Danger, AlfColorEnum.DangerHover, AlfPxEnum.Px1, AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.DangerDisabled, AlfColorEnum.White, AlfShadowEnum.Md);
+        }
+        return this.defaultConstruct(AlfColorEnum.Danger3DText, AlfColorEnum.Danger3DTextHover, AlfColorEnum.Danger3DTextHover, AlfColorEnum.DangerDisabled, AlfColorEnum.Danger3DTextHover, AlfColorEnum.Danger3D, AlfColorEnum.Danger3DHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None, undefined, undefined, undefined, undefined, undefined, AlfShadowEnum.Md);
+      case AlfColorVariantEnum.DangerOutline:
+        return this.defaultConstruct(AlfColorEnum.DangerOutlineText, AlfColorEnum.DangerOutlineTextHover, AlfColorEnum.DangerOutlineTextHover, AlfColorEnum.DangerOutlineDisabled, AlfColorEnum.DangerOutlineTextHover, AlfColorEnum.DangerOutlineBg, AlfColorEnum.DangerOutlineBgHover, AlfColorEnum.DangerOutline, AlfColorEnum.DangerOutlineHover, AlfPxEnum.Px1);
+      case AlfColorVariantEnum.DangerSoft:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.DangerSoftText, AlfColorEnum.DangerSoftTextHover, AlfColorEnum.DangerSoftFocus, AlfColorEnum.DangerSoftDisabled, AlfColorEnum.DangerSoftActive, AlfColorEnum.DangerSoft, AlfColorEnum.DangerSoftHover, AlfColorEnum.DangerSoftText, AlfColorEnum.DangerSoftTextHover, AlfPxEnum.Px1, AlfColorEnum.DangerSoftText, AlfColorEnum.DangerSoftTextHover, AlfColorEnum.DangerSoftText, AlfColorEnum.DangerSoftDisabled, AlfColorEnum.DangerSoftText);
+        }
+        return this.defaultConstruct(AlfColorEnum.DangerSoftText, AlfColorEnum.DangerSoftTextHover, AlfColorEnum.DangerSoftFocus, AlfColorEnum.DangerSoftDisabled, AlfColorEnum.DangerSoftActive, AlfColorEnum.DangerSoft, AlfColorEnum.DangerSoftHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None);
+      case AlfColorVariantEnum.DangerGhost:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.DangerGhostText, AlfColorEnum.DangerGhostTextHover, AlfColorEnum.DangerGhostFocus, AlfColorEnum.DangerGhostDisabled, AlfColorEnum.DangerGhostActive, AlfColorEnum.DangerGhostBgHover, AlfColorEnum.DangerGhostBgHover, AlfColorEnum.DangerGhostText, AlfColorEnum.DangerGhostTextHover, AlfPxEnum.Px1, AlfColorEnum.DangerGhostText, AlfColorEnum.DangerGhostTextHover, AlfColorEnum.DangerGhostText, AlfColorEnum.DangerGhostDisabled, AlfColorEnum.DangerGhostText);
+        }
+        return this.defaultConstruct(AlfColorEnum.DangerGhostText, AlfColorEnum.DangerGhostTextHover, AlfColorEnum.DangerGhostFocus, AlfColorEnum.DangerGhostDisabled, AlfColorEnum.DangerGhostActive, AlfColorEnum.DangerGhostBgHover, AlfColorEnum.DangerGhostBgHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None);
+      case AlfColorVariantEnum.DangerCrystal:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.DangerCrystalText, AlfColorEnum.DangerCrystalTextHover, AlfColorEnum.DangerCrystalFocus, AlfColorEnum.DangerCrystalDisabled, AlfColorEnum.DangerCrystalActive, AlfColorEnum.DangerCrystal, AlfColorEnum.DangerCrystalHover, AlfColorEnum.DangerCrystalText, AlfColorEnum.DangerCrystalTextHover, AlfPxEnum.Px1, AlfColorEnum.DangerCrystalText, AlfColorEnum.DangerCrystalTextHover, AlfColorEnum.DangerCrystalText, AlfColorEnum.DangerCrystalDisabled, AlfColorEnum.DangerCrystalText);
+        }
+        return this.defaultConstruct(AlfColorEnum.DangerCrystalText, AlfColorEnum.DangerCrystalTextHover, AlfColorEnum.DangerCrystalFocus, AlfColorEnum.DangerCrystalDisabled, AlfColorEnum.DangerCrystalActive, AlfColorEnum.DangerCrystal, AlfColorEnum.DangerCrystalHover, AlfColorEnum.White30, AlfColorEnum.White40);
+
+      // FAMILY: WARNING
+      case AlfColorVariantEnum.Warning:
+        return this.defaultConstruct(AlfColorEnum.WarningText, AlfColorEnum.WarningTextHover, AlfColorEnum.WarningTextHover, AlfColorEnum.WarningTextDisabled, AlfColorEnum.WarningTextHover, AlfColorEnum.Warning, AlfColorEnum.WarningHover, AlfColorEnum.Warning, AlfColorEnum.WarningHover);
+      case AlfColorVariantEnum.Warning3D:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.Warning3DText, AlfColorEnum.Warning3DTextHover, AlfColorEnum.Warning3DTextHover, AlfColorEnum.WarningDisabled, AlfColorEnum.Warning3DTextHover, AlfColorEnum.Warning3D, AlfColorEnum.Warning3DHover, AlfColorEnum.Warning, AlfColorEnum.WarningHover, AlfPxEnum.Px1, AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.WarningDisabled, AlfColorEnum.White, AlfShadowEnum.Md);
+        }
+        return this.defaultConstruct(AlfColorEnum.Warning3DText, AlfColorEnum.Warning3DTextHover, AlfColorEnum.Warning3DTextHover, AlfColorEnum.WarningDisabled, AlfColorEnum.Warning3DTextHover, AlfColorEnum.Warning3D, AlfColorEnum.Warning3DHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None, undefined, undefined, undefined, undefined, undefined, AlfShadowEnum.Md);
+      case AlfColorVariantEnum.WarningOutline:
+        return this.defaultConstruct(AlfColorEnum.WarningOutlineText, AlfColorEnum.WarningOutlineTextHover, AlfColorEnum.WarningOutlineTextHover, AlfColorEnum.WarningOutlineDisabled, AlfColorEnum.WarningOutlineTextHover, AlfColorEnum.WarningOutlineBg, AlfColorEnum.WarningOutlineBgHover, AlfColorEnum.WarningOutline, AlfColorEnum.WarningOutlineHover, AlfPxEnum.Px1);
+      case AlfColorVariantEnum.WarningSoft:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.WarningSoftText, AlfColorEnum.WarningSoftTextHover, AlfColorEnum.WarningSoftFocus, AlfColorEnum.WarningSoftDisabled, AlfColorEnum.WarningSoftActive, AlfColorEnum.WarningSoft, AlfColorEnum.WarningSoftHover, AlfColorEnum.WarningSoftText, AlfColorEnum.WarningSoftTextHover, AlfPxEnum.Px1, AlfColorEnum.WarningSoftText, AlfColorEnum.WarningSoftTextHover, AlfColorEnum.WarningSoftText, AlfColorEnum.WarningSoftDisabled, AlfColorEnum.WarningSoftText);
+        }
+        return this.defaultConstruct(AlfColorEnum.WarningSoftText, AlfColorEnum.WarningSoftTextHover, AlfColorEnum.WarningSoftFocus, AlfColorEnum.WarningSoftDisabled, AlfColorEnum.WarningSoftActive, AlfColorEnum.WarningSoft, AlfColorEnum.WarningSoftHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None);
+      case AlfColorVariantEnum.WarningGhost:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.WarningGhostText, AlfColorEnum.WarningGhostTextHover, AlfColorEnum.WarningGhostFocus, AlfColorEnum.WarningGhostDisabled, AlfColorEnum.WarningGhostActive, AlfColorEnum.WarningGhostBgHover, AlfColorEnum.WarningGhostBgHover, AlfColorEnum.WarningGhostText, AlfColorEnum.WarningGhostTextHover, AlfPxEnum.Px1, AlfColorEnum.WarningGhostText, AlfColorEnum.WarningGhostTextHover, AlfColorEnum.WarningGhostText, AlfColorEnum.WarningGhostDisabled, AlfColorEnum.WarningGhostText);
+        }
+        return this.defaultConstruct(AlfColorEnum.WarningGhostText, AlfColorEnum.WarningGhostTextHover, AlfColorEnum.WarningGhostFocus, AlfColorEnum.WarningGhostDisabled, AlfColorEnum.WarningGhostActive, AlfColorEnum.WarningGhostBgHover, AlfColorEnum.WarningGhostBgHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None);
+      case AlfColorVariantEnum.WarningCrystal:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.WarningCrystalText, AlfColorEnum.WarningCrystalTextHover, AlfColorEnum.WarningCrystalFocus, AlfColorEnum.WarningCrystalDisabled, AlfColorEnum.WarningCrystalActive, AlfColorEnum.WarningCrystal, AlfColorEnum.WarningCrystalHover, AlfColorEnum.WarningCrystalText, AlfColorEnum.WarningCrystalTextHover, AlfPxEnum.Px1, AlfColorEnum.WarningCrystalText, AlfColorEnum.WarningCrystalTextHover, AlfColorEnum.WarningCrystalText, AlfColorEnum.WarningCrystalDisabled, AlfColorEnum.WarningCrystalText);
+        }
+        return this.defaultConstruct(AlfColorEnum.WarningCrystalText, AlfColorEnum.WarningCrystalTextHover, AlfColorEnum.WarningCrystalFocus, AlfColorEnum.WarningCrystalDisabled, AlfColorEnum.WarningCrystalActive, AlfColorEnum.WarningCrystal, AlfColorEnum.WarningCrystalHover, AlfColorEnum.White30, AlfColorEnum.White40);
+
+      // FAMILY: INFO
+      case AlfColorVariantEnum.Info:
+        return this.defaultConstruct(AlfColorEnum.InfoText, AlfColorEnum.InfoTextHover, AlfColorEnum.InfoTextHover, AlfColorEnum.InfoTextDisabled, AlfColorEnum.InfoTextHover, AlfColorEnum.Info, AlfColorEnum.InfoHover, AlfColorEnum.Info, AlfColorEnum.InfoHover);
+      case AlfColorVariantEnum.Info3D:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.Info3DText, AlfColorEnum.Info3DTextHover, AlfColorEnum.Info3DTextHover, AlfColorEnum.InfoDisabled, AlfColorEnum.Info3DTextHover, AlfColorEnum.Info3D, AlfColorEnum.Info3DHover, AlfColorEnum.Info, AlfColorEnum.InfoHover, AlfPxEnum.Px1, AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.InfoDisabled, AlfColorEnum.White, AlfShadowEnum.Md);
+        }
+        return this.defaultConstruct(AlfColorEnum.Info3DText, AlfColorEnum.Info3DTextHover, AlfColorEnum.Info3DTextHover, AlfColorEnum.InfoDisabled, AlfColorEnum.Info3DTextHover, AlfColorEnum.Info3D, AlfColorEnum.Info3DHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None, undefined, undefined, undefined, undefined, undefined, AlfShadowEnum.Md);
+      case AlfColorVariantEnum.InfoOutline:
+        return this.defaultConstruct(AlfColorEnum.InfoOutlineText, AlfColorEnum.InfoOutlineTextHover, AlfColorEnum.InfoOutlineTextHover, AlfColorEnum.InfoOutlineDisabled, AlfColorEnum.InfoOutlineTextHover, AlfColorEnum.InfoOutlineBg, AlfColorEnum.InfoOutlineBgHover, AlfColorEnum.InfoOutline, AlfColorEnum.InfoOutlineHover, AlfPxEnum.Px1);
+      case AlfColorVariantEnum.InfoSoft:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.InfoSoftText, AlfColorEnum.InfoSoftTextHover, AlfColorEnum.InfoSoftFocus, AlfColorEnum.InfoSoftDisabled, AlfColorEnum.InfoSoftActive, AlfColorEnum.InfoSoft, AlfColorEnum.InfoSoftHover, AlfColorEnum.InfoSoftText, AlfColorEnum.InfoSoftTextHover, AlfPxEnum.Px1, AlfColorEnum.InfoSoftText, AlfColorEnum.InfoSoftTextHover, AlfColorEnum.InfoSoftText, AlfColorEnum.InfoSoftDisabled, AlfColorEnum.InfoSoftText);
+        }
+        return this.defaultConstruct(AlfColorEnum.InfoSoftText, AlfColorEnum.InfoSoftTextHover, AlfColorEnum.InfoSoftFocus, AlfColorEnum.InfoSoftDisabled, AlfColorEnum.InfoSoftActive, AlfColorEnum.InfoSoft, AlfColorEnum.InfoSoftHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None);
+      case AlfColorVariantEnum.InfoGhost:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.InfoGhostText, AlfColorEnum.InfoGhostTextHover, AlfColorEnum.InfoGhostFocus, AlfColorEnum.InfoGhostDisabled, AlfColorEnum.InfoGhostActive, AlfColorEnum.InfoGhostBgHover, AlfColorEnum.InfoGhostBgHover, AlfColorEnum.InfoGhostText, AlfColorEnum.InfoGhostTextHover, AlfPxEnum.Px1, AlfColorEnum.InfoGhostText, AlfColorEnum.InfoGhostTextHover, AlfColorEnum.InfoGhostText, AlfColorEnum.InfoGhostDisabled, AlfColorEnum.InfoGhostText);
+        }
+        return this.defaultConstruct(AlfColorEnum.InfoGhostText, AlfColorEnum.InfoGhostTextHover, AlfColorEnum.InfoGhostFocus, AlfColorEnum.InfoGhostDisabled, AlfColorEnum.InfoGhostActive, AlfColorEnum.InfoGhostBgHover, AlfColorEnum.InfoGhostBgHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None);
+      case AlfColorVariantEnum.InfoCrystal:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.InfoCrystalText, AlfColorEnum.InfoCrystalTextHover, AlfColorEnum.InfoCrystalFocus, AlfColorEnum.InfoCrystalDisabled, AlfColorEnum.InfoCrystalActive, AlfColorEnum.InfoCrystal, AlfColorEnum.InfoCrystalHover, AlfColorEnum.InfoCrystalText, AlfColorEnum.InfoCrystalTextHover, AlfPxEnum.Px1, AlfColorEnum.InfoCrystalText, AlfColorEnum.InfoCrystalTextHover, AlfColorEnum.InfoCrystalText, AlfColorEnum.InfoCrystalDisabled, AlfColorEnum.InfoCrystalText);
+        }
+        return this.defaultConstruct(AlfColorEnum.InfoCrystalText, AlfColorEnum.InfoCrystalTextHover, AlfColorEnum.InfoCrystalFocus, AlfColorEnum.InfoCrystalDisabled, AlfColorEnum.InfoCrystalActive, AlfColorEnum.InfoCrystal, AlfColorEnum.InfoCrystalHover, AlfColorEnum.White30, AlfColorEnum.White40);
+
+      // FAMILY: DARK
+      case AlfColorVariantEnum.Dark:
+        return this.defaultConstruct(AlfColorEnum.DarkText, AlfColorEnum.DarkTextHover, AlfColorEnum.DarkTextHover, AlfColorEnum.DarkTextDisabled, AlfColorEnum.DarkTextHover, AlfColorEnum.Dark, AlfColorEnum.DarkHover, AlfColorEnum.Dark, AlfColorEnum.DarkHover);
+      case AlfColorVariantEnum.Dark3D:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.Dark3DText, AlfColorEnum.Dark3DTextHover, AlfColorEnum.Dark3DTextHover, AlfColorEnum.DarkDisabled, AlfColorEnum.Dark3DTextHover, AlfColorEnum.Dark3D, AlfColorEnum.Dark3DHover, AlfColorEnum.Dark, AlfColorEnum.DarkHover, AlfPxEnum.Px1, AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.DarkDisabled, AlfColorEnum.White, AlfShadowEnum.Md);
+        }
+        return this.defaultConstruct(AlfColorEnum.Dark3DText, AlfColorEnum.Dark3DTextHover, AlfColorEnum.Dark3DTextHover, AlfColorEnum.DarkDisabled, AlfColorEnum.Dark3DTextHover, AlfColorEnum.Dark3D, AlfColorEnum.Dark3DHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None, undefined, undefined, undefined, undefined, undefined, AlfShadowEnum.Md);
+      case AlfColorVariantEnum.DarkOutline:
+        return this.defaultConstruct(AlfColorEnum.DarkOutlineText, AlfColorEnum.DarkOutlineTextHover, AlfColorEnum.DarkOutlineTextHover, AlfColorEnum.DarkOutlineDisabled, AlfColorEnum.DarkOutlineTextHover, AlfColorEnum.DarkOutlineBg, AlfColorEnum.DarkOutlineBgHover, AlfColorEnum.DarkOutline, AlfColorEnum.DarkOutlineHover, AlfPxEnum.Px1);
+      case AlfColorVariantEnum.DarkSoft:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.DarkSoftText, AlfColorEnum.DarkSoftTextHover, AlfColorEnum.DarkSoftFocus, AlfColorEnum.DarkSoftDisabled, AlfColorEnum.DarkSoftActive, AlfColorEnum.DarkSoft, AlfColorEnum.DarkSoftHover, AlfColorEnum.DarkSoftText, AlfColorEnum.DarkSoftTextHover, AlfPxEnum.Px1, AlfColorEnum.DarkSoftText, AlfColorEnum.DarkSoftTextHover, AlfColorEnum.DarkSoftText, AlfColorEnum.DarkSoftDisabled, AlfColorEnum.DarkSoftText);
+        }
+        return this.defaultConstruct(AlfColorEnum.DarkSoftText, AlfColorEnum.DarkSoftTextHover, AlfColorEnum.DarkSoftFocus, AlfColorEnum.DarkSoftDisabled, AlfColorEnum.DarkSoftActive, AlfColorEnum.DarkSoft, AlfColorEnum.DarkSoftHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None);
+      case AlfColorVariantEnum.DarkGhost:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.DarkGhostText, AlfColorEnum.DarkGhostTextHover, AlfColorEnum.DarkGhostFocus, AlfColorEnum.DarkGhostDisabled, AlfColorEnum.DarkGhostActive, AlfColorEnum.DarkGhostBgHover, AlfColorEnum.DarkGhostBgHover, AlfColorEnum.DarkGhostText, AlfColorEnum.DarkGhostTextHover, AlfPxEnum.Px1, AlfColorEnum.DarkGhostText, AlfColorEnum.DarkGhostTextHover, AlfColorEnum.DarkGhostText, AlfColorEnum.DarkGhostDisabled, AlfColorEnum.DarkGhostText);
+        }
+        return this.defaultConstruct(AlfColorEnum.DarkGhostText, AlfColorEnum.DarkGhostTextHover, AlfColorEnum.DarkGhostFocus, AlfColorEnum.DarkGhostDisabled, AlfColorEnum.DarkGhostActive, AlfColorEnum.DarkGhostBgHover, AlfColorEnum.DarkGhostBgHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None);
+      case AlfColorVariantEnum.DarkCrystal:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.DarkCrystalText, AlfColorEnum.DarkCrystalTextHover, AlfColorEnum.DarkCrystalFocus, AlfColorEnum.DarkCrystalDisabled, AlfColorEnum.DarkCrystalActive, AlfColorEnum.DarkCrystal, AlfColorEnum.DarkCrystalHover, AlfColorEnum.DarkCrystalText, AlfColorEnum.DarkCrystalTextHover, AlfPxEnum.Px1, AlfColorEnum.DarkCrystalText, AlfColorEnum.DarkCrystalTextHover, AlfColorEnum.DarkCrystalText, AlfColorEnum.DarkCrystalDisabled, AlfColorEnum.DarkCrystalText);
+        }
+        return this.defaultConstruct(AlfColorEnum.DarkCrystalText, AlfColorEnum.DarkCrystalTextHover, AlfColorEnum.DarkCrystalFocus, AlfColorEnum.DarkCrystalDisabled, AlfColorEnum.DarkCrystalActive, AlfColorEnum.DarkCrystal, AlfColorEnum.DarkCrystalHover, AlfColorEnum.White30, AlfColorEnum.White40);
+
+      // FAMILY: LIGHT
+      case AlfColorVariantEnum.Light:
+        return this.defaultConstruct(AlfColorEnum.LightText, AlfColorEnum.LightTextHover, AlfColorEnum.LightTextHover, AlfColorEnum.LightTextDisabled, AlfColorEnum.LightTextHover, AlfColorEnum.Light, AlfColorEnum.LightHover, AlfColorEnum.Light, AlfColorEnum.LightHover);
+      case AlfColorVariantEnum.Light3D:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.Light3DText, AlfColorEnum.Light3DTextHover, AlfColorEnum.Light3DTextHover, AlfColorEnum.LightDisabled, AlfColorEnum.Light3DTextHover, AlfColorEnum.Light3D, AlfColorEnum.Light3DHover, AlfColorEnum.LightOutline, AlfColorEnum.LightOutlineHover, AlfPxEnum.Px1, AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.LightDisabled, AlfColorEnum.White, AlfShadowEnum.Md);
+        }
+        return this.defaultConstruct(AlfColorEnum.Light3DText, AlfColorEnum.Light3DTextHover, AlfColorEnum.Light3DTextHover, AlfColorEnum.LightDisabled, AlfColorEnum.Light3DTextHover, AlfColorEnum.Light3D, AlfColorEnum.Light3DHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None, undefined, undefined, undefined, undefined, undefined, AlfShadowEnum.Md);
+      case AlfColorVariantEnum.LightOutline:
+        return this.defaultConstruct(AlfColorEnum.LightOutlineText, AlfColorEnum.LightOutlineTextHover, AlfColorEnum.LightOutlineTextHover, AlfColorEnum.LightOutlineDisabled, AlfColorEnum.LightOutlineTextHover, AlfColorEnum.LightOutlineBg, AlfColorEnum.LightOutlineBgHover, AlfColorEnum.LightOutline, AlfColorEnum.LightOutlineHover, AlfPxEnum.Px1);
+      case AlfColorVariantEnum.LightSoft:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.LightSoftText, AlfColorEnum.LightSoftTextHover, AlfColorEnum.LightSoftFocus, AlfColorEnum.LightSoftDisabled, AlfColorEnum.LightSoftActive, AlfColorEnum.LightSoft, AlfColorEnum.LightSoftHover, AlfColorEnum.LightSoftText, AlfColorEnum.LightSoftTextHover, AlfPxEnum.Px1, AlfColorEnum.LightSoftText, AlfColorEnum.LightSoftTextHover, AlfColorEnum.LightSoftText, AlfColorEnum.LightSoftDisabled, AlfColorEnum.LightSoftText);
+        }
+        return this.defaultConstruct(AlfColorEnum.LightSoftText, AlfColorEnum.LightSoftTextHover, AlfColorEnum.LightSoftFocus, AlfColorEnum.LightSoftDisabled, AlfColorEnum.LightSoftActive, AlfColorEnum.LightSoft, AlfColorEnum.LightSoftHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None);
+      case AlfColorVariantEnum.LightGhost:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.LightGhostText, AlfColorEnum.LightGhostTextHover, AlfColorEnum.LightGhostFocus, AlfColorEnum.LightGhostDisabled, AlfColorEnum.LightGhostActive, AlfColorEnum.LightGhostBgHover, AlfColorEnum.LightGhostBgHover, AlfColorEnum.LightGhostText, AlfColorEnum.LightGhostTextHover, AlfPxEnum.Px1, AlfColorEnum.LightGhostText, AlfColorEnum.LightGhostTextHover, AlfColorEnum.LightGhostText, AlfColorEnum.LightGhostDisabled, AlfColorEnum.LightGhostText);
+        }
+        return this.defaultConstruct(AlfColorEnum.LightGhostText, AlfColorEnum.LightGhostTextHover, AlfColorEnum.LightGhostFocus, AlfColorEnum.LightGhostDisabled, AlfColorEnum.LightGhostActive, AlfColorEnum.LightGhostBgHover, AlfColorEnum.LightGhostBgHover, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None);
+      case AlfColorVariantEnum.LightCrystal:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(AlfColorEnum.LightCrystalText, AlfColorEnum.LightCrystalTextHover, AlfColorEnum.LightCrystalFocus, AlfColorEnum.LightCrystalDisabled, AlfColorEnum.LightCrystalActive, AlfColorEnum.LightCrystal, AlfColorEnum.LightCrystalHover, AlfColorEnum.LightCrystalText, AlfColorEnum.LightCrystalTextHover, AlfPxEnum.Px1, AlfColorEnum.LightCrystalText, AlfColorEnum.LightCrystalTextHover, AlfColorEnum.LightCrystalText, AlfColorEnum.LightCrystalDisabled, AlfColorEnum.LightCrystalText);
+        }
+        return this.defaultConstruct(AlfColorEnum.LightCrystalText, AlfColorEnum.LightCrystalTextHover, AlfColorEnum.LightCrystalFocus, AlfColorEnum.LightCrystalDisabled, AlfColorEnum.LightCrystalActive, AlfColorEnum.LightCrystal, AlfColorEnum.LightCrystalHover, AlfColorEnum.White30, AlfColorEnum.White40);
+
+      // PREMIUM GRADIENTS
+      case AlfColorVariantEnum.GradientPurple:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(
+            AlfColorEnum.GradientPurpleText,
+            AlfColorEnum.GradientPurpleTextHover,
+            AlfColorEnum.GradientPurpleTextHover,
+            AlfColorEnum.PrimaryDisabled,
+            AlfColorEnum.GradientPurpleTextHover,
+            AlfColorEnum.GradientPurple,
+            AlfColorEnum.GradientPurpleHover,
+            AlfColorEnum.Primary,
+            AlfColorEnum.PrimaryHover,
+            AlfPxEnum.Px1,
+            AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.PrimaryDisabled, AlfColorEnum.White
+          );
+        }
+        return this.defaultConstruct(
+          AlfColorEnum.GradientPurpleText,
+          AlfColorEnum.GradientPurpleTextHover,
+          AlfColorEnum.GradientPurpleTextHover,
+          AlfColorEnum.PrimaryDisabled,
+          AlfColorEnum.GradientPurpleTextHover,
+          AlfColorEnum.GradientPurple,
+          AlfColorEnum.GradientPurpleHover,
+          AlfColorEnum.GradientPurple,
+          AlfColorEnum.GradientPurpleHover,
+          AlfPxEnum.None
+        );
+      case AlfColorVariantEnum.GradientSunset:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(
+            AlfColorEnum.GradientSunsetText,
+            AlfColorEnum.GradientSunsetTextHover,
+            AlfColorEnum.GradientSunsetTextHover,
+            AlfColorEnum.DangerDisabled,
+            AlfColorEnum.GradientSunsetTextHover,
+            AlfColorEnum.GradientSunset,
+            AlfColorEnum.GradientSunsetHover,
+            AlfColorEnum.Danger,
+            AlfColorEnum.DangerHover,
+            AlfPxEnum.Px1,
+            AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.DangerDisabled, AlfColorEnum.White
+          );
+        }
+        return this.defaultConstruct(
+          AlfColorEnum.GradientSunsetText, AlfColorEnum.GradientSunsetTextHover, AlfColorEnum.GradientSunsetTextHover, AlfColorEnum.DangerDisabled, AlfColorEnum.GradientSunsetTextHover,
+          AlfColorEnum.GradientSunset, AlfColorEnum.GradientSunsetHover, AlfColorEnum.GradientSunset, AlfColorEnum.GradientSunsetHover, AlfPxEnum.None
+        );
+      case AlfColorVariantEnum.GradientOcean:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(
+            AlfColorEnum.GradientOceanText,
+            AlfColorEnum.GradientOceanTextHover,
+            AlfColorEnum.GradientOceanTextHover,
+            AlfColorEnum.InfoDisabled,
+            AlfColorEnum.GradientOceanTextHover,
+            AlfColorEnum.GradientOcean,
+            AlfColorEnum.GradientOceanHover,
+            AlfColorEnum.Info,
+            AlfColorEnum.InfoHover,
+            AlfPxEnum.Px1,
+            AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.InfoDisabled, AlfColorEnum.White
+          );
+        }
+        return this.defaultConstruct(
+          AlfColorEnum.GradientOceanText, AlfColorEnum.GradientOceanTextHover, AlfColorEnum.GradientOceanTextHover, AlfColorEnum.InfoDisabled, AlfColorEnum.GradientOceanTextHover,
+          AlfColorEnum.GradientOcean, AlfColorEnum.GradientOceanHover, AlfColorEnum.GradientOcean, AlfColorEnum.GradientOceanHover, AlfPxEnum.None
+        );
+      case AlfColorVariantEnum.GradientForest:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(
+            AlfColorEnum.GradientForestText,
+            AlfColorEnum.GradientForestTextHover,
+            AlfColorEnum.GradientForestTextHover,
+            AlfColorEnum.SuccessDisabled,
+            AlfColorEnum.GradientForestTextHover,
+            AlfColorEnum.GradientForest,
+            AlfColorEnum.GradientForestHover,
+            AlfColorEnum.Success,
+            AlfColorEnum.SuccessHover,
+            AlfPxEnum.Px1,
+            AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.SuccessDisabled, AlfColorEnum.White
+          );
+        }
+        return this.defaultConstruct(
+          AlfColorEnum.GradientForestText, AlfColorEnum.GradientForestTextHover, AlfColorEnum.GradientForestTextHover, AlfColorEnum.SuccessDisabled, AlfColorEnum.GradientForestTextHover,
+          AlfColorEnum.GradientForest, AlfColorEnum.GradientForestHover, AlfColorEnum.GradientForest, AlfColorEnum.GradientForestHover, AlfPxEnum.None
+        );
+      case AlfColorVariantEnum.GradientPrimary:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(
+            AlfColorEnum.GradientPrimaryText,
+            AlfColorEnum.GradientPrimaryTextHover,
+            AlfColorEnum.GradientPrimaryTextHover,
+            AlfColorEnum.GradientPrimaryDisabled,
+            AlfColorEnum.GradientPrimaryTextHover,
+            AlfColorEnum.GradientPrimary,
+            AlfColorEnum.GradientPrimaryHover,
+            AlfColorEnum.Primary,
+            AlfColorEnum.PrimaryHover,
+            AlfPxEnum.Px1,
+            AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.GradientPrimaryDisabled, AlfColorEnum.White
+          );
+        }
+        return this.defaultConstruct(
+          AlfColorEnum.GradientPrimaryText, AlfColorEnum.GradientPrimaryTextHover, AlfColorEnum.GradientPrimaryTextHover, AlfColorEnum.GradientPrimaryDisabled, AlfColorEnum.GradientPrimaryTextHover,
+          AlfColorEnum.GradientPrimary,
+          AlfColorEnum.GradientPrimaryHover,
+          AlfColorEnum.GradientPrimary, AlfColorEnum.GradientPrimaryHover, AlfPxEnum.None
+        );
+      case AlfColorVariantEnum.GradientDanger:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(
+            AlfColorEnum.GradientDangerText,
+            AlfColorEnum.GradientDangerTextHover,
+            AlfColorEnum.GradientDangerTextHover,
+            AlfColorEnum.GradientDangerDisabled,
+            AlfColorEnum.GradientDangerTextHover,
+            AlfColorEnum.GradientDanger,
+            AlfColorEnum.GradientDangerHover,
+            AlfColorEnum.Danger,
+            AlfColorEnum.DangerHover,
+            AlfPxEnum.Px1,
+            AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.GradientDangerDisabled, AlfColorEnum.White
+          );
+        }
+        return this.defaultConstruct(
+          AlfColorEnum.GradientDangerText, AlfColorEnum.GradientDangerTextHover, AlfColorEnum.GradientDangerTextHover, AlfColorEnum.GradientDangerDisabled, AlfColorEnum.GradientDangerTextHover,
+          AlfColorEnum.GradientDanger,
+          AlfColorEnum.GradientDangerHover,
+          AlfColorEnum.GradientDanger, AlfColorEnum.GradientDangerHover, AlfPxEnum.None
+        );
+      case AlfColorVariantEnum.GradientSuccess:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(
+            AlfColorEnum.GradientSuccessText,
+            AlfColorEnum.GradientSuccessTextHover,
+            AlfColorEnum.GradientSuccessTextHover,
+            AlfColorEnum.GradientSuccessDisabled,
+            AlfColorEnum.GradientSuccessTextHover,
+            AlfColorEnum.GradientSuccess,
+            AlfColorEnum.GradientSuccessHover,
+            AlfColorEnum.Success,
+            AlfColorEnum.SuccessHover,
+            AlfPxEnum.Px1,
+            AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.GradientSuccessDisabled, AlfColorEnum.White
+          );
+        }
+        return this.defaultConstruct(
+          AlfColorEnum.GradientSuccessText, AlfColorEnum.GradientSuccessTextHover, AlfColorEnum.GradientSuccessTextHover, AlfColorEnum.GradientSuccessDisabled, AlfColorEnum.GradientSuccessTextHover,
+          AlfColorEnum.GradientSuccess,
+          AlfColorEnum.GradientSuccessHover,
+          AlfColorEnum.GradientSuccess, AlfColorEnum.GradientSuccessHover, AlfPxEnum.None
+        );
+      case AlfColorVariantEnum.GradientWarning:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(
+            AlfColorEnum.GradientWarningText,
+            AlfColorEnum.GradientWarningTextHover,
+            AlfColorEnum.GradientWarningTextHover,
+            AlfColorEnum.GradientWarningDisabled,
+            AlfColorEnum.GradientWarningTextHover,
+            AlfColorEnum.GradientWarning,
+            AlfColorEnum.GradientWarningHover,
+            AlfColorEnum.Warning,
+            AlfColorEnum.WarningHover,
+            AlfPxEnum.Px1,
+            AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.GradientWarningDisabled, AlfColorEnum.White
+          );
+        }
+        return this.defaultConstruct(
+          AlfColorEnum.GradientWarningText, AlfColorEnum.GradientWarningTextHover, AlfColorEnum.GradientWarningTextHover, AlfColorEnum.GradientWarningDisabled, AlfColorEnum.GradientWarningTextHover,
+          AlfColorEnum.GradientWarning,
+          AlfColorEnum.GradientWarningHover,
+          AlfColorEnum.GradientWarning, AlfColorEnum.GradientWarningHover, AlfPxEnum.None
+        );
+      case AlfColorVariantEnum.GradientInfo:
+        if (componentType && outlinedFilledComponents.includes(componentType)) {
+          return this.defaultConstruct(
+            AlfColorEnum.GradientInfoText,
+            AlfColorEnum.GradientInfoTextHover,
+            AlfColorEnum.GradientInfoTextHover,
+            AlfColorEnum.GradientInfoDisabled,
+            AlfColorEnum.GradientInfoTextHover,
+            AlfColorEnum.GradientInfo,
+            AlfColorEnum.GradientInfoHover,
+            AlfColorEnum.Info,
+            AlfColorEnum.InfoHover,
+            AlfPxEnum.Px1,
+            AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.White, AlfColorEnum.GradientInfoDisabled, AlfColorEnum.White
+          );
+        }
+        return this.defaultConstruct(
+          AlfColorEnum.GradientInfoText, AlfColorEnum.GradientInfoTextHover, AlfColorEnum.GradientInfoTextHover, AlfColorEnum.GradientInfoDisabled, AlfColorEnum.GradientInfoTextHover,
+          AlfColorEnum.GradientInfo,
+          AlfColorEnum.GradientInfoHover,
+          AlfColorEnum.GradientInfo, AlfColorEnum.GradientInfoHover, AlfPxEnum.None
+        );
+
+      case AlfColorVariantEnum.Transparent:
+        return this.defaultConstruct(AlfColorEnum.SecondaryGhostText, AlfColorEnum.SecondaryGhostTextHover, AlfColorEnum.SecondaryGhostFocus, AlfColorEnum.SecondaryGhostDisabled, AlfColorEnum.SecondaryGhostActive, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfColorEnum.Transparent, AlfPxEnum.None);
+
+      default:
+        return this.defaultConstruct(AlfColorEnum.Secondary, AlfColorEnum.SecondaryHover, AlfColorEnum.SecondaryFocus, AlfColorEnum.SecondaryDisabled, AlfColorEnum.SecondaryActive, AlfColorEnum.Secondary, AlfColorEnum.SecondaryHover, AlfColorEnum.Secondary, AlfColorEnum.SecondaryHover);
+    }
+  };
 }

@@ -1,0 +1,55 @@
+@mixin alf-cursor-style {
+  // --- 1. BASE / DEFAULT STATE ---
+  $c: var(--alf-cursor, inherit);
+  cursor: $c;
+
+  // --- 2. HOVER STATE ---
+  &:hover {
+    cursor: var(--alf-cursor-hover, $c);
+  }
+
+  // --- 3. ACTIVE STATE ---
+  &:active {
+    cursor: var(--alf-cursor-active, var(--alf-cursor-hover, $c));
+  }
+
+  // --- 4. FOCUS STATE ---
+  &:focus, &:focus-visible {
+    cursor: var(--alf-cursor-focus, $c);
+  }
+
+  // --- 5. DISABLED STATE ---
+  &:disabled, &.disabled {
+    cursor: var(--alf-cursor-disabled, $c);
+  }
+}
+
+@mixin alf-cursor-css-vars(
+  $prefix,
+  $disabled-selectors: '&:disabled, &.disabled',
+  $focus-selectors: '&:focus, &:focus-visible'
+) {
+  // --- 1. BASE / DEFAULT STATE ---
+  $c: var(#{$prefix}-cursor, inherit);
+  cursor: $c;
+
+  // --- 2. HOVER STATE ---
+  &:hover {
+    cursor: var(#{$prefix}-cursor-hover, $c);
+  }
+
+  // --- 3. ACTIVE STATE ---
+  &:active {
+    cursor: var(#{$prefix}-cursor-active, var(#{$prefix}-cursor-hover, $c));
+  }
+
+  // --- 4. FOCUS STATE ---
+  #{$focus-selectors} {
+    cursor: var(#{$prefix}-cursor-focus, $c);
+  }
+
+  // --- 5. DISABLED STATE ---
+  #{$disabled-selectors} {
+    cursor: var(#{$prefix}-cursor-disabled, $c);
+  }
+}

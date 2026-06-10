@@ -1,34 +1,34 @@
-@mixin alf-border-style {
+@mixin alf-border-style($prefix: '--alf', $disabled-selectors: '&:disabled, &.disabled', $focus-selectors: '&:focus, &:focus-visible') {
   // --- 1. BASE / DEFAULT STATE ---
-  $bw: var(--alf-border-width, 0px);
-  $bwt: var(--alf-border-top-width, $bw);
-  $bwr: var(--alf-border-right-width, $bw);
-  $bwb: var(--alf-border-bottom-width, $bw);
-  $bwl: var(--alf-border-left-width, $bw);
+  $bw: var(#{$prefix}-border-width, 0px);
+  $bwt: var(#{$prefix}-border-top-width, $bw);
+  $bwr: var(#{$prefix}-border-right-width, $bw);
+  $bwb: var(#{$prefix}-border-bottom-width, $bw);
+  $bwl: var(#{$prefix}-border-left-width, $bw);
 
-  $bs: var(--alf-border-style, none);
-  $bst: var(--alf-border-top-style, $bs);
-  $bsr: var(--alf-border-right-style, $bs);
-  $bsb: var(--alf-border-bottom-style, $bs);
-  $bsl: var(--alf-border-left-style, $bs);
+  $bs: var(#{$prefix}-border-style, none);
+  $bst: var(#{$prefix}-border-top-style, $bs);
+  $bsr: var(#{$prefix}-border-right-style, $bs);
+  $bsb: var(#{$prefix}-border-bottom-style, $bs);
+  $bsl: var(#{$prefix}-border-left-style, $bs);
 
-  $bc: var(--alf-border-color, transparent);
-  $bct: var(--alf-border-top-color, $bc);
-  $bcr: var(--alf-border-right-color, $bc);
-  $bcb: var(--alf-border-bottom-color, $bc);
-  $bcl: var(--alf-border-left-color, $bc);
+  $bc: var(#{$prefix}-border-color, transparent);
+  $bct: var(#{$prefix}-border-top-color, $bc);
+  $bcr: var(#{$prefix}-border-right-color, $bc);
+  $bcb: var(#{$prefix}-border-bottom-color, $bc);
+  $bcl: var(#{$prefix}-border-left-color, $bc);
 
-  $br: var(--alf-border-radius, 0px);
-  $brtl: var(--alf-border-top-left-radius, $br);
-  $brtr: var(--alf-border-top-right-radius, $br);
-  $brbr: var(--alf-border-bottom-right-radius, $br);
-  $brbl: var(--alf-border-bottom-left-radius, $br);
+  $br: var(#{$prefix}-border-radius, 0px);
+  $brtl: var(#{$prefix}-border-top-left-radius, $br);
+  $brtr: var(#{$prefix}-border-top-right-radius, $br);
+  $brbr: var(#{$prefix}-border-bottom-right-radius, $br);
+  $brbl: var(#{$prefix}-border-bottom-left-radius, $br);
 
-  $ow: var(--alf-outline-width, 0px);
-  $os: var(--alf-outline-style, none);
-  $oc: var(--alf-outline-color, transparent);
-  $oo: var(--alf-outline-offset, 0px);
-  $bsz: var(--alf-box-sizing, border-box);
+  $ow: var(#{$prefix}-outline-width, 0px);
+  $os: var(#{$prefix}-outline-style, none);
+  $oc: var(#{$prefix}-outline-color, transparent);
+  $oo: var(#{$prefix}-outline-offset, 0px);
+  $bsz: var(#{$prefix}-box-sizing, border-box);
 
   // Apply default styles
   border-top-width: $bwt;
@@ -59,35 +59,35 @@
 
   // --- 2. HOVER STATE ---
   &:hover {
-    $hbw: var(--alf-border-width-hover, $bw);
-    $hbwt: var(--alf-border-top-width-hover, var(--alf-border-top-width, $hbw));
-    $hbwr: var(--alf-border-right-width-hover, var(--alf-border-right-width, $hbw));
-    $hbwb: var(--alf-border-bottom-width-hover, var(--alf-border-bottom-width, $hbw));
-    $hbwl: var(--alf-border-left-width-hover, var(--alf-border-left-width, $hbw));
+    $hbw: var(#{$prefix}-border-width-hover, $bw);
+    $hbwt: var(#{$prefix}-border-top-width-hover, var(#{$prefix}-border-top-width, $hbw));
+    $hbwr: var(#{$prefix}-border-right-width-hover, var(#{$prefix}-border-right-width, $hbw));
+    $hbwb: var(#{$prefix}-border-bottom-width-hover, var(#{$prefix}-border-bottom-width, $hbw));
+    $hbwl: var(#{$prefix}-border-left-width-hover, var(#{$prefix}-border-left-width, $hbw));
 
-    $hbs: var(--alf-border-style-hover, $bs);
-    $hbst: var(--alf-border-top-style-hover, var(--alf-border-top-style, $hbs));
-    $hbsr: var(--alf-border-right-style-hover, var(--alf-border-right-style, $hbs));
-    $hbsb: var(--alf-border-bottom-style-hover, var(--alf-border-bottom-style, $hbs));
-    $hbsl: var(--alf-border-left-style-hover, var(--alf-border-left-style, $hbs));
+    $hbs: var(#{$prefix}-border-style-hover, $bs);
+    $hbst: var(#{$prefix}-border-top-style-hover, var(#{$prefix}-border-top-style, $hbs));
+    $hbsr: var(#{$prefix}-border-right-style-hover, var(#{$prefix}-border-right-style, $hbs));
+    $hbsb: var(#{$prefix}-border-bottom-style-hover, var(#{$prefix}-border-bottom-style, $hbs));
+    $hbsl: var(#{$prefix}-border-left-style-hover, var(#{$prefix}-border-left-style, $hbs));
 
-    $hbc: var(--alf-border-color-hover, $bc);
-    $hbct: var(--alf-border-top-color-hover, var(--alf-border-top-color, $hbc));
-    $hbcr: var(--alf-border-right-color-hover, var(--alf-border-right-color, $hbc));
-    $hbcb: var(--alf-border-bottom-color-hover, var(--alf-border-bottom-color, $hbc));
-    $hbcl: var(--alf-border-left-color-hover, var(--alf-border-left-color, $hbc));
+    $hbc: var(#{$prefix}-border-color-hover, $bc);
+    $hbct: var(#{$prefix}-border-top-color-hover, var(#{$prefix}-border-top-color, $hbc));
+    $hbcr: var(#{$prefix}-border-right-color-hover, var(#{$prefix}-border-right-color, $hbc));
+    $hbcb: var(#{$prefix}-border-bottom-color-hover, var(#{$prefix}-border-bottom-color, $hbc));
+    $hbcl: var(#{$prefix}-border-left-color-hover, var(#{$prefix}-border-left-color, $hbc));
 
-    $hbr: var(--alf-border-radius-hover, $br);
-    $hbrtl: var(--alf-border-top-left-radius-hover, var(--alf-border-top-left-radius, $hbr));
-    $hbrtr: var(--alf-border-top-right-radius-hover, var(--alf-border-top-right-radius, $hbr));
-    $hbrbr: var(--alf-border-bottom-right-radius-hover, var(--alf-border-bottom-right-radius, $hbr));
-    $hbrbl: var(--alf-border-bottom-left-radius-hover, var(--alf-border-bottom-left-radius, $hbr));
+    $hbr: var(#{$prefix}-border-radius-hover, $br);
+    $hbrtl: var(#{$prefix}-border-top-left-radius-hover, var(#{$prefix}-border-top-left-radius, $hbr));
+    $hbrtr: var(#{$prefix}-border-top-right-radius-hover, var(#{$prefix}-border-top-right-radius, $hbr));
+    $hbrbr: var(#{$prefix}-border-bottom-right-radius-hover, var(#{$prefix}-border-bottom-right-radius, $hbr));
+    $hbrbl: var(#{$prefix}-border-bottom-left-radius-hover, var(#{$prefix}-border-bottom-left-radius, $hbr));
 
-    $how: var(--alf-outline-width-hover, $ow);
-    $hos: var(--alf-outline-style-hover, $os);
-    $hoc: var(--alf-outline-color-hover, $oc);
-    $hoo: var(--alf-outline-offset-hover, $oo);
-    $hbsz: var(--alf-box-sizing-hover, $bsz);
+    $how: var(#{$prefix}-outline-width-hover, $ow);
+    $hos: var(#{$prefix}-outline-style-hover, $os);
+    $hoc: var(#{$prefix}-outline-color-hover, $oc);
+    $hoo: var(#{$prefix}-outline-offset-hover, $oo);
+    $hbsz: var(#{$prefix}-box-sizing-hover, $bsz);
 
     border-top-width: $hbwt;
     border-right-width: $hbwr;
@@ -119,39 +119,39 @@
   // --- 3. ACTIVE STATE ---
   &:active {
     // Falls back to hover values if hover values are defined, otherwise default
-    $hbw: var(--alf-border-width-hover, $bw);
-    $hbr: var(--alf-border-radius-hover, $br);
-    $hbc: var(--alf-border-color-hover, $bc);
+    $hbw: var(#{$prefix}-border-width-hover, $bw);
+    $hbr: var(#{$prefix}-border-radius-hover, $br);
+    $hbc: var(#{$prefix}-border-color-hover, $bc);
 
-    $abw: var(--alf-border-width-active, $hbw);
-    $abwt: var(--alf-border-top-width-active, var(--alf-border-top-width-hover, var(--alf-border-top-width, $abw)));
-    $abwr: var(--alf-border-right-width-active, var(--alf-border-right-width-hover, var(--alf-border-right-width, $abw)));
-    $abwb: var(--alf-border-bottom-width-active, var(--alf-border-bottom-width-hover, var(--alf-border-bottom-width, $abw)));
-    $abwl: var(--alf-border-left-width-active, var(--alf-border-left-width-hover, var(--alf-border-left-width, $abw)));
+    $abw: var(#{$prefix}-border-width-active, $hbw);
+    $abwt: var(#{$prefix}-border-top-width-active, var(#{$prefix}-border-top-width-hover, var(#{$prefix}-border-top-width, $abw)));
+    $abwr: var(#{$prefix}-border-right-width-active, var(#{$prefix}-border-right-width-hover, var(#{$prefix}-border-right-width, $abw)));
+    $abwb: var(#{$prefix}-border-bottom-width-active, var(#{$prefix}-border-bottom-width-hover, var(#{$prefix}-border-bottom-width, $abw)));
+    $abwl: var(#{$prefix}-border-left-width-active, var(#{$prefix}-border-left-width-hover, var(#{$prefix}-border-left-width, $abw)));
 
-    $abs: var(--alf-border-style-active, var(--alf-border-style-hover, $bs));
-    $abst: var(--alf-border-top-style-active, var(--alf-border-top-style-hover, var(--alf-border-top-style, $abs)));
-    $absr: var(--alf-border-right-style-active, var(--alf-border-right-style-hover, var(--alf-border-right-style, $abs)));
-    $absb: var(--alf-border-bottom-style-active, var(--alf-border-bottom-style-hover, var(--alf-border-bottom-style, $abs)));
-    $absl: var(--alf-border-left-style-active, var(--alf-border-left-style-hover, var(--alf-border-left-style, $abs)));
+    $abs: var(#{$prefix}-border-style-active, var(#{$prefix}-border-style-hover, $bs));
+    $abst: var(#{$prefix}-border-top-style-active, var(#{$prefix}-border-top-style-hover, var(#{$prefix}-border-top-style, $abs)));
+    $absr: var(#{$prefix}-border-right-style-active, var(#{$prefix}-border-right-style-hover, var(#{$prefix}-border-right-style, $abs)));
+    $absb: var(#{$prefix}-border-bottom-style-active, var(#{$prefix}-border-bottom-style-hover, var(#{$prefix}-border-bottom-style, $abs)));
+    $absl: var(#{$prefix}-border-left-style-active, var(#{$prefix}-border-left-style-hover, var(#{$prefix}-border-left-style, $abs)));
 
-    $abc: var(--alf-border-color-active, $hbc);
-    $abct: var(--alf-border-top-color-active, var(--alf-border-top-color-hover, var(--alf-border-top-color, $abc)));
-    $abcr: var(--alf-border-right-color-active, var(--alf-border-right-color-hover, var(--alf-border-right-color, $abc)));
-    $abcb: var(--alf-border-bottom-color-active, var(--alf-border-bottom-color-hover, var(--alf-border-bottom-color, $abc)));
-    $abcl: var(--alf-border-left-color-active, var(--alf-border-left-color-hover, var(--alf-border-left-color, $abc)));
+    $abc: var(#{$prefix}-border-color-active, $hbc);
+    $abct: var(#{$prefix}-border-top-color-active, var(#{$prefix}-border-top-color-hover, var(#{$prefix}-border-top-color, $abc)));
+    $abcr: var(#{$prefix}-border-right-color-active, var(#{$prefix}-border-right-color-hover, var(#{$prefix}-border-right-color, $abc)));
+    $abcb: var(#{$prefix}-border-bottom-color-active, var(#{$prefix}-border-bottom-color-hover, var(#{$prefix}-border-bottom-color, $abc)));
+    $abcl: var(#{$prefix}-border-left-color-active, var(#{$prefix}-border-left-color-hover, var(#{$prefix}-border-left-color, $abc)));
 
-    $abr: var(--alf-border-radius-active, $hbr);
-    $abrtl: var(--alf-border-top-left-radius-active, var(--alf-border-top-left-radius-hover, var(--alf-border-top-left-radius, $abr)));
-    $abrtr: var(--alf-border-top-right-radius-active, var(--alf-border-top-right-radius-hover, var(--alf-border-top-right-radius, $abr)));
-    $abrbr: var(--alf-border-bottom-right-radius-active, var(--alf-border-bottom-right-radius-hover, var(--alf-border-bottom-right-radius, $abr)));
-    $abrbl: var(--alf-border-bottom-left-radius-active, var(--alf-border-bottom-left-radius-hover, var(--alf-border-bottom-left-radius, $abr)));
+    $abr: var(#{$prefix}-border-radius-active, $hbr);
+    $abrtl: var(#{$prefix}-border-top-left-radius-active, var(#{$prefix}-border-top-left-radius-hover, var(#{$prefix}-border-top-left-radius, $abr)));
+    $abrtr: var(#{$prefix}-border-top-right-radius-active, var(#{$prefix}-border-top-right-radius-hover, var(#{$prefix}-border-top-right-radius, $abr)));
+    $abrbr: var(#{$prefix}-border-bottom-right-radius-active, var(#{$prefix}-border-bottom-right-radius-hover, var(#{$prefix}-border-bottom-right-radius, $abr)));
+    $abrbl: var(#{$prefix}-border-bottom-left-radius-active, var(#{$prefix}-border-bottom-left-radius-hover, var(#{$prefix}-border-bottom-left-radius, $abr)));
 
-    $aow: var(--alf-outline-width-active, var(--alf-outline-width-hover, $ow));
-    $aos: var(--alf-outline-style-active, var(--alf-outline-style-hover, $os));
-    $aoc: var(--alf-outline-color-active, var(--alf-outline-color-hover, $oc));
-    $aoo: var(--alf-outline-offset-active, var(--alf-outline-offset-hover, $oo));
-    $absz: var(--alf-box-sizing-active, var(--alf-box-sizing-hover, $bsz));
+    $aow: var(#{$prefix}-outline-width-active, var(#{$prefix}-outline-width-hover, $ow));
+    $aos: var(#{$prefix}-outline-style-active, var(#{$prefix}-outline-style-hover, $os));
+    $aoc: var(#{$prefix}-outline-color-active, var(#{$prefix}-outline-color-hover, $oc));
+    $aoo: var(#{$prefix}-outline-offset-active, var(#{$prefix}-outline-offset-hover, $oo));
+    $absz: var(#{$prefix}-box-sizing-active, var(#{$prefix}-box-sizing-hover, $bsz));
 
     border-top-width: $abwt;
     border-right-width: $abwr;
@@ -181,36 +181,36 @@
   }
 
   // --- 4. FOCUS STATE ---
-  &:focus, &:focus-visible {
-    $fbw: var(--alf-border-width-focus, $bw);
-    $fbwt: var(--alf-border-top-width-focus, var(--alf-border-top-width, $fbw));
-    $fbwr: var(--alf-border-right-width-focus, var(--alf-border-right-width, $fbw));
-    $fbwb: var(--alf-border-bottom-width-focus, var(--alf-border-bottom-width, $fbw));
-    $fbwl: var(--alf-border-left-width-focus, var(--alf-border-left-width, $fbw));
+  #{$focus-selectors} {
+    $fbw: var(#{$prefix}-border-width-focus, $bw);
+    $fbwt: var(#{$prefix}-border-top-width-focus, var(#{$prefix}-border-top-width, $fbw));
+    $fbwr: var(#{$prefix}-border-right-width-focus, var(#{$prefix}-border-right-width, $fbw));
+    $fbwb: var(#{$prefix}-border-bottom-width-focus, var(#{$prefix}-border-bottom-width, $fbw));
+    $fbwl: var(#{$prefix}-border-left-width-focus, var(#{$prefix}-border-left-width, $fbw));
 
-    $fbs: var(--alf-border-style-focus, $bs);
-    $fbst: var(--alf-border-top-style-focus, var(--alf-border-top-style, $fbs));
-    $fbsr: var(--alf-border-right-style-focus, var(--alf-border-right-style, $fbs));
-    $fbsb: var(--alf-border-bottom-style-focus, var(--alf-border-bottom-style, $fbs));
-    $fbsl: var(--alf-border-left-style-focus, var(--alf-border-left-style, $fbs));
+    $fbs: var(#{$prefix}-border-style-focus, $bs);
+    $fbst: var(#{$prefix}-border-top-style-focus, var(#{$prefix}-border-top-style, $fbs));
+    $fbsr: var(#{$prefix}-border-right-style-focus, var(#{$prefix}-border-right-style, $fbs));
+    $fbsb: var(#{$prefix}-border-bottom-style-focus, var(#{$prefix}-border-bottom-style, $fbs));
+    $fbsl: var(#{$prefix}-border-left-style-focus, var(#{$prefix}-border-left-style, $fbs));
 
-    $fbc: var(--alf-border-color-focus, $bc);
-    $fbct: var(--alf-border-top-color-focus, var(--alf-border-top-color, $fbc));
-    $fbcr: var(--alf-border-right-color-focus, var(--alf-border-right-color, $fbc));
-    $fbcb: var(--alf-border-bottom-color-focus, var(--alf-border-bottom-color, $fbc));
-    $fbcl: var(--alf-border-left-color-focus, var(--alf-border-left-color, $fbc));
+    $fbc: var(#{$prefix}-border-color-focus, $bc);
+    $fbct: var(#{$prefix}-border-top-color-focus, var(#{$prefix}-border-top-color, $fbc));
+    $fbcr: var(#{$prefix}-border-right-color-focus, var(#{$prefix}-border-right-color, $fbc));
+    $fbcb: var(#{$prefix}-border-bottom-color-focus, var(#{$prefix}-border-bottom-color, $fbc));
+    $fbcl: var(#{$prefix}-border-left-color-focus, var(#{$prefix}-border-left-color, $fbc));
 
-    $fbr: var(--alf-border-radius-focus, $br);
-    $fbrtl: var(--alf-border-top-left-radius-focus, var(--alf-border-top-left-radius, $fbr));
-    $fbrtr: var(--alf-border-top-right-radius-focus, var(--alf-border-top-right-radius, $fbr));
-    $fbrbr: var(--alf-border-bottom-right-radius-focus, var(--alf-border-bottom-right-radius, $fbr));
-    $fbrbl: var(--alf-border-bottom-left-radius-focus, var(--alf-border-bottom-left-radius, $fbr));
+    $fbr: var(#{$prefix}-border-radius-focus, $br);
+    $fbrtl: var(#{$prefix}-border-top-left-radius-focus, var(#{$prefix}-border-top-left-radius, $fbr));
+    $fbrtr: var(#{$prefix}-border-top-right-radius-focus, var(#{$prefix}-border-top-right-radius, $fbr));
+    $fbrbr: var(#{$prefix}-border-bottom-right-radius-focus, var(#{$prefix}-border-bottom-right-radius, $fbr));
+    $fbrbl: var(#{$prefix}-border-bottom-left-radius-focus, var(#{$prefix}-border-bottom-left-radius, $fbr));
 
-    $fow: var(--alf-outline-width-focus, $ow);
-    $fos: var(--alf-outline-style-focus, $os);
-    $foc: var(--alf-outline-color-focus, $oc);
-    $foo: var(--alf-outline-offset-focus, $oo);
-    $fbsz: var(--alf-box-sizing-focus, $bsz);
+    $fow: var(#{$prefix}-outline-width-focus, $ow);
+    $fos: var(#{$prefix}-outline-style-focus, $os);
+    $foc: var(#{$prefix}-outline-color-focus, $oc);
+    $foo: var(#{$prefix}-outline-offset-focus, $oo);
+    $fbsz: var(#{$prefix}-box-sizing-focus, $bsz);
 
     border-top-width: $fbwt;
     border-right-width: $fbwr;
@@ -240,36 +240,36 @@
   }
 
   // --- 5. DISABLED STATE ---
-  &:disabled, &.disabled {
-    $dbw: var(--alf-border-width-disabled, $bw);
-    $dbwt: var(--alf-border-top-width-disabled, var(--alf-border-top-width, $dbw));
-    $dbwr: var(--alf-border-right-width-disabled, var(--alf-border-right-width, $dbw));
-    $dbwb: var(--alf-border-bottom-width-disabled, var(--alf-border-bottom-width, $dbw));
-    $dbwl: var(--alf-border-left-width-disabled, var(--alf-border-left-width, $dbw));
+  #{$disabled-selectors} {
+    $dbw: var(#{$prefix}-border-width-disabled, $bw);
+    $dbwt: var(#{$prefix}-border-top-width-disabled, var(#{$prefix}-border-top-width, $dbw));
+    $dbwr: var(#{$prefix}-border-right-width-disabled, var(#{$prefix}-border-right-width, $dbw));
+    $dbwb: var(#{$prefix}-border-bottom-width-disabled, var(#{$prefix}-border-bottom-width, $dbw));
+    $dbwl: var(#{$prefix}-border-left-width-disabled, var(#{$prefix}-border-left-width, $dbw));
 
-    $dbs: var(--alf-border-style-disabled, $bs);
-    $dbst: var(--alf-border-top-style-disabled, var(--alf-border-top-style, $dbs));
-    $dbsr: var(--alf-border-right-style-disabled, var(--alf-border-right-style, $dbs));
-    $dbsb: var(--alf-border-bottom-style-disabled, var(--alf-border-bottom-style, $dbs));
-    $dbsl: var(--alf-border-left-style-disabled, var(--alf-border-left-style, $dbs));
+    $dbs: var(#{$prefix}-border-style-disabled, $bs);
+    $dbst: var(#{$prefix}-border-top-style-disabled, var(#{$prefix}-border-top-style, $dbs));
+    $dbsr: var(#{$prefix}-border-right-style-disabled, var(#{$prefix}-border-right-style, $dbs));
+    $dbsb: var(#{$prefix}-border-bottom-style-disabled, var(#{$prefix}-border-bottom-style, $dbs));
+    $dbsl: var(#{$prefix}-border-left-style-disabled, var(#{$prefix}-border-left-style, $dbs));
 
-    $dbc: var(--alf-border-color-disabled, $bc);
-    $dbct: var(--alf-border-top-color-disabled, var(--alf-border-top-color, $dbc));
-    $dbcr: var(--alf-border-right-color-disabled, var(--alf-border-right-color, $dbc));
-    $dbcb: var(--alf-border-bottom-color-disabled, var(--alf-border-bottom-color, $dbc));
-    $dbcl: var(--alf-border-left-color-disabled, var(--alf-border-left-color, $dbc));
+    $dbc: var(#{$prefix}-border-color-disabled, $bc);
+    $dbct: var(#{$prefix}-border-top-color-disabled, var(#{$prefix}-border-top-color, $dbc));
+    $dbcr: var(#{$prefix}-border-right-color-disabled, var(#{$prefix}-border-right-color, $dbc));
+    $dbcb: var(#{$prefix}-border-bottom-color-disabled, var(#{$prefix}-border-bottom-color, $dbc));
+    $dbcl: var(#{$prefix}-border-left-color-disabled, var(#{$prefix}-border-left-color, $dbc));
 
-    $dbr: var(--alf-border-radius-disabled, $br);
-    $dbrtl: var(--alf-border-top-left-radius-disabled, var(--alf-border-top-left-radius, $dbr));
-    $dbrtr: var(--alf-border-top-right-radius-disabled, var(--alf-border-top-right-radius, $dbr));
-    $dbrbr: var(--alf-border-bottom-right-radius-disabled, var(--alf-border-bottom-right-radius, $dbr));
-    $dbrbl: var(--alf-border-bottom-left-radius-disabled, var(--alf-border-bottom-left-radius, $dbr));
+    $dbr: var(#{$prefix}-border-radius-disabled, $br);
+    $dbrtl: var(#{$prefix}-border-top-left-radius-disabled, var(#{$prefix}-border-top-left-radius, $dbr));
+    $dbrtr: var(#{$prefix}-border-top-right-radius-disabled, var(#{$prefix}-border-top-right-radius, $dbr));
+    $dbrbr: var(#{$prefix}-border-bottom-right-radius-disabled, var(#{$prefix}-border-bottom-right-radius, $dbr));
+    $dbrbl: var(#{$prefix}-border-bottom-left-radius-disabled, var(#{$prefix}-border-bottom-left-radius, $dbr));
 
-    $dow: var(--alf-outline-width-disabled, $ow);
-    $dos: var(--alf-outline-style-disabled, $os);
-    $doc: var(--alf-outline-color-disabled, $oc);
-    $doo: var(--alf-outline-offset-disabled, $oo);
-    $dbsz: var(--alf-box-sizing-disabled, $bsz);
+    $dow: var(#{$prefix}-outline-width-disabled, $ow);
+    $dos: var(#{$prefix}-outline-style-disabled, $os);
+    $doc: var(#{$prefix}-outline-color-disabled, $oc);
+    $doo: var(#{$prefix}-outline-offset-disabled, $oo);
+    $dbsz: var(#{$prefix}-box-sizing-disabled, $bsz);
 
     border-top-width: $dbwt;
     border-right-width: $dbwr;

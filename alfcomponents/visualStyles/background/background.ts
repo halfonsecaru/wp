@@ -1,70 +1,66 @@
-import { Directive, input, computed } from '@angular/core';
+import { Directive, ElementRef, effect, inject, input, computed } from '@angular/core';
 import { AlfBackgroundsInterface, AlfBackgroundsBaseInterface } from '@alfcomponents/interfaces';
 
 @Directive({
   selector: '[alfBackground]',
   standalone: true,
-  host: {
-    // --- TRANSITION & BASE / DEFAULT ---
-    '[style.transition]': '"background-color 0.25s ease-in-out, background-image 0.25s ease-in-out, background-position 0.25s ease-in-out"',
-    '[style.--alf-bg-color]': 'this.resolvedBackground()?.default?.backgroundColor ?? undefined',
-    '[style.--alf-bg-image]': 'this.resolvedBackground()?.default?.backgroundImage ?? undefined',
-    '[style.--alf-bg-size]': 'this.resolvedBackground()?.default?.backgroundSize ?? undefined',
-    '[style.--alf-bg-pos]': 'this.resolvedBackground()?.default?.backgroundPosition ?? undefined',
-    '[style.--alf-bg-repeat]': 'this.resolvedBackground()?.default?.backgroundRepeat ?? undefined',
-    '[style.--alf-bg-attachment]': 'this.resolvedBackground()?.default?.backgroundAttachment ?? undefined',
-    '[style.--alf-bg-clip]': 'this.resolvedBackground()?.default?.backgroundClip ?? undefined',
-
-    // --- HOVER ---
-    '[style.--alf-bg-color-hover]': 'this.resolvedBackground()?.hover?.backgroundColor ?? undefined',
-    '[style.--alf-bg-image-hover]': 'this.resolvedBackground()?.hover?.backgroundImage ?? undefined',
-    '[style.--alf-bg-size-hover]': 'this.resolvedBackground()?.hover?.backgroundSize ?? undefined',
-    '[style.--alf-bg-pos-hover]': 'this.resolvedBackground()?.hover?.backgroundPosition ?? undefined',
-    '[style.--alf-bg-repeat-hover]': 'this.resolvedBackground()?.hover?.backgroundRepeat ?? undefined',
-    '[style.--alf-bg-attachment-hover]': 'this.resolvedBackground()?.hover?.backgroundAttachment ?? undefined',
-    '[style.--alf-bg-clip-hover]': 'this.resolvedBackground()?.hover?.backgroundClip ?? undefined',
-
-    // --- ACTIVE ---
-    '[style.--alf-bg-color-active]': 'this.resolvedBackground()?.active?.backgroundColor ?? undefined',
-    '[style.--alf-bg-image-active]': 'this.resolvedBackground()?.active?.backgroundImage ?? undefined',
-    '[style.--alf-bg-size-active]': 'this.resolvedBackground()?.active?.backgroundSize ?? undefined',
-    '[style.--alf-bg-pos-active]': 'this.resolvedBackground()?.active?.backgroundPosition ?? undefined',
-    '[style.--alf-bg-repeat-active]': 'this.resolvedBackground()?.active?.backgroundRepeat ?? undefined',
-    '[style.--alf-bg-attachment-active]': 'this.resolvedBackground()?.active?.backgroundAttachment ?? undefined',
-    '[style.--alf-bg-clip-active]': 'this.resolvedBackground()?.active?.backgroundClip ?? undefined',
-
-    // --- FOCUS ---
-    '[style.--alf-bg-color-focus]': 'this.resolvedBackground()?.focus?.backgroundColor ?? undefined',
-    '[style.--alf-bg-image-focus]': 'this.resolvedBackground()?.focus?.backgroundImage ?? undefined',
-    '[style.--alf-bg-size-focus]': 'this.resolvedBackground()?.focus?.backgroundSize ?? undefined',
-    '[style.--alf-bg-pos-focus]': 'this.resolvedBackground()?.focus?.backgroundPosition ?? undefined',
-    '[style.--alf-bg-repeat-focus]': 'this.resolvedBackground()?.focus?.backgroundRepeat ?? undefined',
-    '[style.--alf-bg-attachment-focus]': 'this.resolvedBackground()?.focus?.backgroundAttachment ?? undefined',
-    '[style.--alf-bg-clip-focus]': 'this.resolvedBackground()?.focus?.backgroundClip ?? undefined',
-
-    // --- DISABLED ---
-    '[style.--alf-bg-color-disabled]': 'this.resolvedBackground()?.disabled?.backgroundColor ?? undefined',
-    '[style.--alf-bg-image-disabled]': 'this.resolvedBackground()?.disabled?.backgroundImage ?? undefined',
-    '[style.--alf-bg-size-disabled]': 'this.resolvedBackground()?.disabled?.backgroundSize ?? undefined',
-    '[style.--alf-bg-pos-disabled]': 'this.resolvedBackground()?.disabled?.backgroundPosition ?? undefined',
-    '[style.--alf-bg-repeat-disabled]': 'this.resolvedBackground()?.disabled?.backgroundRepeat ?? undefined',
-    '[style.--alf-bg-attachment-disabled]': 'this.resolvedBackground()?.disabled?.backgroundAttachment ?? undefined',
-    '[style.--alf-bg-clip-disabled]': 'this.resolvedBackground()?.disabled?.backgroundClip ?? undefined',
-  }
 })
 export class AlfBackgroundDirective {
+  private readonly el = inject(ElementRef<HTMLElement>);
+
   public readonly alfBackground = input<AlfBackgroundsInterface | AlfBackgroundsBaseInterface | undefined>(undefined);
+  public readonly alfPrefix     = input<string>('--alf');
 
   public readonly resolvedBackground = computed<AlfBackgroundsInterface | undefined>(() => {
     const bg = this.alfBackground();
     if (!bg) return undefined;
+    if ('default' in bg) return bg as AlfBackgroundsInterface;
+    return { default: bg as AlfBackgroundsBaseInterface };
+  });
 
-    if ('default' in bg) {
-      return bg as AlfBackgroundsInterface;
-    }
+  private readonly SUFFIXES = [
+    '-bg-color', '-bg-img', '-bg-size', '-bg-pos', '-bg-repeat', '-bg-attachment', '-bg-clip',
+    '-bg-hover-color', '-bg-hover-img', '-bg-hover-size', '-bg-hover-pos', '-bg-hover-repeat', '-bg-hover-attachment', '-bg-hover-clip',
+    '-bg-active-color', '-bg-active-img',
+    '-bg-focus-color', '-bg-focus-img',
+    '-bg-disabled-color', '-bg-disabled-img',
+  ];
 
-    return {
-      default: bg as AlfBackgroundsBaseInterface,
+  private readonly _effect = effect(() => {
+    const bg  = this.resolvedBackground();
+    const p   = this.alfPrefix();
+    const el  = this.el.nativeElement as HTMLElement;
+
+    this.SUFFIXES.forEach(s => el.style.removeProperty(`${p}${s}`));
+    if (!bg) return;
+
+    const set = (prop: string, val: string | undefined) => {
+      if (val != null) el.style.setProperty(prop, val);
     };
+
+    set(`${p}-bg-color`,       bg.default?.backgroundColor);
+    set(`${p}-bg-img`,         bg.default?.backgroundImage);
+    set(`${p}-bg-size`,        bg.default?.backgroundSize);
+    set(`${p}-bg-pos`,         bg.default?.backgroundPosition);
+    set(`${p}-bg-repeat`,      bg.default?.backgroundRepeat);
+    set(`${p}-bg-attachment`,  bg.default?.backgroundAttachment);
+    set(`${p}-bg-clip`,        bg.default?.backgroundClip);
+
+    set(`${p}-bg-hover-color`,       bg.hover?.backgroundColor);
+    set(`${p}-bg-hover-img`,         bg.hover?.backgroundImage);
+    set(`${p}-bg-hover-size`,        bg.hover?.backgroundSize);
+    set(`${p}-bg-hover-pos`,         bg.hover?.backgroundPosition);
+    set(`${p}-bg-hover-repeat`,      bg.hover?.backgroundRepeat);
+    set(`${p}-bg-hover-attachment`,  bg.hover?.backgroundAttachment);
+    set(`${p}-bg-hover-clip`,        bg.hover?.backgroundClip);
+
+    set(`${p}-bg-active-color`, bg.active?.backgroundColor);
+    set(`${p}-bg-active-img`,   bg.active?.backgroundImage);
+
+    set(`${p}-bg-focus-color`, bg.focus?.backgroundColor);
+    set(`${p}-bg-focus-img`,   bg.focus?.backgroundImage);
+
+    set(`${p}-bg-disabled-color`, bg.disabled?.backgroundColor);
+    set(`${p}-bg-disabled-img`,   bg.disabled?.backgroundImage);
   });
 }

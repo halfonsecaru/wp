@@ -15,3 +15,18 @@
   animation-fill-mode: $fill;
   animation-direction: $direction;
 }
+
+@mixin alf-transition() {
+  $duration: var(--alf-transition-duration, 700ms);
+  $timing: var(--alf-transition-timing, cubic-bezier(0.4, 0, 0.2, 1));
+  
+  transition: 
+    background-color $duration $timing,
+    border-color $duration $timing,
+    border-radius $duration $timing,
+    box-shadow $duration $timing,
+    opacity $duration $timing,
+    transform $duration $timing,
+    width $duration $timing,
+    height $duration $timing;
+}

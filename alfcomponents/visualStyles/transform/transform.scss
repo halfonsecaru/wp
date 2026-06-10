@@ -1,86 +1,40 @@
-// Helper to build a transform string from individual CSS custom properties.
-// Each function is only included if its variable is set (non-initial).
-// We use a workaround: define each piece as a var() with an empty string fallback,
-// then concatenate them all into a single transform declaration.
-
-@mixin _alf-transform-build($suffix: '') {
-  $tx: '--alf-tr-translate-x';
-  $ty: '--alf-tr-translate-y';
-  $tz: '--alf-tr-translate-z';
-  $s:  '--alf-tr-scale';
-  $sx: '--alf-tr-scale-x';
-  $sy: '--alf-tr-scale-y';
-  $r:  '--alf-tr-rotate';
-  $rx: '--alf-tr-rotate-x';
-  $ry: '--alf-tr-rotate-y';
-  $rz: '--alf-tr-rotate-z';
-  $kx: '--alf-tr-skew-x';
-  $ky: '--alf-tr-skew-y';
-  $p:  '--alf-tr-perspective';
-  $ts: '--alf-tr-transform-style';
-  $bv: '--alf-tr-backface-visibility';
-
+@mixin _alf-transform-build($prefix, $suffix: '') {
+  $sfx: '';
   @if $suffix != '' {
-    $tx: '--alf-tr-translate-x-#{$suffix}';
-    $ty: '--alf-tr-translate-y-#{$suffix}';
-    $tz: '--alf-tr-translate-z-#{$suffix}';
-    $s:  '--alf-tr-scale-#{$suffix}';
-    $sx: '--alf-tr-scale-x-#{$suffix}';
-    $sy: '--alf-tr-scale-y-#{$suffix}';
-    $r:  '--alf-tr-rotate-#{$suffix}';
-    $rx: '--alf-tr-rotate-x-#{$suffix}';
-    $ry: '--alf-tr-rotate-y-#{$suffix}';
-    $rz: '--alf-tr-rotate-z-#{$suffix}';
-    $kx: '--alf-tr-skew-x-#{$suffix}';
-    $ky: '--alf-tr-skew-y-#{$suffix}';
-    $p:  '--alf-tr-perspective-#{$suffix}';
-    $ts: '--alf-tr-transform-style-#{$suffix}';
-    $bv: '--alf-tr-backface-visibility-#{$suffix}';
+    $sfx: '-#{$suffix}';
   }
-
-  // Compose the transform value from active custom properties.
-  // Each piece falls back to an empty string if not set, so only set ones contribute.
-  transform: #{
-    "translateX(var(" + $tx + ", 0px))"
-    + " translateY(var(" + $ty + ", 0px))"
-    + " translateZ(var(" + $tz + ", 0px))"
-    + " scale(var(" + $s + ", 1))"
-    + " scaleX(var(" + $sx + ", 1))"
-    + " scaleY(var(" + $sy + ", 1))"
-    + " rotate(var(" + $r + ", 0deg))"
-    + " rotateX(var(" + $rx + ", 0deg))"
-    + " rotateY(var(" + $ry + ", 0deg))"
-    + " rotateZ(var(" + $rz + ", 0deg))"
-    + " skewX(var(" + $kx + ", 0deg))"
-    + " skewY(var(" + $ky + ", 0deg))"
-    + " perspective(var(" + $p + ", 0px))"
-  };
-
-  transform-style:     var(#{$ts}, flat);
-  backface-visibility: var(#{$bv}, visible);
+  
+  transform:           var(#{$prefix}-transform#{$sfx}-transform, revert);
+  perspective:         var(#{$prefix}-transform#{$sfx}-perspective, revert);
+  transform-style:     var(#{$prefix}-transform#{$sfx}-transform-style, revert);
+  backface-visibility: var(#{$prefix}-transform#{$sfx}-backface-visibility, revert);
 }
 
-@mixin alf-transform-style {
+@mixin alf-transform-style(
+  $prefix: '--alf',
+  $disabled-selectors: '&:disabled, &.disabled',
+  $focus-selectors: '&:focus, &:focus-visible'
+) {
   // --- 1. BASE / DEFAULT STATE ---
-  @include _alf-transform-build('');
+  @include _alf-transform-build($prefix, '');
 
   // --- 2. HOVER STATE ---
   &:hover {
-    @include _alf-transform-build('hover');
+    @include _alf-transform-build($prefix, 'hover');
   }
 
   // --- 3. ACTIVE STATE ---
   &:active {
-    @include _alf-transform-build('active');
+    @include _alf-transform-build($prefix, 'active');
   }
 
   // --- 4. FOCUS STATE ---
-  &:focus, &:focus-visible {
-    @include _alf-transform-build('focus');
+  #{$focus-selectors} {
+    @include _alf-transform-build($prefix, 'focus');
   }
 
   // --- 5. DISABLED STATE ---
-  &:disabled, &.disabled {
-    @include _alf-transform-build('disabled');
+  #{$disabled-selectors} {
+    @include _alf-transform-build($prefix, 'disabled');
   }
 }

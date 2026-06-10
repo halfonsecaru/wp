@@ -1,41 +1,74 @@
-<!-- 1. Comportamiento y Directivas -->
-@let tooltip = tooltipComputed(); @let ripple = rippleComputed(); @let cursor = cursorComputed();
+@let bg = backgroundComputed();
+@let bd = borderComputed();
+@let ot = outlineComputed();
+@let sd = shadowsComputed();
+@let an = animations();
+@let mg = marginComputed();
+@let pd = paddingComputed();
+@let ty = typographyComputed();
+@let ts = textStyleComputed();
+@let tr = transformComputed();
+@let dl = displayAndLayoutComputed();
+@let sz = sizeComputed();
+@let ar = aria();
+@let tt = tooltip();
+@let rp = ripple();
+@let cr = cursor();
+@let ds = isDisabled();
+@let cc = customClass();
+@let cs = customStyle();
 
-<!-- 3. Metadatos y Personalización -->
-@let animationsClass = animationsClassComputed(); @let customClass = customClassComputed();
-
-<!-- 4. Estado Core del Checkbox -->
-@let isCheckboxDisabled = isComponentDisabled(); @let idCheckbox = internalId; @let labelText = labelComputed(); @let labelPos =
-labelPositionComputed(); @let aria = ariaComputed(); @let isChecked = checked(); @let isIndeterminate = indeterminate(); @let size = sizeComputed();
-@let styleVariant = checkboxStyleComputed(); @let icon = displayIcon(); @let checkboxName = name(); @let isHovered = hovered(); @let isFocused =
-focused();
+@let idCheckbox = internalId;
+@let labelText = labelComputed();
+@let labelPos = labelPositionComputed();
+@let isChecked = checked();
+@let isIndeterminate = isIndeterminatedComputed();
+@let styleVariant = checkboxStyleComputed();
+@let icon = iconSelectedComputed();
+@let checkboxName = nameComputed();
+@let isHovered = hovered();
+@let isFocused = focused();
 
 <div
-  class="alf-cb"
-  [class]="'alf-cb--' + styleVariant + ' alf-cb--' + size + ' ' + customClass + ' ' + animationsClass"
-  [class.alf-cb--checked]="isChecked"
-  [class.alf-cb--indeterminate]="isIndeterminate"
-  [class.alf-cb--disabled]="isCheckboxDisabled"
-  [class.alf-cb--hovered]="isHovered"
-  [class.alf-cb--focused]="isFocused"
   (mouseenter)="hovered.set(true)"
   (mouseleave)="hovered.set(false)"
-  [style]="combinedStyles()"
+  [alfBackground]="bg ? bg : null" alfPrefix="--alf-cb"
+  [alfBorder]="bd ? bd : null"     alfPrefix="--alf-cb"
+  [alfOutline]="ot ? ot : null"    alfPrefix="--alf-cb"
+  [alfShadows]="sd ? sd : null"    alfPrefix="--alf-cb"
+  [alfAnimations]="an ? an : null" alfPrefix="--alf-cb"
+  [alfMargin]="mg ? mg : null"     alfPrefix="--alf-cb"
+  [alfPadding]="pd ? pd : null"    alfPrefix="--alf-cb"
+  [alfTypography]="ty ? ty : null" alfPrefix="--alf-cb"
+  [alfTextStyle]="ts ? ts : null"  alfPrefix="--alf-cb"
+  [alfTransform]="tr ? tr : null"  alfPrefix="--alf-cb"
+  [alfDisplayAndLayout]="dl ? dl : null" alfPrefix="--alf-cb"
+  [alfCursor]="cr ? cr : null"
+  [alfSize]="sz ? sz : null"
+  [alfDisabled]="ds"
+  [alfAria]="ar ? ar : null"
+  [class]="'alf-cb alf-cb--' + styleVariant + ' alf-cb--' + sz + (cc ? ' ' + cc : '')"
+  [class.alf-cb--checked]="isChecked"
+  [class.alf-cb--indeterminate]="isIndeterminate"
+  [class.alf-cb--disabled]="ds"
+  [class.alf-cb--hovered]="isHovered"
+  [class.alf-cb--focused]="isFocused"
+  [style]="cs ? cs : null"
 >
   <label
     class="alf-cb-wrapper"
     [class.alf-cb-wrapper--label-before]="labelPos === 'before'"
     [attr.for]="idCheckbox"
-    [style.cursor]="isCheckboxDisabled ? 'not-allowed' : cursor"
+    [style.cursor]="ds ? 'not-allowed' : (cr || null)"
     (click)="onLabelClick($event)"
   >
-    <!-- Input oculto para accesibilidad y estado -->
+    <!-- Input oculto para accesibilidad -->
     <input
       type="checkbox"
       hidden
       [id]="idCheckbox"
       [name]="checkboxName"
-      [disabled]="isCheckboxDisabled"
+      [disabled]="ds"
       [checked]="isChecked"
       [indeterminate]="isIndeterminate"
       (change)="onInputChange($event)"
@@ -43,23 +76,23 @@ focused();
       (focus)="focused.set(true)"
       (blur)="focused.set(false)"
       [attr.aria-checked]="isIndeterminate ? 'mixed' : isChecked"
-      [attr.aria-label]="aria?.ariaLabel || labelText"
-      [attr.aria-describedby]="aria?.ariaDescribedBy || (idCheckbox + '-description')"
+      [attr.aria-label]="ar?.ariaLabel || labelText || null"
+      [attr.aria-describedby]="ar?.ariaDescribedBy || (idCheckbox + '-description')"
     />
 
     <!-- Contenedor Visual (Box) -->
-    <div class="alf-cb-box" [alfRipple]="ripple" [alfTooltipText]="tooltip">
-      @if (isIndeterminate || (isChecked && resolvedConfig()?.iconSelected)) {
+    <div class="alf-cb-box" [alfRipple]="rp !== undefined ? rp : null" [alfTooltipText]="tt ? tt : null">
+      @if (isIndeterminate || (isChecked && iconSelected())) {
       <span class="alf-cb-icon">{{ icon }}</span>
       } @else if (isChecked) {
       <div class="alf-cb-svg-wrapper">
         @switch (styleVariant) { @case ('standard') {
         <svg class="std-svg" viewBox="0 0 24 24">
-          <path d="M5 13l4 4L19 7"></path>
+          <path d="M6 13l4 4L18 8"></path>
         </svg>
         } @default {
         <svg class="elegant-svg" viewBox="0 0 24 24">
-          <path d="M5 13l4 4L19 7"></path>
+          <path d="M6 13l4 4L18 8"></path>
         </svg>
         } }
       </div>
@@ -74,8 +107,8 @@ focused();
 </div>
 
 <!-- Helper y Errores -->
-@let helper = $safeNavigationMigration(resolvedConfig()?.helperText); @let errorMsg = $safeNavigationMigration(resolvedConfig()?.error); @if (helper
-|| errorMsg) {
+@let helper = $safeNavigationMigration(helperComputed()); @let errorMsg = $safeNavigationMigration(errorComputed()); 
+@if (helper || errorMsg) {
 <div [id]="idCheckbox + '-description'" class="alf-cb-description">
   @if (errorMsg) {
   <span class="alf-cb-error">{{ errorMsg }}</span>

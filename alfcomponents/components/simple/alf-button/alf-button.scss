@@ -1,4 +1,5 @@
 @use '../../../styles/mixins' as *;
+@use '../../../visualStyles/size/size' as *;
 
 :host {
   display: inline-block;
@@ -24,6 +25,7 @@
   @include alf-text-style-css-vars('--alf-btn', '&:disabled, &.alf-button--disabled', '&:focus, &:focus-visible');
   @include alf-outline-css-vars('--alf-btn', '&:disabled, &.alf-button--disabled');
   @include alf-transform-css-vars('--alf-btn', '&:disabled, &.alf-button--disabled');
+  @include alf-size-style;
 
   // --- 2. PROPIEDADES EXCLUSIVAS DEL COMPONENTE ---
   // Solo lo que los mixins NO controlan
@@ -31,6 +33,7 @@
   outline: none;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  position: relative;
 
   * {
     box-sizing: border-box;
@@ -42,6 +45,33 @@
   }
 
   // --- 4. ELEMENTOS INTERNOS ---
+  &__content {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: inherit;
+    width: 100%;
+    height: 100%;
+    transition: opacity 0.2s ease;
+
+    &--hidden {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+  }
+
+  &__loader-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+
   &__icon {
     display: inline-flex;
     align-items: center;

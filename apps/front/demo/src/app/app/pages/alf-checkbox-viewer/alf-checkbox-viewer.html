@@ -125,6 +125,127 @@
 			</div>
 		</div>
 
+		<!-- 5. VARIANTES OUTLINE -->
+		<div class="rb-card rb-card--wide">
+			<h2 class="rb-card__title">
+				VARIANTES OUTLINE
+			</h2>
+			<div class="rb-card__body">
+				<div class="rb-demo-grid-4">
+					@for (variant of outlineVariants; track variant) {
+						<div class="rb-size-item" style="align-items: flex-start; gap: 0.5rem;">
+							<span class="rb-variant-badge rb-variant-badge--{{ getBadgeColorClass(variant) }}">{{ variant }}</span>
+							<alf-checkbox 
+								[variant]="variant" 
+								[label]="variant" 
+							/>
+						</div>
+					}
+				</div>
+			</div>
+		</div>
+
+		<!-- 6. VARIANTES GHOST -->
+		<div class="rb-card rb-card--wide">
+			<h2 class="rb-card__title">
+				VARIANTES GHOST
+			</h2>
+			<div class="rb-card__body">
+				<div class="rb-demo-grid-4">
+					@for (variant of ghostVariants; track variant) {
+						<div class="rb-size-item" style="align-items: flex-start; gap: 0.5rem;">
+							<span class="rb-variant-badge rb-variant-badge--{{ getBadgeColorClass(variant) }}">{{ variant }}</span>
+							<alf-checkbox 
+								[variant]="variant" 
+								[label]="variant" 
+							/>
+						</div>
+					}
+				</div>
+			</div>
+		</div>
+
+		<!-- 7. VARIANTES SOFT -->
+		<div class="rb-card rb-card--wide">
+			<h2 class="rb-card__title">
+				VARIANTES SOFT
+			</h2>
+			<div class="rb-card__body">
+				<div class="rb-demo-grid-4">
+					@for (variant of softVariants; track variant) {
+						<div class="rb-size-item" style="align-items: flex-start; gap: 0.5rem;">
+							<span class="rb-variant-badge rb-variant-badge--{{ getBadgeColorClass(variant) }}">{{ variant }}</span>
+							<alf-checkbox 
+								[variant]="variant" 
+								[label]="variant" 
+							/>
+						</div>
+					}
+				</div>
+			</div>
+		</div>
+
+		<!-- 8. VARIANTES CRYSTAL -->
+		<div class="rb-card rb-card--wide">
+			<h2 class="rb-card__title">
+				VARIANTES CRYSTAL
+			</h2>
+			<div class="rb-card__body">
+				<div class="rb-demo-grid-4">
+					@for (variant of crystalVariants; track variant) {
+						<div class="rb-size-item" style="align-items: flex-start; gap: 0.5rem;">
+							<span class="rb-variant-badge rb-variant-badge--{{ getBadgeColorClass(variant) }}" style="opacity: 0.8; color: white;">{{ variant }}</span>
+							<alf-checkbox 
+								[variant]="variant" 
+								[label]="variant" 
+							/>
+						</div>
+					}
+				</div>
+			</div>
+		</div>
+
+		<!-- 9. VARIANTES 3D DEPTH -->
+		<div class="rb-card rb-card--wide">
+			<h2 class="rb-card__title">
+				VARIANTES 3D DEPTH
+			</h2>
+			<div class="rb-card__body">
+				<div class="rb-demo-grid-4">
+					@for (variant of depth3DVariants; track variant) {
+						<div class="rb-size-item" style="align-items: flex-start; gap: 0.5rem;">
+							<span class="rb-variant-badge rb-variant-badge--{{ getBadgeColorClass(variant) }}">{{ variant }}</span>
+							<alf-checkbox 
+								[variant]="variant" 
+								[label]="variant" 
+							/>
+						</div>
+					}
+				</div>
+			</div>
+		</div>
+
+		<!-- 10. VARIANTES GRADIENT PREMIUM -->
+		<div class="rb-card rb-card--wide">
+			<h2 class="rb-card__title">
+				VARIANTES GRADIENT PREMIUM
+			</h2>
+			<div class="rb-card__body">
+				<div class="rb-demo-grid-4">
+					@for (variant of gradientVariants; track variant) {
+						<div class="rb-size-item" style="align-items: flex-start; gap: 0.5rem;">
+							<span class="rb-variant-badge rb-variant-badge--{{ getBadgeColorClass(variant) }}">{{ variant }}</span>
+							<alf-checkbox 
+								[variant]="variant" 
+								[label]="variant" 
+							/>
+						</div>
+					}
+				</div>
+			</div>
+		</div>
+
+
 
 
 		<!-- 11. ESTADOS FUNCIONALES / ESCENARIOS -->

@@ -1,4 +1,4 @@
-@use '../../../styles/mixins' as *;
+@use '../../../visualStyles/index' as *;
 
 :host {
   display: flex;
@@ -16,22 +16,10 @@
 
   @include alf-transition;
 
-  @include alf-display-layout-css-vars($prefix: '--alf-cb',
-    $display: flex,
-    $align: flex-start,
-    $justify: flex-start,
+  @include alf-display-and-layout-style($prefix: '--alf-cb',
     $disabled-selectors: '&--disabled',
     $focus-selectors: '&:focus-within, &:focus-visible'
   );
-
-  //@include alf-background-css-vars('--alf-cb', '&--disabled', '&:focus-within, &:focus-visible');
-  @include alf-padding-css-vars('--alf-cb', '&--disabled', '&:focus-within, &:focus-visible');
-  @include alf-margin-css-vars('--alf-cb', '&--disabled', '&:focus-within, &:focus-visible');
-  @include alf-typography-css-vars('--alf-cb', '&--disabled', '&:focus-within, &:focus-visible');
-  @include alf-text-style-css-vars('--alf-cb', '&--disabled', '&:focus-within, &:focus-visible');
-  @include alf-outline-css-vars('--alf-cb', '&--disabled');
-  @include alf-transform-css-vars('--alf-cb', '&--disabled');
-
 
   position: relative;
   cursor: pointer;
@@ -40,14 +28,13 @@
   height: auto !important;
   overflow: visible !important;
 
-
   &--disabled {
     cursor: not-allowed;
     opacity: 0.5;
     pointer-events: none;
   }
 
-  // Contenedor interno para alinear checkbox + label
+  // Wrapper for layout alignment
   &-wrapper {
     display: inline-flex;
     align-items: center;
@@ -59,7 +46,7 @@
     }
   }
 
-  // El "cuadrito" o "circulito" visual
+  // Visual container box
   &-box {
     box-sizing: border-box;
     position: relative;
@@ -68,40 +55,54 @@
     justify-content: center;
     flex-shrink: 0;
 
-    // Tamaño base (MD por defecto)
+    // Default base size (MD)
     width: 1.25rem;
     height: 1.25rem;
 
-    // Aplicación de variables Élite de Borde, Sombra, Background y Padding
-    @include alf-background-css-vars('--alf-cb', '&--disabled', ':focus-within');
-    @include alf-padding-css-vars('--alf-cb', '&--disabled', ':focus-within');
-    @include alf-border-css-vars('--alf-cb', '&--disabled', ':focus-within');
-    @include alf-shadows-css-vars('--alf-cb', '&--disabled');
-    @include alf-transform-css-vars('--alf-cb', '&--disabled');
+    // Apply central visual engine style variables
+    @include alf-background-style('--alf-cb', '.alf-cb--disabled &', '.alf-cb--focused &');
+    @include alf-padding-style('--alf-cb', '.alf-cb--disabled &', '.alf-cb--focused &');
+    @include alf-border-style('--alf-cb', '.alf-cb--disabled &', '.alf-cb--focused &');
+    @include alf-shadows-style('--alf-cb', '.alf-cb--disabled &');
+    @include alf-transform-style('--alf-cb', '.alf-cb--disabled &');
 
+    // Base Unchecked styles
+    background-color: transparent !important;
+    background-image: none !important;
 
+    border-width: var(--alf-cb-border-width, 1px) !important;
+    border-style: var(--alf-cb-border-style, solid) !important;
+    border-color: var(--alf-cb-border-color, var(--alf-cb-bg-color, var(--alf-gray-300, #d1d5db))) !important;
 
-
-
-    // Estilo Base (Unchecked)
-    background-color: transparent;
-
-    // Borde: Usamos los nombres reales del motor (--prefix-border-prop)
-    border-width: 1px !important;
-    border-style: solid !important;
-    border-color: var(--alf-cb-border-color, var(--alf-gray-300, #d1d5db));
-
+    --alf-transition-duration: 0.3s;
+    --alf-transition-timing: ease-out;
+    @include alf-transition;
   }
 
-  // Estado Seleccionado / Indeterminado
+  &--hovered &-box {
+    border-color: var(--alf-cb-border-hover-color, var(--alf-cb-bg-hover-color, var(--alf-cb-border-color, var(--alf-cb-bg-color, var(--alf-gray-400, #9ca3af))))) !important;
+  }
+
+  &--focused &-box {
+    border-color: var(--alf-cb-border-focus-color, var(--alf-cb-bg-focus-color, var(--alf-cb-border-color, var(--alf-cb-bg-color, var(--alf-primary-500, #3b82f6))))) !important;
+  }
+
+  &--disabled &-box {
+    border-color: var(--alf-cb-border-disabled-color, var(--alf-cb-bg-disabled-color, var(--alf-cb-border-color, var(--alf-cb-bg-color, var(--alf-gray-200, #e5e7eb))))) !important;
+  }
+
+  // Checked and Indeterminate Box states
   &--checked &-box,
   &--indeterminate &-box {
-    border-color: var(--alf-cb-border-color);
+    background-color: var(--alf-cb-bg-color, var(--alf-cb-bg, var(--alf-cb-border-color, currentColor))) !important;
+    background-image: var(--alf-cb-bg-img, none) !important;
+    border-color: var(--alf-cb-border-color, var(--alf-cb-bg-color, currentColor)) !important;
   }
 
+  // Checkmark SVG configuration
   svg {
-    width: 0.85rem;
-    height: 0.85rem;
+    width: 100%;
+    height: 100%;
     fill: none;
     stroke-width: 3;
     stroke-linecap: round;
@@ -111,6 +112,7 @@
     animation: alf-cb-check 0.3s forwards ease-out;
   }
 
+  // Absolute centered checkmark wrapper (70% proportion)
   .alf-cb-icon,
   .alf-cb-svg-wrapper {
     display: flex;
@@ -119,32 +121,54 @@
     width: 100%;
     height: 100%;
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     pointer-events: none;
   }
 
   .alf-cb-icon,
   svg path {
-    stroke: var(--alf-cb-border-color, var(--alf-gray-300, #d1d5db));
-    color: var(--alf-cb-border-color, var(--alf-gray-300, #d1d5db));
+    stroke: var(--alf-cb-text-color, var(--alf-cb-icon-color, var(--alf-white, #ffffff))) !important;
+    color: var(--alf-cb-text-color, var(--alf-cb-icon-color, var(--alf-white, #ffffff))) !important;
   }
 
+  &--hovered svg path {
+    stroke: var(--alf-cb-text-hover-color, var(--alf-cb-text-color, var(--alf-white, #ffffff))) !important;
+  }
 
+  &--focused svg path {
+    stroke: var(--alf-cb-text-focus-color, var(--alf-cb-text-color, var(--alf-white, #ffffff))) !important;
+  }
 
-  // Texto del Label
+  &--disabled svg path {
+    stroke: var(--alf-cb-text-disabled-color, var(--alf-cb-text-color, var(--alf-white, #ffffff))) !important;
+  }
+
+  // Label text styles
   &-label-text {
     display: inline-flex;
     align-items: center;
     vertical-align: middle;
     font-family: inherit;
     line-height: normal;
-    color: var(--alf-cb-bg-color, var(--alf-cb-border-color, inherit)) !important;
+    color: var(--alf-cb-border-color, inherit) !important;
     @include alf-transition;
   }
 
+  &--hovered &-label-text {
+    color: var(--alf-cb-border-hover-color, var(--alf-cb-border-color, inherit)) !important;
+  }
 
-  // Descripciones y Helpers
+  &--focused &-label-text {
+    color: var(--alf-cb-border-focus-color, var(--alf-cb-border-color, inherit)) !important;
+  }
+
+  &--disabled &-label-text {
+    color: var(--alf-cb-border-disabled-color, var(--alf-cb-border-color, inherit)) !important;
+  }
+
+  // Description / helper text blocks
   &-description,
   &-helper {
     margin-top: 0.2rem;
@@ -158,8 +182,7 @@
     color: var(--alf-danger, #dc3545) !important;
   }
 
-  // ── VARIANTES DE FORMA ────────────────────────────────────────────────────
-
+  // Shape variants
   &--standard &-box {
     border-radius: 0.25rem;
   }
@@ -168,70 +191,57 @@
     border-radius: 50%;
   }
 
-  // ── SIZES ─────────────────────────────────────────────────────────────────
-
-  &--xs &-box {
+  // Size configurations
+  &--xs .alf-cb-box {
     width: 0.85rem;
     height: 0.85rem;
 
     svg {
-      width: 0.55rem;
-      height: 0.55rem;
       stroke-width: 4;
     }
   }
 
-  &--sm &-box {
+  &--sm .alf-cb-box {
     width: 1.05rem;
     height: 1.05rem;
 
     svg {
-      width: 0.7rem;
-      height: 0.7rem;
       stroke-width: 3.5;
     }
   }
 
-  &--md &-box {
+  &--md .alf-cb-box {
     width: 1.25rem;
     height: 1.25rem;
 
     svg {
-      width: 0.85rem;
-      height: 0.85rem;
       stroke-width: 3;
     }
   }
 
-  &--lg &-box {
+  &--lg .alf-cb-box {
     width: 1.5rem;
     height: 1.5rem;
 
     svg {
-      width: 1.1rem;
-      height: 1.1rem;
       stroke-width: 2.5;
     }
   }
 
-  &--xl &-box {
+  &--xl .alf-cb-box {
     width: 1.85rem;
     height: 1.85rem;
 
     svg {
-      width: 1.3rem;
-      height: 1.3rem;
       stroke-width: 2;
     }
   }
 
-  &--2xl &-box {
+  &--2xl .alf-cb-box {
     width: 2.25rem;
     height: 2.25rem;
 
     svg {
-      width: 1.6rem;
-      height: 1.6rem;
       stroke-width: 2;
     }
   }

@@ -71,8 +71,9 @@ describe('AlfButton', () => {
     (component.onHoverEnter as any).subscribe(onEnterSpy);
     (component.onHoverLeave as any).subscribe(onLeaveSpy);
 
-    fixture.debugElement.triggerEventHandler('mouseenter', new MouseEvent('mouseenter'));
-    fixture.debugElement.triggerEventHandler('mouseleave', new MouseEvent('mouseleave'));
+    const buttonEl = fixture.debugElement.query(By.css('.alf-button'));
+    buttonEl.triggerEventHandler('mouseenter', new MouseEvent('mouseenter'));
+    buttonEl.triggerEventHandler('mouseleave', new MouseEvent('mouseleave'));
 
     expect(onEnterSpy).toHaveBeenCalledTimes(1);
     expect(onLeaveSpy).toHaveBeenCalledTimes(1);
@@ -111,5 +112,43 @@ describe('AlfButton', () => {
     buttonEl.nativeElement.click();
 
     expect(onClickSpy).toHaveBeenCalledTimes(2);
+  });
+
+  it('genera un id único por defecto y aplica id personalizado', () => {
+    fixture.detectChanges();
+    const buttonEl = fixture.debugElement.query(By.css('.alf-button'));
+    expect(buttonEl.nativeElement.getAttribute('id')).toContain('-alf-btn-id');
+
+    fixture.componentRef.setInput('id', 'mi-custom-id');
+    fixture.detectChanges();
+    expect(buttonEl.nativeElement.getAttribute('id')).toBe('mi-custom-id');
+  });
+
+  it('maneja el estado de carga (loading) sin destruir el contenido', () => {
+    fixture.componentRef.setInput('loading', true);
+    fixture.detectChanges();
+
+    const contentEl = fixture.debugElement.query(By.css('.alf-button__content'));
+    const loaderEl = fixture.debugElement.query(By.css('.alf-button__loader-overlay'));
+    const spinnerEl = fixture.debugElement.query(By.css('.alf-button__spinner'));
+
+    expect(contentEl.nativeElement.classList.contains('alf-button__content--hidden')).toBe(true);
+    expect(loaderEl).toBeTruthy();
+    expect(spinnerEl).toBeTruthy();
+
+    fixture.componentRef.setInput('loading', false);
+    fixture.detectChanges();
+
+    const loaderElAfter = fixture.debugElement.query(By.css('.alf-button__loader-overlay'));
+    expect(loaderElAfter).toBeFalsy();
+  });
+
+  it('aplica el estado bloqueado (disabled)', () => {
+    fixture.componentRef.setInput('disabled', true);
+    fixture.detectChanges();
+
+    const buttonEl = fixture.debugElement.query(By.css('.alf-button'));
+    expect(buttonEl.nativeElement.disabled).toBe(true);
+    expect(buttonEl.nativeElement.classList.contains('alf-button--disabled')).toBe(true);
   });
 });

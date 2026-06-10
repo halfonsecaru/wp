@@ -2,55 +2,80 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  ElementRef,
-  HostListener,
-  inject,
   input,
   output,
 } from '@angular/core';
-import { AlfBaseConfiguration } from '@alfcomponents/base/alf-base-configuration';
 import {
   generateUniqueId,
   visualprefixEnum,
 } from '@alfcomponents/shared';
 import {
-  AlfColorVariantEnum,
   AlfButtonTypeEnum,
   AlfIconsUnicodeIconEnum,
 } from '@alfcomponents/enums';
 import { AlfRippleDirective, AlfTooltipTextDirective } from '@alfcomponents/directives';
+import {
+  AlfBackgroundDirective,
+  AlfBorderDirective,
+  AlfOutlineDirective,
+  AlfShadowsDirective,
+  AlfAnimationsDirective,
+  AlfMarginDirective,
+  AlfPaddingDirective,
+  AlfTypographyDirective,
+  AlfTextStyleDirective,
+  AlfTransformDirective,
+  AlfDisplayAndLayoutDirective,
+  AlfCursorDirective,
+  AlfSizeDirective,
+  AlfDisabledDirective,
+  AlfAriaDirective,
+} from '@alfcomponents/visualStyles';
 import { AlfButtonInterface, ButtonLink } from './interfaces/alf-button.interface';
-import { getAlfButtonDefaultConfig } from './predefined/alf-button.predefined';
 import { AlfButtonI18nLabels } from './i18n/alf-button.i18n';
-import { CommonModule } from '@angular/common';
 import { AlfComponentTypeEnum } from '@alfcomponents/base/defaultVariants';
+import { AlfBaseDirective } from '@alfcomponents/components/base/base.directive';
 
 @Component({
   selector: 'alf-button',
   standalone: true,
-  imports: [AlfTooltipTextDirective, AlfRippleDirective, CommonModule],
+  imports: [
+    AlfTooltipTextDirective,
+    AlfRippleDirective,
+    AlfBackgroundDirective,
+    AlfBorderDirective,
+    AlfOutlineDirective,
+    AlfShadowsDirective,
+    AlfAnimationsDirective,
+    AlfMarginDirective,
+    AlfPaddingDirective,
+    AlfTypographyDirective,
+    AlfTextStyleDirective,
+    AlfTransformDirective,
+    AlfDisplayAndLayoutDirective,
+    AlfCursorDirective,
+    AlfSizeDirective,
+    AlfDisabledDirective,
+    AlfAriaDirective
+  ],
   templateUrl: './alf-button.html',
   styleUrl: './alf-button.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AlfButton extends AlfBaseConfiguration<AlfButtonInterface> {
+export class AlfButton extends AlfBaseDirective {
 
-  // A) Generales a todo el componente
-  protected override readonly visualPrefix = visualprefixEnum.Buttons;
-  protected override readonly componentType = AlfComponentTypeEnum.Button;
-  protected readonly internalId = generateUniqueId({ prefix: visualprefixEnum.ButtonsInternalId });
-
+ 
   // B) Internos
   private lastClickTime = 0;
-  private readonly el = inject(ElementRef);
+  private readonly internalId = generateUniqueId({ prefix: visualprefixEnum.ButtonsInternalId });
 
   // ── Inputs de variante / config ───────────────────────────────────────────
+  public readonly inputConfig = input<AlfButtonInterface>(undefined, { alias: 'config' });
+  
 
-  public override readonly colorVariant = input<AlfColorVariantEnum>();
-  public override readonly inputConfig = input<AlfButtonInterface>();
+  // ── Inputs  ───────────────────────────────────────────────────────────────
 
-  // ── Inputs directos ───────────────────────────────────────────────────────
-
+  public readonly id = input<string | undefined>(undefined);
   public readonly label = input<string>();
   public readonly type = input<AlfButtonTypeEnum>();
   public readonly iconLeft = input<string | AlfIconsUnicodeIconEnum>();
@@ -62,64 +87,44 @@ export class AlfButton extends AlfBaseConfiguration<AlfButtonInterface> {
 
   // ── Computed: cadena de configuración ────────────────────────────────────
 
+  constructor() {
+    super();
+    this.componentType.set(AlfComponentTypeEnum.Button);
+  };
+
   /**
    * 1. Obtenemos la configuración predefinida basada en variante y estilo
    */
   protected readonly predefinedConfig = computed(() => {
-    return getAlfButtonDefaultConfig(this.colorVariantComputed());
+    //return getAlfButtonDefaultConfig(this.colorVariantComputed());
   });
 
-  /**
-   * 3. Combinamos con el inputConfig manual
-   */
-  public override readonly resolvedConfig = computed(() => {
-    const predefined = this.predefinedConfig();
-    const manual = this.inputConfig();
-    const variant = this.colorVariantComputed();
-
-    return {
-      ...predefined,
-      ...manual,
-      colorVariant: variant,
-      label: this.label() ?? manual?.label ?? predefined.label,
-      type: this.type() ?? manual?.type ?? predefined.type ?? AlfButtonTypeEnum.Button,
-      iconLeft: this.iconLeft() ?? manual?.iconLeft ?? predefined.iconLeft,
-      iconRight: this.iconRight() ?? manual?.iconRight ?? predefined.iconRight,
-      link: this.link() ?? manual?.link ?? predefined.link,
-      disabled: this.disabled() ?? manual?.disabled ?? predefined.disabled,
-      loading: this.loading() ?? manual?.loading ?? predefined.loading,
-      debounceTime: this.debounceTime() ?? manual?.debounceTime ?? predefined.debounceTime ?? 0,
-    };
-  });
-
+ 
 
   // ── Computed derivados ────────────────────────────────────────────────────
 
-  public readonly isDisabled = computed(() => this.disabledComputed());
-  public readonly isLoading = computed(() => this.loading() ?? this.resolvedConfig()?.loading ?? false);
-  
   public readonly buttonId = computed(() =>
-    this.resolvedConfig()?.id ?? this.internalId
+    this.id() ?? this.internalId
   );
 
   public readonly labelComputed = computed(() =>
-    this.label() ?? this.resolvedConfig()?.label ?? ''
+    this.label() ?? ''
   );
 
   public readonly iconLeftComputed = computed(() =>
-    this.iconLeft() ?? this.resolvedConfig()?.iconLeft
+    this.iconLeft()
   );
 
   public readonly iconRightComputed = computed(() =>
-    this.iconRight() ?? this.resolvedConfig()?.iconRight
+    this.iconRight()
   );
 
   public readonly typeComputed = computed(() =>
-    this.type() ?? this.resolvedConfig()?.type ?? AlfButtonTypeEnum.Button
+    this.type() ?? AlfButtonTypeEnum.Button
   );
 
   public readonly linkComputed = computed(() =>
-    this.link() ?? this.resolvedConfig()?.link
+    this.link()
   );
 
   // ── Outputs ───────────────────────────────────────────────────────────────
@@ -130,10 +135,9 @@ export class AlfButton extends AlfBaseConfiguration<AlfButtonInterface> {
 
   // ── Handlers ─────────────────────────────────────────────────────────────
 
-  @HostListener('click', ['$event'])
-  public readonly onHostClick = (event: MouseEvent): void => {
+  public onHostClick(event: MouseEvent): void {
     const now = Date.now();
-    const threshold = this.debounceTime() ?? this.resolvedConfig()?.debounceTime ?? 0;
+    const threshold = this.debounceTime() ?? this.inputConfig()?.debounceTime ?? 0;
 
     if (threshold > 0 && (now - this.lastClickTime < threshold)) {
       event.preventDefault();
@@ -147,16 +151,14 @@ export class AlfButton extends AlfBaseConfiguration<AlfButtonInterface> {
     }
 
     this.onClick.emit(event);
-  };
+  }
 
-  @HostListener('mouseenter', ['$event'])
-  public readonly onMouseEnter = (event: MouseEvent): void => {
+  public onMouseEnter(event: MouseEvent): void {
     this.onHoverEnter.emit(event);
-  };
+  }
 
-  @HostListener('mouseleave', ['$event'])
-  public readonly onMouseLeave = (event: MouseEvent): void => {
+  public onMouseLeave(event: MouseEvent): void {
     this.onHoverLeave.emit(event);
-  };
+  }
 
 }

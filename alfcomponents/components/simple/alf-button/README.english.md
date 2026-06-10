@@ -15,18 +15,16 @@ High-performance standalone button component designed for Angular 21. It impleme
 
 ```html
 <alf-button
-  [inputConfig]="saveButtonConfig"
+  [id]="'btn-save'"
+  [colorVariant]="AlfColorVariantEnum.Primary"
+  [label]="'Save Changes'"
   (onClick)="handleSave($event)">
 </alf-button>
 ```
 
 ```typescript
-import { getAlfButtonDefaultConfig } from '@alfcomponents/components/simple/alf-button/predefined/alf-button.predefined';
 import { AlfColorVariantEnum } from '@alfcomponents/enums';
-
-// Get the predefined configuration from the design system
-saveButtonConfig = getAlfButtonDefaultConfig(AlfColorVariantEnum.Primary);
-```
+```,StartLine:14,TargetContent:
 
 ## Component API
 
@@ -60,7 +58,7 @@ The component uses a dual strategy:
 
 ## i18n and Translations
 
-The component supports native internationalization for common labels. Translations are located in `i18n/alf-button.i18n.ts`. When using `getAlfButtonDefaultConfig`, the system attempts to resolve the appropriate label based on the configured language.
+The component supports native internationalization for common labels. Translations are located in `i18n/alf-button.i18n.ts`.
 
 ---
 Part of the **Alfonizer Design System** ecosystem.

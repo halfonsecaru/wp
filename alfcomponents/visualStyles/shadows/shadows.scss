@@ -1,15 +1,19 @@
-@mixin alf-shadows-style {
+@mixin alf-shadows-style(
+  $prefix: '--alf',
+  $disabled-selectors: '&:disabled, &.disabled',
+  $focus-selectors: '&:focus, &:focus-visible'
+) {
   // --- 1. BASE / DEFAULT STATE ---
-  $bs: var(--alf-box-shadow, none);
-  $ts: var(--alf-text-shadow, none);
+  $bs: var(#{$prefix}-shadows-box-shadow, none);
+  $ts: var(#{$prefix}-shadows-text-shadow, none);
 
   box-shadow: $bs;
   text-shadow: $ts;
 
   // --- 2. HOVER STATE ---
   &:hover {
-    $hbs: var(--alf-box-shadow-hover, $bs);
-    $hts: var(--alf-text-shadow-hover, $ts);
+    $hbs: var(#{$prefix}-shadows-hover-box-shadow, $bs);
+    $hts: var(#{$prefix}-shadows-hover-text-shadow, $ts);
 
     box-shadow: $hbs;
     text-shadow: $hts;
@@ -17,26 +21,26 @@
 
   // --- 3. ACTIVE STATE ---
   &:active {
-    $abs: var(--alf-box-shadow-active, var(--alf-box-shadow-hover, $bs));
-    $ats: var(--alf-text-shadow-active, var(--alf-text-shadow-hover, $ts));
+    $abs: var(#{$prefix}-shadows-active-box-shadow, var(#{$prefix}-shadows-hover-box-shadow, $bs));
+    $ats: var(#{$prefix}-shadows-active-text-shadow, var(#{$prefix}-shadows-hover-text-shadow, $ts));
 
     box-shadow: $abs;
     text-shadow: $ats;
   }
 
   // --- 4. FOCUS STATE ---
-  &:focus, &:focus-visible {
-    $fbs: var(--alf-box-shadow-focus, $bs);
-    $fts: var(--alf-text-shadow-focus, $ts);
+  #{$focus-selectors} {
+    $fbs: var(#{$prefix}-shadows-focus-box-shadow, $bs);
+    $fts: var(#{$prefix}-shadows-focus-text-shadow, $ts);
 
     box-shadow: $fbs;
     text-shadow: $fts;
   }
 
   // --- 5. DISABLED STATE ---
-  &:disabled, &.disabled {
-    $dbs: var(--alf-box-shadow-disabled, $bs);
-    $dts: var(--alf-text-shadow-disabled, $ts);
+  #{$disabled-selectors} {
+    $dbs: var(#{$prefix}-shadows-disabled-box-shadow, $bs);
+    $dts: var(#{$prefix}-shadows-disabled-text-shadow, $ts);
 
     box-shadow: $dbs;
     text-shadow: $dts;

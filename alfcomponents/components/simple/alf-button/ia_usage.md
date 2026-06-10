@@ -19,44 +19,39 @@ The system uses a smart lookup mechanism:
 
 ## Recommended Configuration Workflow
 
-1. **Base Configuration**: Always start with the factory function to get the Design System defaults:
-   ```ts
-   import { getAlfButtonDefaultConfig } from '@alfcomponents/components/simple/alf-button/predefined/alf-button.predefined';
-   
-   const config = getAlfButtonDefaultConfig(AlfColorVariantEnum.PrimaryOutline);
+1. **Direct Component Inputs**: Instead of a factory function, pass inputs directly to the component. Inherited visual properties (e.g. `colorVariant`) are processed reactively by the base directive.
+   ```html
+   <alf-button
+     [id]="'my-custom-id'"
+     [colorVariant]="AlfColorVariantEnum.Primary"
+     [label]="'Accept Changes'"
+     [iconLeft]="AlfIconsUnicodeIconEnum.CheckMark"
+     [debounceTime]="100"
+     (onClick)="handleSave($event)">
+   </alf-button>
    ```
 
-2. **Customization**: Merge properties over the base config. Avoid hardcoding styles; use `AlfColorEnum` or `AlfPxEnum`.
-   ```ts
-   const finalConfig = {
-     ...config,
-     label: 'Accept Changes',
-     iconLeft: AlfIconsUnicodeIconEnum.CheckMark,
-     displayAndLayout: { default: { width: AlfPxEnum.Px160 } }
-   };
-   ```
-
-3. **Reactive Binding**: Bind to the `[inputConfig]` property of the component.
+2. **Customization**: Spreading and combining configs can also be done via the optional `inputConfig` input if needed, but direct signal inputs are the preferred approach for reactivity.
 
 ## Technical Rules (Mandatory)
 
 - **Access Modifiers**: Every variable and method MUST have a modifier (`public`, `private`, `protected`).
 - **Readonly Signals**: All signals (`input`, `computed`, `model`) MUST be `readonly`.
-- **Arrow Functions**: Use arrow functions for all class methods to ensure `this` context.
+- **Arrow Functions**: Use arrow functions for all class methods, except lifecycle hooks and host event handlers which can be standard methods.
 - **No Directives Overuse**: Do NOT use `CommonModule` or `*ngIf`. Use `@if`, `@for`, and `@let`.
+- **Direct Template Listeners**: Listen to interactive DOM events directly in the template (e.g., `(click)`, `(mouseenter)`, `(mouseleave)`) to prevent unnecessary host propagation and maintain precision.
 
 ## Events and Behavior
 
 - **Outputs**: `onClick`, `onHoverEnter`, `onHoverLeave`.
-- **Debounce**: Controlled by `debounceTime` (default 0). Internal logic prevents rapid double-clicks.
-- **Accessibility**: Automatic ARIA management and smart focus handling (blur on mouse click to avoid persistent focus rings).
+- **Debounce**: Controlled by `debounceTime` (default 0) inside `onHostClick` handler to filter rapid double-clicks.
+- **Identities & IDs**: Generates a unique `buttonId` computed property combining the `id()` input or a fallback `ButtonsInternalId` prefix.
 
 ## Testing
 
 Run tests before committing changes:
 ```powershell
 npx vitest run alfcomponents/components/simple/alf-button/alf-button.spec.ts
-npx vitest run alfcomponents/components/simple/alf-button/alf-button-predefined.spec.ts
 ```
 
 ---
