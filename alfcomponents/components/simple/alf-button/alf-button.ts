@@ -82,11 +82,17 @@ export class AlfButton extends AlfBaseDirective {
   public readonly iconLeft = input<string | AlfIconsUnicodeIconEnum>();
   public readonly iconRight = input<string | AlfIconsUnicodeIconEnum>();
   public readonly link = input<ButtonLink>();
-  public readonly loading = input<boolean>();
+  public readonly loading = input<boolean>(false);
   public readonly debounceTime = input<number>();
   public readonly predefined = input<keyof AlfButtonI18nLabels>();
 
-  // ── Computed: cadena de configuración ────────────────────────────────────
+  public override readonly isDisabled = computed<boolean>(() => 
+    this.disabled() === true || 
+    this.isDisabledInput() === true || 
+    this.inputConfig()?.disabled === true
+  );
+
+  // ── 3. Computed (Reactive Engine) ─────────────────────────────────────────
 
   constructor() {
     super();

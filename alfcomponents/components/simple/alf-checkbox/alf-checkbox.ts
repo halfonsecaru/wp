@@ -122,6 +122,12 @@ export class AlfCheckbox extends AlfBaseDirective {
   // /** Indeterminate state */
   public readonly isIndeterminate = input<boolean>(false);
 
+  public override readonly isDisabled = computed<boolean>(() => 
+    this.disabled() === true || 
+    this.isDisabledInput() === true || 
+    this.inputConfig()?.disabled === true
+  );
+
 
   // // ── 3. State Signals ──────────────────────────────────────────────────────
   public readonly focused = signal<boolean>(false);
