@@ -1,0 +1,67 @@
+@mixin _alf-transition-build($prefix, $suffix: '', $fallback-suffix: '') {
+  $sfx: '';
+  @if $suffix != '' {
+    $sfx: '-#{$suffix}';
+  }
+
+  $duration-var: #{$prefix}-transition#{$sfx}-duration;
+  $timing-var: #{$prefix}-transition#{$sfx}-timing-function;
+  $delay-var: #{$prefix}-transition#{$sfx}-delay;
+  $property-var: #{$prefix}-transition#{$sfx}-property;
+
+  @if $fallback-suffix == 'hover' {
+    $fallback-duration: var(#{$prefix}-transition-hover-duration, var(#{$prefix}-transition-duration, 300ms));
+    $fallback-timing: var(#{$prefix}-transition-hover-timing-function, var(#{$prefix}-transition-timing-function, cubic-bezier(0.4, 0, 0.2, 1)));
+    $fallback-delay: var(#{$prefix}-transition-hover-delay, var(#{$prefix}-transition-delay, 0s));
+    $fallback-property: var(#{$prefix}-transition-hover-property, var(#{$prefix}-transition-property, all));
+
+    transition-duration: var($duration-var, $fallback-duration);
+    transition-timing-function: var($timing-var, $fallback-timing);
+    transition-delay: var($delay-var, $fallback-delay);
+    transition-property: var($property-var, $fallback-property);
+  } @else if $fallback-suffix == 'default' {
+    $fallback-duration: var(#{$prefix}-transition-duration, 300ms);
+    $fallback-timing: var(#{$prefix}-transition-timing-function, cubic-bezier(0.4, 0, 0.2, 1));
+    $fallback-delay: var(#{$prefix}-transition-delay, 0s);
+    $fallback-property: var(#{$prefix}-transition-property, all);
+
+    transition-duration: var($duration-var, $fallback-duration);
+    transition-timing-function: var($timing-var, $fallback-timing);
+    transition-delay: var($delay-var, $fallback-delay);
+    transition-property: var($property-var, $fallback-property);
+  } @else {
+    transition-duration: var($duration-var, 300ms);
+    transition-timing-function: var($timing-var, cubic-bezier(0.4, 0, 0.2, 1));
+    transition-delay: var($delay-var, 0s);
+    transition-property: var($property-var, all);
+  }
+}
+
+@mixin alf-transition-style(
+  $prefix: '--alf',
+  $disabled-selectors: '&:disabled, &.disabled',
+  $focus-selectors: '&:focus, &:focus-visible'
+) {
+  // --- 1. BASE / DEFAULT STATE ---
+  @include _alf-transition-build($prefix, '');
+
+  // --- 2. HOVER STATE ---
+  &:hover {
+    @include _alf-transition-build($prefix, 'hover', 'default');
+  }
+
+  // --- 3. ACTIVE STATE ---
+  &:active {
+    @include _alf-transition-build($prefix, 'active', 'hover');
+  }
+
+  // --- 4. FOCUS STATE ---
+  #{$focus-selectors} {
+    @include _alf-transition-build($prefix, 'focus', 'default');
+  }
+
+  // --- 5. DISABLED STATE ---
+  #{$disabled-selectors} {
+    @include _alf-transition-build($prefix, 'disabled', 'default');
+  }
+}

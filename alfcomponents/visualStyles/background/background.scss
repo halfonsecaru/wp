@@ -1,7 +1,9 @@
 @mixin alf-background-style(
   $prefix: '--alf',
   $disabled-selectors: '&:disabled, &.disabled',
-  $focus-selectors: '&:focus, &:focus-visible'
+  $focus-selectors: '&:focus, &:focus-visible',
+  $hover-selectors: '&:hover',
+  $active-selectors: '&:active'
 ) {
   // --- 1. BASE / DEFAULT ---
   $bgc: var(#{$prefix}-bg-color, transparent);
@@ -21,7 +23,7 @@
   background-clip: $bgcl;
 
   // --- 2. HOVER STATE ---
-  &:hover {
+  #{$hover-selectors} {
     background-color: var(#{$prefix}-bg-hover-color, var(#{$prefix}-bg-hover, $bgc));
     background-image: var(#{$prefix}-bg-hover-img, $bgi);
     background-size: var(#{$prefix}-bg-hover-size, $bgs);
@@ -32,7 +34,7 @@
   }
 
   // --- 3. ACTIVE STATE ---
-  &:active {
+  #{$active-selectors} {
     $hbgc: var(#{$prefix}-bg-hover-color, var(#{$prefix}-bg-hover, $bgc));
     $hbgi: var(#{$prefix}-bg-hover-img, $bgi);
 

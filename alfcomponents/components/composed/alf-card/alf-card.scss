@@ -1,4 +1,4 @@
-@use '../../../styles/mixins' as *;
+@use '../../../visualStyles' as *;
 
 :host {
   display: flex;
@@ -6,10 +6,10 @@
   box-sizing: border-box;
   transition: box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
-  @include alf-background-css-vars('--alf-card', '&.alf-card--disabled', '&:focus');
-  @include alf-border-css-vars('--alf-card', '&.alf-card--disabled', '&:focus');
-  @include alf-shadows-css-vars('--alf-card', '&.alf-card--disabled');
-  @include alf-text-style-css-vars('--alf-card', '&.alf-card--disabled', '&:focus');
+  // @include alf-background-css-vars('--alf-card', '&.alf-card--disabled', '&:focus');
+  // @include alf-border-css-vars('--alf-card', '&.alf-card--disabled', '&:focus');
+  // @include alf-shadows-css-vars('--alf-card', '&.alf-card--disabled');
+  // // @include alf-text-style-css-vars('--alf-card', '&.alf-card--disabled', '&:focus');
 
   // Interactive state
   &.alf-card--interactive {

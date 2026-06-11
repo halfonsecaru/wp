@@ -3,11 +3,13 @@
 @let ot = outlineComputed();
 @let sd = shadowsComputed();
 @let an = animations();
+@let ie = isExiting();
 @let mg = marginComputed();
 @let pd = paddingComputed();
 @let ty = typographyComputed();
 @let ts = textStyleComputed();
 @let tr = transformComputed();
+@let tsn = transitionComputed();
 @let dl = displayAndLayoutComputed();
 @let cr = cursor();
 @let sz = size();
@@ -23,12 +25,12 @@
   [alfBorder]="bd ? bd : null"
   [alfOutline]="ot ? ot : null"
   [alfShadows]="sd ? sd : null"
-  [alfAnimations]="an ? an : null"
   [alfMargin]="mg ? mg : null"
   [alfPadding]="pd ? pd : null"
   [alfTypography]="ty ? ty : null"
   [alfTextStyle]="ts ? ts : null"
   [alfTransform]="tr ? tr : null"
+  [alfTransition]="tsn ? tsn : null"
   [alfDisplayAndLayout]="dl ? dl : null"
   [alfCursor]="cr ? cr : null"
   [alfSize]="sz ? sz : null"

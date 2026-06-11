@@ -1,4 +1,4 @@
-@use '../../../styles/mixins' as *;
+@use '../../../visualStyles' as *;
 
 :host {
   display: block;
@@ -8,15 +8,15 @@
 
 .alf-tabs-container {
   @include alf-transition;
-  @include alf-padding-css-vars('--alf-tabs');
-  @include alf-margin-css-vars('--alf-tabs');
-  @include alf-typography-css-vars('--alf-tabs');
-  @include alf-text-style-css-vars('--alf-tabs');
-  @include alf-outline-css-vars('--alf-tabs');
-  @include alf-border-css-vars('--alf-tabs');
-  @include alf-transform-css-vars('--alf-tabs');
-  @include alf-shadows-css-vars('--alf-tabs');
-  @include alf-background-css-vars('--alf-tabs');
+  // @include alf-padding-css-vars('--alf-tabs');
+  // @include alf-margin-css-vars('--alf-tabs');
+  // @include alf-typography-css-vars('--alf-tabs');
+  // // @include alf-text-style-css-vars('--alf-tabs');
+  // @include alf-outline-css-vars('--alf-tabs');
+  // @include alf-border-css-vars('--alf-tabs');
+  // @include alf-transform-css-vars('--alf-tabs');
+  // @include alf-shadows-css-vars('--alf-tabs');
+  // @include alf-background-css-vars('--alf-tabs');
 
   display: flex;
   flex-direction: column;
@@ -199,7 +199,7 @@
   }
 
   .alf-tabs-content-container {
-    @include alf-background-css-vars('--alf-tabs-content');
+    // @include alf-background-css-vars('--alf-tabs-content');
 
     position: relative;
     width: 100%;

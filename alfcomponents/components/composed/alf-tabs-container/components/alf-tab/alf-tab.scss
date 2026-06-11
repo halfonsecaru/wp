@@ -1,11 +1,11 @@
-@use '../../../../../styles/mixins' as *;
+@use '../../../../../visualStyles' as *;
 
 .alf-tab-content {
-  @include alf-background-css-vars('--alf-tab-content');
-  @include alf-padding-css-vars('--alf-tab-content');
-  @include alf-text-style-css-vars('--alf-tab-content');
-  @include alf-typography-css-vars('--alf-tab-content');
-  @include alf-display-layout-css-vars('--alf-tab-content');
+  // @include alf-background-css-vars('--alf-tab-content');
+  // @include alf-padding-css-vars('--alf-tab-content');
+  // // @include alf-text-style-css-vars('--alf-tab-content');
+  // @include alf-typography-css-vars('--alf-tab-content');
+  // @include alf-display-layout-css-vars('--alf-tab-content');
   
   display: flex;
   flex-direction: column;

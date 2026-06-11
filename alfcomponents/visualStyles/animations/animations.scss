@@ -1,13 +1,11 @@
-@mixin alf-animations-style {
-  $name: var(--alf-anim-name, none);
-  $duration: var(--alf-anim-duration, 1s);
-  $delay: var(--alf-anim-delay, 0s);
-  $iteration: var(--alf-anim-iteration-count, 1);
-  $timing: var(--alf-anim-timing-function, ease);
-  $fill: var(--alf-anim-fill-mode, both);
-  $direction: var(--alf-anim-direction, normal);
+@mixin alf-animations-style($prefix) {
+  $duration: var(#{$prefix}-animations-duration, 1s);
+  $delay: var(#{$prefix}-animations-delay, 0s);
+  $iteration: var(#{$prefix}-animations-iteration-count, 1);
+  $timing: var(#{$prefix}-animations-timing-function, ease);
+  $fill: var(#{$prefix}-animations-fill-mode, both);
+  $direction: var(#{$prefix}-animations-direction, normal);
 
-  animation-name: $name;
   animation-duration: $duration;
   animation-delay: $delay;
   animation-iteration-count: $iteration;

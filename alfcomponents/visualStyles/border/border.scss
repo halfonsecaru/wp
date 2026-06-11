@@ -1,4 +1,4 @@
-@mixin alf-border-style($prefix: '--alf', $disabled-selectors: '&:disabled, &.disabled', $focus-selectors: '&:focus, &:focus-visible') {
+@mixin alf-border-style($prefix: '--alf', $disabled-selectors: '&:disabled, &.disabled', $focus-selectors: '&:focus, &:focus-visible', $hover-selectors: '&:hover', $active-selectors: '&:active') {
   // --- 1. BASE / DEFAULT STATE ---
   $bw: var(#{$prefix}-border-width, 0px);
   $bwt: var(#{$prefix}-border-top-width, $bw);
@@ -58,7 +58,7 @@
   box-sizing: $bsz;
 
   // --- 2. HOVER STATE ---
-  &:hover {
+  #{$hover-selectors} {
     $hbw: var(#{$prefix}-border-width-hover, $bw);
     $hbwt: var(#{$prefix}-border-top-width-hover, var(#{$prefix}-border-top-width, $hbw));
     $hbwr: var(#{$prefix}-border-right-width-hover, var(#{$prefix}-border-right-width, $hbw));
@@ -117,7 +117,7 @@
   }
 
   // --- 3. ACTIVE STATE ---
-  &:active {
+  #{$active-selectors} {
     // Falls back to hover values if hover values are defined, otherwise default
     $hbw: var(#{$prefix}-border-width-hover, $bw);
     $hbr: var(#{$prefix}-border-radius-hover, $br);

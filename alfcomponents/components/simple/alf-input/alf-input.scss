@@ -1,5 +1,3 @@
-@use '../../../styles/mixins' as *;
-
 :host {
   display: block;
   width: 100%;
@@ -8,25 +6,19 @@
 .alf-input {
   box-sizing: border-box;
 
-  @include alf-transition;
+  // @include alf-transition;
 
-  @include alf-display-layout-css-vars($prefix: '--alf-inp',
-    $display: flex,
-    $align: center,
-    $justify: flex-start,
-    $disabled-selectors: '&--disabled',
-    $focus-selectors: '&--focused'
-  );
+  // // @include alf-display-layout-css-vars($prefix: '--alf-inp',   //   $display: flex,   //   $align: center,   //   $justify: flex-start,   //   $disabled-selectors: '&--disabled',   //   $focus-selectors: '&--focused'   // );
 
-  @include alf-background-css-vars('--alf-inp', '&--disabled', '&--focused');
-  @include alf-border-css-vars('--alf-inp', '&--disabled', '&--focused');
-  @include alf-shadows-css-vars('--alf-inp', '&--disabled', '&--focused');
-  @include alf-padding-css-vars('--alf-inp', '&--disabled', '&--focused');
-  @include alf-margin-css-vars('--alf-inp', '&--disabled', '&--focused');
-  @include alf-typography-css-vars('--alf-inp', '&--disabled', '&--focused');
-  @include alf-text-style-css-vars('--alf-inp', '&--disabled', '&--focused');
-  @include alf-outline-css-vars('--alf-inp', '&--disabled');
-  @include alf-transform-css-vars('--alf-inp', '&--disabled');
+  // // @include alf-background-css-vars('--alf-inp', '&--disabled', '&--focused');
+  // // @include alf-border-css-vars('--alf-inp', '&--disabled', '&--focused');
+  // // @include alf-shadows-css-vars('--alf-inp', '&--disabled', '&--focused');
+  // // @include alf-padding-css-vars('--alf-inp', '&--disabled', '&--focused');
+  // // @include alf-margin-css-vars('--alf-inp', '&--disabled', '&--focused');
+  // // @include alf-typography-css-vars('--alf-inp', '&--disabled', '&--focused');
+  // // // @include alf-text-style-css-vars('--alf-inp', '&--disabled', '&--focused');
+  // // @include alf-outline-css-vars('--alf-inp', '&--disabled');
+  // // @include alf-transform-css-vars('--alf-inp', '&--disabled');
 
 
   &--error {

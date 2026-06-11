@@ -1,9 +1,9 @@
-@use '../../../../../styles/mixins' as *;
+@use '../../../../../visualStyles' as *;
 
 :host {
   display: block;
   width: 100%;
   box-sizing: border-box;
 
-  @include alf-padding-css-vars('--alf-card-title');
+  // @include alf-padding-css-vars('--alf-card-title');
 }

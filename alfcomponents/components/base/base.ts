@@ -10,6 +10,7 @@ import { AlfPaddingDirective } from '../../visualStyles/padding/padding';
 import { AlfTypographyDirective } from '../../visualStyles/typography/typography';
 import { AlfTextStyleDirective } from '../../visualStyles/textStyle/textStyle';
 import { AlfTransformDirective } from '../../visualStyles/transform/transform';
+import { AlfTransitionDirective } from '../../visualStyles/transition/transition';
 import { AlfDisplayAndLayoutDirective } from '../../visualStyles/displayAndLayout/displayAndLayout';
 import { AlfCursorDirective } from '../../visualStyles/cursor/cursor';
 import { AlfSizeDirective } from '../../visualStyles/size/size';
@@ -24,12 +25,12 @@ import { AlfBaseDirective } from './base.directive';
     AlfBorderDirective,
     AlfOutlineDirective,
     AlfShadowsDirective,
-    AlfAnimationsDirective,
     AlfMarginDirective,
     AlfPaddingDirective,
     AlfTypographyDirective,
     AlfTextStyleDirective,
     AlfTransformDirective,
+    AlfTransitionDirective,
     AlfDisplayAndLayoutDirective,
     AlfCursorDirective,
     AlfSizeDirective,

@@ -1,9 +1,15 @@
-@mixin alf-outline-style {
+@mixin alf-outline-style(
+  $prefix: '--alf',
+  $disabled-selectors: '&:disabled, &.disabled',
+  $focus-selectors: '&:focus, &:focus-visible',
+  $hover-selectors: '&:hover',
+  $active-selectors: '&:active'
+) {
   // --- 1. BASE / DEFAULT STATE ---
-  $ow: var(--alf-outline-width, 0px);
-  $os: var(--alf-outline-style, none);
-  $oc: var(--alf-outline-color, transparent);
-  $oo: var(--alf-outline-offset, 0px);
+  $ow: var(#{$prefix}-outline-width, 0px);
+  $os: var(#{$prefix}-outline-style, none);
+  $oc: var(#{$prefix}-outline-color, transparent);
+  $oo: var(#{$prefix}-outline-offset, 0px);
 
   outline-width: $ow;
   outline-style: $os;
@@ -11,11 +17,11 @@
   outline-offset: $oo;
 
   // --- 2. HOVER STATE ---
-  &:hover {
-    $how: var(--alf-outline-width-hover, $ow);
-    $hos: var(--alf-outline-style-hover, $os);
-    $hoc: var(--alf-outline-color-hover, $oc);
-    $hoo: var(--alf-outline-offset-hover, $oo);
+  #{$hover-selectors} {
+    $how: var(#{$prefix}-outline-hover-width, $ow);
+    $hos: var(#{$prefix}-outline-hover-style, $os);
+    $hoc: var(#{$prefix}-outline-hover-color, $oc);
+    $hoo: var(#{$prefix}-outline-hover-offset, $oo);
 
     outline-width: $how;
     outline-style: $hos;
@@ -24,11 +30,11 @@
   }
 
   // --- 3. ACTIVE STATE ---
-  &:active {
-    $aow: var(--alf-outline-width-active, var(--alf-outline-width-hover, $ow));
-    $aos: var(--alf-outline-style-active, var(--alf-outline-style-hover, $os));
-    $aoc: var(--alf-outline-color-active, var(--alf-outline-color-hover, $oc));
-    $aoo: var(--alf-outline-offset-active, var(--alf-outline-offset-hover, $oo));
+  #{$active-selectors} {
+    $aow: var(#{$prefix}-outline-active-width, var(#{$prefix}-outline-hover-width, $ow));
+    $aos: var(#{$prefix}-outline-active-style, var(#{$prefix}-outline-hover-style, $os));
+    $aoc: var(#{$prefix}-outline-active-color, var(#{$prefix}-outline-hover-color, $oc));
+    $aoo: var(#{$prefix}-outline-active-offset, var(#{$prefix}-outline-hover-offset, $oo));
 
     outline-width: $aow;
     outline-style: $aos;
@@ -37,11 +43,11 @@
   }
 
   // --- 4. FOCUS STATE ---
-  &:focus, &:focus-visible {
-    $fow: var(--alf-outline-width-focus, $ow);
-    $fos: var(--alf-outline-style-focus, $os);
-    $foc: var(--alf-outline-color-focus, $oc);
-    $foo: var(--alf-outline-offset-focus, $oo);
+  #{$focus-selectors} {
+    $fow: var(#{$prefix}-outline-focus-width, $ow);
+    $fos: var(#{$prefix}-outline-focus-style, $os);
+    $foc: var(#{$prefix}-outline-focus-color, $oc);
+    $foo: var(#{$prefix}-outline-focus-offset, $oo);
 
     outline-width: $fow;
     outline-style: $fos;
@@ -50,11 +56,11 @@
   }
 
   // --- 5. DISABLED STATE ---
-  &:disabled, &.disabled {
-    $dow: var(--alf-outline-width-disabled, $ow);
-    $dos: var(--alf-outline-style-disabled, $os);
-    $doc: var(--alf-outline-color-disabled, $oc);
-    $doo: var(--alf-outline-offset-disabled, $oo);
+  #{$disabled-selectors} {
+    $dow: var(#{$prefix}-outline-disabled-width, $ow);
+    $dos: var(#{$prefix}-outline-disabled-style, $os);
+    $doc: var(#{$prefix}-outline-disabled-color, $oc);
+    $doo: var(#{$prefix}-outline-disabled-offset, $oo);
 
     outline-width: $dow;
     outline-style: $dos;

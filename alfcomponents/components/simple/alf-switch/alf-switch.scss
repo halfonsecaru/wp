@@ -1,4 +1,4 @@
-@use '../../../styles/mixins' as *;
+@use '../../../visualStyles' as *;
 
 :host {
   display: inline-flex;
@@ -16,11 +16,11 @@
 
   @include alf-transition;
 
-  @include alf-display-layout-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
-  @include alf-margin-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
-  @include alf-typography-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
-  @include alf-text-style-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
-  @include alf-outline-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
+  // @include alf-display-layout-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
+  // @include alf-margin-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
+  // @include alf-typography-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
+  // // @include alf-text-style-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
+  // @include alf-outline-css-vars('--alf-sw', '&--disabled', '&:focus-within, &:focus-visible');
   // background and border mixins removed from wrapper because only the track should be colored
 
   position: relative;
@@ -43,7 +43,7 @@
     gap: 0.75rem;
     cursor: inherit;
 
-    @include alf-padding-css-vars('--alf-sw', '.alf-sw--disabled &', '.alf-sw:focus-within &, .alf-sw:focus-visible &');
+    // @include alf-padding-css-vars('--alf-sw', '.alf-sw--disabled &', '.alf-sw:focus-within &, .alf-sw:focus-visible &');
 
     &--label-before {
       flex-direction: row-reverse;
@@ -57,8 +57,8 @@
     align-items: center;
     flex-shrink: 0;
 
-    @include alf-transform-css-vars('--alf-sw', '.alf-sw--disabled &', '.alf-sw:focus-within &, .alf-sw:focus-visible &');
-    @include alf-animations-css-vars('--alf-sw');
+    // @include alf-transform-css-vars('--alf-sw', '.alf-sw--disabled &', '.alf-sw:focus-within &, .alf-sw:focus-visible &');
+    // @include alf-animations-css-vars('--alf-sw');
 
     // MD defaults (2.5rem width x 1.25rem height is standard ratio 2:1)
     width: 2.5rem;
@@ -94,10 +94,7 @@
     border-color 0.3s ease,
     box-shadow 0.3s ease;
 
-    @include alf-shadows-css-vars($prefix: '--alf-sw',
-      $disabled-selectors: '.alf-sw--disabled &',
-      $focus-selectors: '.alf-sw:focus-within &, .alf-sw:focus-visible &'
-    );
+    // @include alf-shadows-css-vars($prefix: '--alf-sw',       $disabled-selectors: '.alf-sw--disabled &',       $focus-selectors: '.alf-sw:focus-within &, .alf-sw:focus-visible &'     );
 
     .alf-sw:hover:not(.alf-sw--checked) & {
       // Sombra interactiva al hacer hover aunque esté apagado
@@ -169,44 +166,44 @@
 
   // 1. Apagado (Unchecked)
   &--outline &-track {
-    @include alf-premium-style('--alf-sw', 2%, 8%, 2%, 2%, false);
+    // @include alf-premium-style('--alf-sw', 2%, 8%, 2%, 2%, false);
   }
 
   &--outline &-thumb {
-    @include alf-premium-style('--alf-sw', 2%, 8%, 2%, 2%, false);
+    // @include alf-premium-style('--alf-sw', 2%, 8%, 2%, 2%, false);
   }
 
   // Hover gobernados por el padre (Apagado)
   &--outline:not(.alf-sw--disabled):hover &-track {
-    @include alf-premium-style('--alf-sw', 5%, 12%, 5%, 5%, false);
+    // @include alf-premium-style('--alf-sw', 5%, 12%, 5%, 5%, false);
   }
 
   // Active gobernados por el padre (Apagado)
   &--outline:not(.alf-sw--disabled):active &-track,
   &--outline:not(.alf-sw--disabled) &-wrapper:active &-track,
   &--outline:not(.alf-sw--disabled) &-track:active {
-    @include alf-premium-style('--alf-sw', 8%, 18%, 8%, 8%, false);
+    // @include alf-premium-style('--alf-sw', 8%, 18%, 8%, 8%, false);
   }
 
   // 2. Encendido (Checked)
   &--outline.alf-sw--checked &-track {
-    @include alf-premium-style('--alf-sw', 5%, 80%, 10%, 10%, false);
+    // @include alf-premium-style('--alf-sw', 5%, 80%, 10%, 10%, false);
   }
 
   &--outline.alf-sw--checked &-thumb {
-    @include alf-premium-style('--alf-sw', 80%, 0%, 80%, 80%, false);
+    // @include alf-premium-style('--alf-sw', 80%, 0%, 80%, 80%, false);
   }
 
   // Hover gobernados por el padre (Encendido)
   &--outline.alf-sw--checked:not(.alf-sw--disabled):hover &-track {
-    @include alf-premium-style('--alf-sw', 18%, 100%, 18%, 18%, false);
+    // @include alf-premium-style('--alf-sw', 18%, 100%, 18%, 18%, false);
   }
 
   // Active gobernados por el padre (Encendido)
   &--outline.alf-sw--checked:not(.alf-sw--disabled):active &-track,
   &--outline.alf-sw--checked:not(.alf-sw--disabled) &-wrapper:active &-track,
   &--outline.alf-sw--checked:not(.alf-sw--disabled) &-track:active {
-    @include alf-premium-style('--alf-sw', 25%, 100%, 25%, 25%, false);
+    // @include alf-premium-style('--alf-sw', 25%, 100%, 25%, 25%, false);
   }
 
   // ── GHOST VARIANT OVERRIDES (SWAPPED FOR CORRECT TRANSPARENCY) ──
@@ -239,7 +236,7 @@
   &-label-text {
     // Definimos la variable para que el mixin la use en todos los estados (normal, hover, active)
     --alf-sw-typography-line-height: 1.25rem;
-    @include alf-typography-css-vars('--alf-sw');
+    // @include alf-typography-css-vars('--alf-sw');
 
     display: inline-block;
     font-family: inherit;

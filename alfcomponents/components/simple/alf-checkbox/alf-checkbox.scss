@@ -16,10 +16,12 @@
 
   @include alf-transition;
 
-  @include alf-display-and-layout-style($prefix: '--alf-cb',
-    $disabled-selectors: '&--disabled',
-    $focus-selectors: '&:focus-within, &:focus-visible'
-  );
+  @include alf-display-and-layout-style('--alf-cb', '&--disabled', '&--focused, &:focus-within, &:focus-visible');
+  @include alf-margin-style('--alf-cb', '&--disabled', '&--focused, &:focus-within, &:focus-visible');
+  @include alf-text-style('--alf-cb', '&--disabled', '&--focused, &:focus-within, &:focus-visible');
+  @include alf-typography-style('--alf-cb', '&--disabled', '&--focused, &:focus-within, &:focus-visible');
+  @include alf-outline-style('--alf-cb', '&--disabled', '&--focused, &:focus-within, &:focus-visible');
+  @include alf-size-style('--alf-cb', '&--disabled', '&--focused, &:focus-within, &:focus-visible');
 
   position: relative;
   cursor: pointer;
@@ -63,32 +65,12 @@
     @include alf-background-style('--alf-cb', '.alf-cb--disabled &', '.alf-cb--focused &');
     @include alf-padding-style('--alf-cb', '.alf-cb--disabled &', '.alf-cb--focused &');
     @include alf-border-style('--alf-cb', '.alf-cb--disabled &', '.alf-cb--focused &');
-    @include alf-shadows-style('--alf-cb', '.alf-cb--disabled &');
-    @include alf-transform-style('--alf-cb', '.alf-cb--disabled &');
-
-    // Base Unchecked styles
-    background-color: transparent !important;
-    background-image: none !important;
-
-    border-width: var(--alf-cb-border-width, 1px) !important;
-    border-style: var(--alf-cb-border-style, solid) !important;
-    border-color: var(--alf-cb-border-color, var(--alf-cb-bg-color, var(--alf-gray-300, #d1d5db))) !important;
+    @include alf-shadows-style('--alf-cb', '.alf-cb--disabled &', '.alf-cb--focused &', '.alf-cb--hovered &', '.alf-cb--active &');
+    @include alf-transform-style('--alf-cb', '.alf-cb--disabled &', '.alf-cb--focused &');
 
     --alf-transition-duration: 0.3s;
     --alf-transition-timing: ease-out;
     @include alf-transition;
-  }
-
-  &--hovered &-box {
-    border-color: var(--alf-cb-border-hover-color, var(--alf-cb-bg-hover-color, var(--alf-cb-border-color, var(--alf-cb-bg-color, var(--alf-gray-400, #9ca3af))))) !important;
-  }
-
-  &--focused &-box {
-    border-color: var(--alf-cb-border-focus-color, var(--alf-cb-bg-focus-color, var(--alf-cb-border-color, var(--alf-cb-bg-color, var(--alf-primary-500, #3b82f6))))) !important;
-  }
-
-  &--disabled &-box {
-    border-color: var(--alf-cb-border-disabled-color, var(--alf-cb-bg-disabled-color, var(--alf-cb-border-color, var(--alf-cb-bg-color, var(--alf-gray-200, #e5e7eb))))) !important;
   }
 
   // Checked and Indeterminate Box states

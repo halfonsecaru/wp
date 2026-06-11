@@ -13,7 +13,7 @@ export interface AlfShadowsBaseInterface {
    * Puede usar valores del enum AlfShadowEnum o un string personalizado.
    * @example AlfShadowEnum.Md 
    */
-  boxShadow?: AlfShadowEnum;
+  boxShadow?: AlfShadowEnum | string;
 
   /**
    * Color de la sombra de caja
@@ -34,7 +34,7 @@ export interface AlfShadowsBaseInterface {
    * Puede usar valores del enum AlfTextShadowEnum o un string personalizado.
    * @example AlfTextShadowEnum.Base 
    */
-  textShadow?: AlfTextShadowEnum;
+  textShadow?: AlfTextShadowEnum | string;
 
   /**
    * Color de la sombra de texto

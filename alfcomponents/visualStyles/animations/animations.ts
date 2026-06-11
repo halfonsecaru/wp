@@ -12,15 +12,7 @@ export class AlfAnimationsDirective {
   public readonly alfPrefix     = input<string>('--alf');
   public readonly isExiting     = input<boolean>(false);
 
-  private parseAnimationName(val: string | undefined): string | undefined {
-    if (!val || val === 'none') return undefined;
-    if (val.includes('animate__')) {
-      const parts = val.split(' ');
-      const animPart = parts.find(p => p.startsWith('animate__') && p !== 'animate__animated' && p !== 'animate__infinite');
-      if (animPart) return animPart.replace('animate__', '');
-    }
-    return val;
-  }
+
 
   protected readonly resolvedStage = computed(() => {
     const config = this.alfAnimations();
@@ -28,12 +20,26 @@ export class AlfAnimationsDirective {
     return this.isExiting() ? config.exitStage : (config.enterStage || config.type);
   });
 
-  protected readonly resolvedName = computed(() => {
+  protected readonly resolvedClasses = computed(() => {
     const stage = this.resolvedStage();
-    if (!stage) return undefined;
-    if (typeof stage === 'string') return this.parseAnimationName(stage);
-    const state = stage as AlfAnimateCssStateInterface;
-    return this.parseAnimationName(state.name || state.type);
+    if (!stage) return [];
+    
+    let stageStr = typeof stage === 'string' ? stage : (stage as AlfAnimateCssStateInterface).name || (stage as AlfAnimateCssStateInterface).type;
+    if (!stageStr || stageStr === 'none') return [];
+    
+    const classes = ['animate__animated'];
+    if (stageStr.includes('animate__')) {
+      classes.push(...stageStr.split(' ').filter(c => c.trim()));
+    } else {
+      classes.push(`animate__${stageStr}`);
+    }
+    
+    const config = this.alfAnimations();
+    if (config?.infinite && !this.isExiting()) {
+      classes.push('animate__infinite');
+    }
+    
+    return Array.from(new Set(classes)); // Ensure unique
   });
 
   protected readonly resolvedDuration = computed(() => {
@@ -97,10 +103,28 @@ export class AlfAnimationsDirective {
     '-animations-timing-function', '-animations-fill-mode', '-animations-direction',
   ];
 
+  private previousClasses: string[] = [];
+
   private readonly _effect = effect(() => {
     const p  = this.alfPrefix();
     const el = this.el.nativeElement as HTMLElement;
 
+    // Handle class substitution for Animate.css
+    const newClasses = this.resolvedClasses();
+    
+    // Remove old classes that are not in newClasses
+    this.previousClasses.forEach(cls => {
+      if (!newClasses.includes(cls)) el.classList.remove(cls);
+    });
+    
+    // Add new classes
+    newClasses.forEach(cls => {
+      if (!this.previousClasses.includes(cls)) el.classList.add(cls);
+    });
+    
+    this.previousClasses = [...newClasses];
+
+    // Handle CSS variables
     this.SUFFIXES.forEach(s => el.style.removeProperty(`${p}${s}`));
 
     const set = (prop: string, val: string | number | undefined) => {

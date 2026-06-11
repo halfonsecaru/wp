@@ -1,4 +1,4 @@
-@use '../../../styles/mixins' as *;
+@use '../../../visualStyles' as *;
 
 :host {
   display: inline-flex;
@@ -15,20 +15,14 @@
 
   @include alf-transition;
 
-  @include alf-display-layout-css-vars($prefix: '--alf-rb',
-    $display: flex,
-    $align: center,
-    $justify: flex-start,
-    $disabled-selectors: '&--disabled',
-    $focus-selectors: '&:focus-within, &:focus-visible'
-  );
+  // @include alf-display-layout-css-vars($prefix: '--alf-rb',     $display: flex,     $align: center,     $justify: flex-start,     $disabled-selectors: '&--disabled',     $focus-selectors: '&:focus-within, &:focus-visible'   );
 
-  @include alf-padding-css-vars('--alf-rb', '&--disabled', '&:focus-within, &:focus-visible');
-  @include alf-margin-css-vars('--alf-rb', '&--disabled', '&:focus-within, &:focus-visible');
-  @include alf-typography-css-vars('--alf-rb', '&--disabled', '&:focus-within, &:focus-visible');
-  @include alf-text-style-css-vars('--alf-rb', '&--disabled', '&:focus-within, &:focus-visible');
-  @include alf-outline-css-vars('--alf-rb', '&--disabled');
-  @include alf-transform-css-vars('--alf-rb', '&--disabled');
+  // @include alf-padding-css-vars('--alf-rb', '&--disabled', '&:focus-within, &:focus-visible');
+  // @include alf-margin-css-vars('--alf-rb', '&--disabled', '&:focus-within, &:focus-visible');
+  // @include alf-typography-css-vars('--alf-rb', '&--disabled', '&:focus-within, &:focus-visible');
+  // // @include alf-text-style-css-vars('--alf-rb', '&--disabled', '&:focus-within, &:focus-visible');
+  // @include alf-outline-css-vars('--alf-rb', '&--disabled');
+  // @include alf-transform-css-vars('--alf-rb', '&--disabled');
 
   position: relative;
   cursor: pointer;
@@ -70,10 +64,10 @@
     border-radius: 50%;
 
     // Aplicación de variables Élite de Borde y Sombra
-    @include alf-background-css-vars('--alf-rb', '&--disabled', ':focus-within');
-    @include alf-border-css-vars('--alf-rb', '&--disabled', ':focus-within');
-    @include alf-shadows-css-vars('--alf-rb', '&--disabled');
-    @include alf-transform-css-vars('--alf-rb', '&--disabled');
+    // @include alf-background-css-vars('--alf-rb', '&--disabled', ':focus-within');
+    // @include alf-border-css-vars('--alf-rb', '&--disabled', ':focus-within');
+    // @include alf-shadows-css-vars('--alf-rb', '&--disabled');
+    // @include alf-transform-css-vars('--alf-rb', '&--disabled');
 
     // Estilo Base (Unchecked)
     background-color: transparent;

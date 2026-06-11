@@ -38,10 +38,34 @@ export class AlfShadowsDirective {
       if (val != null) el.style.setProperty(prop, val);
     };
 
+    const processShadow = (shadowStr: string | undefined, colorStr: string | undefined, inset?: boolean) => {
+      if (!shadowStr) return undefined;
+      let result = shadowStr;
+
+      if (colorStr) {
+        result = result.replace(/rgb\(0 0 0 \/ (0\.\d+)\)/g, (match, opacityStr) => {
+          // Multiplicamos la opacidad original por 2.5 para que las sombras de colores sean visibles
+          // (las sombras coloreadas necesitan más opacidad que las negras para percibirse igual)
+          const opacityPercent = Math.min(100, parseFloat(opacityStr) * 100 * 2.5);
+          return `color-mix(in srgb, ${colorStr} ${opacityPercent}%, transparent)`;
+        });
+      }
+
+      if (inset && !result.includes('inset')) {
+        result = result.split(',').map(part => `inset ${part.trim()}`).join(', ');
+      }
+
+      return result;
+    };
+
     const applyState = (state: any, sfx: string) => {
       if (!state) return;
-      set(`${p}-shadows${sfx}-box-shadow`,  state.boxShadow);
-      set(`${p}-shadows${sfx}-text-shadow`, state.textShadow);
+      
+      const processedBoxShadow = processShadow(state.boxShadow, state.boxShadowColor, state.boxShadowInset);
+      const processedTextShadow = processShadow(state.textShadow, state.textShadowColor);
+
+      set(`${p}-shadows${sfx}-box-shadow`,  processedBoxShadow);
+      set(`${p}-shadows${sfx}-text-shadow`, processedTextShadow);
     };
 
     applyState(sd.default,  '');

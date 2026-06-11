@@ -1,0 +1,524 @@
+<div class="pg-page">
+  <!-- ═══════════ HEADER ═══════════ -->
+  <header class="pg-header">
+    <div class="pg-header__glow"></div>
+    <h1 class="pg-header__title">🎮 Component Playground</h1>
+    <p class="pg-header__subtitle">Configura las propiedades visuales de cada componente en tiempo real.</p>
+  </header>
+
+  <!-- ═══════════ MAIN LAYOUT: Preview + Controls ═══════════ -->
+  <div class="pg-layout">
+
+    <!-- ──── LEFT: Live Preview ──── -->
+    <div class="pg-preview-panel">
+      <div class="pg-preview-panel__header">
+        <span class="pg-preview-panel__dot pg-preview-panel__dot--red"></span>
+        <span class="pg-preview-panel__dot pg-preview-panel__dot--yellow"></span>
+        <span class="pg-preview-panel__dot pg-preview-panel__dot--green"></span>
+        <span class="pg-preview-panel__title">Vista previa</span>
+      </div>
+
+      <!-- Component Selector -->
+      <div class="pg-comp-selector">
+        <label class="pg-field__label" for="pg-comp-sel">Componente</label>
+        <select id="pg-comp-sel" class="pg-select" [value]="selectedComponentId()" (change)="onComponentChange($event)">
+          @for (c of components; track c.id) {
+            <option [value]="c.id">{{ c.icon }} {{ c.label }}</option>
+          }
+        </select>
+      </div>
+
+      <!-- Live component -->
+      <div class="pg-preview-area">
+        <div class="pg-preview-stage">
+          @if (showPreview()) {
+            @if (selectedComponentId() === 'alf-button') {
+            <alf-button
+              [label]="compLabel()"
+              [variant]="compVariant()"
+              [size]="compSize()"
+              [isDisabled]="compDisabled()"
+              [background]="backgroundConfig()"
+              [border]="borderConfig()"
+              [outline]="outlineConfig()"
+              [shadows]="shadowsConfig()"
+              [textStyle]="textStyleConfig()"
+              [typography]="typographyConfig()"
+              [padding]="paddingConfig()"
+              [margin]="marginConfig()"
+              [transform]="transformConfig()"
+              [transition]="transitionConfig()"
+              [animations]="animationsConfig()"
+              [isExiting]="isExiting()"
+              [displayAndLayout]="displayLayoutConfig()"
+            />
+          }
+          @if (selectedComponentId() === 'alf-checkbox') {
+            <alf-checkbox
+              [label]="compLabel()"
+              [variant]="compVariant()"
+              [size]="compSize()"
+              [isDisabled]="compDisabled()"
+              [background]="backgroundConfig()"
+              [border]="borderConfig()"
+              [outline]="outlineConfig()"
+              [shadows]="shadowsConfig()"
+              [textStyle]="textStyleConfig()"
+              [typography]="typographyConfig()"
+              [padding]="paddingConfig()"
+              [margin]="marginConfig()"
+              [transform]="transformConfig()"
+              [transition]="transitionConfig()"
+              [animations]="animationsConfig()"
+              [isExiting]="isExiting()"
+              [displayAndLayout]="displayLayoutConfig()"
+            />
+          }
+          }
+        </div>
+      </div>
+
+      <!-- Quick settings row -->
+      <div class="pg-quick-row">
+        <div class="pg-field pg-field--inline">
+          <label class="pg-field__label" for="pg-label-input">Label</label>
+          <input id="pg-label-input" type="text" class="pg-input" [value]="compLabel()" (input)="onInputChange(compLabel, $event)" />
+        </div>
+        <div class="pg-field pg-field--inline">
+          <label class="pg-field__label" for="pg-variant-sel">Variant</label>
+          <select id="pg-variant-sel" class="pg-select pg-select--sm" [value]="compVariant() ?? ''" (change)="onVariantChange($event)">
+            <option value="">— none —</option>
+            @for (v of variantOptions; track v.key) {
+              <option [value]="v.value">{{ v.key }}</option>
+            }
+          </select>
+        </div>
+        <div class="pg-field pg-field--inline">
+          <label class="pg-field__label" for="pg-size-sel">Size</label>
+          <select id="pg-size-sel" class="pg-select pg-select--sm" [value]="compSize() ?? ''" (change)="onSizeChange($event)">
+            <option value="">— auto —</option>
+            @for (s of sizeOptions; track s.key) {
+              <option [value]="s.value">{{ s.key }}</option>
+            }
+          </select>
+        </div>
+        <button class="pg-btn pg-btn--toggle" [class.pg-btn--active]="compDisabled()" (click)="onDisabledToggle()">
+          {{ compDisabled() ? '🚫 Disabled' : '✅ Enabled' }}
+        </button>
+        <button class="pg-btn pg-btn--play" (click)="playAnimation()">▶️ Play Anim</button>
+        <button class="pg-btn pg-btn--play" (click)="playExitAnimation()">🛑 Play Exit</button>
+        <button class="pg-btn pg-btn--reset" (click)="resetAll()">🔄 Reset</button>
+      </div>
+
+      <!-- Code preview -->
+      <div class="pg-code-block">
+        <div class="pg-code-block__header">
+          <span>📋 Código generado</span>
+        </div>
+        <div class="pg-code-block__tabs">
+          <alf-tabs-container [(activeIndex)]="codeTabIndex" [colorVariant]="AlfColorVariantEnum.SecondaryOutline">
+            <alf-tab label="HTML">
+              <pre class="pg-code-block__body">{{ htmlPreview() }}</pre>
+            </alf-tab>
+            <alf-tab label="TypeScript">
+              <pre class="pg-code-block__body">{{ tsPreview() }}</pre>
+            </alf-tab>
+          </alf-tabs-container>
+        </div>
+      </div>
+    </div>
+
+    <!-- ──── RIGHT: Property Controls ──── -->
+    <div class="pg-controls-panel">
+      <!-- MAIN TABS FOR PROPERTIES -->
+      <alf-tabs-container [(activeIndex)]="propTabIndex" [colorVariant]="AlfColorVariantEnum.PrimaryOutline">
+
+        <!-- TAB: Background -->
+        <alf-tab label="🎨 Background">
+          <div class="pg-controls-content">
+            <alf-tabs-container [(activeIndex)]="stateTabIndex" [colorVariant]="AlfColorVariantEnum.SecondaryOutline">
+              @for (state of states; track state) {
+                <alf-tab [label]="state">
+                  <div class="pg-fields">
+                    <div class="pg-field">
+                      <label class="pg-field__label">backgroundColor</label>
+                      <select class="pg-select" [value]="bgColor[state]()" (change)="onSelectChange(bgColor[state], $event)">
+                        <option value="">— none —</option>
+                        @for (c of colorOptions; track c.key) {
+                          <option [value]="c.value">{{ c.key }}</option>
+                        }
+                      </select>
+                    </div>
+                  </div>
+                </alf-tab>
+              }
+            </alf-tabs-container>
+          </div>
+        </alf-tab>
+
+        <!-- TAB: Border -->
+        <alf-tab label="📐 Border">
+          <div class="pg-controls-content">
+            <alf-tabs-container [(activeIndex)]="stateTabIndex" [colorVariant]="AlfColorVariantEnum.SecondaryOutline">
+              @for (state of states; track state) {
+                <alf-tab [label]="state">
+                  <div class="pg-fields">
+                    <div class="pg-field">
+                      <label class="pg-field__label">borderColor</label>
+                      <select class="pg-select" [value]="borderColor[state]()" (change)="onSelectChange(borderColor[state], $event)">
+                        <option value="">— none —</option>
+                        @for (c of colorOptions; track c.key) {
+                          <option [value]="c.value">{{ c.key }}</option>
+                        }
+                      </select>
+                    </div>
+                    <div class="pg-field">
+                      <label class="pg-field__label">borderWidth</label>
+                      <select class="pg-select" [value]="borderWidth[state]()" (change)="onSelectChange(borderWidth[state], $event)">
+                        <option value="">— none —</option>
+                        @for (p of pxOptions; track p.key) {
+                          <option [value]="p.value">{{ p.key }} ({{ p.value }})</option>
+                        }
+                      </select>
+                    </div>
+                    <div class="pg-field">
+                      <label class="pg-field__label">borderStyle</label>
+                      <select class="pg-select" [value]="borderStyle[state]()" (change)="onSelectChange(borderStyle[state], $event)">
+                        <option value="">— none —</option>
+                        @for (b of borderStyleOptions; track b.key) {
+                          <option [value]="b.value">{{ b.key }}</option>
+                        }
+                      </select>
+                    </div>
+                    <div class="pg-field">
+                      <label class="pg-field__label">borderRadius</label>
+                      <select class="pg-select" [value]="borderRadius[state]()" (change)="onSelectChange(borderRadius[state], $event)">
+                        <option value="">— none —</option>
+                        @for (r of radiusOptions; track r.key) {
+                          <option [value]="r.value">{{ r.key }} ({{ r.value }})</option>
+                        }
+                      </select>
+                    </div>
+                  </div>
+                </alf-tab>
+              }
+            </alf-tabs-container>
+          </div>
+        </alf-tab>
+
+        <!-- TAB: Outline -->
+        <alf-tab label="✒️ Outline">
+          <div class="pg-controls-content">
+            <alf-tabs-container [(activeIndex)]="stateTabIndex" [colorVariant]="AlfColorVariantEnum.SecondaryOutline">
+              @for (state of states; track state) {
+                <alf-tab [label]="state">
+                  <div class="pg-fields">
+                    <div class="pg-field">
+                      <label class="pg-field__label">outlineColor</label>
+                      <select class="pg-select" [value]="outlineColor[state]()" (change)="onSelectChange(outlineColor[state], $event)">
+                        <option value="">— none —</option>
+                        @for (c of colorOptions; track c.key) {
+                          <option [value]="c.value">{{ c.key }}</option>
+                        }
+                      </select>
+                    </div>
+                    <div class="pg-field">
+                      <label class="pg-field__label">outlineWidth</label>
+                      <select class="pg-select" [value]="outlineWidth[state]()" (change)="onSelectChange(outlineWidth[state], $event)">
+                        <option value="">— none —</option>
+                        @for (p of pxOptions; track p.key) {
+                          <option [value]="p.value">{{ p.key }} ({{ p.value }})</option>
+                        }
+                      </select>
+                    </div>
+                    <div class="pg-field">
+                      <label class="pg-field__label">outlineStyle</label>
+                      <select class="pg-select" [value]="outlineStyle[state]()" (change)="onSelectChange(outlineStyle[state], $event)">
+                        <option value="">— none —</option>
+                        @for (b of borderStyleOptions; track b.key) {
+                          <option [value]="b.value">{{ b.key }}</option>
+                        }
+                      </select>
+                    </div>
+                    <div class="pg-field">
+                      <label class="pg-field__label">outlineOffset</label>
+                      <select class="pg-select" [value]="outlineOffset[state]()" (change)="onSelectChange(outlineOffset[state], $event)">
+                        <option value="">— none —</option>
+                        @for (p of pxOptions; track p.key) {
+                          <option [value]="p.value">{{ p.key }} ({{ p.value }})</option>
+                        }
+                      </select>
+                    </div>
+                  </div>
+                </alf-tab>
+              }
+            </alf-tabs-container>
+          </div>
+        </alf-tab>
+
+        <!-- TAB: Shadows -->
+        <alf-tab label="🌑 Shadows">
+          <div class="pg-controls-content">
+            <alf-tabs-container [(activeIndex)]="stateTabIndex" [colorVariant]="AlfColorVariantEnum.SecondaryOutline">
+              @for (state of states; track state) {
+                <alf-tab [label]="state">
+                  <div class="pg-fields">
+                    <div class="pg-field">
+                      <label class="pg-field__label">boxShadow (enum / custom)</label>
+                      <select class="pg-select" [value]="boxShadow[state]()" (change)="onSelectChange(boxShadow[state], $event)">
+                        <option value="">— none —</option>
+                        @for (s of shadowOptions; track s.key) {
+                          <option [value]="s.value">{{ s.key }}</option>
+                        }
+                      </select>
+                      <input type="text" class="pg-input" style="width: 100%; margin-top: 0.25rem;" placeholder="ej: 0 4px 15px rgba(255,0,0,0.5)" [value]="boxShadow[state]()" (input)="onInputChange(boxShadow[state], $event)">
+                    </div>
+                    <div class="pg-field">
+                      <label class="pg-field__label">boxShadowColor</label>
+                      <select class="pg-select" [value]="boxShadowColor[state]()" (change)="onSelectChange(boxShadowColor[state], $event)">
+                        <option value="">— none —</option>
+                        @for (c of colorOptions; track c.key) {
+                          <option [value]="c.value">{{ c.key }}</option>
+                        }
+                      </select>
+                    </div>
+                  </div>
+                </alf-tab>
+              }
+            </alf-tabs-container>
+          </div>
+        </alf-tab>
+
+        <!-- TAB: Typography -->
+        <alf-tab label="A Typography">
+          <div class="pg-controls-content">
+            <alf-tabs-container [(activeIndex)]="stateTabIndex" [colorVariant]="AlfColorVariantEnum.SecondaryOutline">
+              @for (state of states; track state) {
+                <alf-tab [label]="state">
+                  <div class="pg-fields">
+                    <div class="pg-field">
+                      <label class="pg-field__label">color</label>
+                      <select class="pg-select" [value]="typographyColor[state]()" (change)="onSelectChange(typographyColor[state], $event)">
+                        <option value="">— none —</option>
+                        @for (c of colorOptions; track c.key) {
+                          <option [value]="c.value">{{ c.key }}</option>
+                        }
+                      </select>
+                    </div>
+                    <div class="pg-field">
+                      <label class="pg-field__label">fontSize</label>
+                      <select class="pg-select" [value]="typographyFontSize[state]()" (change)="onSelectChange(typographyFontSize[state], $event)">
+                        <option value="">— none —</option>
+                        @for (f of fontSizeOptions; track f.key) {
+                          <option [value]="f.value">{{ f.key }} ({{ f.value }})</option>
+                        }
+                      </select>
+                    </div>
+                    <div class="pg-field">
+                      <label class="pg-field__label">fontWeight</label>
+                      <select class="pg-select" [value]="typographyFontWeight[state]()" (change)="onSelectChange(typographyFontWeight[state], $event)">
+                        <option value="">— none —</option>
+                        @for (w of fontWeightOptions; track w.key) {
+                          <option [value]="w.value">{{ w.key }} ({{ w.value }})</option>
+                        }
+                      </select>
+                    </div>
+                    <div class="pg-field">
+                      <label class="pg-field__label">textAlign</label>
+                      <select class="pg-select" [value]="typographyTextAlign[state]()" (change)="onSelectChange(typographyTextAlign[state], $event)">
+                        <option value="">— none —</option>
+                        @for (a of textAlignOptions; track a.key) {
+                          <option [value]="a.value">{{ a.key }}</option>
+                        }
+                      </select>
+                    </div>
+                  </div>
+                </alf-tab>
+              }
+            </alf-tabs-container>
+          </div>
+        </alf-tab>
+
+        <!-- TAB: Spacing (Padding/Margin) -->
+        <alf-tab label="📏 Spacing">
+          <div class="pg-controls-content">
+            <alf-tabs-container [(activeIndex)]="stateTabIndex" [colorVariant]="AlfColorVariantEnum.SecondaryOutline">
+              @for (state of states; track state) {
+                <alf-tab [label]="state">
+                  <div class="pg-fields">
+                    <div class="pg-field">
+                      <label class="pg-field__label">padding</label>
+                      <select class="pg-select" [value]="paddingVal[state]()" (change)="onSelectChange(paddingVal[state], $event)">
+                        <option value="">— none —</option>
+                        @for (p of pxOptions; track p.key) {
+                          <option [value]="p.value">{{ p.key }} ({{ p.value }})</option>
+                        }
+                      </select>
+                    </div>
+                    <div class="pg-field">
+                      <label class="pg-field__label">margin</label>
+                      <select class="pg-select" [value]="marginVal[state]()" (change)="onSelectChange(marginVal[state], $event)">
+                        <option value="">— none —</option>
+                        @for (p of pxOptions; track p.key) {
+                          <option [value]="p.value">{{ p.key }} ({{ p.value }})</option>
+                        }
+                      </select>
+                    </div>
+                  </div>
+                </alf-tab>
+              }
+            </alf-tabs-container>
+          </div>
+        </alf-tab>
+
+        <!-- TAB: Transform -->
+        <alf-tab label="🔄 Transform">
+          <div class="pg-controls-content">
+            <alf-tabs-container [(activeIndex)]="stateTabIndex" [colorVariant]="AlfColorVariantEnum.SecondaryOutline">
+              @for (state of states; track state) {
+                <alf-tab [label]="state">
+                  <div class="pg-fields">
+                    <div class="pg-field">
+                      <label class="pg-field__label">scale (e.g. 1.1)</label>
+                      <input type="number" step="0.1" class="pg-input" [value]="transformScale[state]()" (input)="onInputChange(transformScale[state], $event)" />
+                    </div>
+                    <div class="pg-field">
+                      <label class="pg-field__label">rotate (deg)</label>
+                      <input type="number" step="1" class="pg-input" [value]="transformRotate[state]()" (input)="onInputChange(transformRotate[state], $event)" />
+                    </div>
+                  </div>
+                </alf-tab>
+              }
+            </alf-tabs-container>
+          </div>
+        </alf-tab>
+
+        <!-- TAB: Animations -->
+        <alf-tab label="✨ Animations">
+          <div class="pg-controls-content">
+            <div class="pg-fields">
+              <div class="pg-field">
+                <label class="pg-field__label">enterStage (animation)</label>
+                <select class="pg-select" [value]="animEnterStage() || ''" (change)="onSelectChange(animEnterStage, $event)">
+                  <option value="">— none —</option>
+                  @for (a of animationOptions; track a.key) {
+                    <option [value]="a.value">{{ a.key }}</option>
+                  }
+                </select>
+              </div>
+              <div class="pg-field">
+                <label class="pg-field__label">exitStage (animation)</label>
+                <select class="pg-select" [value]="animExitStage() || ''" (change)="onSelectChange(animExitStage, $event)">
+                  <option value="">— none —</option>
+                  @for (a of animationOptions; track a.key) {
+                    <option [value]="a.value">{{ a.key }}</option>
+                  }
+                </select>
+              </div>
+              <div class="pg-field">
+                <label class="pg-field__label">duration</label>
+                <input type="text" class="pg-input" [value]="animDuration() || ''" (input)="onInputChange(animDuration, $event)" placeholder="e.g. 1s" />
+              </div>
+              <div class="pg-field">
+                <label class="pg-field__label">delay</label>
+                <input type="text" class="pg-input" [value]="animDelay() || ''" (input)="onInputChange(animDelay, $event)" placeholder="e.g. 200ms" />
+              </div>
+              <div class="pg-field">
+                <label class="pg-field__label">iterationCount</label>
+                <input type="number" class="pg-input" [value]="animIteration() || ''" (input)="onInputChange(animIteration, $event)" placeholder="e.g. 3" />
+              </div>
+              <div class="pg-field">
+                <label class="pg-field__label">
+                  <input type="checkbox" [checked]="animInfinite()" (change)="onCheckboxChange(animInfinite, $event)" />
+                  infinite
+                </label>
+              </div>
+            </div>
+          </div>
+        </alf-tab>
+
+        <!-- TAB: Transition -->
+        <alf-tab label="⏱️ Transition">
+          <div class="pg-controls-content">
+            <alf-tabs-container [(activeIndex)]="stateTabIndex" [colorVariant]="AlfColorVariantEnum.SecondaryOutline">
+              @for (state of states; track state) {
+                <alf-tab [label]="state">
+                  <div class="pg-fields">
+                    <div class="pg-field">
+                      <label class="pg-field__label">duration (e.g. 300ms)</label>
+                      <input type="text" class="pg-input" [value]="transitionDuration[state]()" (input)="onInputChange(transitionDuration[state], $event)" placeholder="e.g. 300ms" />
+                    </div>
+                    <div class="pg-field">
+                      <label class="pg-field__label">timing function</label>
+                      <select class="pg-select" [value]="transitionTiming[state]()" (change)="onSelectChange(transitionTiming[state], $event)">
+                        <option value="">— none —</option>
+                        @for (t of timingOptions; track t.key) {
+                          <option [value]="t.value">{{ t.key }}</option>
+                        }
+                      </select>
+                    </div>
+                  </div>
+                </alf-tab>
+              }
+            </alf-tabs-container>
+          </div>
+        </alf-tab>
+
+        <!-- TAB: Layout -->
+        <alf-tab label="📐 Layout">
+          <div class="pg-controls-content">
+            <alf-tabs-container [(activeIndex)]="stateTabIndex" [colorVariant]="AlfColorVariantEnum.SecondaryOutline">
+              @for (state of states; track state) {
+                <alf-tab [label]="state">
+                  <div class="pg-fields">
+                    <div class="pg-field">
+                      <label class="pg-field__label">display</label>
+                      <select class="pg-select" [value]="layoutDisplay[state]()" (change)="onSelectChange(layoutDisplay[state], $event)">
+                        <option value="">— none —</option>
+                        @for (d of displayOptions; track d.key) {
+                          <option [value]="d.value">{{ d.key }}</option>
+                        }
+                      </select>
+                    </div>
+                    <div class="pg-field">
+                      <label class="pg-field__label">position</label>
+                      <select class="pg-select" [value]="layoutPosition[state]()" (change)="onSelectChange(layoutPosition[state], $event)">
+                        <option value="">— none —</option>
+                        @for (p of positionOptions; track p.key) {
+                          <option [value]="p.value">{{ p.key }}</option>
+                        }
+                      </select>
+                    </div>
+                    <div class="pg-field">
+                      <label class="pg-field__label">cursor</label>
+                      <select class="pg-select" [value]="layoutCursor[state]()" (change)="onSelectChange(layoutCursor[state], $event)">
+                        <option value="">— none —</option>
+                        @for (c of cursorOptions; track c.key) {
+                          <option [value]="c.value">{{ c.key }}</option>
+                        }
+                      </select>
+                    </div>
+                    <div class="pg-field">
+                      <label class="pg-field__label">width</label>
+                      <select class="pg-select" [value]="layoutWidth[state]()" (change)="onSelectChange(layoutWidth[state], $event)">
+                        <option value="">— none —</option>
+                        @for (p of percentOptions; track p.key) {
+                          <option [value]="p.value">{{ p.key }} ({{ p.value }})</option>
+                        }
+                        @for (p of pxOptions; track p.key) {
+                          <option [value]="p.value">{{ p.key }} ({{ p.value }})</option>
+                        }
+                      </select>
+                    </div>
+                  </div>
+                </alf-tab>
+              }
+            </alf-tabs-container>
+          </div>
+        </alf-tab>
+
+      </alf-tabs-container>
+    </div>
+
+  </div>
+</div>

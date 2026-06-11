@@ -13,17 +13,17 @@
 @use '../../visualStyles/disabled/disabled' as *;
 
 .alf-base-container {
-  @include alf-background-style;
-  @include alf-border-style;
-  @include alf-outline-style;
-  @include alf-shadows-style;
-  @include alf-animations-style;
-  @include alf-margin-style;
-  @include alf-padding-style;
-  @include alf-typography-style;
-  @include alf-text-style;
-  @include alf-transform-style;
-  @include alf-display-and-layout-style;
-  @include alf-size-style;
-  @include alf-disabled-style;
+  // @include alf-background-style;
+  // @include alf-border-style;
+  // @include alf-outline-style;
+  // @include alf-shadows-style;
+  // @include alf-animations-style;
+  // @include alf-margin-style;
+  // @include alf-padding-style;
+  // @include alf-typography-style;
+  // @include alf-text-style;
+  // @include alf-transform-style;
+  // @include alf-display-and-layout-style;
+  // @include alf-size-style;
+  // @include alf-disabled-style;
 }

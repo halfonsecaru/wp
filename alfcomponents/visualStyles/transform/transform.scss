@@ -1,40 +1,54 @@
-@mixin _alf-transform-build($prefix, $suffix: '') {
+@mixin _alf-transform-build($prefix, $suffix: '', $fallback-suffix: '') {
   $sfx: '';
   @if $suffix != '' {
     $sfx: '-#{$suffix}';
   }
   
-  transform:           var(#{$prefix}-transform#{$sfx}-transform, revert);
-  perspective:         var(#{$prefix}-transform#{$sfx}-perspective, revert);
-  transform-style:     var(#{$prefix}-transform#{$sfx}-transform-style, revert);
-  backface-visibility: var(#{$prefix}-transform#{$sfx}-backface-visibility, revert);
+  @if $fallback-suffix == 'hover' {
+    transform:           var(#{$prefix}-transform#{$sfx}-transform, var(#{$prefix}-transform-hover-transform, var(#{$prefix}-transform-transform, inherit)));
+    perspective:         var(#{$prefix}-transform#{$sfx}-perspective, var(#{$prefix}-transform-hover-perspective, var(#{$prefix}-transform-perspective, inherit)));
+    transform-style:     var(#{$prefix}-transform#{$sfx}-transform-style, var(#{$prefix}-transform-hover-transform-style, var(#{$prefix}-transform-transform-style, inherit)));
+    backface-visibility: var(#{$prefix}-transform#{$sfx}-backface-visibility, var(#{$prefix}-transform-hover-backface-visibility, var(#{$prefix}-transform-backface-visibility, inherit)));
+  } @else if $fallback-suffix == 'default' {
+    transform:           var(#{$prefix}-transform#{$sfx}-transform, var(#{$prefix}-transform-transform, inherit));
+    perspective:         var(#{$prefix}-transform#{$sfx}-perspective, var(#{$prefix}-transform-perspective, inherit));
+    transform-style:     var(#{$prefix}-transform#{$sfx}-transform-style, var(#{$prefix}-transform-transform-style, inherit));
+    backface-visibility: var(#{$prefix}-transform#{$sfx}-backface-visibility, var(#{$prefix}-transform-backface-visibility, inherit));
+  } @else {
+    transform:           var(#{$prefix}-transform#{$sfx}-transform, inherit);
+    perspective:         var(#{$prefix}-transform#{$sfx}-perspective, inherit);
+    transform-style:     var(#{$prefix}-transform#{$sfx}-transform-style, inherit);
+    backface-visibility: var(#{$prefix}-transform#{$sfx}-backface-visibility, inherit);
+  }
 }
 
 @mixin alf-transform-style(
   $prefix: '--alf',
   $disabled-selectors: '&:disabled, &.disabled',
-  $focus-selectors: '&:focus, &:focus-visible'
+  $focus-selectors: '&:focus, &:focus-visible',
+  $hover-selectors: '&:hover',
+  $active-selectors: '&:active'
 ) {
   // --- 1. BASE / DEFAULT STATE ---
-  @include _alf-transform-build($prefix, '');
+  @include _alf-transform-build($prefix);
 
   // --- 2. HOVER STATE ---
-  &:hover {
-    @include _alf-transform-build($prefix, 'hover');
+  #{$hover-selectors} {
+    @include _alf-transform-build($prefix, 'hover', 'default');
   }
 
   // --- 3. ACTIVE STATE ---
-  &:active {
-    @include _alf-transform-build($prefix, 'active');
+  #{$active-selectors} {
+    @include _alf-transform-build($prefix, 'active', 'hover');
   }
 
   // --- 4. FOCUS STATE ---
   #{$focus-selectors} {
-    @include _alf-transform-build($prefix, 'focus');
+    @include _alf-transform-build($prefix, 'focus', 'default');
   }
 
   // --- 5. DISABLED STATE ---
   #{$disabled-selectors} {
-    @include _alf-transform-build($prefix, 'disabled');
+    @include _alf-transform-build($prefix, 'disabled', 'default');
   }
 }

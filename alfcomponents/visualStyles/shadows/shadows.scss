@@ -1,7 +1,9 @@
 @mixin alf-shadows-style(
   $prefix: '--alf',
   $disabled-selectors: '&:disabled, &.disabled',
-  $focus-selectors: '&:focus, &:focus-visible'
+  $focus-selectors: '&:focus, &:focus-visible',
+  $hover-selectors: '&:hover',
+  $active-selectors: '&:active'
 ) {
   // --- 1. BASE / DEFAULT STATE ---
   $bs: var(#{$prefix}-shadows-box-shadow, none);
@@ -11,7 +13,7 @@
   text-shadow: $ts;
 
   // --- 2. HOVER STATE ---
-  &:hover {
+  #{$hover-selectors} {
     $hbs: var(#{$prefix}-shadows-hover-box-shadow, $bs);
     $hts: var(#{$prefix}-shadows-hover-text-shadow, $ts);
 
@@ -20,7 +22,7 @@
   }
 
   // --- 3. ACTIVE STATE ---
-  &:active {
+  #{$active-selectors} {
     $abs: var(#{$prefix}-shadows-active-box-shadow, var(#{$prefix}-shadows-hover-box-shadow, $bs));
     $ats: var(#{$prefix}-shadows-active-text-shadow, var(#{$prefix}-shadows-hover-text-shadow, $ts));
 

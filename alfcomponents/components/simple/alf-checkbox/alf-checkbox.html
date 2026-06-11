@@ -8,6 +8,7 @@
 @let ty = typographyComputed();
 @let ts = textStyleComputed();
 @let tr = transformComputed();
+@let tsn = transitionComputed();
 @let dl = displayAndLayoutComputed();
 @let sz = sizeComputed();
 @let ar = aria();
@@ -17,6 +18,7 @@
 @let ds = isDisabled();
 @let cc = customClass();
 @let cs = customStyle();
+@let ie = isExiting();
 
 @let idCheckbox = internalId;
 @let labelText = labelComputed();
@@ -36,12 +38,12 @@
   [alfBorder]="bd ? bd : null"     alfPrefix="--alf-cb"
   [alfOutline]="ot ? ot : null"    alfPrefix="--alf-cb"
   [alfShadows]="sd ? sd : null"    alfPrefix="--alf-cb"
-  [alfAnimations]="an ? an : null" alfPrefix="--alf-cb"
   [alfMargin]="mg ? mg : null"     alfPrefix="--alf-cb"
   [alfPadding]="pd ? pd : null"    alfPrefix="--alf-cb"
   [alfTypography]="ty ? ty : null" alfPrefix="--alf-cb"
   [alfTextStyle]="ts ? ts : null"  alfPrefix="--alf-cb"
   [alfTransform]="tr ? tr : null"  alfPrefix="--alf-cb"
+  [alfTransition]="tsn ? tsn : null" alfPrefix="--alf-cb"
   [alfDisplayAndLayout]="dl ? dl : null" alfPrefix="--alf-cb"
   [alfCursor]="cr ? cr : null"
   [alfSize]="sz ? sz : null"

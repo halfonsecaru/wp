@@ -1,7 +1,9 @@
 @mixin alf-padding-style(
   $prefix: '--alf',
   $disabled-selectors: '&:disabled, &.disabled',
-  $focus-selectors: '&:focus, &:focus-visible'
+  $focus-selectors: '&:focus, &:focus-visible',
+  $hover-selectors: '&:hover',
+  $active-selectors: '&:active'
 ) {
   // --- 1. BASE / DEFAULT STATE ---
   $p: var(#{$prefix}-padding, 0px);
@@ -16,7 +18,7 @@
   padding-left: $pl;
 
   // --- 2. HOVER STATE ---
-  &:hover {
+  #{$hover-selectors} {
     $hp: var(#{$prefix}-padding-hover, $p);
     $hpt: var(#{$prefix}-padding-top-hover, var(#{$prefix}-padding-top, $hp));
     $hpr: var(#{$prefix}-padding-right-hover, var(#{$prefix}-padding-right, $hp));
@@ -30,7 +32,7 @@
   }
 
   // --- 3. ACTIVE STATE ---
-  &:active {
+  #{$active-selectors} {
     $hp: var(#{$prefix}-padding-hover, $p);
     $am: var(#{$prefix}-padding-active, $hp);
     $apt: var(#{$prefix}-padding-top-active, var(#{$prefix}-padding-top-hover, var(#{$prefix}-padding-top, $am)));

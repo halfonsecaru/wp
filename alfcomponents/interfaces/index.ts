@@ -18,3 +18,4 @@ export * from './alf-theme.interface';
 export * from './alf-main-visual-style.interface';
 export * from './alf-base-common-config.interface';
 export * from './alf-cursor.interface';
+export * from './alf-transition.interface';

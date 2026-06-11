@@ -1,5 +1,5 @@
-import { computed, Directive, effect, input, signal } from '@angular/core';
-import { AlfBackgroundsInterface, AlfBackgroundsBaseInterface, AlfBorderInterface, AlfBorderBaseInterface, AlfOutlineInterface, AlfOutlineBaseInterface, AlfShadowsInterface, AlfShadowsBaseInterface, AlfAnimateCssInterface, AlfMarginInterface, AlfMarginBaseInterface, AlfPaddingInterface, AlfPaddingBaseInterface, AlfTypographyInterface, AlfTypographyBaseInterface, AlfTextStyleInterface, AlfTextStyleStateBaseInterface, AlfTransformInterface, AlfTransformBaseInterface, AlfDisplayAndLayoutInterface, AlfDisplayAndLayoutBaseInterface, AlfRippleInterface, AlfAriaBaseInterface } from '@alfcomponents/interfaces';
+import { computed, Directive, effect, input, signal, inject, ElementRef } from '@angular/core';
+import { AlfBackgroundsInterface, AlfBackgroundsBaseInterface, AlfBorderInterface, AlfBorderBaseInterface, AlfOutlineInterface, AlfOutlineBaseInterface, AlfShadowsInterface, AlfShadowsBaseInterface, AlfAnimateCssInterface, AlfMarginInterface, AlfMarginBaseInterface, AlfPaddingInterface, AlfPaddingBaseInterface, AlfTypographyInterface, AlfTypographyBaseInterface, AlfTextStyleInterface, AlfTextStyleStateBaseInterface, AlfTransformInterface, AlfTransformBaseInterface, AlfDisplayAndLayoutInterface, AlfDisplayAndLayoutBaseInterface, AlfRippleInterface, AlfAriaBaseInterface, AlfTransitionInterface, AlfTransitionBaseInterface } from '@alfcomponents/interfaces';
 import {
   AlfAlignItemsEnum,
   AlfAnimationTypeEnum,
@@ -66,6 +66,7 @@ export interface PredefinedConfig {
   ripple: AlfRippleInterface;
   textStyleBase: AlfTextStyleInterface;
   outlineBase: AlfOutlineInterface;
+  transitionBase: AlfTransitionInterface;
 }
 
 const backgroundInitial: AlfBackgroundsBaseInterface = {
@@ -94,11 +95,12 @@ const textStyleInitial: AlfTextStyleStateBaseInterface = {
 
 @Directive()
 export abstract class AlfBaseDirective {
+  private readonly el = inject(ElementRef<HTMLElement>);
 
   private readonly visualPredefined = effect(() => {
-    if (this.activeVariant() && this.componentType()) {
+    if (this.componentType()) {
 
-      const predefined = this.resolveVariantConfig(this.activeVariant()!, this.componentType()!);
+      const predefined = this.resolveVariantConfig(this.activeVariant(), this.componentType()!);
 
       let paddingConfig: AlfPaddingInterface | undefined = undefined;
       let displayConfig: AlfDisplayAndLayoutInterface | undefined = undefined;
@@ -126,6 +128,7 @@ export abstract class AlfBaseDirective {
       this._typography.set(predefined.typographyBase);
       this._textStyle.set(predefined.textStyleBase);
       this._transform.set(predefined.transformBase);
+      this._transition.set(predefined.transitionBase);
       this._displayAndLayout.set({
         ...predefined.displayAndLayoutBase,
         default: {
@@ -141,9 +144,12 @@ export abstract class AlfBaseDirective {
   public readonly variant = input<AlfColorVariantEnum | undefined>(undefined);
   public readonly activeVariant = computed(() => {
     const v = this.colorVariant() ?? this.variant();
-    if (!v) return AlfColorVariantEnum.Secondary;
+    if (!v) {
+      return undefined;
+    }
     return v;
   });
+
   public readonly componentType = signal<AlfComponentTypeEnum>(AlfComponentTypeEnum.Default);
 
 
@@ -175,6 +181,9 @@ export abstract class AlfBaseDirective {
   public readonly transform = input<AlfTransformInterface | AlfTransformBaseInterface | undefined>(undefined);
   private readonly _transform = signal<AlfTransformInterface | AlfTransformBaseInterface | undefined>(undefined);
 
+  public readonly transition = input<AlfTransitionInterface | AlfTransitionBaseInterface | undefined>(undefined);
+  private readonly _transition = signal<AlfTransitionInterface | AlfTransitionBaseInterface | undefined>(undefined);
+
   public readonly displayAndLayout = input<AlfDisplayAndLayoutInterface | AlfDisplayAndLayoutBaseInterface | undefined>(undefined);
   private readonly _displayAndLayout = signal<AlfDisplayAndLayoutInterface | AlfDisplayAndLayoutBaseInterface | undefined>(undefined);
 
@@ -182,6 +191,7 @@ export abstract class AlfBaseDirective {
   public readonly cursor = input<AlfCursorEnum | undefined>(undefined);
   public readonly size = input<AlfSizeEnum | undefined>(undefined);
   public readonly animations = input<AlfAnimateCssInterface | undefined>(undefined);
+  public readonly isExiting = input<boolean>(false);
   public readonly tooltip = input<string | AlfTooltipConfig | undefined>(undefined);
 
   public readonly aria = input<AlfAriaBaseInterface | undefined>(undefined);
@@ -200,72 +210,186 @@ export abstract class AlfBaseDirective {
   public readonly backgroundComputed = computed(() => {
     return {
       ...backgroundInitial,
-      ...this.background(),
-      ...this._background()
+      ...this._background(),
+      ...this.background()
     };
   });
 
   public readonly borderComputed = computed(() => {
     return {
-      ...this.border(),
-      ...this._border()
+      ...this._border(),
+      ...this.border()
     };
   });
 
   public readonly outlineComputed = computed(() => {
     return {
-      ...this.outline(),
-      ...this._outline()
+      ...this._outline(),
+      ...this.outline()
     };
   });
 
   public readonly shadowsComputed = computed(() => {
     return {
-      ...this.shadows(),
-      ...this._shadows()
+      ...this._shadows(),
+      ...this.shadows()
     };
   });
 
   public readonly marginComputed = computed(() => {
     return {
-      ...this.margin(),
-      ...this._margin()
+      ...this._margin(),
+      ...this.margin()
     };
   });
 
   public readonly paddingComputed = computed(() => {
     return {
-      ...this.padding(),
-      ...this._padding()
+      ...this._padding(),
+      ...this.padding()
     };
   });
 
   public readonly typographyComputed = computed(() => {
     return {
-      ...this.typography(),
-      ...this._typography()
+      ...this._typography(),
+      ...this.typography()
     };
   });
 
   public readonly textStyleComputed = computed(() => {
     return {
-      ...this.textStyle(),
-      ...this._textStyle()
+      ...this._textStyle(),
+      ...this.textStyle()
     };
   });
 
   public readonly transformComputed = computed(() => {
     return {
-      ...this.transform(),
-      ...this._transform()
+      ...this._transform(),
+      ...this.transform()
+    };
+  });
+
+  public readonly transitionComputed = computed(() => {
+    return {
+      ...this._transition(),
+      ...this.transition()
     };
   });
 
   public readonly displayAndLayoutComputed = computed(() => {
     return {
-      ...this.displayAndLayout(),
-      ...this._displayAndLayout()
+      ...this._displayAndLayout(),
+      ...this.displayAndLayout()
     };
+  });
+
+  // ==========================================
+  // Animations on Host
+  // ==========================================
+  protected readonly resolvedStage = computed(() => {
+    const config = this.animations();
+    if (!config) return undefined;
+    return this.isExiting() ? config.exitStage : (config.enterStage || config.type);
+  });
+
+  protected readonly resolvedClasses = computed(() => {
+    const stage = this.resolvedStage();
+    if (!stage) return [];
+    
+    let stageStr = typeof stage === 'string' ? stage : (stage as any).name || (stage as any).type;
+    if (!stageStr || stageStr === 'none') return [];
+    
+    const classes = ['animate__animated'];
+    if (stageStr.includes('animate__')) {
+      classes.push(...stageStr.split(' ').filter((c: string) => c.trim()));
+    } else {
+      classes.push(`animate__${stageStr}`);
+    }
+    
+    const config = this.animations();
+    if (config?.infinite && !this.isExiting()) {
+      classes.push('animate__infinite');
+    }
+    
+    return Array.from(new Set(classes));
+  });
+
+  protected readonly resolvedDuration = computed(() => {
+    const stage = this.resolvedStage();
+    const config = this.animations();
+    if (stage && typeof stage !== 'string' && (stage as any).duration) return (stage as any).duration;
+    return config?.duration;
+  });
+
+  protected readonly resolvedDelay = computed(() => {
+    const stage = this.resolvedStage();
+    const config = this.animations();
+    if (this.isExiting()) return '0s';
+    if (stage && typeof stage !== 'string' && (stage as any).delay) return (stage as any).delay;
+    return config?.delay;
+  });
+
+  protected readonly resolvedIterationCount = computed(() => {
+    const stage = this.resolvedStage();
+    const config = this.animations();
+    if (stage && typeof stage !== 'string' && (stage as any).iterationCount) return (stage as any).iterationCount;
+    if (config?.infinite && !this.isExiting()) return 'infinite';
+    return config?.iterationCount;
+  });
+
+  protected readonly resolvedTimingFunction = computed(() => {
+    const stage = this.resolvedStage();
+    const config = this.animations();
+    if (stage && typeof stage !== 'string' && (stage as any).timingFunction) return (stage as any).timingFunction;
+    return config?.timingFunction;
+  });
+
+  protected readonly resolvedFillMode = computed(() => {
+    const stage = this.resolvedStage();
+    const config = this.animations();
+    if (stage && typeof stage !== 'string' && (stage as any).fillMode) return (stage as any).fillMode;
+    return config?.fillMode || 'both';
+  });
+
+  protected readonly resolvedDirection = computed(() => {
+    const stage = this.resolvedStage();
+    const config = this.animations();
+    if (stage && typeof stage !== 'string' && (stage as any).direction) return (stage as any).direction;
+    return config?.direction;
+  });
+
+  private previousAnimClasses: string[] = [];
+
+  private readonly _animationsEffect = effect(() => {
+    const el = this.el.nativeElement as HTMLElement;
+    const newClasses = this.resolvedClasses();
+    
+    this.previousAnimClasses.forEach(cls => {
+      if (!newClasses.includes(cls)) el.classList.remove(cls);
+    });
+    
+    newClasses.forEach(cls => {
+      if (!this.previousAnimClasses.includes(cls)) el.classList.add(cls);
+    });
+    
+    this.previousAnimClasses = [...newClasses];
+
+    const set = (prop: string, val: string | number | undefined) => {
+      if (val != null) el.style.setProperty(prop, String(val));
+      else el.style.removeProperty(prop);
+    };
+
+    // Use native animate.css variables instead of the alf ones so we don't need alf-animations-style
+    set('--animate-duration', this.resolvedDuration());
+    set('--animate-delay', this.resolvedDelay());
+    set('--animate-repeat', this.resolvedIterationCount());
+    // Animate.css doesn't use variables for fill-mode, timing-function, and direction natively by default, 
+    // so we set them inline if provided
+    set('animation-timing-function', this.resolvedTimingFunction());
+    set('animation-fill-mode', this.resolvedFillMode());
+    set('animation-direction', this.resolvedDirection());
   });
 
   private readonly resolveAlfColorVariant = (v: any): AlfColorVariantEnum => {
@@ -317,19 +441,15 @@ export abstract class AlfBaseDirective {
     return {
       default: base,
       hover: {
-        ...base,
         color: hover,
       },
       focus: {
-        ...base,
         color: focus,
       },
       disabled: {
-        ...base,
         color: disabled,
       },
       active: {
-        ...base,
         color: active,
       },
     }
@@ -417,21 +537,8 @@ export abstract class AlfBaseDirective {
     const basePadding: AlfPaddingInterface = {
       default: {
         padding: AlfPxEnum.None,
-      },
-      hover: {
-        padding: AlfPxEnum.None,
-      },
-      focus: {
-        padding: AlfPxEnum.None,
-      },
-      disabled: {
-        padding: AlfPxEnum.None,
-      },
-      active: {
-        padding: AlfPxEnum.None,
       }
     };
-
     return basePadding;
   };
 
@@ -441,22 +548,6 @@ export abstract class AlfBaseDirective {
       default: {
         outlineColor: AlfColorEnum.Transparent,
         outlineWidth: AlfPxEnum.None,
-      },
-      hover: {
-        outlineColor: AlfColorEnum.Transparent,
-        outlineWidth: AlfPxEnum.None,
-      },
-      focus: {
-        outlineColor: AlfColorEnum.Transparent,
-        outlineWidth: AlfPxEnum.None,
-      },
-      disabled: {
-        outlineColor: AlfColorEnum.Transparent,
-        outlineWidth: AlfPxEnum.None,
-      },
-      active: {
-        outlineColor: AlfColorEnum.Transparent,
-        outlineWidth: AlfPxEnum.None,
       }
     };
     return base;
@@ -464,25 +555,11 @@ export abstract class AlfBaseDirective {
 
 
   private readonly buildMarginBaseConfig = (): AlfMarginInterface => {
-
     const base: AlfMarginInterface = {
       default: {
         margin: AlfPxEnum.None,
-      },
-      hover: {
-        margin: AlfPxEnum.None,
-      },
-      focus: {
-        margin: AlfPxEnum.None,
-      },
-      disabled: {
-        margin: AlfPxEnum.None,
-      },
-      active: {
-        margin: AlfPxEnum.None,
       }
     };
-
     return base;
   };
 
@@ -499,11 +576,7 @@ export abstract class AlfBaseDirective {
       overflow: 'hidden' as any,
     };
     return {
-      default: { ...base },
-      hover: { ...base },
-      focus: { ...base },
-      disabled: { ...base },
-      active: { ...base },
+      default: { ...base }
     };
   }
 
@@ -541,10 +614,10 @@ export abstract class AlfBaseDirective {
 
     return {
       default: base,
-      hover: { ...base, borderColor: hover },
-      focus: { ...base, borderColor: hover },
-      active: { ...base, borderColor: hover },
-      disabled: { ...base, borderColor: disabled ? disabled : AlfColorEnum.Gray300 },
+      hover: { borderColor: hover },
+      focus: { borderColor: hover },
+      active: { borderColor: hover },
+      disabled: { borderColor: disabled ? disabled : AlfColorEnum.Gray300 },
     };
   };
 
@@ -577,7 +650,7 @@ export abstract class AlfBaseDirective {
   };
 
   private readonly buildTransformConfig = (): AlfTransformInterface => ({
-    default: { ...this.buildTransformBaseConfig() },
+    default: { ...this.buildTransformBaseConfig() }
   });
 
   // ── CONSTRUCTORES BASE: El ADN neutro del sistema ───────────────────────
@@ -627,6 +700,7 @@ export abstract class AlfBaseDirective {
       displayAndLayoutBase: this.buildDisplayAndLayoutBaseConfig(),
       marginBase: this.buildMarginBaseConfig(),
       animationsBase: this.buildAnimationsBaseConfig(),
+      transitionBase: this.buildTransitionBaseConfig(),
       transformBase: this.buildTransformConfig(),
       typographyBase: this.buildTypographyBaseConfig(main, hover, focus, disabled, active),
       borderBase: this.buildColorBorderConfig(borderDefault, borderHover, borderWidth, disabled),
@@ -635,15 +709,33 @@ export abstract class AlfBaseDirective {
         textStyleHover ? textStyleHover : hover,
         textStyleFocus ? textStyleFocus : focus,
         textStyleDisabled ? textStyleDisabled : disabled,
-        textStyleActive ? textStyleActive : active),
+        textStyleActive ? textStyleActive : active
+      ),
       shadowsBase: this.buildShadowsBaseConfig(main, hover, focus, disabled, active, shadowType),
       outlineBase: this.buildOutlineBaseConfig(main, hover, focus, disabled, active),
       backgroundsBase: this.buildColorBackgroundConfig(backgroundDefault, backgroundHover, disabled),
       ripple: { color: main }
-
-    }
+    } as PredefinedConfig;
 
     return completed;
+  }
+
+  private buildTransitionBaseConfig(): AlfTransitionInterface {
+    return {
+      default: {
+        duration: '700ms',
+        timingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+        property: 'all'
+      },
+      hover: {
+        duration: '300ms',
+        timingFunction: 'ease-out',
+      },
+      active: {
+        duration: '150ms',
+        timingFunction: 'ease-out',
+      }
+    };
   }
 
   private readonly resolveVariantConfig = (
@@ -653,20 +745,22 @@ export abstract class AlfBaseDirective {
     const v = this.resolveAlfColorVariant(variant);
 
     if (!v || v === AlfColorVariantEnum.Transparent || v === AlfColorVariantEnum.Default) {
-      return {
-        marginBase: undefined,
-        paddingBase: undefined,
-        displayAndLayoutBase: undefined,
-        shadowsBase: undefined,
-        transformBase: undefined,
-        backgroundsBase: undefined,
-        typographyBase: undefined,
-        borderBase: undefined,
-        animationsBase: undefined,
-        ripple: undefined,
-        textStyleBase: undefined,
-        outlineBase: undefined
+      const fullConfig = this.defaultConstruct(
+        AlfColorEnum.SecondaryOutlineText, AlfColorEnum.SecondaryOutlineTextHover, AlfColorEnum.SecondaryOutlineTextHover, AlfColorEnum.SecondaryOutlineDisabled, AlfColorEnum.SecondaryOutlineTextHover,
+        AlfColorEnum.SecondaryOutlineBg, AlfColorEnum.SecondaryOutlineBgHover,
+        AlfColorEnum.SecondaryOutline, AlfColorEnum.SecondaryOutlineHover, AlfPxEnum.Px1
+      );
+
+      const onlyDefaultConfig: any = {};
+      for (const [key, baseValue] of Object.entries(fullConfig)) {
+        if (baseValue && typeof baseValue === 'object' && 'default' in baseValue) {
+          onlyDefaultConfig[key] = { default: (baseValue as any).default };
+        } else {
+          onlyDefaultConfig[key] = baseValue;
+        }
       }
+
+      return onlyDefaultConfig as PredefinedConfig;
     }
 
     const outlinedFilledComponents = [

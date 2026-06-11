@@ -1,31 +1,35 @@
-@mixin alf-size-style {
+@mixin alf-size-style(
+  $prefix: '--alf',
+  $disabled-selectors: '&:disabled, &.disabled',
+  $focus-selectors: '&:focus, &:focus-visible'
+) {
   &.alf-size-xs {
-    transform: scale(0.7);
+    transform: scale(var(#{$prefix}-size-xs-scale, 0.7));
     transform-origin: center;
   }
   
   &.alf-size-sm {
-    transform: scale(0.85);
+    transform: scale(var(#{$prefix}-size-sm-scale, 0.85));
     transform-origin: center;
   }
   
   &.alf-size-md {
-    transform: scale(1);
+    transform: scale(var(#{$prefix}-size-md-scale, 1));
     transform-origin: center;
   }
   
   &.alf-size-lg {
-    transform: scale(1.15);
+    transform: scale(var(#{$prefix}-size-lg-scale, 1.15));
     transform-origin: center;
   }
   
   &.alf-size-xl {
-    transform: scale(1.3);
+    transform: scale(var(#{$prefix}-size-xl-scale, 1.3));
     transform-origin: center;
   }
   
   &.alf-size-2xl {
-    transform: scale(1.5);
+    transform: scale(var(#{$prefix}-size-2xl-scale, 1.5));
     transform-origin: center;
   }
 }

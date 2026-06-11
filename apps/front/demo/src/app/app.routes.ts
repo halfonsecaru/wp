@@ -43,5 +43,9 @@ export const routes: Routes = [
   {
     path: 'base',
     loadComponent: () => import('./app/pages/alf-base-viewer/alf-base-viewer').then(m => m.AlfBaseViewer)
+  },
+  {
+    path: 'playground',
+    loadComponent: () => import('./app/pages/alf-playground/alf-playground').then(m => m.AlfPlayground)
   }
 ];
