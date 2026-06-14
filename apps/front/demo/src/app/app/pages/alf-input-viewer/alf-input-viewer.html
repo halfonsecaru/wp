@@ -19,6 +19,16 @@
       </button>
       <button 
         type="button"
+        (click)="selectedAppearance.set(AlfInputAppearanceEnum.Fill)"
+        [style.background]="selectedAppearance() === AlfInputAppearanceEnum.Fill ? '#ffffff' : 'transparent'"
+        [style.color]="selectedAppearance() === AlfInputAppearanceEnum.Fill ? '#4f46e5' : '#64748b'"
+        [style.font-weight]="selectedAppearance() === AlfInputAppearanceEnum.Fill ? '600' : '400'"
+        style="border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s ease; display: flex; align-items: center; gap: 6px;"
+      >
+        🗂️ Fill
+      </button>
+      <button 
+        type="button"
         (click)="selectedAppearance.set(AlfInputAppearanceEnum.Standard)"
         [style.background]="selectedAppearance() === AlfInputAppearanceEnum.Standard ? '#ffffff' : 'transparent'"
         [style.color]="selectedAppearance() === AlfInputAppearanceEnum.Standard ? '#4f46e5' : '#64748b'"
@@ -40,14 +50,14 @@
       <div class="inp-card__body">
         <div class="inp-demo-col">
           <alf-input 
-            label="Usuario" 
+            label="Teléfono Móvil" 
             [required]="true"
             [appearance]="selectedAppearance()"
-            prefix="👩‍💼"
-            placeholder="Introduce tu usuario..." 
-            [value]="valStandard()" 
-            (onInput)="valStandard.set($event)" 
-          />
+            placeholder="600 000 000" 
+            [(value)]="valStandard" 
+          >
+            <button alfSuffix style="background: none; border: none; cursor: pointer; font-size: 1.1rem; padding: 0 8px; color: var(--alf-text-secondary, #666);">📞</button>
+          </alf-input>
         </div>
       </div>
     </div>
@@ -60,13 +70,41 @@
       </h2>
       <div class="inp-card__body">
         <div class="inp-demo-col">
-          <alf-input type="password" [appearance]="selectedAppearance()" label="Contraseña" placeholder="Tu contraseña segura" [value]="valPassword()" (onInput)="valPassword.set($event)" />
-          <alf-input type="email" [appearance]="selectedAppearance()" label="Correo Electrónico" placeholder="usuario@empresa.com" [value]="valEmail()" (onInput)="valEmail.set($event)" />
+          <alf-input type="password" [appearance]="selectedAppearance()" label="Contraseña" placeholder="Tu contraseña segura" [(value)]="valPassword" />
+          <alf-input type="email" [appearance]="selectedAppearance()" label="Correo Electrónico" placeholder="usuario@empresa.com" [(value)]="valEmail" />
         </div>
       </div>
     </div>
 
-    <!-- 3. VARIANTES OUTLINE -->
+    <!-- 3. VARIANTES SOLID -->
+    <div class="inp-card inp-card--wide">
+      <h2 class="inp-card__title">
+        <span class="inp-card__dot inp-card__dot--blue"></span>
+        VARIANTES SOLID (Fondo Relleno Premium)
+      </h2>
+      <div class="inp-card__body">
+        <div class="inp-demo-col" style="gap: 2rem;">
+          <div class="inp-demo-grid-4">
+            @for (variant of solidVariants; track variant) {
+              @let inpSignal = getValue('solid', variant);
+              <div class="inp-size-item" style="align-items: stretch; gap: 0.5rem; width: 100%;">
+                <span class="inp-variant-badge inp-variant-badge--outline" style="align-self: flex-start;">{{ variant }}</span>
+                <alf-input 
+                  [variant]="variant" 
+                  [appearance]="selectedAppearance()"
+                  [label]="variant" 
+                  placeholder="Escribe..."
+                  helperText="Texto de ayuda visual"
+                  [value]="inpSignal()"
+                  (onInput)="inpSignal.set($event)" />
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. VARIANTES OUTLINE -->
     <div class="inp-card inp-card--wide">
       <h2 class="inp-card__title">
         <span class="inp-card__dot inp-card__dot--blue"></span>
@@ -84,6 +122,7 @@
                   [appearance]="selectedAppearance()"
                   [label]="variant" 
                   placeholder="Escribe..."
+                  helperText="Texto de ayuda visual"
                   [value]="inpSignal()"
                   (onInput)="inpSignal.set($event)" />
               </div>
@@ -111,6 +150,7 @@
                   [appearance]="selectedAppearance()"
                   [label]="variant" 
                   placeholder="Escribe..."
+                  helperText="Texto de ayuda visual"
                   [value]="inpSignal()"
                   (onInput)="inpSignal.set($event)" />
               </div>
@@ -138,6 +178,7 @@
                   [appearance]="selectedAppearance()"
                   [label]="variant" 
                   placeholder="Escribe..."
+                  helperText="Texto de ayuda visual"
                   [value]="inpSignal()"
                   (onInput)="inpSignal.set($event)" />
               </div>
@@ -165,6 +206,7 @@
                   [appearance]="selectedAppearance()"
                   [label]="variant" 
                   placeholder="Escribe..."
+                  helperText="Texto de ayuda visual"
                   [value]="inpSignal()"
                   (onInput)="inpSignal.set($event)" />
               </div>
@@ -177,8 +219,8 @@
     <!-- 7. VARIANTES 3D -->
     <div class="inp-card inp-card--wide">
       <h2 class="inp-card__title">
-        <span class="inp-card__dot inp-card__dot--rose"></span>
-        VARIANTES 3D (Relieve de Profundidad)
+        <span class="inp-card__dot inp-card__dot--blue"></span>
+        VARIANTES 3D (Efecto de Profundidad)
       </h2>
       <div class="inp-card__body">
         <div class="inp-demo-col" style="gap: 2rem;">
@@ -186,12 +228,13 @@
             @for (variant of depthVariants; track variant) {
               @let inpSignal = getValue('depth', variant);
               <div class="inp-size-item" style="align-items: stretch; gap: 0.5rem; width: 100%;">
-                <span class="inp-variant-badge inp-variant-badge--depth" style="align-self: flex-start;">{{ variant }}</span>
+                <span class="inp-variant-badge inp-variant-badge--solid" style="align-self: flex-start;">{{ variant }}</span>
                 <alf-input 
                   [variant]="variant" 
                   [appearance]="selectedAppearance()"
                   [label]="variant" 
                   placeholder="Escribe..."
+                  helperText="Texto de ayuda visual"
                   [value]="inpSignal()"
                   (onInput)="inpSignal.set($event)" />
               </div>
@@ -201,11 +244,11 @@
       </div>
     </div>
 
-    <!-- 8. VARIANTES DEGRADADAS -->
+    <!-- 8. VARIANTES GRADIENT -->
     <div class="inp-card inp-card--wide">
       <h2 class="inp-card__title">
-        <span class="inp-card__dot inp-card__dot--green"></span>
-        GRADIENTES PREMIUM (Futuristas Élite)
+        <span class="inp-card__dot inp-card__dot--purple"></span>
+        VARIANTES GRADIENT (Fondos y Colores Vibrantes)
       </h2>
       <div class="inp-card__body">
         <div class="inp-demo-col" style="gap: 2rem;">
@@ -213,39 +256,13 @@
             @for (variant of gradientVariants; track variant) {
               @let inpSignal = getValue('gradient', variant);
               <div class="inp-size-item" style="align-items: stretch; gap: 0.5rem; width: 100%;">
-                <span class="inp-variant-badge inp-variant-badge--gradient" style="align-self: flex-start;">{{ variant }}</span>
-                <alf-input 
-                  [variant]="variant" 
-                  [appearance]="selectedAppearance()"
-                  [label]="variant" 
-                  placeholder="Escribe..."
-                  [value]="inpSignal()"
-                  (onInput)="inpSignal.set($event)" />
-              </div>
-            }
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 9. VARIANTES SÓLIDAS -->
-    <div class="inp-card inp-card--wide">
-      <h2 class="inp-card__title">
-        <span class="inp-card__dot inp-card__dot--emerald"></span>
-        VARIANTES SÓLIDAS DE COLOR (Fondo Relleno)
-      </h2>
-      <div class="inp-card__body">
-        <div class="inp-demo-col" style="gap: 2rem;">
-          <div class="inp-demo-grid-4">
-            @for (variant of solidVariants; track variant) {
-              @let inpSignal = getValue('solid', variant);
-              <div class="inp-size-item" style="align-items: stretch; gap: 0.5rem; width: 100%;">
                 <span class="inp-variant-badge inp-variant-badge--solid" style="align-self: flex-start;">{{ variant }}</span>
                 <alf-input 
                   [variant]="variant" 
                   [appearance]="selectedAppearance()"
                   [label]="variant" 
                   placeholder="Escribe..."
+                  helperText="Texto de ayuda visual"
                   [value]="inpSignal()"
                   (onInput)="inpSignal.set($event)" />
               </div>
@@ -255,22 +272,161 @@
       </div>
     </div>
 
-    <!-- 4. ESTADOS FUNCIONALES -->
-    <div class="inp-card">
+    <!-- 9. VALIDACIÓN Y TEXTOS DE FOOTER -->
+    <div class="inp-card inp-card--wide">
       <h2 class="inp-card__title">
         <span class="inp-card__dot inp-card__dot--amber"></span>
-        Estados Funcionales
+        Validación y Textos de Footer
       </h2>
       <div class="inp-card__body">
-        <div class="inp-demo-col">
-          <alf-input [appearance]="selectedAppearance()" label="Con Ayuda" helperText="Este texto te ayuda a entender el campo" placeholder="Escribe..." [value]="valHelper()" (onInput)="valHelper.set($event)" />
-          <alf-input [appearance]="selectedAppearance()" label="Con Error" error="El formato es incorrecto" [value]="valError()" (onInput)="valError.set($event)" />
-          
-          <alf-input [appearance]="selectedAppearance()" label="Deshabilitado" [disabled]="true" [value]="valDisabled()" />
-          <alf-input [appearance]="selectedAppearance()" label="Solo Lectura" [readonly]="true" [value]="valReadonly()" />
+        <div class="inp-demo-col" style="gap: 1.5rem;">
+          <div class="inp-demo-grid-4">
+            <!-- Helper Text -->
+            <div class="inp-size-item" style="width: 100%;">
+              <alf-input 
+                [appearance]="selectedAppearance()" 
+                label="Con Ayuda (Helper Text)" 
+                helperText="Este texto aparece en el footer para dar contexto al usuario." 
+                placeholder="Escribe algo..." 
+                [(value)]="valHelper" />
+            </div>
+
+            <!-- Contador de Caracteres -->
+            <div class="inp-size-item" style="width: 100%;">
+              <alf-input 
+                [appearance]="selectedAppearance()" 
+                label="Con Contador (Char Counter)" 
+                helperText="Tienes un límite de caracteres."
+                [maxLength]="20"
+                [showCharCounter]="true"
+                placeholder="Escribe hasta 20 caracteres..." 
+                [(value)]="valStandard" />
+            </div>
+
+            <!-- Error -->
+            <div class="inp-size-item" style="width: 100%;">
+              <alf-input 
+                [appearance]="selectedAppearance()" 
+                label="Con Error Fijo" 
+                error="El formato ingresado es incorrecto." 
+                [(value)]="valError" />
+            </div>
+              
+            <!-- Error Reactivo -->
+            <div class="inp-size-item" style="width: 100%;">
+              <alf-input 
+                [appearance]="selectedAppearance()" 
+                label="Error Reactivo" 
+                autocomplete="email"
+                [error]="(valEmail()?.length || 0) > 0 && !valEmail()?.includes('@') ? 'Debes incluir un @ en el email' : ''" 
+                helperText="Escribe un texto sin arroba para disparar el error. Además, soporta autocomplete='email'."
+                [(value)]="valEmail" />
+            </div>
+
+            <!-- Deshabilitado -->
+            <div class="inp-size-item" style="width: 100%;">
+              <alf-input [appearance]="selectedAppearance()" label="Deshabilitado" [disabled]="true" [value]="valDisabled()" />
+            </div>
+
+            <!-- Clear On Click -->
+            <div class="inp-size-item" style="width: 100%;">
+              <alf-input 
+                [appearance]="selectedAppearance()" 
+                label="Borrar al Click" 
+                [clearOnClick]="true"
+                helperText="Haz clic dentro y el valor desaparecerá automáticamente."
+                [(value)]="valClearOnClick" />
+            </div>
+
+            <!-- Solo Lectura -->
+            <div class="inp-size-item" style="width: 100%;">
+              <alf-input [appearance]="selectedAppearance()" label="Solo Lectura" [readonly]="true" [value]="valReadonly()" />
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-  </div>
-</div>
+    <!-- 10. VALIDACIONES AUTOMÁTICAS -->
+    <div class="inp-card inp-card--wide">
+      <h2 class="inp-card__title">
+        <span class="inp-card__dot inp-card__dot--red"></span>
+        10. Validaciones Automáticas
+      </h2>
+      <div class="inp-card__body">
+        <div class="inp-demo-col" style="gap: 1.5rem;">
+          <div class="inp-demo-grid-4">
+            
+            <!-- Requerido -->
+            <div class="inp-size-item" style="width: 100%;">
+              <alf-input 
+                [appearance]="selectedAppearance()" 
+                label="Campo Requerido" 
+                [required]="true"
+                helperText="Si borras el contenido marcará error."
+                [(value)]="valReq" />
+            </div>
+
+            <!-- Min Length -->
+            <div class="inp-size-item" style="width: 100%;">
+              <alf-input 
+                [appearance]="selectedAppearance()" 
+                label="Mínimo 5 Caracteres" 
+                [minLength]="5"
+                [(value)]="valMinLen" />
+            </div>
+
+            <!-- Max Length -->
+            <div class="inp-size-item" style="width: 100%;">
+              <alf-input 
+                [appearance]="selectedAppearance()" 
+                label="Máximo 10 Caracteres" 
+                [maxLength]="10"
+                [showCharCounter]="true"
+                [(value)]="valMaxLen" />
+            </div>
+
+            <!-- Min Value -->
+            <div class="inp-size-item" style="width: 100%;">
+              <alf-input 
+                [appearance]="selectedAppearance()" 
+                type="number"
+                label="Valor Mínimo (10)" 
+                [min]="10"
+                [(value)]="valMin" />
+            </div>
+
+            <!-- Max Value -->
+            <div class="inp-size-item" style="width: 100%;">
+              <alf-input 
+                [appearance]="selectedAppearance()" 
+                type="number"
+                label="Valor Máximo (50)" 
+                [max]="50"
+                [(value)]="valMax" />
+            </div>
+
+            <!-- Pattern -->
+            <div class="inp-size-item" style="width: 100%;">
+              <alf-input 
+                [appearance]="selectedAppearance()" 
+                label="Solo Letras (Patrón)" 
+                pattern="^[a-zA-Z]+$"
+                helperText="Escribe un número para probar la validación regex."
+                [(value)]="valPattern" />
+            </div>
+
+            <!-- Validador Personalizado -->
+            <div class="inp-size-item" style="width: 100%;">
+              <alf-input 
+                [appearance]="selectedAppearance()" 
+                label="Validador Personalizado" 
+                [validators]="customValidator"
+                helperText="Solo acepta la palabra 'alfon'."
+                [(value)]="valCustom" />
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>

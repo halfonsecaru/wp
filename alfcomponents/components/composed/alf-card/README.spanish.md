@@ -1,6 +1,6 @@
 # AlfCard - Componente de Tarjeta Élite
 
-Componente de tarjeta standalone de alto rendimiento diseñado para Angular 21. Implementa el **Elite Visual Engine**, con subcomponentes anidados para una distribución estructural robusta (título, cuerpo, acciones e imagen), interactividad polimórfica (enlaces/botones), y un sistema de temas dinámicos impulsado por variables CSS.
+Componente de tarjeta standalone de alto rendimiento diseñado para Angular 22. Implementa el **Elite Visual Engine**, con subcomponentes anidados para una distribución estructural robusta (título, cuerpo, acciones e imagen), interactividad polimórfica (enlaces/botones), y un sistema de temas dinámicos impulsado por variables CSS.
 
 ## Características Clave
 

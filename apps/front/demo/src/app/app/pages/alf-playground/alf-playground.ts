@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, signal, computed } from '@angular/core';
-import { AlfButton, AlfCheckbox, AlfTabsContainerComponent, AlfTabComponent } from '@alfcomponents/components';
+import { AlfButton, AlfCheckbox, AlfInput, AlfTabsContainerComponent, AlfTabComponent } from '@alfcomponents/components';
+import { AlfInputInterface } from '@alfcomponents/components/simple/alf-input/interfaces/alf-input.interface';
 import {
   AlfColorVariantEnum,
   AlfColorEnum,
@@ -17,6 +18,9 @@ import {
   AlfPercentageEnum,
   AlfTimingFunctionEnum,
   AlfAnimationTypeEnum,
+  AlfInputAppearanceEnum,
+  AlfInputTypeEnum,
+  AlfInputAdornmentEnum,
 } from '@alfcomponents/enums';
 import {
   AlfBackgroundsInterface,
@@ -47,7 +51,7 @@ type CssState = 'default' | 'hover' | 'focus' | 'active' | 'disabled';
 @Component({
   selector: 'app-alf-playground',
   standalone: true,
-  imports: [AlfButton, AlfCheckbox, AlfTabsContainerComponent, AlfTabComponent],
+  imports: [AlfButton, AlfCheckbox, AlfInput, AlfTabsContainerComponent, AlfTabComponent],
   templateUrl: './alf-playground.html',
   styleUrl: './alf-playground.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -55,6 +59,10 @@ type CssState = 'default' | 'hover' | 'focus' | 'active' | 'disabled';
 export class AlfPlayground {
   public readonly AlfColorVariantEnum = AlfColorVariantEnum;
   public readonly AlfSizeEnum = AlfSizeEnum;
+  public readonly AlfInputAppearanceEnum = AlfInputAppearanceEnum;
+  public readonly AlfInputTypeEnum = AlfInputTypeEnum;
+  public readonly AlfInputAdornmentEnum = AlfInputAdornmentEnum;
+  public readonly adornmentOptions = enumEntries(AlfInputAdornmentEnum);
 
   public readonly colorOptions = enumEntries(AlfColorEnum);
   public readonly pxOptions = enumEntries(PX_SUBSET);
@@ -76,6 +84,7 @@ export class AlfPlayground {
   public readonly components = [
     { id: 'alf-button', label: 'AlfButton', icon: '🔘' },
     { id: 'alf-checkbox', label: 'AlfCheckbox', icon: '☑️' },
+    { id: 'alf-input', label: 'AlfInput', icon: '✍️' },
   ] as const;
   public readonly selectedComponentId = signal<string>('alf-button');
 
@@ -137,6 +146,57 @@ export class AlfPlayground {
 
   public readonly showPreview = signal<boolean>(true);
   public readonly isExiting = signal<boolean>(false);
+
+  // ── Input Behavior Signals ────────────────────────────────────────────────
+  public readonly inputBehaviorLabel = signal<string>('Preview');
+  public readonly inputBehaviorPlaceholder = signal<string>('');
+  public readonly inputBehaviorHelperText = signal<string>('');
+  public readonly inputBehaviorError = signal<string>('');
+  public readonly inputBehaviorAppearance = signal<string>(AlfInputAppearanceEnum.Outline);
+  public readonly inputBehaviorType = signal<string>('');
+  public readonly inputBehaviorPrefix = signal<string>('');
+  public readonly inputBehaviorSuffix = signal<string>('');
+  public readonly inputBehaviorRequired = signal<boolean>(false);
+  public readonly inputBehaviorReadonly = signal<boolean>(false);
+  public readonly inputBehaviorClearable = signal<boolean>(false);
+  public readonly inputBehaviorShowPwdToggle = signal<boolean>(false);
+  public readonly inputBehaviorMaxLength = signal<string>('');
+  public readonly inputBehaviorShowCharCounter = signal<boolean>(false);
+
+  public readonly inputBehaviorConfig = computed<AlfInputInterface>(() => {
+    const label       = this.inputBehaviorLabel();
+    const placeholder = this.inputBehaviorPlaceholder();
+    const helperText  = this.inputBehaviorHelperText();
+    const error       = this.inputBehaviorError();
+    const appearance  = this.inputBehaviorAppearance();
+    const type        = this.inputBehaviorType();
+    const prefix      = this.inputBehaviorPrefix();
+    const suffix      = this.inputBehaviorSuffix();
+    const required    = this.inputBehaviorRequired();
+    const readonly    = this.inputBehaviorReadonly();
+    const clearable   = this.inputBehaviorClearable();
+    const showPwd     = this.inputBehaviorShowPwdToggle();
+    const maxLengthRaw = this.inputBehaviorMaxLength();
+    const maxLength   = maxLengthRaw ? parseInt(maxLengthRaw, 10) : undefined;
+    const showCounter = this.inputBehaviorShowCharCounter();
+
+    const cfg: AlfInputInterface = {};
+    if (label)       (cfg as any).label       = label;
+    if (placeholder) (cfg as any).placeholder = placeholder;
+    if (helperText)  (cfg as any).helperText  = helperText;
+    if (error)       (cfg as any).error        = error;
+    if (appearance)  (cfg as any).appearance   = appearance as AlfInputAppearanceEnum;
+    if (type)        (cfg as any).inputType    = type as AlfInputTypeEnum;
+    if (prefix)      (cfg as any).prefix       = prefix;
+    if (suffix)      (cfg as any).suffix       = suffix;
+    if (required)    (cfg as any).required     = true;
+    if (readonly)    (cfg as any).readonly     = true;
+    if (clearable)   (cfg as any).clearable    = true;
+    if (showPwd)     (cfg as any).showPasswordToggle = true;
+    if (maxLength)   (cfg as any).maxLength    = maxLength;
+    if (showCounter) (cfg as any).showCharCounter = true;
+    return cfg;
+  });
 
   public readonly playAnimation = (): void => {
     this.isExiting.set(false);
@@ -363,6 +423,22 @@ export class AlfPlayground {
     this.animDelay.set(undefined);
     this.animIteration.set(undefined);
     this.animInfinite.set(false);
+
+    // Reset input behavior
+    this.inputBehaviorLabel.set('Preview');
+    this.inputBehaviorPlaceholder.set('');
+    this.inputBehaviorHelperText.set('');
+    this.inputBehaviorError.set('');
+    this.inputBehaviorAppearance.set('');
+    this.inputBehaviorType.set('');
+    this.inputBehaviorPrefix.set('');
+    this.inputBehaviorSuffix.set('');
+    this.inputBehaviorRequired.set(false);
+    this.inputBehaviorReadonly.set(false);
+    this.inputBehaviorClearable.set(false);
+    this.inputBehaviorShowPwdToggle.set(false);
+    this.inputBehaviorMaxLength.set('');
+    this.inputBehaviorShowCharCounter.set(false);
 
     for (const s of this.states) {
       this.bgColor[s].set('');

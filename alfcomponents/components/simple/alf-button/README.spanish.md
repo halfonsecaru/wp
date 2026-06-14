@@ -1,6 +1,6 @@
 # AlfButton - Componente de Botón Élite
 
-Componente de botón standalone de alto rendimiento diseñado para Angular 21. Implementa el **Elite Visual Engine**, con centralización total del diseño en TypeScript, soporte polimórfico (button/anchor) y sistema de temas dinámico mediante variables CSS.
+Componente de botón standalone de alto rendimiento diseñado para Angular 22. Implementa el **Elite Visual Engine**, con centralización total del diseño en TypeScript, soporte polimórfico (button/anchor) y sistema de temas dinámico mediante variables CSS.
 
 ## Características Principales
 

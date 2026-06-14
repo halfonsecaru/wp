@@ -144,6 +144,9 @@
   flex-direction: column;
   align-items: center;
   gap: 0.75rem;
+  height: 150px;
+  min-height: 150px;
+  max-height: 150px;
 }
 
 .inp-size-badge {

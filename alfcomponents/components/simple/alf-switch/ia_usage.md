@@ -7,7 +7,7 @@ This document describes how to use and extend the `alf-switch` component safely 
 - **Component**: `alfcomponents/components/simple/alf-switch/alf-switch.ts`
 - **Core Engine**: Fully integrated with `alfcomponents/base/defaultVariants.ts` via `resolveVariantConfig`.
 - **Styling**: Dual strategy using SCSS (layout) and CSS Variables (`AlfColorEnum`) via visualprefix `--alf-sw` for dynamic theming.
-- **Signals**: Native Angular 21 Signals (`input`, `model`, `computed`) for full reactivity and Zoneless support.
+- **Signals**: Native Angular 22 Signals (`input`, `model`, `computed`) for full reactivity and Zoneless support.
 
 ## Recommended Usage
 

@@ -20,10 +20,10 @@ export class AlfMarginDirective {
 
   private readonly SUFFIXES = [
     '-margin', '-margin-top', '-margin-right', '-margin-bottom', '-margin-left',
-    '-margin-hover', '-margin-hover-top', '-margin-hover-right', '-margin-hover-bottom', '-margin-hover-left',
-    '-margin-active', '-margin-active-top', '-margin-active-right', '-margin-active-bottom', '-margin-active-left',
-    '-margin-focus', '-margin-focus-top', '-margin-focus-right', '-margin-focus-bottom', '-margin-focus-left',
-    '-margin-disabled', '-margin-disabled-top', '-margin-disabled-right', '-margin-disabled-bottom', '-margin-disabled-left',
+    '-margin-hover', '-margin-top-hover', '-margin-right-hover', '-margin-bottom-hover', '-margin-left-hover',
+    '-margin-active', '-margin-top-active', '-margin-right-active', '-margin-bottom-active', '-margin-left-active',
+    '-margin-focus', '-margin-top-focus', '-margin-right-focus', '-margin-bottom-focus', '-margin-left-focus',
+    '-margin-disabled', '-margin-top-disabled', '-margin-right-disabled', '-margin-bottom-disabled', '-margin-left-disabled',
   ];
 
   private readonly _effect = effect(() => {
@@ -41,10 +41,10 @@ export class AlfMarginDirective {
     const applyState = (state: any, sfx: string) => {
       if (!state) return;
       set(`${p}-margin${sfx}`,        state.margin);
-      set(`${p}-margin${sfx}-top`,    state.marginTop);
-      set(`${p}-margin${sfx}-right`,  state.marginRight);
-      set(`${p}-margin${sfx}-bottom`, state.marginBottom);
-      set(`${p}-margin${sfx}-left`,   state.marginLeft);
+      set(`${p}-margin-top${sfx}`,    state.marginTop);
+      set(`${p}-margin-right${sfx}`,  state.marginRight);
+      set(`${p}-margin-bottom${sfx}`, state.marginBottom);
+      set(`${p}-margin-left${sfx}`,   state.marginLeft);
     };
 
     applyState(mg.default,  '');

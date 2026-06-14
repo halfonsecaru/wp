@@ -5,6 +5,7 @@
  * @example
  * ```typescript
  * // En un componente Angular
+ * color: AlfColorVariantEnum.Primary        // Variante sólida principal
  * color: AlfColorVariantEnum.PrimaryCrystal // Aplica efecto glassmorphism
  * ```
  */

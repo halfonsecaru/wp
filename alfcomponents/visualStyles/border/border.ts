@@ -19,27 +19,31 @@ export class AlfBorderDirective {
   });
 
   private readonly SUFFIXES = [
+    // default
     '-border-width', '-border-top-width', '-border-right-width', '-border-bottom-width', '-border-left-width',
     '-border-style', '-border-top-style', '-border-right-style', '-border-bottom-style', '-border-left-style',
     '-border-color', '-border-top-color', '-border-right-color', '-border-bottom-color', '-border-left-color',
     '-border-radius', '-border-top-left-radius', '-border-top-right-radius', '-border-bottom-right-radius', '-border-bottom-left-radius',
-    '-border-outline-width', '-border-outline-style', '-border-outline-color', '-border-outline-offset', '-border-box-sizing',
-    '-border-hover-width', '-border-hover-top-width', '-border-hover-right-width', '-border-hover-bottom-width', '-border-hover-left-width',
-    '-border-hover-style', '-border-hover-top-style', '-border-hover-right-style', '-border-hover-bottom-style', '-border-hover-left-style',
-    '-border-hover-color', '-border-hover-top-color', '-border-hover-right-color', '-border-hover-bottom-color', '-border-hover-left-color',
-    '-border-hover-radius', '-border-hover-top-left-radius', '-border-hover-top-right-radius', '-border-hover-bottom-right-radius', '-border-hover-bottom-left-radius',
-    '-border-active-width', '-border-active-top-width', '-border-active-right-width', '-border-active-bottom-width', '-border-active-left-width',
-    '-border-active-style', '-border-active-top-style', '-border-active-right-style', '-border-active-bottom-style', '-border-active-left-style',
-    '-border-active-color', '-border-active-top-color', '-border-active-right-color', '-border-active-bottom-color', '-border-active-left-color',
-    '-border-active-radius', '-border-active-top-left-radius', '-border-active-top-right-radius', '-border-active-bottom-right-radius', '-border-active-bottom-left-radius',
-    '-border-focus-width', '-border-focus-top-width', '-border-focus-right-width', '-border-focus-bottom-width', '-border-focus-left-width',
-    '-border-focus-style', '-border-focus-top-style', '-border-focus-right-style', '-border-focus-bottom-style', '-border-focus-left-style',
-    '-border-focus-color', '-border-focus-top-color', '-border-focus-right-color', '-border-focus-bottom-color', '-border-focus-left-color',
-    '-border-focus-radius', '-border-focus-top-left-radius', '-border-focus-top-right-radius', '-border-focus-bottom-right-radius', '-border-focus-bottom-left-radius',
-    '-border-disabled-width', '-border-disabled-top-width', '-border-disabled-right-width', '-border-disabled-bottom-width', '-border-disabled-left-width',
-    '-border-disabled-style', '-border-disabled-top-style', '-border-disabled-right-style', '-border-disabled-bottom-style', '-border-disabled-left-style',
-    '-border-disabled-color', '-border-disabled-top-color', '-border-disabled-right-color', '-border-disabled-bottom-color', '-border-disabled-left-color',
-    '-border-disabled-radius', '-border-disabled-top-left-radius', '-border-disabled-top-right-radius', '-border-disabled-bottom-right-radius', '-border-disabled-bottom-left-radius',
+    // hover  (suffix at end, matching mixin: -border-color-hover)
+    '-border-width-hover', '-border-top-width-hover', '-border-right-width-hover', '-border-bottom-width-hover', '-border-left-width-hover',
+    '-border-style-hover', '-border-top-style-hover', '-border-right-style-hover', '-border-bottom-style-hover', '-border-left-style-hover',
+    '-border-color-hover', '-border-top-color-hover', '-border-right-color-hover', '-border-bottom-color-hover', '-border-left-color-hover',
+    '-border-radius-hover', '-border-top-left-radius-hover', '-border-top-right-radius-hover', '-border-bottom-right-radius-hover', '-border-bottom-left-radius-hover',
+    // active
+    '-border-width-active', '-border-top-width-active', '-border-right-width-active', '-border-bottom-width-active', '-border-left-width-active',
+    '-border-style-active', '-border-top-style-active', '-border-right-style-active', '-border-bottom-style-active', '-border-left-style-active',
+    '-border-color-active', '-border-top-color-active', '-border-right-color-active', '-border-bottom-color-active', '-border-left-color-active',
+    '-border-radius-active', '-border-top-left-radius-active', '-border-top-right-radius-active', '-border-bottom-right-radius-active', '-border-bottom-left-radius-active',
+    // focus
+    '-border-width-focus', '-border-top-width-focus', '-border-right-width-focus', '-border-bottom-width-focus', '-border-left-width-focus',
+    '-border-style-focus', '-border-top-style-focus', '-border-right-style-focus', '-border-bottom-style-focus', '-border-left-style-focus',
+    '-border-color-focus', '-border-top-color-focus', '-border-right-color-focus', '-border-bottom-color-focus', '-border-left-color-focus',
+    '-border-radius-focus', '-border-top-left-radius-focus', '-border-top-right-radius-focus', '-border-bottom-right-radius-focus', '-border-bottom-left-radius-focus',
+    // disabled
+    '-border-width-disabled', '-border-top-width-disabled', '-border-right-width-disabled', '-border-bottom-width-disabled', '-border-left-width-disabled',
+    '-border-style-disabled', '-border-top-style-disabled', '-border-right-style-disabled', '-border-bottom-style-disabled', '-border-left-style-disabled',
+    '-border-color-disabled', '-border-top-color-disabled', '-border-right-color-disabled', '-border-bottom-color-disabled', '-border-left-color-disabled',
+    '-border-radius-disabled', '-border-top-left-radius-disabled', '-border-top-right-radius-disabled', '-border-bottom-right-radius-disabled', '-border-bottom-left-radius-disabled',
   ];
 
   private readonly _effect = effect(() => {
@@ -54,39 +58,37 @@ export class AlfBorderDirective {
       if (val != null) el.style.setProperty(prop, val);
     };
 
-    const applyState = (state: any, prefix: string) => {
+    // State suffix goes at the END: --alf-inp-border-color-hover
+    const applyState = (state: any, stateSuffix: string) => {
       if (!state) return;
-      set(`${p}${prefix}-width`,               state.borderWidth);
-      set(`${p}${prefix}-top-width`,           state.borderTopWidth);
-      set(`${p}${prefix}-right-width`,         state.borderRightWidth);
-      set(`${p}${prefix}-bottom-width`,        state.borderBottomWidth);
-      set(`${p}${prefix}-left-width`,          state.borderLeftWidth);
-      set(`${p}${prefix}-style`,               state.borderStyle);
-      set(`${p}${prefix}-top-style`,           state.borderTopStyle);
-      set(`${p}${prefix}-right-style`,         state.borderRightStyle);
-      set(`${p}${prefix}-bottom-style`,        state.borderBottomStyle);
-      set(`${p}${prefix}-left-style`,          state.borderLeftStyle);
-      set(`${p}${prefix}-color`,               state.borderColor);
-      set(`${p}${prefix}-top-color`,           state.borderTopColor);
-      set(`${p}${prefix}-right-color`,         state.borderRightColor);
-      set(`${p}${prefix}-bottom-color`,        state.borderBottomColor);
-      set(`${p}${prefix}-left-color`,          state.borderLeftColor);
-      set(`${p}${prefix}-radius`,              state.borderRadius);
-      set(`${p}${prefix}-top-left-radius`,     state.borderTopLeftRadius);
-      set(`${p}${prefix}-top-right-radius`,    state.borderTopRightRadius);
-      set(`${p}${prefix}-bottom-right-radius`, state.borderBottomRightRadius);
-      set(`${p}${prefix}-bottom-left-radius`,  state.borderBottomLeftRadius);
-      set(`${p}${prefix}-outline-width`,       state.outlineWidth);
-      set(`${p}${prefix}-outline-style`,       state.outlineStyle);
-      set(`${p}${prefix}-outline-color`,       state.outlineColor);
-      set(`${p}${prefix}-outline-offset`,      state.outlineOffset);
-      set(`${p}${prefix}-box-sizing`,          state.boxSizing);
+      const s = stateSuffix; // e.g. '-hover', '-active', '' (empty for default)
+      set(`${p}-border-width${s}`,               state.borderWidth);
+      set(`${p}-border-top-width${s}`,           state.borderTopWidth);
+      set(`${p}-border-right-width${s}`,         state.borderRightWidth);
+      set(`${p}-border-bottom-width${s}`,        state.borderBottomWidth);
+      set(`${p}-border-left-width${s}`,          state.borderLeftWidth);
+      set(`${p}-border-style${s}`,               state.borderStyle);
+      set(`${p}-border-top-style${s}`,           state.borderTopStyle);
+      set(`${p}-border-right-style${s}`,         state.borderRightStyle);
+      set(`${p}-border-bottom-style${s}`,        state.borderBottomStyle);
+      set(`${p}-border-left-style${s}`,          state.borderLeftStyle);
+      set(`${p}-border-color${s}`,               state.borderColor);
+      set(`${p}-border-top-color${s}`,           state.borderTopColor);
+      set(`${p}-border-right-color${s}`,         state.borderRightColor);
+      set(`${p}-border-bottom-color${s}`,        state.borderBottomColor);
+      set(`${p}-border-left-color${s}`,          state.borderLeftColor);
+      set(`${p}-border-radius${s}`,              state.borderRadius);
+      set(`${p}-border-top-left-radius${s}`,     state.borderTopLeftRadius);
+      set(`${p}-border-top-right-radius${s}`,    state.borderTopRightRadius);
+      set(`${p}-border-bottom-right-radius${s}`, state.borderBottomRightRadius);
+      set(`${p}-border-bottom-left-radius${s}`,  state.borderBottomLeftRadius);
     };
 
-    applyState(bd.default,  '-border');
-    applyState(bd.hover,    '-border-hover');
-    applyState(bd.active,   '-border-active');
-    applyState(bd.focus,    '-border-focus');
-    applyState(bd.disabled, '-border-disabled');
+    applyState(bd.default,  '');
+    applyState(bd.hover,    '-hover');
+    applyState(bd.active,   '-active');
+    applyState(bd.focus,    '-focus');
+    applyState(bd.disabled, '-disabled');
   });
 }
+

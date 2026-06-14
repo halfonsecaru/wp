@@ -1,147 +1,145 @@
-@let config = resolvedConfig();
-@let id = inputId();
-@let isComponentDisabled = isDisabled();
-@let isComponentReadonly = isReadonly();
-@let isComponentLoading = isLoading();
-@let floating = shouldFloat();
-@let placeholderText = placeholderComputed();
-@let labelText = labelComputed();
-@let errorMsg = errorComputed();
-@let helperText = helperTextComputed();
-@let typeAttr = inputTypeAttr();
-@let clearLbl = clearLabel();
-@let showPwdLbl = showPwdLabel();
-@let hidePwdLbl = hidePwdLabel();
-@let val = value();
-@let ripple = rippleComputed();
-@let tooltip = tooltipComputed();
+@let padding = finalPaddingComputed(); @let border = errorBorderComputed(); @let background = errorBackgroundComputed(); @let textStyle =
+errorTextStyleComputed();
 
-@let animationsClass = animationsClassComputed();
-@let customClass = customClassComputed();
-
-<div 
-  [class]="'alf-input ' + animationsClass + ' ' + customClass"
-  [class.alf-input--focused]="isFocused()" 
-  [class.alf-input--disabled]="isComponentDisabled" 
-  [class.alf-input--readonly]="isComponentReadonly" 
-  [class.alf-input--error]="errorMsg" 
-  [class.alf-input--has-value]="val.length > 0"
-  [class.alf-input--has-prefix]="config?.prefix"
-  [class.alf-input--has-suffix]="showClear() || showPasswordToggle() || isComponentLoading || config?.suffix"
-  [class.alf-input--ghost]="isGhost()"
-  [class.alf-input--soft]="isSoft()"
-  [class.alf-input--crystal]="isCrystal()"
-  [class.alf-input--standard]="isStandard()"
-  [class.alf-input--filled]="isFilled()"
-  [class.alf-input--solid]="isSolid()"
-  [class.alf-input--3d]="is3D()"
-  [class.alf-input--gradient]="isGradient()"
-  [alfRipple]="ripple"
-  [alfTooltipText]="tooltip"
-  [style]="combinedStyles()"
->
-
-  @if (config?.prefix) {
-    <span class="alf-input__prefix">{{ config.prefix }}</span>
-  }
-
-  <div class="alf-input__field-wrap">
-    @if (config?.inputType === 'textarea') {
-      <textarea
-        #inputRef
-        [id]="id"
-        [value]="val"
-        [disabled]="isComponentDisabled"
-        [readonly]="isComponentReadonly"
-        [required]="config?.required || false"
-        [attr.maxlength]="config?.maxLength ?? null"
-        [attr.minlength]="config?.minLength ?? null"
-        [placeholder]="floating ? placeholderText : ''"
-        class="alf-input__field alf-input__field--textarea"
-        (input)="handleInput($event)"
-        (focus)="handleFocus($event)"
-        (blur)="handleBlur($event)"
-      ></textarea>
-    } @else {
+<div class="alf-input-wrapper">
+  <div
+    [class]="baseCssClass()"
+    [class.alf-input--focused]="isFocused()"
+    [class.alf-input--error]="errorComputed()"
+    [class.alf-input--contrasting-label]="hasContrastingLabel()"
+    [alfPadding]="padding"
+    [alfBorder]="border"
+    [alfBackground]="background"
+    [alfTextStyle]="textStyle"
+    [alfPrefix]="cssPrefix()"
+    (click)="focusInput()"
+  >
+    @if (prefixComputed()) {
+    <div class="alf-input-prefix">{{ prefixComputed() }}</div>
+    }
+    <ng-content select="[alfPrefix]"></ng-content>
+    <div class="alf-input-container" [alfDisplayAndLayout]="displayAndLayout()" alfPrefix="--alf-inp-cont">
+      @if (labelComputed()) {
+      <label
+        [for]="idComputed()"
+        class="alf-input-label"
+        [class.alf-input-label--float]="isFocused() || value()"
+        [class.alf-input-label--has-prefix]="prefixComputed()"
+      >
+        {{ labelComputed() }} @if (requiredComputed()) {
+        <span class="alf-input-required">*</span>
+        }
+      </label>
+      }
       <input
+        class="alf-input-element"
         #inputRef
-        [id]="id"
-        [type]="typeAttr"
-        [value]="val"
-        [disabled]="isComponentDisabled"
-        [readonly]="isComponentReadonly"
-        [required]="config?.required || false"
-        [attr.maxlength]="config?.maxLength ?? null"
-        [attr.minlength]="config?.minLength ?? null"
-        [attr.min]="config?.min ?? null"
-        [attr.max]="config?.max ?? null"
-        [attr.step]="config?.step ?? null"
-        [attr.pattern]="config?.pattern ?? null"
-        [attr.autocomplete]="config?.autocomplete ?? 'off'"
-        [placeholder]="floating ? placeholderText : ''"
-        class="alf-input__field"
+        [id]="idComputed()"
+        [type]="inputTypeComputed()"
+        [placeholder]="(!labelComputed() || isFocused() || value()) ? (placeholderComputed() || '') : ''"
+        [disabled]="disabledComputed()"
+        [readOnly]="isReadonly()"
+        [value]="value() || ''"
+        [attr.maxlength]="maxLengthComputed()"
+        [attr.minlength]="minLengthComputed()"
+        [attr.min]="minComputed()"
+        [attr.max]="maxComputed()"
+        [attr.step]="stepComputed()"
+        [attr.pattern]="patternComputed()"
+        [attr.autofocus]="autofocusComputed() ? '' : null"
+        [attr.autocomplete]="autocompleteComputed() || null"
+        [required]="requiredComputed()"
         (input)="handleInput($event)"
         (focus)="handleFocus($event)"
         (blur)="handleBlur($event)"
+        (click)="handleClick($event)"
+        (keydown)="handleKeyDown($event)"
       />
+    </div>
+
+    <ng-content select="[alfSuffix]"></ng-content>
+    @if (hasSuffix()) {
+    <div class="alf-input-suffix" [class.alf-input-suffix]="value()">
+      @if (isLoading()) {
+      <span class="alf-input-loading" [attr.aria-label]="loadingLabel()">⏳</span>
+      } @else if (showClear() && value()) {
+      <button type="button" class="alf-input-clear" (click)="clear($event)" [attr.aria-label]="clearLabel()">✕</button>
+      } @else if (showPasswordToggleComputed()) {
+      <button
+        type="button"
+        class="alf-input-password-toggle"
+        (click)="togglePassword($event)"
+        [attr.aria-label]="isPasswordVisible() ? hidePwdLabel() : showPwdLabel()"
+      >
+        @if (isPasswordVisible()) {
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <!-- Pestañas hacia abajo -->
+          <line x1="12" y1="17" x2="12" y2="22"></line>
+          <line x1="16" y1="15.5" x2="19" y2="19"></line>
+          <line x1="8" y1="15.5" x2="5" y2="19"></line>
+          <line x1="20" y1="13" x2="23" y2="15"></line>
+          <line x1="4" y1="13" x2="1" y2="15"></line>
+          <!-- Ojo cerrado -->
+          <path d="M2 12 Q12 22 22 12"></path>
+        </svg>
+        } @else {
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <!-- Pestañas (recortadas y asimétricas) -->
+          <line x1="12" y1="7" x2="12" y2="4"></line>
+          <line x1="16" y1="8.5" x2="17.5" y2="6.5"></line>
+          <line x1="8" y1="8.5" x2="7" y2="6"></line>
+          <line x1="20" y1="11" x2="22" y2="9.5"></line>
+          <line x1="4" y1="11" x2="2.5" y2="10"></line>
+          <!-- Ojo -->
+          <path d="M2 12 Q12 2 22 12 Q12 22 2 12 Z"></path>
+          <circle cx="12" cy="12" r="4.5"></circle>
+          <!-- Luna interior -->
+          <path d="M11 9.5 A2 2 0 1 0 14.5 13 A3.5 3.5 0 0 1 11 9.5 Z" fill="currentColor" stroke="none"></path>
+        </svg>
+        }
+      </button>
+      } @else if (suffixComputed()) { {{ suffixComputed() }} }
+    </div>
     }
   </div>
 
-  @if (labelText) {
-    <label 
-      [for]="id" 
-      class="alf-input__label" 
-      [class.alf-input__label--float]="floating"
-      [class.alf-input__label--has-prefix]="config?.prefix"
+  @if (errorComputed() || helperTextComputed() || showCharCounterComputed()) {
+  <div class="alf-input-footer">
+    @if (errorComputed()) {
+    <div class="alf-input-error">{{ errorComputed() }}</div>
+    } @else if (helperTextComputed()) {
+    <div
+      class="alf-input-helper-text"
+      [style.color]="hasContrastingLabel() ? border?.hover?.borderColor || border?.default?.borderColor : textStyle?.hover?.color || textStyle?.default?.color"
     >
-      {{ labelText }}
-      @if (config?.required) {
-        <span class="alf-input__required-star">*</span>
-      }
-    </label>
-  }
-
-  <!-- Suffix Area -->
-  @if (showClear() || showPasswordToggle() || isComponentLoading || config?.suffix) {
-    <div class="alf-input__suffix-area">
-      @if (isComponentLoading) {
-        <span class="alf-input__spinner" [attr.aria-label]="loadingLabel()"></span>
-      } @else if (showClear()) {
-        <button 
-          type="button" 
-          class="alf-input__suffix-btn alf-input__clear-btn" 
-          [attr.aria-label]="clearLbl"
-          (click)="clear($event)"
-        >
-          ✕
-        </button>
-      } @else if (showPasswordToggle()) {
-        <button 
-          type="button" 
-          class="alf-input__suffix-btn alf-input__pwd-toggle" 
-          [attr.aria-label]="isPasswordVisible() ? hidePwdLbl : showPwdLbl"
-          (click)="togglePassword($event)"
-        >
-          {{ isPasswordVisible() ? '👁️' : '🙈' }}
-        </button>
-      } @else if (config?.suffix) {
-        <span class="alf-input__suffix-icon">{{ config.suffix }}</span>
-      }
+      {{ helperTextComputed() }}
     </div>
+    } @if (showCharCounterComputed()) {
+    <div
+      class="alf-input-char-counter"
+      [style.color]="hasContrastingLabel() ? border?.hover?.borderColor || border?.default?.borderColor : textStyle?.hover?.color || textStyle?.default?.color"
+    >
+      {{ (value() || '').length }} / {{ maxLengthComputed() }}
+    </div>
+    }
+  </div>
   }
 </div>
-
-<!-- Helper/Error text and character counter footer -->
-@if (errorMsg || helperText || showCharCounter()) {
-  <div class="alf-input__footer">
-    @if (errorMsg) {
-      <span class="alf-input__helper alf-input__helper--error">{{ errorMsg }}</span>
-    } @else if (helperText) {
-      <span class="alf-input__helper">{{ helperText }}</span>
-    }
-    
-    @if (showCharCounter()) {
-      <span class="alf-input__counter">{{ val.length }}/{{ config?.maxLength }}</span>
-    }
-  </div>
-}

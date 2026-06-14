@@ -33,7 +33,7 @@ describe('AlfInput', () => {
 
   it('debe renderizar un input por defecto', () => {
     fixture.detectChanges();
-    const inputEl = fixture.debugElement.query(By.css('input.alf-input__field'));
+    const inputEl = fixture.debugElement.query(By.css('input.alf-input-element'));
     expect(inputEl).toBeTruthy();
   });
 
@@ -44,7 +44,7 @@ describe('AlfInput', () => {
     const onInputSpy = vi.fn();
     component.onInput.subscribe(onInputSpy);
 
-    const inputEl = fixture.debugElement.query(By.css('input.alf-input__field')).nativeElement;
+    const inputEl = fixture.debugElement.query(By.css('input.alf-input-element')).nativeElement;
     inputEl.value = 'hola';
     inputEl.dispatchEvent(new Event('input'));
 
@@ -57,9 +57,9 @@ describe('AlfInput', () => {
     fixture.componentRef.setInput('value', 'antonio');
     fixture.detectChanges();
 
-    const labelEl = fixture.debugElement.query(By.css('.alf-input__label'));
+    const labelEl = fixture.debugElement.query(By.css('.alf-input-label'));
     expect(labelEl.nativeElement.textContent).toContain('Usuario');
-    expect(labelEl.nativeElement.classList.contains('alf-input__label--float')).toBe(true);
+    expect(labelEl.nativeElement.classList.contains('alf-input-label--float')).toBe(true);
   });
 
   it('debe mostrar el botón de limpiar cuando clearable es true y tiene valor', () => {
@@ -67,7 +67,7 @@ describe('AlfInput', () => {
     fixture.componentRef.setInput('value', 'algo');
     fixture.detectChanges();
 
-    const clearBtn = fixture.debugElement.query(By.css('.alf-input__clear-btn'));
+    const clearBtn = fixture.debugElement.query(By.css('.alf-input-clear'));
     expect(clearBtn).toBeTruthy();
   });
 
@@ -79,7 +79,7 @@ describe('AlfInput', () => {
     const onClearSpy = vi.fn();
     component.onClear.subscribe(onClearSpy);
 
-    const clearBtn = fixture.debugElement.query(By.css('.alf-input__clear-btn'));
+    const clearBtn = fixture.debugElement.query(By.css('.alf-input-clear'));
     clearBtn.nativeElement.click();
 
     expect(component.value()).toBe('');
@@ -87,11 +87,11 @@ describe('AlfInput', () => {
   });
 
   it('debe alternar la visibilidad de la contraseña', () => {
-    fixture.componentRef.setInput('inputType', AlfInputTypeEnum.Password);
+    fixture.componentRef.setInput('type', AlfInputTypeEnum.Password);
     fixture.detectChanges();
 
-    const toggleBtn = fixture.debugElement.query(By.css('.alf-input__pwd-toggle'));
-    const inputEl = fixture.debugElement.query(By.css('input.alf-input__field')).nativeElement;
+    const toggleBtn = fixture.debugElement.query(By.css('.alf-input-password-toggle'));
+    const inputEl = fixture.debugElement.query(By.css('input.alf-input-element')).nativeElement;
 
     expect(inputEl.type).toBe('password');
 
@@ -112,7 +112,7 @@ describe('AlfInput', () => {
     const onInputSpy = vi.fn();
     component.onInput.subscribe(onInputSpy);
 
-    const inputEl = fixture.debugElement.query(By.css('input.alf-input__field')).nativeElement;
+    const inputEl = fixture.debugElement.query(By.css('input.alf-input-element')).nativeElement;
     inputEl.value = 'test';
     inputEl.dispatchEvent(new Event('input'));
 
@@ -121,5 +121,57 @@ describe('AlfInput', () => {
     vi.advanceTimersByTime(500);
     expect(onInputSpy).toHaveBeenCalledWith('test');
     vi.useRealTimers();
+  });
+
+  // --- NUEVOS TESTS AÑADIDOS PARA COBERTURA COMPLETA --- //
+
+  it('debe mostrar mensaje de error cuando tiene errorComputed', () => {
+    fixture.componentRef.setInput('config', { error: 'Nombre inválido' });
+    fixture.detectChanges();
+
+    const errorEl = fixture.debugElement.query(By.css('.alf-input-error'));
+    expect(errorEl).toBeTruthy();
+    expect(errorEl.nativeElement.textContent).toContain('Nombre inválido');
+  });
+
+  it('debe mostrar helperText cuando se define', () => {
+    fixture.componentRef.setInput('helperText', 'Escribe tu nombre completo');
+    fixture.detectChanges();
+
+    const helperEl = fixture.debugElement.query(By.css('.alf-input-helper-text'));
+    expect(helperEl).toBeTruthy();
+    expect(helperEl.nativeElement.textContent).toContain('Escribe tu nombre completo');
+  });
+
+  it('debe mostrar el contador de caracteres si maxlength está definido', () => {
+    fixture.componentRef.setInput('config', { showCharCounter: true, maxLength: 10 });
+    fixture.componentRef.setInput('value', '12345');
+    fixture.detectChanges();
+
+    const counterEl = fixture.debugElement.query(By.css('.alf-input-char-counter'));
+    expect(counterEl).toBeTruthy();
+    expect(counterEl.nativeElement.textContent).toContain('5 / 10');
+  });
+
+  it('debe renderizar el prefix si se pasa como input', () => {
+    fixture.componentRef.setInput('prefix', '€');
+    fixture.detectChanges();
+
+    const prefixEl = fixture.debugElement.query(By.css('.alf-input-prefix'));
+    expect(prefixEl).toBeTruthy();
+    expect(prefixEl.nativeElement.textContent).toContain('€');
+  });
+
+  it('debe propagar writeValue desde ControlValueAccessor', () => {
+    component.writeValue('nuevo valor CVA');
+    expect(component.value()).toBe('nuevo valor CVA');
+  });
+
+  it('debe cambiar el estado disabled a través de setDisabledState', () => {
+    component.setDisabledState(true);
+    fixture.detectChanges();
+
+    const inputEl = fixture.debugElement.query(By.css('input.alf-input-element')).nativeElement;
+    expect(inputEl.disabled).toBe(true);
   });
 });

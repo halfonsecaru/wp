@@ -1,6 +1,6 @@
 # AlfSwitch - Elite Switch Component
 
-High-performance standalone switch/toggle component designed for Angular 21. Fully integrated with the **Elite Visual Engine** and optimized for Zoneless architectures using native Signals.
+High-performance standalone switch/toggle component designed for Angular 22. Fully integrated with the **Elite Visual Engine** and optimized for Zoneless architectures using native Signals.
 
 ## Key Features
 

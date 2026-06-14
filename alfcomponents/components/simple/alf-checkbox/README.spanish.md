@@ -1,15 +1,15 @@
 # AlfCheckbox - Componente de Checkbox Élite
 
-Componente de checkbox standalone de alto rendimiento, diseñado para Angular 21. Totalmente integrado con el **Elite Visual Engine** y optimizado para arquitecturas Zoneless mediante el uso intensivo de Signals.
+Componente de checkbox standalone de alto rendimiento diseñado para Angular 22. Implementa el **Elite Visual Engine**, con centralización total del diseño en TypeScript, reactividad nativa mediante Signals y un sistema de temas dinámico mediante variables CSS.
 
 ## Características Principales
 
 - **Signals Nativos**: Utiliza `input()`, `model()` y `computed()` para una reactividad pura y eficiente.
-- **Elite Visual Engine**: Colores, ripples y bordes gestionados centralmente desde `defaultVariants.ts`.
+- **Elite Visual Engine**: Toda la lógica visual (colores, ripples, bordes) está centralizada en `defaultVariants.ts`.
+- **Sistema de Temas Dinámico**: Utiliza `AlfColorEnum` con variables CSS y fallbacks para un cambio de tema instantáneo y sin parpadeos.
 - **Modos Visuales**: Soporte para estilos `Elegant` (redondeado/circular) y `Standard` (cuadrado).
 - **Estado Indeterminado**: Soporte completo para estados "mixed" (útil en árboles de selección).
-- **Temas Dinámicos**: Implementado con `AlfColorEnum` y variables CSS para cambios de tema instantáneos.
-- **Accesibilidad**: Gestión completa de ARIA y soporte de teclado (Espacio/Enter).
+- **Zoneless Ready**: Diseñado para funcionar de forma óptima en arquitecturas Angular sin Zone.js.
 
 ## Uso Básico
 
@@ -17,34 +17,45 @@ Componente de checkbox standalone de alto rendimiento, diseñado para Angular 21
 <alf-checkbox
   [(checked)]="isAccepted"
   [label]="'Acepto los términos'"
-  [variant]="AlfColorVariantEnum.Primary"
-/>
+  [variant]="AlfColorVariantEnum.Primary">
+</alf-checkbox>
 ```
 
-### Uso con Configuración Integral
 ```typescript
-import { getAlfCheckboxDefaultConfig } from './predefined/alf-checkbox.predefined';
-
-config = getAlfCheckboxDefaultConfig(AlfColorVariantEnum.Success);
-```
-```html
-<alf-checkbox [config]="config" />
+import { AlfColorVariantEnum } from '@alfcomponents/enums';
 ```
 
 ## API del Componente
 
-| Propiedad | Tipo | Descripción |
+### Inputs Principales
+
+| Input | Tipo | Descripción |
 |---|---|---|
+| `inputConfig` | `AlfCheckboxInterface` | Objeto de configuración integral del checkbox. |
 | `checked` | `model<boolean>` | Binding bidireccional del estado marcado. |
 | `indeterminate` | `model<boolean>` | Binding bidireccional del estado indeterminado. |
 | `label` | `input<string>` | Texto de la etiqueta. |
+| `labelPosition` | `input<'before' \| 'after'>` | Posición de la etiqueta relativa al checkbox. |
 | `checkboxStyle` | `AlfCheckboxVariantEnum` | Estilo visual (`Elegant` o `Standard`). |
-| `size` | `AlfSizeEnum` | Escala de dimensiones (XS a 2XL). |
-| `disabled` | `input<boolean>` | Estado deshabilitado. |
+| `value` | `input<string \| number>` | Valor asociado al checkbox. |
+| `name` | `input<string>` | Atributo name nativo para agrupaciones. |
 | `error` | `input<string>` | Mensaje de error reactivo. |
+| `helperText` | `input<string>` | Texto de ayuda reactivo. |
+| `iconSelected` | `input<AlfIconsUnicodeIconEnum>` | Icono personalizado para el estado marcado. |
 
-## Refactorización Élite
-Este componente ha sido migrado a la arquitectura de "Motor Centralizado", lo que garantiza que sus colores y comportamientos sean 100% consistentes con otros componentes como `AlfButton`.
+### Configuración Visual (Heredada)
+
+| Propiedad | Descripción |
+|---|---|
+| `variant` | Variante de color base (Primary, Success, etc.). |
+| `size` | Escala de dimensiones (XS a 2XL). |
+| `disabled` | Estado de interacción del componente. |
+
+## Estructura de Estilos
+
+El componente utiliza una estrategia dual:
+1. **SCSS**: Define la estructura de layout, gap y comportamientos estáticos.
+2. **TypeScript (Engine)**: Inyecta los estilos dinámicos (colores, sombras, tipografía) basados en la variante seleccionada, asegurando que la lógica de diseño esté siempre en el código.
 
 ---
 Parte del ecosistema **Alfonizer Design System**.

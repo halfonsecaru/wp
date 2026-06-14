@@ -74,16 +74,36 @@
               [displayAndLayout]="displayLayoutConfig()"
             />
           }
+          @if (selectedComponentId() === 'alf-input') {
+            <alf-input
+              [config]="inputBehaviorConfig()"
+              [variant]="compVariant()"
+              [disabled]="compDisabled()"
+              [background]="backgroundConfig()"
+              [border]="borderConfig()"
+              [outline]="outlineConfig()"
+              [shadows]="shadowsConfig()"
+              [textStyle]="textStyleConfig()"
+              [typography]="typographyConfig()"
+              [padding]="paddingConfig()"
+              [margin]="marginConfig()"
+              [transform]="transformConfig()"
+              [transition]="transitionConfig()"
+              [displayAndLayout]="displayLayoutConfig()"
+            />
+          }
           }
         </div>
       </div>
 
-      <!-- Quick settings row -->
-      <div class="pg-quick-row">
-        <div class="pg-field pg-field--inline">
-          <label class="pg-field__label" for="pg-label-input">Label</label>
-          <input id="pg-label-input" type="text" class="pg-input" [value]="compLabel()" (input)="onInputChange(compLabel, $event)" />
-        </div>
+        <!-- Quick settings row -->
+        <div class="pg-quick-row">
+          @if (selectedComponentId() !== 'alf-input') {
+            <div class="pg-field pg-field--inline">
+              <label class="pg-field__label" for="pg-label-input">Label</label>
+              <input id="pg-label-input" type="text" class="pg-input" [value]="compLabel()" (input)="onInputChange(compLabel, $event)" />
+            </div>
+          }
         <div class="pg-field pg-field--inline">
           <label class="pg-field__label" for="pg-variant-sel">Variant</label>
           <select id="pg-variant-sel" class="pg-select pg-select--sm" [value]="compVariant() ?? ''" (change)="onVariantChange($event)">
@@ -516,6 +536,110 @@
             </alf-tabs-container>
           </div>
         </alf-tab>
+
+        <!-- TAB: Behavior (AlfInput only) -->
+        @if (selectedComponentId() === 'alf-input') {
+          <alf-tab label="⚙️ Behavior">
+            <div class="pg-controls-content">
+              <div class="pg-fields">
+
+                <div class="pg-field">
+                  <label class="pg-field__label" for="pg-inp-label">label</label>
+                  <input id="pg-inp-label" type="text" class="pg-input" [value]="inputBehaviorLabel()" (input)="onInputChange(inputBehaviorLabel, $event)" placeholder="Ej: Email" />
+                </div>
+
+                <div class="pg-field">
+                  <label class="pg-field__label" for="pg-inp-placeholder">placeholder</label>
+                  <input id="pg-inp-placeholder" type="text" class="pg-input" [value]="inputBehaviorPlaceholder()" (input)="onInputChange(inputBehaviorPlaceholder, $event)" placeholder="Ej: Escribe aquí..." />
+                </div>
+
+                <div class="pg-field">
+                  <label class="pg-field__label" for="pg-inp-appearance">appearance</label>
+                  <select id="pg-inp-appearance" class="pg-select" [value]="inputBehaviorAppearance()" (change)="onSelectChange(inputBehaviorAppearance, $event)">
+                    <option value="">— default —</option>
+                    <option [value]="AlfInputAppearanceEnum.Outline">Outline</option>
+                    <option [value]="AlfInputAppearanceEnum.Fill">Fill</option>
+                    <option [value]="AlfInputAppearanceEnum.Standard">Standard</option>
+                  </select>
+                </div>
+
+                <div class="pg-field">
+                  <label class="pg-field__label" for="pg-inp-type">type</label>
+                  <select id="pg-inp-type" class="pg-select" [value]="inputBehaviorType()" (change)="onSelectChange(inputBehaviorType, $event)">
+                    <option value="">— default (text) —</option>
+                    <option [value]="AlfInputTypeEnum.Text">text</option>
+                    <option [value]="AlfInputTypeEnum.Email">email</option>
+                    <option [value]="AlfInputTypeEnum.Password">password</option>
+                    <option [value]="AlfInputTypeEnum.Number">number</option>
+                    <option [value]="AlfInputTypeEnum.Tel">tel</option>
+                    <option [value]="AlfInputTypeEnum.Url">url</option>
+                    <option [value]="AlfInputTypeEnum.Search">search</option>
+                    <option value="textarea">textarea</option>
+                  </select>
+                </div>
+
+                <div class="pg-field">
+                  <label class="pg-field__label" for="pg-inp-prefix">prefix</label>
+                  <select id="pg-inp-prefix" class="pg-select" [value]="inputBehaviorPrefix()" (change)="onSelectChange(inputBehaviorPrefix, $event)">
+                    <option value="">— none —</option>
+                    @for (a of adornmentOptions; track a.key) {
+                      <option [value]="a.value">{{ a.key }} &nbsp; {{ a.value }}</option>
+                    }
+                  </select>
+                </div>
+
+                <div class="pg-field">
+                  <label class="pg-field__label" for="pg-inp-suffix">suffix</label>
+                  <select id="pg-inp-suffix" class="pg-select" [value]="inputBehaviorSuffix()" (change)="onSelectChange(inputBehaviorSuffix, $event)">
+                    <option value="">— none —</option>
+                    @for (a of adornmentOptions; track a.key) {
+                      <option [value]="a.value">{{ a.key }} &nbsp; {{ a.value }}</option>
+                    }
+                  </select>
+                </div>
+
+                <div class="pg-field">
+                  <label class="pg-field__label" for="pg-inp-helpertext">helperText</label>
+                  <input id="pg-inp-helpertext" type="text" class="pg-input" [value]="inputBehaviorHelperText()" (input)="onInputChange(inputBehaviorHelperText, $event)" placeholder="Ej: Mínimo 8 caracteres" />
+                </div>
+
+                <div class="pg-field">
+                  <label class="pg-field__label" for="pg-inp-error">error</label>
+                  <input id="pg-inp-error" type="text" class="pg-input" [value]="inputBehaviorError()" (input)="onInputChange(inputBehaviorError, $event)" placeholder="Ej: Campo requerido" />
+                </div>
+
+                <div class="pg-field">
+                  <label class="pg-field__label" for="pg-inp-maxlength">maxLength</label>
+                  <input id="pg-inp-maxlength" type="number" class="pg-input" [value]="inputBehaviorMaxLength()" (input)="onInputChange(inputBehaviorMaxLength, $event)" placeholder="Ej: 50" />
+                </div>
+
+                <div class="pg-field pg-field--checkboxes">
+                  <label class="pg-checkbox-label">
+                    <input type="checkbox" [checked]="inputBehaviorRequired()" (change)="onCheckboxChange(inputBehaviorRequired, $event)" />
+                    required
+                  </label>
+                  <label class="pg-checkbox-label">
+                    <input type="checkbox" [checked]="inputBehaviorReadonly()" (change)="onCheckboxChange(inputBehaviorReadonly, $event)" />
+                    readonly
+                  </label>
+                  <label class="pg-checkbox-label">
+                    <input type="checkbox" [checked]="inputBehaviorClearable()" (change)="onCheckboxChange(inputBehaviorClearable, $event)" />
+                    clearable
+                  </label>
+                  <label class="pg-checkbox-label">
+                    <input type="checkbox" [checked]="inputBehaviorShowPwdToggle()" (change)="onCheckboxChange(inputBehaviorShowPwdToggle, $event)" />
+                    showPasswordToggle
+                  </label>
+                  <label class="pg-checkbox-label">
+                    <input type="checkbox" [checked]="inputBehaviorShowCharCounter()" (change)="onCheckboxChange(inputBehaviorShowCharCounter, $event)" />
+                    showCharCounter
+                  </label>
+                </div>
+
+              </div>
+            </div>
+          </alf-tab>
+        }
 
       </alf-tabs-container>
     </div>

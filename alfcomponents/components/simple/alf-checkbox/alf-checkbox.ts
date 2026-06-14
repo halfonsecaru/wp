@@ -14,25 +14,7 @@ import {
   AlfIconsUnicodeIconEnum,
   AlfSizeEnum
 } from '@alfcomponents/enums';
-import { AlfRippleDirective, AlfTooltipTextDirective } from '@alfcomponents/directives';
-import {
-  AlfBackgroundDirective,
-  AlfBorderDirective,
-  AlfOutlineDirective,
-  AlfShadowsDirective,
-  AlfAnimationsDirective,
-  AlfMarginDirective,
-  AlfPaddingDirective,
-  AlfTypographyDirective,
-  AlfTextStyleDirective,
-  AlfTransformDirective,
-  AlfTransitionDirective,
-  AlfDisplayAndLayoutDirective,
-  AlfCursorDirective,
-  AlfSizeDirective,
-  AlfDisabledDirective,
-  AlfAriaDirective,
-} from '@alfcomponents/visualStyles';
+import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
 import { AlfCheckboxInterface } from './interfaces/alf-checkbox.interface';
 
 
@@ -49,23 +31,7 @@ import { AlfBaseDirective } from '@alfcomponents/components/base/base.directive'
   selector: 'alf-checkbox',
   standalone: true,
   imports: [
-    AlfTooltipTextDirective,
-    AlfRippleDirective,
-    AlfBackgroundDirective,
-    AlfBorderDirective,
-    AlfOutlineDirective,
-    AlfShadowsDirective,
-    AlfMarginDirective,
-    AlfPaddingDirective,
-    AlfTypographyDirective,
-    AlfTextStyleDirective,
-    AlfTransformDirective,
-    AlfTransitionDirective,
-    AlfDisplayAndLayoutDirective,
-    AlfCursorDirective,
-    AlfSizeDirective,
-    AlfDisabledDirective,
-    AlfAriaDirective
+    ...ALF_CORE_DIRECTIVES
   ],
   templateUrl: './alf-checkbox.html',
   styleUrl: './alf-checkbox.scss',

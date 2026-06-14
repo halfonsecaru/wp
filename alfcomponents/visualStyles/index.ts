@@ -12,4 +12,6 @@ export * from './displayAndLayout/displayAndLayout';
 export * from './cursor/cursor';
 export * from './size/size';
 export * from './disabled/disabled';
-export * from './aria/aria';export * from './transition/transition';
+export * from './aria/aria';
+export * from './transition/transition';
+export * from './visual-directives.barrel';

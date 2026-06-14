@@ -16,18 +16,39 @@ export class AlfInputViewer {
 
   public readonly selectedAppearance = signal<AlfInputAppearanceEnum>(AlfInputAppearanceEnum.Outline);
 
-  public readonly valOutline = signal<string>('');
-  public readonly valFill = signal<string>('');
-  public readonly valStandard = signal<string>('');
+  public readonly valOutline = signal<string | undefined>(undefined);
+  public readonly valFill = signal<string | undefined>(undefined);
+  public readonly valStandard = signal<string | undefined>(undefined);
+
+  public onAppearanceChange(event: Event) {
+    const value = (event.target as HTMLSelectElement).value as AlfInputAppearanceEnum;
+    this.selectedAppearance.set(value);
+  }
   
-  public readonly valPassword = signal<string>('');
-  public readonly valEmail = signal<string>('');
+  public readonly valPassword = signal<string | undefined>(undefined);
+  public readonly valEmail = signal<string | undefined>(undefined);
 
   public readonly valDisabled = signal<string>('No se puede editar');
   public readonly valReadonly = signal<string>('Solo lectura');
 
-  public readonly valHelper = signal<string>('');
+  public readonly valHelper = signal<string | undefined>(undefined);
   public readonly valError = signal<string>('usuario_invalido!');
+  public readonly valClearOnClick = signal<string>('¡Haz clic para borrarme mágicamente!');
+
+  // Validation signals
+  public readonly valReq = signal<string | undefined>(undefined);
+  public readonly valMinLen = signal<string | undefined>(undefined);
+  public readonly valMaxLen = signal<string | undefined>(undefined);
+  public readonly valMin = signal<string | undefined>(undefined);
+  public readonly valMax = signal<string | undefined>(undefined);
+  public readonly valPattern = signal<string | undefined>(undefined);
+  public readonly valCustom = signal<string | undefined>(undefined);
+
+  public readonly customValidator = [(val: string): any => {
+    if (!val) return { isValid: true };
+    if (val.toLowerCase() === 'alfon') return { isValid: true };
+    return { isValid: false, error: 'El valor debe ser exactamente "alfon"' };
+  }];
 
   public readonly solidVariants: readonly AlfColorVariantEnum[] = [
     AlfColorVariantEnum.Primary,

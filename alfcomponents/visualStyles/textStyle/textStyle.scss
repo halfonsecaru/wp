@@ -1,7 +1,9 @@
 @mixin alf-text-style(
   $prefix: '--alf',
   $disabled-selectors: '&:disabled, &.disabled',
-  $focus-selectors: '&:focus, &:focus-visible'
+  $focus-selectors: '&:focus, &:focus-visible',
+  $hover-selectors: '&:hover',
+  $active-selectors: '&:active'
 ) {
   // --- 1. BASE / DEFAULT STATE ---
   color:           var(#{$prefix}-text-color,           inherit);
@@ -15,7 +17,7 @@
   text-transform:  var(#{$prefix}-text-text-transform,  inherit);
 
   // --- 2. HOVER STATE ---
-  &:hover {
+  #{$hover-selectors} {
     color:           var(#{$prefix}-text-hover-color,           var(#{$prefix}-text-color,           inherit));
     font-size:       var(#{$prefix}-text-hover-font-size,       var(#{$prefix}-text-font-size,       inherit));
     font-weight:     var(#{$prefix}-text-hover-font-weight,     var(#{$prefix}-text-font-weight,     inherit));
@@ -28,7 +30,7 @@
   }
 
   // --- 3. ACTIVE STATE ---
-  &:active {
+  #{$active-selectors} {
     color:           var(#{$prefix}-text-active-color,           var(#{$prefix}-text-hover-color,           var(#{$prefix}-text-color,           inherit)));
     font-size:       var(#{$prefix}-text-active-font-size,       var(#{$prefix}-text-hover-font-size,       var(#{$prefix}-text-font-size,       inherit)));
     font-weight:     var(#{$prefix}-text-active-font-weight,     var(#{$prefix}-text-hover-font-weight,     var(#{$prefix}-text-font-weight,     inherit)));

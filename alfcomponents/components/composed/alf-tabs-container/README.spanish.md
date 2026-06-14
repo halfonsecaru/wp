@@ -1,6 +1,6 @@
 # AlfTabsContainer (Élite)
 
-El `AlfTabsContainer` es un componente de navegación avanzado diseñado para Angular 21. Ofrece una experiencia de usuario fluida con transiciones de altura automáticas, soporte para gestos táctiles y múltiples estilos visuales predefinidos.
+El `AlfTabsContainer` es un componente de navegación avanzado diseñado para Angular 22. Ofrece una experiencia de usuario fluida con transiciones de altura automáticas, soporte para gestos táctiles y múltiples estilos visuales predefinidos.
 
 ## Características Principales
 

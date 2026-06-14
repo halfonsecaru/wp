@@ -1,319 +1,177 @@
-:host {
-  display: block;
-  width: 100%;
-}
+@use '../../../visualStyles/index' as *;
 
 .alf-input {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  position: relative;
   box-sizing: border-box;
+  --alf-inp-prefix-width: 2.25rem;
 
-  // @include alf-transition;
-
-  // // @include alf-display-layout-css-vars($prefix: '--alf-inp',   //   $display: flex,   //   $align: center,   //   $justify: flex-start,   //   $disabled-selectors: '&--disabled',   //   $focus-selectors: '&--focused'   // );
-
-  // // @include alf-background-css-vars('--alf-inp', '&--disabled', '&--focused');
-  // // @include alf-border-css-vars('--alf-inp', '&--disabled', '&--focused');
-  // // @include alf-shadows-css-vars('--alf-inp', '&--disabled', '&--focused');
-  // // @include alf-padding-css-vars('--alf-inp', '&--disabled', '&--focused');
-  // // @include alf-margin-css-vars('--alf-inp', '&--disabled', '&--focused');
-  // // @include alf-typography-css-vars('--alf-inp', '&--disabled', '&--focused');
-  // // // @include alf-text-style-css-vars('--alf-inp', '&--disabled', '&--focused');
-  // // @include alf-outline-css-vars('--alf-inp', '&--disabled');
-  // // @include alf-transform-css-vars('--alf-inp', '&--disabled');
-
-
-  &--error {
-    border-color: var(--alf-danger, #dc3545);
-
-    &:hover {
-      border-color: var(--alf-danger-hover, #bb2d3b);
-    }
-  }
-
-  &--has-prefix {
-    .alf-input__field-wrap {
-      padding-left: 0;
-    }
-  }
-
-  &--has-suffix {
-    .alf-input__field-wrap {
-      padding-right: 8px;
-    }
-    .alf-input__label {
-      max-width: calc(100% - 42px);
-    }
-  }
-
-  &--has-prefix.alf-input--has-suffix {
-    .alf-input__label {
-      max-width: calc(100%);
-    }
-  }
+  @include alf-padding-style('--alf-inp', '&--disabled', '&--focused, &:focus-within, &:focus-visible');
+  @include alf-border-style('--alf-inp', '&--disabled', '&--focused, &:focus-within, &:focus-visible');
+  @include alf-background-style('--alf-inp', '&--disabled', '&--focused, &:focus-within, &:focus-visible');
+  @include alf-text-style('--alf-inp', '&--disabled', '&--focused, &:focus-within, &:focus-visible');
+  transition: all 0.2s ease;
 }
 
-
-.alf-input__prefix {
+.alf-input-prefix {
+  width: auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 10px;
-  margin-right: 0px;
-  font-size: 1.25rem;
-  color: var(--alf-cool-gray, #94a3b8);
-  user-select: none;
+  flex-shrink: 0;
+  padding-right: 3px;
 }
 
-.alf-input__field-wrap {
-  position: relative;
-  flex: 1;
-  display: flex;
-  height: 100%;
-  align-items: center;
-  padding-left: 14px;
-}
-
-.alf-input__field {
+.alf-input-element {
   width: 100%;
-  background: transparent;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   border: none;
   outline: none;
+  background: transparent;
+
+  color: inherit;
   font-family: inherit;
-  font-size: 1.1rem;
-  color: var(--alf-inp-text-color, #1e293b);
-  box-sizing: border-box;
-
-
-
-
-  &--textarea {
-    resize: vertical;
-    min-height: 48px;
-    padding: 12px 0;
-  }
+  font-size: inherit;
+  font-weight: inherit;
 
   &::placeholder {
-    color: var(--alf-inp-text-color, var(--alf-cool-gray, #94a3b8));
+    color: inherit;
     opacity: 0.5;
-    transition: opacity 0.2s ease;
+  }
+
+  &:focus,
+  &:focus-visible {
+    border: none;
+    outline: none;
   }
 }
 
-.alf-input__label {
-  position: absolute;
-  left: 16px;
-  top: 52%;
-  transform: translateY(-50%);
-  color: var(--alf-inp-text-color, var(--alf-cool-gray, #94a3b8));
+.alf-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  width: 100%;
+}
 
-  font-size: 1.1rem;
+.alf-input-label {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
   pointer-events: none;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-origin: left top;
+  z-index: 3;
+  transition: all 0.18s ease-in-out;
+  color: inherit;
+
+  opacity: 0.7;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: calc(100% - 32px);
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  z-index: 2;
-
-  &--has-prefix {
-    left: 40px;
-  }
+  max-width: 100%;
 
   &--float {
-    top: 0;
-    left: 10px;
-    transform: translateY(-75%) scale(0.75);
-    color: var(--alf-inp-text-color, var(--alf-cool-gray, #94a3b8));
-    background: transparent;
-    padding: 0 6px;
-    font-weight: 600;
+    // Sube exactamente la mitad del padding-top del input, quedando centrado en ese espacio
+    top: calc(-1 * var(--alf-inp-padding-top, 0) - 3px);
+    left: calc(var(--alf-inp-padding-left, 0) * -1 + 5px) !important;
+    transform: translateY(-100%);
+    transform-origin: left center;
+    font-weight: 500;
+    opacity: 1;
+    font-size: 12px;
+  }
+
+  &--has-prefix {
+    &.alf-input-label--float {
+      // Cuando flota y hay prefijo, salta el padding izquierdo MÁS el ancho del prefijo
+      left: calc((var(--alf-inp-padding-left, 0)) * -1 - var(--alf-inp-text-font-size, 0) + 1px) !important;
+    }
+  }
+
+  // Si es un input con fondo sólido o degradado (Solid, 3D o gradient) y está enfocado, 
+  // forzamos que el label tome el color del borde para que sea visible fuera del fondo
+  .alf-input--contrasting-label.alf-input--focused & {
+    color: var(--alf-inp-border-color-focus) !important;
+    opacity: 1;
   }
 }
 
-.alf-input--focused {
-  .alf-input__label--float {
-    color: var(--alf-inp-border-color, var(--alf-cool-gray, #94a3b8));
-  }
-}
-
-.alf-input--error {
-  .alf-input__label--float {
-    color: var(--alf-danger, #dc3545);
-  }
-}
-
-.alf-input__required-star {
-  color: var(--alf-danger, #dc3545);
-  margin-left: 2px;
-  font-weight: bold;
-}
-
-
-.alf-input__suffix-area {
+.alf-input-wrapper {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-left: 8px;
-  margin-right: 8px;
+  flex-direction: column;
+  width: 100%;
 }
 
-.alf-input__suffix-btn {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  font-size: 1rem;
-  color: #64748b;
+.alf-input-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  margin-top: 4px;
+  padding: 0 4px;
+}
+
+.alf-input-helper-text,
+.alf-input-char-counter {
+  font-size: 12px;
+  opacity: 0.7;
+  transition: all 0.18s ease-in-out;
+  font-weight: 400;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.alf-input-error {
+  font-size: 12px;
+  transition: all 0.18s ease-in-out;
+  color: var(--alf-danger, #dc3545);
+  opacity: 1;
+  font-weight: 500;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.alf-input-suffix {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 4px;
-  transition: all 0.15s ease;
+  padding-left: 8px;
+  flex-shrink: 0;
+}
+
+.alf-input-password-toggle,
+.alf-input-clear {
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+  color: inherit;
 
   &:hover {
-    color: #1e293b;
-    background: rgba(0, 0, 0, 0.05);
+    opacity: 1;
   }
 }
 
-.alf-input__clear-btn {
-  font-size: 0.85rem;
-}
-
-.alf-input__suffix-icon {
-  font-size: 0.7rem;
-  color: var(--alf-inp-text-color, #64748b);
-}
-
-.alf-input__spinner {
-  width: 16px;
-  height: 16px;
-  border: 2px solid #cbd5e1;
-  border-top-color: #4f46e5;
-  border-radius: 50%;
-  animation: alf-spin 0.6s linear infinite;
-}
-
-.alf-input__footer {
+.alf-input-loading {
+  font-size: 1.1rem;
+  opacity: 0.8;
   display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  margin-top: 4px;
-  padding: 0 8px;
-  font-size: 0.75rem;
-}
-
-.alf-input__helper {
-  color: #64748b;
-
-  &--error {
-    color: #ef4444;
-  }
-}
-
-.alf-input__counter {
-  color: #94a3b8;
-  margin-left: auto;
-}
-
-@keyframes alf-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.alf-input--ghost,
-.alf-input--soft,
-.alf-input--crystal {
-  .alf-input__label {
-    color: var(--alf-inp-text-color, var(--alf-cool-gray, #94a3b8));
-
-    &--float {
-      color: var(--alf-inp-text-color, var(--alf-cool-gray, #94a3b8));
-    }
-  }
-}
-
-// Variantes sólidas, 3D y Gradientes: label en reposo = blanco (sobre fondo coloreado)
-// label flotado = fondo transparente + color del borde (visible sobre el input de color)
-.alf-input--solid,
-.alf-input--3d,
-.alf-input--gradient {
-  .alf-input__label {
-    color: var(--alf-inp-text-color, #ffffff);
-
-    &--float {
-      color: var(--alf-inp-border-color, var(--alf-inp-text-color, #ffffff));
-      background: transparent;
-      border-radius: 3px;
-      transform: translateY(-90%) scale(0.75);
-    }
-  }
-}
-
-.alf-input--standard {
-  align-items: flex-end !important;
-  padding-left: 4px !important; // Reducido al mínimo para estar más a la izquierda
-  padding-bottom: 4px !important; // Pegado al máximo abajo
-
-  .alf-input__field-wrap {
-    padding-left: 0;
-    align-items: flex-end;
-  }
-
-  .alf-input__field {
-    padding-left: 0;
-    padding-right: 0;
-    padding-bottom: 0px;
-    margin-bottom: 2px;
-    color: var(--alf-inp-border-color, #1e293b);
-
-    &::placeholder {
-      color: var(--alf-inp-border-color, var(--alf-cool-gray, #94a3b8));
-      opacity: 0.5;
-    }
-  }
-
-  .alf-input__prefix {
-    margin-left: 0px;
-    margin-right: 6px;
-    margin-bottom: 2px; // Alinear con la base del input
-  }
-
-  .alf-input__label {
-    left: 4px;
-    top: auto;
-    bottom: 6px;
-    transform: none;
-    color: var(--alf-inp-border-color, var(--alf-cool-gray, #94a3b8));
-
-    &--has-prefix {
-      left: 32px; // Dejar espacio para el emoji cuando no flote
-    }
-
-    &--float {
-      left: 4px; // Volver a la izquierda cuando flote
-      top: auto;
-      bottom: 26px;
-      transform: scale(0.75);
-      padding: 0;
-      color: var(--alf-inp-border-color, var(--alf-cool-gray, #94a3b8));
-    }
-  }
-
-  // Compensación para evitar que el incremento de 1px del borde inferior desplace el layout
-  &:hover,
-  &.alf-input--focused {
-    margin-bottom: -1px;
-  }
-}
-
-.alf-input--solid,
-.alf-input--dark {
-  .alf-input__field {
-    color: var(--alf-inp-text-color, #ffffff);
-  }
+  align-items: center;
+  justify-content: center;
 }

@@ -10,10 +10,8 @@ export interface AlfInputInterface extends AlfBaseCommonConfigInterface {
   readonly disabled?: boolean;
   readonly error?: string;
   readonly helperText?: string;
-  readonly colorVariant?: AlfColorVariantEnum;
   readonly appearance?: AlfInputAppearanceEnum;
   readonly inputType?: AlfInputTypeEnum;
-  readonly loading?: boolean;
 
   // Propiedades Funcionales
   readonly name?: string;
@@ -36,6 +34,7 @@ export interface AlfInputInterface extends AlfBaseCommonConfigInterface {
   readonly clearable?: boolean;
   readonly showPasswordToggle?: boolean;
   readonly showCharCounter?: boolean;
+  readonly clearOnClick?: boolean;
 
   // I18n
   readonly clearLabel?: string;

@@ -1,6 +1,6 @@
 # alf-code
 
-Componente para mostrar bloques de código con syntax highlighting usando Prism.js y tema VS Code Dark Modern, basado en Angular Signals (Angular 21).
+Componente para mostrar bloques de código con syntax highlighting usando Prism.js y tema VS Code Dark Modern, basado en Angular Signals (Angular 22).
 
 ## 📋 API Reference
 

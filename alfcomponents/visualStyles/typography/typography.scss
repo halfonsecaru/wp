@@ -1,7 +1,9 @@
 @mixin alf-typography-style(
   $prefix: '--alf',
   $disabled-selectors: '&:disabled, &.disabled',
-  $focus-selectors: '&:focus, &:focus-visible'
+  $focus-selectors: '&:focus, &:focus-visible',
+  $hover-selectors: '&:hover',
+  $active-selectors: '&:active'
 ) {
   // --- 1. BASE / DEFAULT STATE ---
   font-size:      var(#{$prefix}-typography-font-size,      var(#{$prefix}-text-font-size, inherit));
@@ -23,7 +25,7 @@
   text-shadow:    var(#{$prefix}-typography-text-shadow,    var(#{$prefix}-text-text-shadow, inherit));
 
   // --- 2. HOVER STATE ---
-  &:hover {
+  #{$hover-selectors} {
     font-size:      var(#{$prefix}-typography-hover-font-size,      var(#{$prefix}-text-hover-font-size, var(#{$prefix}-typography-font-size, var(#{$prefix}-text-font-size, inherit))));
     font-weight:    var(#{$prefix}-typography-hover-font-weight,    var(#{$prefix}-text-hover-font-weight, var(#{$prefix}-typography-font-weight, var(#{$prefix}-text-font-weight, inherit))));
     font-family:    var(#{$prefix}-typography-hover-font-family,    var(#{$prefix}-typography-font-family,    inherit));
@@ -44,7 +46,7 @@
   }
 
   // --- 3. ACTIVE STATE ---
-  &:active {
+  #{$active-selectors} {
     font-size:      var(#{$prefix}-typography-active-font-size,      var(#{$prefix}-text-active-font-size, var(#{$prefix}-typography-hover-font-size, var(#{$prefix}-text-hover-font-size, var(#{$prefix}-typography-font-size, var(#{$prefix}-text-font-size, inherit))))));
     font-weight:    var(#{$prefix}-typography-active-font-weight,    var(#{$prefix}-text-active-font-weight, var(#{$prefix}-typography-hover-font-weight, var(#{$prefix}-text-hover-font-weight, var(#{$prefix}-typography-font-weight, var(#{$prefix}-text-font-weight, inherit))))));
     font-family:    var(#{$prefix}-typography-active-font-family,    var(#{$prefix}-typography-hover-font-family,    var(#{$prefix}-typography-font-family,    inherit)));

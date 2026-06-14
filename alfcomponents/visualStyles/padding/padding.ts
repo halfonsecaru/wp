@@ -20,10 +20,10 @@ export class AlfPaddingDirective {
 
   private readonly SUFFIXES = [
     '-padding', '-padding-top', '-padding-right', '-padding-bottom', '-padding-left',
-    '-padding-hover', '-padding-hover-top', '-padding-hover-right', '-padding-hover-bottom', '-padding-hover-left',
-    '-padding-active', '-padding-active-top', '-padding-active-right', '-padding-active-bottom', '-padding-active-left',
-    '-padding-focus', '-padding-focus-top', '-padding-focus-right', '-padding-focus-bottom', '-padding-focus-left',
-    '-padding-disabled', '-padding-disabled-top', '-padding-disabled-right', '-padding-disabled-bottom', '-padding-disabled-left',
+    '-padding-hover', '-padding-top-hover', '-padding-right-hover', '-padding-bottom-hover', '-padding-left-hover',
+    '-padding-active', '-padding-top-active', '-padding-right-active', '-padding-bottom-active', '-padding-left-active',
+    '-padding-focus', '-padding-top-focus', '-padding-right-focus', '-padding-bottom-focus', '-padding-left-focus',
+    '-padding-disabled', '-padding-top-disabled', '-padding-right-disabled', '-padding-bottom-disabled', '-padding-left-disabled',
   ];
 
   private readonly _effect = effect(() => {
@@ -41,10 +41,10 @@ export class AlfPaddingDirective {
     const applyState = (state: any, sfx: string) => {
       if (!state) return;
       set(`${p}-padding${sfx}`,        state.padding);
-      set(`${p}-padding${sfx}-top`,    state.paddingTop);
-      set(`${p}-padding${sfx}-right`,  state.paddingRight);
-      set(`${p}-padding${sfx}-bottom`, state.paddingBottom);
-      set(`${p}-padding${sfx}-left`,   state.paddingLeft);
+      set(`${p}-padding-top${sfx}`,    state.paddingTop);
+      set(`${p}-padding-right${sfx}`,  state.paddingRight);
+      set(`${p}-padding-bottom${sfx}`, state.paddingBottom);
+      set(`${p}-padding-left${sfx}`,   state.paddingLeft);
     };
 
     applyState(pd.default,  '');

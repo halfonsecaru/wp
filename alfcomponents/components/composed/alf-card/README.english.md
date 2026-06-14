@@ -1,6 +1,6 @@
 # AlfCard - Elite Card Component
 
-High-performance standalone card component designed for Angular 21. It implements the **Elite Visual Engine**, with nested sub-components for robust structural layout (title, body, actions, images), polymorphic link/button interactivity, and a dynamic theme system powered by CSS variables.
+High-performance standalone card component designed for Angular 22. It implements the **Elite Visual Engine**, with nested sub-components for robust structural layout (title, body, actions, images), polymorphic link/button interactivity, and a dynamic theme system powered by CSS variables.
 
 ## Key Features
 
