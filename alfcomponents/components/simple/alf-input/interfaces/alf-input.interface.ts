@@ -1,4 +1,4 @@
-import { AlfInputAppearanceEnum, AlfInputTypeEnum, AlfColorVariantEnum } from '@alfcomponents/enums';
+import { AlfInputAppearanceEnum, AlfInputTypeEnum } from '@alfcomponents/enums';
 import { AlfValidationResult } from '@alfcomponents/shared';
 import { AlfBaseCommonConfigInterface } from '@alfcomponents/interfaces';
 

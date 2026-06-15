@@ -430,3 +430,40 @@
         </div>
       </div>
     </div>
+
+    <!-- 11. ANIMACIONES -->
+    <div class="inp-card inp-card--wide">
+      <h2 class="inp-card__title">
+        <span class="inp-card__dot inp-card__dot--cyan"></span>
+        11. Animaciones (Animate.css)
+      </h2>
+      <div class="inp-card__body">
+        <div class="inp-demo-col" style="gap: 1.5rem;">
+          <div class="inp-demo-grid-4">
+            
+            <!-- Entrada y Salida -->
+            <div class="inp-size-item" style="width: 100%;">
+              <alf-input 
+                [appearance]="selectedAppearance()" 
+                label="Animación de Entrada" 
+                [animations]="{ enterStage: 'bounceIn', duration: '1.5s' }"
+                helperText="Aparece con un bounceIn de 1.5 segundos."
+                [(value)]="valStandard" />
+            </div>
+
+            <!-- Animación Infinita -->
+            <div class="inp-size-item" style="width: 100%;">
+              <alf-input 
+                [appearance]="selectedAppearance()" 
+                label="Animación Infinita" 
+                [animations]="{ enterStage: 'pulse', infinite: true, duration: '2s' }"
+                helperText="Efecto pulse continuo."
+                [(value)]="valStandard" />
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

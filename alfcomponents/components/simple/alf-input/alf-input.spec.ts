@@ -174,4 +174,30 @@ describe('AlfInput', () => {
     const inputEl = fixture.debugElement.query(By.css('input.alf-input-element')).nativeElement;
     expect(inputEl.disabled).toBe(true);
   });
+
+  it('debe renderizar el suffix si se pasa como input', () => {
+    fixture.componentRef.setInput('suffix', '.com');
+    fixture.detectChanges();
+
+    const suffixContainer = fixture.debugElement.query(By.css('.alf-input-suffix'));
+    expect(suffixContainer).toBeTruthy();
+    expect(suffixContainer.nativeElement.textContent).toContain('.com');
+  });
+
+  it('debe renderizar el icono de loading cuando isLoading es true', () => {
+    fixture.componentRef.setInput('isLoading', true);
+    fixture.detectChanges();
+
+    const loadingEl = fixture.debugElement.query(By.css('.alf-input-loading'));
+    expect(loadingEl).toBeTruthy();
+    expect(loadingEl.nativeElement.textContent).toContain('⏳');
+  });
+
+  it('debe marcar el input como readonly si se le pasa por input', () => {
+    fixture.componentRef.setInput('readonly', true);
+    fixture.detectChanges();
+
+    const inputEl = fixture.debugElement.query(By.css('input.alf-input-element')).nativeElement;
+    expect(inputEl.readOnly).toBe(true);
+  });
 });

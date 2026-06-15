@@ -9,7 +9,7 @@ This document outlines how AI assistants should implement and interact with the 
 
 ## 2. Configuration (`AlfInputInterface`)
 Most properties can be passed individually (e.g., `[label]="'Name'"`), but it is recommended to use the configuration object `[config]="myConfig"` of type `AlfInputInterface` for complex setups.
-- Supported properties in config: `label`, `placeholder`, `inputType` (`text`, `password`, `email`, etc.), `helperText`, `appearance`, `clearable`, `showPasswordToggle`, `showCharCounter`, `debounceTime`, `maxLength`, `error`, etc.
+- Supported properties in config: `label`, `placeholder`, `inputType` (`text`, `password`, `email`, etc.), `helperText`, `appearance`, `clearable`, `showPasswordToggle`, `showCharCounter`, `debounceTime`, `maxLength`, `error`, `isLoading`, etc.
 
 ## 3. Appearances & Variants
 `AlfInput` has three primary structural **Appearances**:

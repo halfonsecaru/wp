@@ -82,7 +82,6 @@ export class AlfButton extends AlfBaseDirective {
   public readonly iconLeft = input<string | AlfIconsUnicodeIconEnum>();
   public readonly iconRight = input<string | AlfIconsUnicodeIconEnum>();
   public readonly link = input<ButtonLink>();
-  public readonly loading = input<boolean>(false);
   public readonly debounceTime = input<number>();
   public readonly predefined = input<keyof AlfButtonI18nLabels>();
 

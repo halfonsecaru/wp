@@ -21,7 +21,7 @@
 @let cs = customStyle();
 @let bid = buttonId();
 
-@let ld = loading();
+@let ld = isLoading() || inputConfig()?.loading;
 @let bt = typeComputed();
 @let lk = linkComputed();
 @let lb = labelComputed();

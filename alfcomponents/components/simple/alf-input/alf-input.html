@@ -1,9 +1,20 @@
-@let padding = finalPaddingComputed(); @let border = errorBorderComputed(); @let background = errorBackgroundComputed(); @let textStyle =
-errorTextStyleComputed();
+@let background = inputBackgroundComputed();
+@let border = inputBorderComputed();
+@let margin = marginComputed();
+@let outline = outlineComputed();
+@let padding = finalPaddingComputed();
+@let shadows = shadowsComputed();
+@let textStyle = inputTextStyleComputed();
+@let transform = transformComputed();
+@let transition = transitionComputed();
+@let typography = typographyComputed();
 
-<div class="alf-input-wrapper">
+<div class="alf-input-wrapper" 
+  [alfMargin]="margin" 
+  [alfPrefix]="cssPrefix()">
   <div
     [class]="baseCssClass()"
+    [class.alf-input--disabled]="disabledComputed()"
     [class.alf-input--focused]="isFocused()"
     [class.alf-input--error]="errorComputed()"
     [class.alf-input--contrasting-label]="hasContrastingLabel()"
@@ -11,6 +22,11 @@ errorTextStyleComputed();
     [alfBorder]="border"
     [alfBackground]="background"
     [alfTextStyle]="textStyle"
+    [alfOutline]="outline"
+    [alfShadows]="shadows"
+    [alfTypography]="typography"
+    [alfTransform]="transform"
+    [alfTransition]="transition"
     [alfPrefix]="cssPrefix()"
     (click)="focusInput()"
   >
@@ -26,8 +42,8 @@ errorTextStyleComputed();
         [class.alf-input-label--float]="isFocused() || value()"
         [class.alf-input-label--has-prefix]="prefixComputed()"
       >
-        {{ labelComputed() }} @if (requiredComputed()) {
-        <span class="alf-input-required">*</span>
+        {{ labelComputed() }}@if (requiredComputed()) {
+        <span class="alf-input-required">&nbsp;*</span>
         }
       </label>
       }
@@ -60,9 +76,7 @@ errorTextStyleComputed();
     <ng-content select="[alfSuffix]"></ng-content>
     @if (hasSuffix()) {
     <div class="alf-input-suffix" [class.alf-input-suffix]="value()">
-      @if (isLoading()) {
-      <span class="alf-input-loading" [attr.aria-label]="loadingLabel()">⏳</span>
-      } @else if (showClear() && value()) {
+      @if (showClear() && value()) {
       <button type="button" class="alf-input-clear" (click)="clear($event)" [attr.aria-label]="clearLabel()">✕</button>
       } @else if (showPasswordToggleComputed()) {
       <button
@@ -117,6 +131,12 @@ errorTextStyleComputed();
         }
       </button>
       } @else if (suffixComputed()) { {{ suffixComputed() }} }
+    </div>
+    }
+    
+    @if (isLoading()) {
+    <div class="alf-input-loading-overlay">
+      <alf-spinner [size]="AlfRemEnum.Rem15" />
     </div>
     }
   </div>

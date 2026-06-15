@@ -6,11 +6,11 @@
   $active-selectors: '&:active'
 ) {
   // --- 1. BASE / DEFAULT STATE ---
-  $p: var(#{$prefix}-padding, 0px);
-  $pt: var(#{$prefix}-padding-top, $p);
-  $pr: var(#{$prefix}-padding-right, $p);
-  $pb: var(#{$prefix}-padding-bottom, $p);
-  $pl: var(#{$prefix}-padding-left, $p);
+  $p: var(#{$prefix}-padding);
+  $pt: var(#{$prefix}-padding, var(#{$prefix}-padding-top, 0px));
+  $pr: var(#{$prefix}-padding, var(#{$prefix}-padding-right, 0px));
+  $pb: var(#{$prefix}-padding, var(#{$prefix}-padding-bottom, 0px));
+  $pl: var(#{$prefix}-padding, var(#{$prefix}-padding-left, 0px));
 
   padding-top: $pt;
   padding-right: $pr;
@@ -19,11 +19,11 @@
 
   // --- 2. HOVER STATE ---
   #{$hover-selectors} {
-    $hp: var(#{$prefix}-padding-hover, $p);
-    $hpt: var(#{$prefix}-padding-top-hover, var(#{$prefix}-padding-top, $hp));
-    $hpr: var(#{$prefix}-padding-right-hover, var(#{$prefix}-padding-right, $hp));
-    $hpb: var(#{$prefix}-padding-bottom-hover, var(#{$prefix}-padding-bottom, $hp));
-    $hpl: var(#{$prefix}-padding-left-hover, var(#{$prefix}-padding-left, $hp));
+    $hp: var(#{$prefix}-padding-hover);
+    $hpt: var(#{$prefix}-padding-hover, var(#{$prefix}-padding-top-hover, var(#{$prefix}-padding-top, $hp)));
+    $hpr: var(#{$prefix}-padding-hover, var(#{$prefix}-padding-right-hover, var(#{$prefix}-padding-right, $hp)));
+    $hpb: var(#{$prefix}-padding-hover, var(#{$prefix}-padding-bottom-hover, var(#{$prefix}-padding-bottom, $hp)));
+    $hpl: var(#{$prefix}-padding-hover, var(#{$prefix}-padding-left-hover, var(#{$prefix}-padding-left, $hp)));
 
     padding-top: $hpt;
     padding-right: $hpr;
@@ -33,12 +33,12 @@
 
   // --- 3. ACTIVE STATE ---
   #{$active-selectors} {
-    $hp: var(#{$prefix}-padding-hover, $p);
+    $hp: var(#{$prefix}-padding-hover);
     $am: var(#{$prefix}-padding-active, $hp);
-    $apt: var(#{$prefix}-padding-top-active, var(#{$prefix}-padding-top-hover, var(#{$prefix}-padding-top, $am)));
-    $apr: var(#{$prefix}-padding-right-active, var(#{$prefix}-padding-right-hover, var(#{$prefix}-padding-right, $am)));
-    $apb: var(#{$prefix}-padding-bottom-active, var(#{$prefix}-padding-bottom-hover, var(#{$prefix}-padding-bottom, $am)));
-    $apl: var(#{$prefix}-padding-left-active, var(#{$prefix}-padding-left-hover, var(#{$prefix}-padding-left, $am)));
+    $apt: var(#{$prefix}-padding-active, var(#{$prefix}-padding-top-active, var(#{$prefix}-padding-top-hover, var(#{$prefix}-padding-top, $am))));
+    $apr: var(#{$prefix}-padding-active, var(#{$prefix}-padding-right-active, var(#{$prefix}-padding-right-hover, var(#{$prefix}-padding-right, $am))));
+    $apb: var(#{$prefix}-padding-active, var(#{$prefix}-padding-bottom-active, var(#{$prefix}-padding-bottom-hover, var(#{$prefix}-padding-bottom, $am))));
+    $apl: var(#{$prefix}-padding-active, var(#{$prefix}-padding-left-active, var(#{$prefix}-padding-left-hover, var(#{$prefix}-padding-left, $am))));
 
     padding-top: $apt;
     padding-right: $apr;
@@ -48,11 +48,11 @@
 
   // --- 4. FOCUS STATE ---
   #{$focus-selectors} {
-    $fp: var(#{$prefix}-padding-focus, $p);
-    $fpt: var(#{$prefix}-padding-top-focus, var(#{$prefix}-padding-top, $fp));
-    $fpr: var(#{$prefix}-padding-right-focus, var(#{$prefix}-padding-right, $fp));
-    $fpb: var(#{$prefix}-padding-bottom-focus, var(#{$prefix}-padding-bottom, $fp));
-    $fpl: var(#{$prefix}-padding-left-focus, var(#{$prefix}-padding-left, $fp));
+    $fp: var(#{$prefix}-padding-focus);
+    $fpt: var(#{$prefix}-padding-focus, var(#{$prefix}-padding-top-focus, var(#{$prefix}-padding-top, $fp)));
+    $fpr: var(#{$prefix}-padding-focus, var(#{$prefix}-padding-right-focus, var(#{$prefix}-padding-right, $fp)));
+    $fpb: var(#{$prefix}-padding-focus, var(#{$prefix}-padding-bottom-focus, var(#{$prefix}-padding-bottom, $fp)));
+    $fpl: var(#{$prefix}-padding-focus, var(#{$prefix}-padding-left-focus, var(#{$prefix}-padding-left, $fp)));
 
     padding-top: $fpt;
     padding-right: $fpr;
@@ -62,11 +62,11 @@
 
   // --- 5. DISABLED STATE ---
   #{$disabled-selectors} {
-    $dp: var(#{$prefix}-padding-disabled, $p);
-    $dpt: var(#{$prefix}-padding-top-disabled, var(#{$prefix}-padding-top, $dp));
-    $dpr: var(#{$prefix}-padding-right-disabled, var(#{$prefix}-padding-right, $dp));
-    $dpb: var(#{$prefix}-padding-bottom-disabled, var(#{$prefix}-padding-bottom, $dp));
-    $dpl: var(#{$prefix}-padding-left-disabled, var(#{$prefix}-padding-left, $dp));
+    $dp: var(#{$prefix}-padding-disabled);
+    $dpt: var(#{$prefix}-padding-disabled, var(#{$prefix}-padding-top-disabled, var(#{$prefix}-padding-top, $dp)));
+    $dpr: var(#{$prefix}-padding-disabled, var(#{$prefix}-padding-right-disabled, var(#{$prefix}-padding-right, $dp)));
+    $dpb: var(#{$prefix}-padding-disabled, var(#{$prefix}-padding-bottom-disabled, var(#{$prefix}-padding-bottom, $dp)));
+    $dpl: var(#{$prefix}-padding-disabled, var(#{$prefix}-padding-left-disabled, var(#{$prefix}-padding-left, $dp)));
 
     padding-top: $dpt;
     padding-right: $dpr;

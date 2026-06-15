@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, signal, computed } from '@angular/core';
-import { AlfButton, AlfCheckbox, AlfInput, AlfTabsContainerComponent, AlfTabComponent } from '@alfcomponents/components';
+import { AlfButton, AlfCheckbox, AlfInput, AlfTabsContainerComponent, AlfTabComponent, AlfSpinner } from '@alfcomponents/components';
 import { AlfInputInterface } from '@alfcomponents/components/simple/alf-input/interfaces/alf-input.interface';
 import {
   AlfColorVariantEnum,
@@ -51,7 +51,7 @@ type CssState = 'default' | 'hover' | 'focus' | 'active' | 'disabled';
 @Component({
   selector: 'app-alf-playground',
   standalone: true,
-  imports: [AlfButton, AlfCheckbox, AlfInput, AlfTabsContainerComponent, AlfTabComponent],
+  imports: [AlfButton, AlfCheckbox, AlfInput, AlfTabsContainerComponent, AlfTabComponent, AlfSpinner],
   templateUrl: './alf-playground.html',
   styleUrl: './alf-playground.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -85,6 +85,7 @@ export class AlfPlayground {
     { id: 'alf-button', label: 'AlfButton', icon: '🔘' },
     { id: 'alf-checkbox', label: 'AlfCheckbox', icon: '☑️' },
     { id: 'alf-input', label: 'AlfInput', icon: '✍️' },
+    { id: 'alf-spinner', label: 'AlfSpinner', icon: '⏳' },
   ] as const;
   public readonly selectedComponentId = signal<string>('alf-button');
 
@@ -95,6 +96,7 @@ export class AlfPlayground {
   public readonly compVariant = signal<AlfColorVariantEnum | undefined>(undefined);
   public readonly compSize = signal<AlfSizeEnum | undefined>(undefined);
   public readonly compDisabled = signal<boolean>(false);
+  public readonly compIsLoading = signal<boolean>(false);
   public readonly compLabel = signal<string>('Preview');
 
   public readonly states: CssState[] = ['default', 'hover', 'focus', 'active', 'disabled'];
@@ -105,7 +107,6 @@ export class AlfPlayground {
   });
 
   public readonly bgColor = this.initStateSignal();
-  
   public readonly borderColor = this.initStateSignal();
   public readonly borderWidth = this.initStateSignal();
   public readonly borderStyle = this.initStateSignal();
@@ -144,6 +145,8 @@ export class AlfPlayground {
   public readonly animIteration = signal<string | undefined>(undefined);
   public readonly animInfinite = signal<boolean>(false);
 
+  public readonly forceNoAnimation = signal<boolean>(false);
+
   public readonly showPreview = signal<boolean>(true);
   public readonly isExiting = signal<boolean>(false);
 
@@ -163,6 +166,17 @@ export class AlfPlayground {
   public readonly inputBehaviorMaxLength = signal<string>('');
   public readonly inputBehaviorShowCharCounter = signal<boolean>(false);
 
+  // Missing properties
+  public readonly inputBehaviorStep = signal<string>('');
+  public readonly inputBehaviorAutofocus = signal<boolean>(false);
+  public readonly inputBehaviorAutocomplete = signal<string>('');
+  public readonly inputBehaviorClearOnClick = signal<boolean>(false);
+  public readonly inputBehaviorDebounceTime = signal<string>('');
+  public readonly inputBehaviorMinLength = signal<string>('');
+  public readonly inputBehaviorMin = signal<string>('');
+  public readonly inputBehaviorMax = signal<string>('');
+  public readonly inputBehaviorPattern = signal<string>('');
+
   public readonly inputBehaviorConfig = computed<AlfInputInterface>(() => {
     const label       = this.inputBehaviorLabel();
     const placeholder = this.inputBehaviorPlaceholder();
@@ -180,6 +194,21 @@ export class AlfPlayground {
     const maxLength   = maxLengthRaw ? parseInt(maxLengthRaw, 10) : undefined;
     const showCounter = this.inputBehaviorShowCharCounter();
 
+    const stepRaw = this.inputBehaviorStep();
+    const step = stepRaw ? parseFloat(stepRaw) : undefined;
+    const autofocus = this.inputBehaviorAutofocus();
+    const autocomplete = this.inputBehaviorAutocomplete();
+    const clearOnClick = this.inputBehaviorClearOnClick();
+    const debounceTimeRaw = this.inputBehaviorDebounceTime();
+    const debounceTime = debounceTimeRaw ? parseInt(debounceTimeRaw, 10) : undefined;
+    const minLengthRaw = this.inputBehaviorMinLength();
+    const minLength = minLengthRaw ? parseInt(minLengthRaw, 10) : undefined;
+    const minRaw = this.inputBehaviorMin();
+    const min = minRaw ? parseFloat(minRaw) : undefined;
+    const maxRaw = this.inputBehaviorMax();
+    const max = maxRaw ? parseFloat(maxRaw) : undefined;
+    const pattern = this.inputBehaviorPattern();
+
     const cfg: AlfInputInterface = {};
     if (label)       (cfg as any).label       = label;
     if (placeholder) (cfg as any).placeholder = placeholder;
@@ -192,24 +221,51 @@ export class AlfPlayground {
     if (required)    (cfg as any).required     = true;
     if (readonly)    (cfg as any).readonly     = true;
     if (clearable)   (cfg as any).clearable    = true;
-    if (showPwd)     (cfg as any).showPasswordToggle = true;
+    (cfg as any).showPasswordToggle = showPwd;
     if (maxLength)   (cfg as any).maxLength    = maxLength;
     if (showCounter) (cfg as any).showCharCounter = true;
+
+    if (step !== undefined) (cfg as any).step = step;
+    if (autofocus) (cfg as any).autofocus = true;
+    if (autocomplete) (cfg as any).autocomplete = autocomplete;
+    if (clearOnClick) (cfg as any).clearOnClick = true;
+    if (debounceTime !== undefined) (cfg as any).debounceTime = debounceTime;
+    if (minLength !== undefined) (cfg as any).minLength = minLength;
+    if (min !== undefined) (cfg as any).min = min;
+    if (max !== undefined) (cfg as any).max = max;
+    if (pattern) (cfg as any).pattern = pattern;
+
     return cfg;
   });
 
-  public readonly playAnimation = (): void => {
-    this.isExiting.set(false);
-    this.showPreview.set(false);
-    setTimeout(() => this.showPreview.set(true), 10);
-  };
+  private parseDuration(duration: string | undefined): number {
+    if (!duration) return 1000;
+    if (duration.endsWith('ms')) return parseInt(duration, 10);
+    if (duration.endsWith('s')) return parseFloat(duration) * 1000;
+    return 1000;
+  }
 
-  public readonly playExitAnimation = (): void => {
-    this.showPreview.set(false);
+  public readonly playAnimation = (): void => {
+    // 1. Limpiar cualquier animación previa
+    this.forceNoAnimation.set(true);
+    
+    const dur = this.parseDuration(this.animDuration());
+
     setTimeout(() => {
+      // 2. Activar animación de SALIDA primero
       this.isExiting.set(true);
-      this.showPreview.set(true);
-    }, 10);
+      this.forceNoAnimation.set(false);
+
+      setTimeout(() => {
+        // 3. Activar animación de ENTRADA después
+        this.isExiting.set(false);
+
+        setTimeout(() => {
+          // 4. Volver al estado normal (limpiar animaciones para que no salte)
+          this.forceNoAnimation.set(true);
+        }, dur);
+      }, dur);
+    }, 20);
   };
 
   public readonly layoutDisplay = this.initStateSignal();
@@ -239,6 +295,11 @@ export class AlfPlayground {
     if (infinite) config.infinite = true;
 
     return config;
+  });
+
+  public readonly previewAnimationsConfig = computed<AlfAnimateCssInterface | undefined>(() => {
+    if (this.forceNoAnimation()) return undefined;
+    return this.animationsConfig();
   });
 
   public readonly backgroundConfig = computed<AlfBackgroundsInterface>(() => {
@@ -385,14 +446,17 @@ export class AlfPlayground {
 
   public readonly onSelectChange = (sig: ReturnType<typeof signal<string>>, event: Event): void => {
     sig.set((event.target as HTMLSelectElement).value);
+    this.forceNoAnimation.set(false);
   };
 
   public readonly onInputChange = (sig: ReturnType<typeof signal<string>>, event: Event): void => {
     sig.set((event.target as HTMLInputElement).value);
+    this.forceNoAnimation.set(false);
   };
 
   public readonly onCheckboxChange = (sig: ReturnType<typeof signal<boolean>>, event: Event): void => {
     sig.set((event.target as HTMLInputElement).checked);
+    this.forceNoAnimation.set(false);
   };
 
   public readonly onVariantChange = (event: Event): void => {
@@ -409,10 +473,15 @@ export class AlfPlayground {
     this.compDisabled.update(v => !v);
   };
 
+  public readonly onLoadingToggle = (): void => {
+    this.compIsLoading.update(v => !v);
+  };
+
   public readonly resetAll = (): void => {
     this.compVariant.set(undefined);
     this.compSize.set(undefined);
     this.compDisabled.set(false);
+    this.compIsLoading.set(false);
     this.compLabel.set('Preview');
     this.propTabIndex.set(0);
     this.stateTabIndex.set(0);
@@ -439,6 +508,16 @@ export class AlfPlayground {
     this.inputBehaviorShowPwdToggle.set(false);
     this.inputBehaviorMaxLength.set('');
     this.inputBehaviorShowCharCounter.set(false);
+
+    this.inputBehaviorStep.set('');
+    this.inputBehaviorAutofocus.set(false);
+    this.inputBehaviorAutocomplete.set('');
+    this.inputBehaviorClearOnClick.set(false);
+    this.inputBehaviorDebounceTime.set('');
+    this.inputBehaviorMinLength.set('');
+    this.inputBehaviorMin.set('');
+    this.inputBehaviorMax.set('');
+    this.inputBehaviorPattern.set('');
 
     for (const s of this.states) {
       this.bgColor[s].set('');
@@ -486,6 +565,11 @@ export class AlfPlayground {
     const parts: string[] = [];
     const comp = this.selectedComponentId();
     const variant = this.compVariant();
+    if (comp === 'alf-spinner') {
+      const sizeStr = this.compSize() ? ` size="${this.compSize()}"` : '';
+      return `<alf-spinner${sizeStr}></alf-spinner>`;
+    }
+
     const size = this.compSize();
     const label = this.compLabel();
 
@@ -494,6 +578,11 @@ export class AlfPlayground {
     if (variant) parts.push(`  variant="${variant}"`);
     if (size) parts.push(`  size="${size}"`);
     if (this.compDisabled()) parts.push(`  [isDisabled]="true"`);
+    if (this.compIsLoading()) parts.push(`  [isLoading]="true"`);
+
+    if (comp === 'alf-input' && Object.keys(this.inputBehaviorConfig()).length) {
+      parts.push(`  [config]="myInputConfig"`);
+    }
 
     if (Object.keys(this.backgroundConfig()).length) parts.push(`  [background]="myBackgroundConfig"`);
     if (Object.keys(this.borderConfig()).length) parts.push(`  [border]="myBorderConfig"`);
@@ -515,6 +604,13 @@ export class AlfPlayground {
   public readonly tsPreview = computed<string>(() => {
     const parts: string[] = [];
     
+    if (this.selectedComponentId() === 'alf-input') {
+      const inpCfg = this.inputBehaviorConfig();
+      if (Object.keys(inpCfg).length) {
+        parts.push(`public myInputConfig: AlfInputInterface = ${this.stringifyConfig(inpCfg)};\n`);
+      }
+    }
+
     const bg = this.backgroundConfig();
     if (Object.keys(bg).length) parts.push(`public myBackgroundConfig: AlfBackgroundsInterface = ${this.stringifyConfig(bg)};\n`);
     

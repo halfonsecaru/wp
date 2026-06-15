@@ -1,10 +1,11 @@
 @mixin alf-display-and-layout-style(
   $prefix: '--alf',
   $disabled-selectors: '&:disabled, &.disabled',
-  $focus-selectors: '&:focus, &:focus-visible'
+  $focus-selectors: '&:focus, &:focus-visible',
+  $default-display: block
 ) {
   // --- 1. BASE / DEFAULT STATE ---
-  display:         var(#{$prefix}-layout-display,         block);
+  display:         var(#{$prefix}-layout-display,         $default-display);
   position:        var(#{$prefix}-layout-position,        static);
   top:             var(#{$prefix}-layout-top,             auto);
   right:           var(#{$prefix}-layout-right,           auto);
@@ -34,7 +35,7 @@
 
   // --- 2. HOVER STATE ---
   &:hover {
-    display:         var(#{$prefix}-layout-hover-display,         var(#{$prefix}-layout-display,         block));
+    display:         var(#{$prefix}-layout-hover-display,         var(#{$prefix}-layout-display,         $default-display));
     position:        var(#{$prefix}-layout-hover-position,        var(#{$prefix}-layout-position,        static));
     top:             var(#{$prefix}-layout-hover-top,             var(#{$prefix}-layout-top,             auto));
     right:           var(#{$prefix}-layout-hover-right,           var(#{$prefix}-layout-right,           auto));
@@ -65,7 +66,7 @@
 
   // --- 3. ACTIVE STATE ---
   &:active {
-    display:         var(#{$prefix}-layout-active-display,         var(#{$prefix}-layout-hover-display,         var(#{$prefix}-layout-display,         block)));
+    display:         var(#{$prefix}-layout-active-display,         var(#{$prefix}-layout-hover-display,         var(#{$prefix}-layout-display,         $default-display)));
     position:        var(#{$prefix}-layout-active-position,        var(#{$prefix}-layout-hover-position,        var(#{$prefix}-layout-position,        static)));
     top:             var(#{$prefix}-layout-active-top,             var(#{$prefix}-layout-hover-top,             var(#{$prefix}-layout-top,             auto)));
     right:           var(#{$prefix}-layout-active-right,           var(#{$prefix}-layout-hover-right,           var(#{$prefix}-layout-right,           auto)));
@@ -96,7 +97,7 @@
 
   // --- 4. FOCUS STATE ---
   #{$focus-selectors} {
-    display:         var(#{$prefix}-layout-focus-display,         var(#{$prefix}-layout-display,         block));
+    display:         var(#{$prefix}-layout-focus-display,         var(#{$prefix}-layout-display,         $default-display));
     position:        var(#{$prefix}-layout-focus-position,        var(#{$prefix}-layout-position,        static));
     top:             var(#{$prefix}-layout-focus-top,             var(#{$prefix}-layout-top,             auto));
     right:           var(#{$prefix}-layout-focus-right,           var(#{$prefix}-layout-right,           auto));
@@ -127,7 +128,7 @@
 
   // --- 5. DISABLED STATE ---
   #{$disabled-selectors} {
-    display:         var(#{$prefix}-layout-disabled-display,         var(#{$prefix}-layout-display,         block));
+    display:         var(#{$prefix}-layout-disabled-display,         var(#{$prefix}-layout-display,         $default-display));
     position:        var(#{$prefix}-layout-disabled-position,        var(#{$prefix}-layout-position,        static));
     top:             var(#{$prefix}-layout-disabled-top,             var(#{$prefix}-layout-top,             auto));
     right:           var(#{$prefix}-layout-disabled-right,           var(#{$prefix}-layout-right,           auto));

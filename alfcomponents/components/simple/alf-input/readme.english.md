@@ -59,6 +59,7 @@ inputConfig = signal<AlfInputInterface>({
 - `showPasswordToggle` (`boolean`): Shows an eye icon to toggle password visibility.
 - `showCharCounter` (`boolean`): Displays a character count (requires `maxLength`).
 - `debounceTime` (`number`): Delays the emission of the `onInput` event.
+- `isLoading` (`boolean`): Overlays a centered spinner with transparent background on the input.
 
 ### Models
 - `value` (`model<string>`): Two-way bindable value signal.

@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   ElementRef,
   forwardRef,
   input,
@@ -16,16 +17,16 @@ import {
 } from '@alfcomponents/shared';
 import { AlfInputTypeEnum, AlfInputAppearanceEnum, AlfInputAdornmentEnum, AlfColorEnum, AlfRemEnum, AlfColorVariantEnum } from '@alfcomponents/enums';
 import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
+import { AlfSpinner } from '@alfcomponents/components/simple/alf-spinner/alf-spinner';
 import { AlfInputInterface } from './interfaces/alf-input.interface';
 import { getAlfInputLabel, AlfInputI18nLabels } from './i18n/alf-input.i18n';
-import { interpolate } from '@alfcomponents/i18n/i18n-utils';
 import { AlfBaseDirectives, AlfComponentTypeEnum, deepMergeStates } from '@alfcomponents/components/base/bases.directive';
 import { generatedComponentFunction, calculateErrorBorder, calculateErrorTextStyle, calculateErrorBackground } from './alf-input-functions';
 
 @Component({
   selector: 'alf-input',
   standalone: true,
-  imports: [...ALF_CORE_DIRECTIVES],
+  imports: [...ALF_CORE_DIRECTIVES, AlfSpinner],
   templateUrl: './alf-input.html',
   styleUrl: './alf-input.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -49,7 +50,7 @@ export class AlfInput extends AlfBaseDirectives implements ControlValueAccessor 
   protected readonly id = input<string>();
   protected readonly label = input<string>();
   protected readonly placeholder = input<string>();
-  protected readonly inputType = input<AlfInputTypeEnum | string>(AlfInputTypeEnum.Text, { alias: 'type' });
+  protected readonly inputType = input<AlfInputTypeEnum | string | undefined>(undefined, { alias: 'type' });
   protected readonly helperText = input<string>();
   protected readonly appearance = input<AlfInputAppearanceEnum>();
   protected readonly prefix = input<string | AlfInputAdornmentEnum>();
@@ -79,10 +80,12 @@ export class AlfInput extends AlfBaseDirectives implements ControlValueAccessor 
   protected readonly labelComputed = computed<string | null>(() => this.label() ?? this.inputConfig()?.label ?? null);
   protected readonly placeholderComputed = computed(() => this.placeholder() ?? this.inputConfig()?.placeholder ?? undefined);
   protected readonly inputTypeComputed = computed(() => {
+
     const type = this.inputType() ?? this.inputConfig()?.inputType;
-    if (type === AlfInputTypeEnum.Password && this.isPasswordVisible()) return 'text';
-    return this.resolveInputTypeAttr(type as AlfInputTypeEnum);
+    if (!type || (type === AlfInputTypeEnum.Password && this.isPasswordVisible())) return 'text';
+    return type;
   });
+
   protected readonly helperTextComputed = computed(() => this.helperText() ?? this.inputConfig()?.helperText);
   protected readonly appearanceComputed = computed(() => this.appearance() ?? this.inputConfig()?.appearance ?? AlfInputAppearanceEnum.Standard);
   protected readonly prefixComputed = computed(() => this.prefix() ?? this.inputConfig()?.prefix);
@@ -90,18 +93,6 @@ export class AlfInput extends AlfBaseDirectives implements ControlValueAccessor 
   protected readonly stepComputed = computed(() => this.step() ?? this.inputConfig()?.step);
   protected readonly autofocusComputed = computed(() => this.autofocus() ?? this.inputConfig()?.autofocus ?? false);
   protected readonly autocompleteComputed = computed(() => this.autocomplete() ?? this.inputConfig()?.autocomplete);
-  
-  protected getControlValue() { return this.value(); }
-  protected getControlType() { return this.inputTypeComputed(); }
-  protected getValidationLabel(key: string) { return getAlfInputLabel(key as keyof AlfInputI18nLabels); }
-  protected getControlConfig() { return this.inputConfig(); }
-  protected setControlValue(val: any): void {
-    this.value.set(val === null || val === undefined ? '' : String(val));
-  }
-  protected setControlDisabled(isDisabled: boolean): void {
-    this.internalDisabled.set(isDisabled);
-  }
-  
   protected readonly clearableComputed = computed(() => this.clearable() ?? this.inputConfig()?.clearable ?? false);
   protected readonly clearOnClickComputed = computed(() => this.clearOnClick() ?? this.inputConfig()?.clearOnClick ?? false);
   protected readonly showPasswordToggleComputed = computed(() => {
@@ -112,16 +103,15 @@ export class AlfInput extends AlfBaseDirectives implements ControlValueAccessor 
     (this.showCharCounter() && this.maxLength()) ||
     (this.inputConfig()?.showCharCounter && this.inputConfig()?.maxLength)
   );
-
   protected readonly disabledComputed = computed(() => this.disabled() || this.internalDisabled() || (this.inputConfig()?.disabled ?? false));
   protected readonly isReadonly = computed(() => this.readonly() ?? this.inputConfig()?.readonly ?? false);
-  
+
   protected readonly hasSuffix = computed(() =>
     this.suffix() ||
     this.inputConfig()?.suffix ||
     this.showPasswordToggleComputed() ||
-    this.showClear() ||
-    this.isLoading()
+    this.showPasswordToggleComputed() ||
+    this.showClear()
   );
 
   protected readonly hasContrastingLabel = computed(() => {
@@ -154,11 +144,10 @@ export class AlfInput extends AlfBaseDirectives implements ControlValueAccessor 
 
   // ── 7. Styling Computeds & Overrides ──────────────────────────────────────
   protected readonly generatedComponent = computed(() => {
-    const appearance = this.appearance() ?? AlfInputAppearanceEnum.Outline;
+    const appearance = this.appearanceComputed();
     const currentVariant = this.variant() ?? AlfColorVariantEnum.SecondaryOutline;
-   
-    console.log("currentVariant",currentVariant)
-    const ccc=  generatedComponentFunction(
+
+    const ccc = generatedComponentFunction(
       this.predefinedInputComponent(),
       appearance,
       currentVariant,
@@ -166,57 +155,61 @@ export class AlfInput extends AlfBaseDirectives implements ControlValueAccessor 
       (v: AlfColorVariantEnum) => this.create3dComponentSolidText(v),
       (v: AlfColorVariantEnum) => this.createSolidComponent(v)
     );
-    console.log("ccc",ccc)
     return ccc;
   });
 
   protected readonly finalPaddingComputed = computed(() => {
     const comp = this.generatedComponent();
-    return deepMergeStates(comp?.padding, this.padding());
+    return deepMergeStates(comp?.padding, this.paddingComputed());
   });
 
-  protected readonly errorColorComputed = computed(() => {
+  protected readonly colorComputed = computed(() => {
     const err = this.errorComputed();
     if (!err) return null;
     return this.inputConfig()?.border?.default?.borderColor ?? AlfColorEnum.Danger;
   });
 
-  protected readonly errorBorderComputed = computed(() => {
+  protected readonly inputBorderComputed = computed(() => {
     const comp = this.generatedComponent();
-    const baseBorder = deepMergeStates(comp?.border, this.border());
-    const errorColor = this.errorColorComputed();
-    return calculateErrorBorder(baseBorder, errorColor);
+    const baseBorder = deepMergeStates(comp?.border, this.borderComputed());
+    const color = this.colorComputed();
+    return calculateErrorBorder(baseBorder, color);
   });
 
-  protected readonly errorTextStyleComputed = computed(() => {
+  protected readonly inputTextStyleComputed = computed(() => {
     const comp = this.generatedComponent();
-    const baseTextStyle = deepMergeStates(comp?.textStyle, this.textStyle());
-    const errorColor = this.errorColorComputed();
-    return calculateErrorTextStyle(baseTextStyle, errorColor);
+    const baseTextStyle = deepMergeStates(comp?.textStyle, this.textStyleComputed());
+    const color = this.colorComputed();
+    return calculateErrorTextStyle(baseTextStyle, color);
   });
 
-  protected readonly errorBackgroundComputed = computed(() => {
+  protected readonly inputBackgroundComputed = computed(() => {
     const comp = this.generatedComponent();
-    const baseBackground = deepMergeStates(comp?.background, this.background());
+    const baseBackground = deepMergeStates(comp?.background, this.backgroundComputed());
     const hasError = !!this.errorComputed();
     return calculateErrorBackground(baseBackground, hasError);
   });
 
-  public override readonly borderComputed = computed(() => {
-    return deepMergeStates(this.generatedComponent()?.border, this.border());
-  });
 
-  public override readonly paddingComputed = computed(() => {
-    return deepMergeStates(this.generatedComponent()?.padding, this.padding());
-  });
-
-  public override readonly backgroundComputed = computed(() => {
-    return deepMergeStates(this.generatedComponent()?.background, this.background());
-  });
-
-  public override readonly textStyleComputed = computed(() => {
-    return deepMergeStates(this.generatedComponent()?.textStyle, this.textStyle());
-  });
+  // ── 7.1. ControlValueAccessor Implementation ──────────────────────────────────────────────
+  protected getControlValue = (): string => {
+    return this.value();
+  }
+  protected getControlType(): string {
+    return this.inputTypeComputed();
+  }
+  protected getValidationLabel(key: string) {
+    return getAlfInputLabel(key as keyof AlfInputI18nLabels);
+  }
+  protected getControlConfig() {
+    return this.inputConfig();
+  }
+  protected setControlValue(val: any): void {
+    this.value.set(val === null || val === undefined ? '' : String(val));
+  }
+  protected setControlDisabled(isDisabled: boolean): void {
+    this.internalDisabled.set(isDisabled);
+  }
 
   // ── 8. Constructor ────────────────────────────────────────────────────────
   constructor() {
@@ -280,8 +273,8 @@ export class AlfInput extends AlfBaseDirectives implements ControlValueAccessor 
    * Resuelve el atributo type HTML real para el elemento input nativo.
    * El tipo 'textarea' no es un type HTML válido, se trata como elemento separado.
    */
-  private resolveInputTypeAttr = (type?: AlfInputTypeEnum): string => {
-    if (!type) return 'text';
-    return type;
-  };
+  // private resolveInputTypeAttr = (type?: AlfInputTypeEnum): string => {
+  //   if (!type) return 'text';
+  //   return type;
+  // };
 }

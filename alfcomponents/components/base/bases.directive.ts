@@ -1,8 +1,8 @@
 import { AlfBorderStyleEnum, AlfColorEnum, AlfColorVariantEnum, AlfFontSizeEnum, AlfInputAppearanceEnum, AlfPxEnum, AlfRadiusEnum } from "@alfcomponents/enums";
-import { AlfBackgroundsInterface, AlfBackgroundsBaseInterface, AlfBorderInterface, AlfBorderBaseInterface, AlfOutlineInterface, AlfOutlineBaseInterface, AlfShadowsInterface, AlfShadowsBaseInterface, AlfMarginInterface, AlfMarginBaseInterface, AlfPaddingInterface, AlfPaddingBaseInterface, AlfTypographyInterface, AlfTypographyBaseInterface, AlfTextStyleInterface, AlfTextStyleStateBaseInterface, AlfTransformInterface, AlfTransformBaseInterface, AlfTransitionInterface, AlfTransitionBaseInterface, AlfDisplayAndLayoutInterface, AlfDisplayAndLayoutBaseInterface } from "@alfcomponents/interfaces";
+import { AlfBackgroundsInterface, AlfBackgroundsBaseInterface, AlfBorderInterface, AlfBorderBaseInterface, AlfOutlineInterface, AlfOutlineBaseInterface, AlfShadowsInterface, AlfShadowsBaseInterface, AlfMarginInterface, AlfMarginBaseInterface, AlfPaddingInterface, AlfPaddingBaseInterface, AlfTypographyInterface, AlfTypographyBaseInterface, AlfTextStyleInterface, AlfTextStyleStateBaseInterface, AlfTransformInterface, AlfTransformBaseInterface, AlfTransitionInterface, AlfTransitionBaseInterface, AlfDisplayAndLayoutInterface, AlfDisplayAndLayoutBaseInterface, AlfAnimateCssInterface } from "@alfcomponents/interfaces";
 import { AlfValidationResult, alfRequiredValidator, alfMinLengthValidator, alfMaxLengthValidator, alfMinValidator, alfMaxValidator, alfPatternValidator, alfEmailValidator } from '@alfcomponents/shared';
 import { interpolate } from '@alfcomponents/i18n/i18n-utils';
-import { computed, Directive, input, signal, untracked, output } from "@angular/core";
+import { computed, Directive, input, signal, untracked, output, inject, ElementRef, effect } from "@angular/core";
 import { ControlValueAccessor } from '@angular/forms';
 
 export enum AlfComponentTypeEnum {
@@ -34,10 +34,13 @@ export const deepMergeStates = (...configs: any[]): any => {
 
 @Directive()
 export abstract class AlfBaseDirectives implements ControlValueAccessor {
+    protected readonly el = inject(ElementRef<HTMLElement>);
+
     // ── 1. Inputs ─────────────────────────────────────────────────────────────
     public readonly variant = input<AlfColorVariantEnum>(undefined);
     public readonly disabled = input<boolean>(false);
     public readonly isLoading = input<boolean>(false);
+    public readonly isExiting = input<boolean>(false);
 
     public readonly background = input<AlfBackgroundsInterface | AlfBackgroundsBaseInterface | undefined>(undefined);
     public readonly border = input<AlfBorderInterface | AlfBorderBaseInterface | undefined>(undefined);
@@ -50,9 +53,10 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
     public readonly transform = input<AlfTransformInterface | AlfTransformBaseInterface | undefined>(undefined);
     public readonly transition = input<AlfTransitionInterface | AlfTransitionBaseInterface | undefined>(undefined);
     public readonly displayAndLayout = input<AlfDisplayAndLayoutInterface | AlfDisplayAndLayoutBaseInterface | undefined>(undefined);
+    public readonly animations = input<AlfAnimateCssInterface | undefined>(undefined);
 
     // Validation Inputs
-    public readonly required = input<boolean>(false);
+    public readonly required = input<boolean | undefined>(undefined);
     public readonly maxLength = input<number>();
     public readonly minLength = input<number>();
     public readonly min = input<number>();
@@ -83,18 +87,233 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
     private readonly _transform = signal<AlfTransformInterface | AlfTransformBaseInterface | undefined>(undefined, { equal: deepEqual });
     private readonly _transition = signal<AlfTransitionInterface | AlfTransitionBaseInterface | undefined>(undefined, { equal: deepEqual });
     private readonly _displayAndLayout = signal<AlfDisplayAndLayoutInterface | AlfDisplayAndLayoutBaseInterface | undefined>(undefined, { equal: deepEqual });
+    private readonly _animations = signal<AlfAnimateCssInterface | undefined>(undefined, { equal: deepEqual });
 
     // ── 4. Computed State ─────────────────────────────────────────────────────
-    public readonly backgroundComputed = computed(() => deepMergeStates(this._background(), this.background()));
-    public readonly borderComputed = computed(() => deepMergeStates(this._border(), this.border()));
-    public readonly outlineComputed = computed(() => deepMergeStates(this._outline(), this.outline()));
-    public readonly shadowsComputed = computed(() => deepMergeStates(this._shadows(), this.shadows()));
-    public readonly marginComputed = computed(() => deepMergeStates(this._margin(), this.margin()));
-    public readonly paddingComputed = computed(() => deepMergeStates(this._padding(), this.padding()));
-    public readonly typographyComputed = computed(() => deepMergeStates(this._typography(), this.typography()));
-    public readonly textStyleComputed = computed(() => deepMergeStates(this._textStyle(), this.textStyle()));
-    public readonly transformComputed = computed(() => deepMergeStates(this._transform(), this.transform()));
+    public readonly backgroundComputed = computed(() => deepMergeStates(this._background(), this.background(), this.getControlConfig()?.backgrounds));
+    public readonly borderComputed = computed(() => deepMergeStates(this._border(), this.border(), this.getControlConfig()?.border));
+    public readonly outlineComputed = computed(() => deepMergeStates(this._outline(), this.outline(), this.getControlConfig()?.outline));
+    public readonly shadowsComputed = computed(() => deepMergeStates(this._shadows(), this.shadows(), this.getControlConfig()?.shadows));
+    public readonly marginComputed = computed(() => deepMergeStates(this._margin(), this.margin(), this.getControlConfig()?.margin));
+    public readonly paddingComputed = computed(() => deepMergeStates(this._padding(), this.padding(), this.getControlConfig()?.padding));
+    public readonly typographyComputed = computed(() => deepMergeStates(this._typography(), this.typography(), this.getControlConfig()?.typography));
+    public readonly textStyleComputed = computed(() => deepMergeStates(this._textStyle(), this.textStyle(), this.getControlConfig()?.textStyle));
+    public readonly transformComputed = computed(() => deepMergeStates(this._transform(), this.transform(), this.getControlConfig()?.transform));
+    public readonly transitionComputed = computed(() => deepMergeStates(this._transition(), this.transition(), this.getControlConfig()?.transition));
+    public readonly animationsComputed = computed(() => {
+        const c1 = this._animations() || {};
+        const c2 = this.animations() || {};
+        const c3 = this.getControlConfig()?.animations || {};
+        const merged = { ...c1, ...c2, ...c3 };
+        return Object.keys(merged).length > 0 ? merged as AlfAnimateCssInterface : undefined;
+    });
+    public readonly displayAndLayoutComputed = computed(() => deepMergeStates(this._displayAndLayout(), this.displayAndLayout(), this.getControlConfig()?.displayAndLayout));
 
+    // ── Animations on Host ───────────────────────────────────────────────────
+    protected readonly resolvedStage = computed(() => {
+        const config = this.animationsComputed();
+        if (!config) return undefined;
+        return this.isExiting() ? config.exitStage : (config.enterStage || config.type);
+    });
+
+    protected readonly resolvedClasses = computed(() => {
+        const stage = this.resolvedStage();
+        if (!stage) return [];
+        
+        let stageStr = typeof stage === 'string' ? stage : (stage as any).name || (stage as any).type;
+        if (!stageStr || stageStr === 'none') return [];
+        
+        const classes = ['animate__animated'];
+        if (stageStr.includes('animate__')) {
+            classes.push(...stageStr.split(' ').filter((c: string) => c.trim()));
+        } else {
+            classes.push(`animate__${stageStr}`);
+        }
+        
+        const config = this.animationsComputed();
+        if (config?.infinite && !this.isExiting()) {
+            classes.push('animate__infinite');
+        }
+        
+        return Array.from(new Set(classes));
+    });
+
+    protected readonly resolvedDuration = computed(() => {
+        const stage = this.resolvedStage();
+        const config = this.animationsComputed();
+        if (stage && typeof stage !== 'string' && (stage as any).duration) return (stage as any).duration;
+        return config?.duration;
+    });
+
+    protected readonly resolvedDelay = computed(() => {
+        const stage = this.resolvedStage();
+        const config = this.animationsComputed();
+        if (this.isExiting()) return '0s';
+        if (stage && typeof stage !== 'string' && (stage as any).delay) return (stage as any).delay;
+        return config?.delay;
+    });
+
+    protected readonly resolvedIterationCount = computed(() => {
+        const stage = this.resolvedStage();
+        const config = this.animationsComputed();
+        if (stage && typeof stage !== 'string' && (stage as any).iterationCount) return (stage as any).iterationCount;
+        if (config?.infinite && !this.isExiting()) return 'infinite';
+        return config?.iterationCount;
+    });
+
+    protected readonly resolvedTimingFunction = computed(() => {
+        const stage = this.resolvedStage();
+        const config = this.animationsComputed();
+        if (stage && typeof stage !== 'string' && (stage as any).timingFunction) return (stage as any).timingFunction;
+        return config?.timingFunction;
+    });
+
+    protected readonly resolvedFillMode = computed(() => {
+        const stage = this.resolvedStage();
+        const config = this.animationsComputed();
+        if (stage && typeof stage !== 'string' && (stage as any).fillMode) return (stage as any).fillMode;
+        return config?.fillMode || 'both';
+    });
+
+    protected readonly resolvedDirection = computed(() => {
+        const stage = this.resolvedStage();
+        const config = this.animationsComputed();
+        if (stage && typeof stage !== 'string' && (stage as any).direction) return (stage as any).direction;
+        return config?.direction;
+    });
+
+    private previousAnimClasses: string[] = [];
+
+    private readonly _animationsEffect = effect(() => {
+        const el = this.el.nativeElement as HTMLElement;
+        const newClasses = this.resolvedClasses();
+        
+        this.previousAnimClasses.forEach(cls => {
+            if (!newClasses.includes(cls)) el.classList.remove(cls);
+        });
+        
+        newClasses.forEach(cls => {
+            if (!this.previousAnimClasses.includes(cls)) el.classList.add(cls);
+        });
+        
+        this.previousAnimClasses = [...newClasses];
+
+        const set = (prop: string, val: string | number | undefined) => {
+            if (val != null) el.style.setProperty(prop, String(val));
+            else el.style.removeProperty(prop);
+        };
+
+        set('--animate-duration', this.resolvedDuration());
+        set('--animate-delay', this.resolvedDelay());
+        set('--animate-repeat', this.resolvedIterationCount());
+        set('animation-timing-function', this.resolvedTimingFunction());
+        set('animation-fill-mode', this.resolvedFillMode());
+        set('animation-direction', this.resolvedDirection());
+    });
+
+    // ── Transitions on Host ───────────────────────────────────────────────────
+    private readonly _transitionEffect = effect(() => {
+        const tr = this.transitionComputed();
+        const p  = this.cssPrefix();
+        const el = this.el.nativeElement as HTMLElement;
+
+        if (!p) return;
+
+        // Limpiar propiedades previas
+        for (const sfx of ['', '-hover', '-active', '-focus', '-disabled']) {
+            for (const prop of ['duration', 'timing-function', 'delay', 'property']) {
+                el.style.removeProperty(`${p}-transition${sfx}-${prop}`);
+            }
+        }
+
+        if (!tr) return;
+
+        const set = (prop: string, val: any) => {
+            if (val != null) el.style.setProperty(prop, String(val));
+        };
+
+        const applyState = (state: AlfTransitionBaseInterface | undefined, sfx: string) => {
+            if (!state) return;
+            set(`${p}-transition${sfx}-duration`, state.duration);
+            set(`${p}-transition${sfx}-timing-function`, state.timingFunction);
+            set(`${p}-transition${sfx}-delay`, state.delay);
+            set(`${p}-transition${sfx}-property`, state.property);
+        };
+
+        applyState(tr.default,  '');
+        applyState(tr.hover,    '-hover');
+        applyState(tr.active,   '-active');
+        applyState(tr.focus,    '-focus');
+        applyState(tr.disabled, '-disabled');
+    });
+
+    // ── Display & Layout on Host ──────────────────────────────────────────────
+    private readonly LAYOUT_PROPS = [
+        'display', 'position', 'top', 'right', 'bottom', 'left', 'z-index', 'box-sizing',
+        'width', 'height', 'min-width', 'max-width', 'min-height', 'max-height',
+        'overflow', 'overflow-x', 'overflow-y', 'visibility', 'object-fit',
+        'flex-direction', 'justify-content', 'align-items', 'gap', 'flex-wrap',
+        'opacity', 'pointer-events', 'cursor',
+    ] as const;
+
+    private readonly STATES = ['', '-hover', '-active', '-focus', '-disabled'] as const;
+
+    private readonly _displayAndLayoutEffect = effect(() => {
+        const dl = this.displayAndLayoutComputed();
+        const p  = this.cssPrefix();
+        const el = this.el.nativeElement as HTMLElement;
+
+        if (!p) return;
+
+        for (const sfx of this.STATES) {
+            for (const prop of this.LAYOUT_PROPS) {
+                el.style.removeProperty(`${p}-layout${sfx}-${prop}`);
+            }
+        }
+
+        if (!dl) return;
+
+        const set = (prop: string, val: any) => {
+            if (val != null) el.style.setProperty(prop, String(val));
+        };
+
+        const applyState = (state: any, sfx: string) => {
+            if (!state) return;
+            set(`${p}-layout${sfx}-display`,         state.display);
+            set(`${p}-layout${sfx}-position`,        state.position);
+            set(`${p}-layout${sfx}-top`,             state.top);
+            set(`${p}-layout${sfx}-right`,           state.right);
+            set(`${p}-layout${sfx}-bottom`,          state.bottom);
+            set(`${p}-layout${sfx}-left`,            state.left);
+            set(`${p}-layout${sfx}-z-index`,         state.zIndex);
+            set(`${p}-layout${sfx}-box-sizing`,      state.boxSizing);
+            set(`${p}-layout${sfx}-width`,           state.width);
+            set(`${p}-layout${sfx}-height`,          state.height);
+            set(`${p}-layout${sfx}-min-width`,       state.minWidth);
+            set(`${p}-layout${sfx}-max-width`,       state.maxWidth);
+            set(`${p}-layout${sfx}-min-height`,      state.minHeight);
+            set(`${p}-layout${sfx}-max-height`,      state.maxHeight);
+            set(`${p}-layout${sfx}-overflow`,        state.overflow);
+            set(`${p}-layout${sfx}-overflow-x`,      state.overflowX);
+            set(`${p}-layout${sfx}-overflow-y`,      state.overflowY);
+            set(`${p}-layout${sfx}-visibility`,      state.visibility);
+            set(`${p}-layout${sfx}-object-fit`,      state.objectFit);
+            set(`${p}-layout${sfx}-flex-direction`,  state.flexDirection);
+            set(`${p}-layout${sfx}-justify-content`, state.justifyContent);
+            set(`${p}-layout${sfx}-align-items`,     state.alignItems);
+            set(`${p}-layout${sfx}-gap`,             state.gap);
+            set(`${p}-layout${sfx}-flex-wrap`,       state.flexWrap);
+            set(`${p}-layout${sfx}-opacity`,         state.opacity);
+            set(`${p}-layout${sfx}-pointer-events`,  state.pointerEvents);
+            set(`${p}-layout${sfx}-cursor`,          state.cursor);
+        };
+
+        applyState(dl.default,  '');
+        applyState(dl.hover,    '-hover');
+        applyState(dl.active,   '-active');
+        applyState(dl.focus,    '-focus');
+        applyState(dl.disabled, '-disabled');
+    });
     // ── 4. Abstract Methods for Validation & CVA ───────────────────────────────
     protected abstract getControlValue(): any;
     protected abstract getControlType(): string | undefined;
@@ -223,6 +442,7 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
     protected getInternalTransform() { return untracked(() => this._transform()); }
     protected getInternalTransition() { return untracked(() => this._transition()); }
     protected getInternalDisplayAndLayout() { return untracked(() => this._displayAndLayout()); }
+    protected getInternalAnimations() { return untracked(() => this._animations()); }
 
     protected setBackground(value: AlfBackgroundsInterface | AlfBackgroundsBaseInterface) { this._background.set(value); }
     protected setBorder(value: AlfBorderInterface | AlfBorderBaseInterface) { this._border.set(value); }
@@ -235,6 +455,7 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
     protected setTransform(value: AlfTransformInterface | AlfTransformBaseInterface) { this._transform.set(value); }
     protected setTransition(value: AlfTransitionInterface | AlfTransitionBaseInterface) { this._transition.set(value); }
     protected setDisplayAndLayout(value: AlfDisplayAndLayoutInterface | AlfDisplayAndLayoutBaseInterface) { this._displayAndLayout.set(value); }
+    protected setAnimations(value: AlfAnimateCssInterface) { this._animations.set(value); }
 
     // ── 7. Component Generation Factories ─────────────────────────────────────
     protected predefinedInputComponent = () => {

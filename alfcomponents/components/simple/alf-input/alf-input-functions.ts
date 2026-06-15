@@ -9,7 +9,6 @@ import { AlfPaddingInterface, AlfBorderInterface, AlfTextStyleInterface, AlfBack
 import { AlfValidationResult } from '@alfcomponents/shared';
 import { getAlfInputLabel, AlfInputI18nLabels } from './i18n/alf-input.i18n';
 import { interpolate } from '@alfcomponents/i18n/i18n-utils';
-import { deepMergeStates } from '@alfcomponents/components/base/bases.directive';
 
 export interface InputColorVariants {
     padding: AlfPaddingInterface;
