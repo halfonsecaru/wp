@@ -36,7 +36,7 @@
 
   // --- 3. ESTADOS ---
   &--loading {
-    cursor: wait !important;
+    pointer-events: none;
   }
 
   // --- 4. ELEMENTOS INTERNOS ---

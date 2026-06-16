@@ -83,6 +83,7 @@
               <span class="btn-variant-badge btn-variant-badge--{{ variant }}">{{ variant }}</span>
               <alf-button 
                 [variant]="variant" 
+                [elevated]="true"
                 [label]="variant" />
             </div>
           }
@@ -229,11 +230,11 @@
           <div class="btn-demo-row" style="gap: 1.5rem; margin-top: 1rem;">
             <div class="btn-demo-item">
               <span class="btn-demo-label">Bloqueado (Disabled)</span>
-              <alf-button [variant]="AlfColorVariantEnum.Primary" label="Bloqueado" [isDisabled]="true" />
+              <alf-button [variant]="AlfColorVariantEnum.Primary" label="Bloqueado" [disabled]="true" />
             </div>
             <div class="btn-demo-item">
               <span class="btn-demo-label">Bloqueado Soft</span>
-              <alf-button [variant]="AlfColorVariantEnum.PrimarySoft" label="Bloqueado Soft" [isDisabled]="true" />
+              <alf-button [variant]="AlfColorVariantEnum.PrimarySoft" label="Bloqueado Soft" [disabled]="true" />
             </div>
           </div>
         </div>
@@ -272,8 +273,54 @@
         </div>
       </div>
     </div>
+    <!-- 13. COMPORTAMIENTOS EXTRA (TOOLTIPS, LINKS, RIPPLE, ANIMATIONS) -->
+    <div class="btn-card btn-card--wide">
+      <h2 class="btn-card__title">
+        <span class="btn-card__dot btn-card__dot--purple"></span>
+        Comportamientos Extra y Directivas
+      </h2>
+      <div class="btn-card__body">
+        <div class="btn-demo-grid-4">
+          <!-- Botón Enlace -->
+          <div class="btn-demo-item">
+            <span class="btn-demo-label">Botón Enlace (&lt;a&gt;)</span>
+            <alf-button 
+              [variant]="AlfColorVariantEnum.Primary" 
+              [link]="{ url: '#', target: '_self' }"
+              label="Ir a Google" />
+          </div>
 
-    <!-- 13. ESTADO REACTIVO -->
+          <!-- Tooltip -->
+          <div class="btn-demo-item">
+            <span class="btn-demo-label">Con Tooltip Nativo</span>
+            <alf-button 
+              [variant]="AlfColorVariantEnum.SecondarySoft" 
+              [tooltip]="'Soy un tooltip interactivo nativo'"
+              label="Pasa el ratón" />
+          </div>
+
+          <!-- Sin Ripple -->
+          <div class="btn-demo-item">
+            <span class="btn-demo-label">Sin Efecto Ripple</span>
+            <alf-button 
+              [variant]="AlfColorVariantEnum.Danger" 
+              [ripple]="false"
+              label="Click sin onda" />
+          </div>
+
+          <!-- Animaciones -->
+          <div class="btn-demo-item">
+            <span class="btn-demo-label">Animación Infinita</span>
+            <alf-button 
+              [variant]="AlfColorVariantEnum.Warning" 
+              [animations]="{ enterStage: 'pulse', infinite: true, duration: '2s' }"
+              label="Mírame pulsar" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 14. ESTADO REACTIVO -->
     <div class="btn-card btn-card--wide btn-card--terminal">
       <h2 class="btn-card__title btn-card__title--light">
         <span class="btn-terminal-dot btn-terminal-dot--red"></span>

@@ -140,7 +140,7 @@ export class AlfPlayground {
   
   public readonly animEnterStage = signal<string | undefined>(undefined);
   public readonly animExitStage = signal<string | undefined>(undefined);
-  public readonly animDuration = signal<string | undefined>(undefined);
+  public readonly animDuration = signal<string | undefined>('400ms');
   public readonly animDelay = signal<string | undefined>(undefined);
   public readonly animIteration = signal<string | undefined>(undefined);
   public readonly animInfinite = signal<boolean>(false);
@@ -165,6 +165,13 @@ export class AlfPlayground {
   public readonly inputBehaviorShowPwdToggle = signal<boolean>(false);
   public readonly inputBehaviorMaxLength = signal<string>('');
   public readonly inputBehaviorShowCharCounter = signal<boolean>(false);
+
+  // ── Button Behavior Signals ───────────────────────────────────────────────
+  public readonly buttonBehaviorIconLeft = signal<string>('');
+  public readonly buttonBehaviorIconRight = signal<string>('');
+  public readonly buttonBehaviorType = signal<string>('');
+  public readonly buttonBehaviorPredefined = signal<string>('');
+  public readonly buttonBehaviorElevated = signal<boolean>(false);
 
   // Missing properties
   public readonly inputBehaviorStep = signal<string>('');
@@ -238,33 +245,67 @@ export class AlfPlayground {
     return cfg;
   });
 
+  public readonly buttonBehaviorConfig = computed<import('@alfcomponents/components').AlfButtonInterface>(() => {
+    const iconLeft = this.buttonBehaviorIconLeft();
+    const iconRight = this.buttonBehaviorIconRight();
+    const type = this.buttonBehaviorType();
+    const predefined = this.buttonBehaviorPredefined();
+
+    return {
+      iconLeft: iconLeft || undefined,
+      iconRight: iconRight || undefined,
+      type: (type || undefined) as import('@alfcomponents/enums').AlfButtonTypeEnum,
+      predefined: (predefined || undefined) as any
+    };
+  });
+
   private parseDuration(duration: string | undefined): number {
-    if (!duration) return 1000;
+    if (!duration) return 400;
     if (duration.endsWith('ms')) return parseInt(duration, 10);
     if (duration.endsWith('s')) return parseFloat(duration) * 1000;
-    return 1000;
+    return 400;
   }
 
   public readonly playAnimation = (): void => {
-    // 1. Limpiar cualquier animación previa
+    // 1. Desactivar animación limpiando las clases
     this.forceNoAnimation.set(true);
-    
     const dur = this.parseDuration(this.animDuration());
+    const hasExit = !!this.animExitStage();
+    const hasEnter = !!this.animEnterStage();
 
+    if (!hasExit && !hasEnter) {
+      this.forceNoAnimation.set(false);
+      return;
+    }
+
+    // Pequeño delay para que Angular procese forceNoAnimation=true en el DOM
     setTimeout(() => {
-      // 2. Activar animación de SALIDA primero
-      this.isExiting.set(true);
       this.forceNoAnimation.set(false);
 
-      setTimeout(() => {
-        // 3. Activar animación de ENTRADA después
-        this.isExiting.set(false);
-
+      if (hasExit && hasEnter) {
+        this.isExiting.set(true); // Arranca salida
         setTimeout(() => {
-          // 4. Volver al estado normal (limpiar animaciones para que no salte)
+          // Limpiar clases un instante
+          this.forceNoAnimation.set(true);
+          setTimeout(() => {
+            this.isExiting.set(false); // Arranca entrada
+            this.forceNoAnimation.set(false);
+            setTimeout(() => this.forceNoAnimation.set(true), dur);
+          }, 20);
+        }, dur);
+      } else if (hasExit && !hasEnter) {
+        this.isExiting.set(true);
+        setTimeout(() => {
+          this.forceNoAnimation.set(true);
+          this.isExiting.set(false);
+        }, dur);
+      } else if (!hasExit && hasEnter) {
+        this.isExiting.set(false);
+        setTimeout(() => {
           this.forceNoAnimation.set(true);
         }, dur);
-      }, dur);
+      }
+
     }, 20);
   };
 
@@ -449,6 +490,12 @@ export class AlfPlayground {
     this.forceNoAnimation.set(false);
   };
 
+  public readonly onPredefinedChange = (event: Event): void => {
+    this.buttonBehaviorPredefined.set((event.target as HTMLSelectElement).value);
+    this.compLabel.set('');
+    this.forceNoAnimation.set(false);
+  };
+
   public readonly onInputChange = (sig: ReturnType<typeof signal<string>>, event: Event): void => {
     sig.set((event.target as HTMLInputElement).value);
     this.forceNoAnimation.set(false);
@@ -482,13 +529,21 @@ export class AlfPlayground {
     this.compSize.set(undefined);
     this.compDisabled.set(false);
     this.compIsLoading.set(false);
-    this.compLabel.set('Preview');
+
+    if (this.selectedComponentId() === 'alf-button') {
+      this.compLabel.set('');
+      this.buttonBehaviorPredefined.set('save');
+    } else {
+      this.compLabel.set('Preview');
+      this.buttonBehaviorPredefined.set('');
+    }
+
     this.propTabIndex.set(0);
     this.stateTabIndex.set(0);
 
     this.animEnterStage.set(undefined);
     this.animExitStage.set(undefined);
-    this.animDuration.set(undefined);
+    this.animDuration.set('400ms');
     this.animDelay.set(undefined);
     this.animIteration.set(undefined);
     this.animInfinite.set(false);
@@ -498,7 +553,7 @@ export class AlfPlayground {
     this.inputBehaviorPlaceholder.set('');
     this.inputBehaviorHelperText.set('');
     this.inputBehaviorError.set('');
-    this.inputBehaviorAppearance.set('');
+    this.inputBehaviorAppearance.set(AlfInputAppearanceEnum.Outline);
     this.inputBehaviorType.set('');
     this.inputBehaviorPrefix.set('');
     this.inputBehaviorSuffix.set('');

@@ -34,11 +34,13 @@
           @if (showPreview()) {
             @if (selectedComponentId() === 'alf-button') {
             <alf-button
+              [config]="buttonBehaviorConfig()"
               [label]="compLabel()"
               [variant]="compVariant()"
               [size]="compSize()"
-              [isDisabled]="compDisabled()"
+              [disabled]="compDisabled()"
               [isLoading]="compIsLoading()"
+              [elevated]="buttonBehaviorElevated()"
               [background]="backgroundConfig()"
               [border]="borderConfig()"
               [outline]="outlineConfig()"
@@ -59,7 +61,7 @@
               [label]="compLabel()"
               [variant]="compVariant()"
               [size]="compSize()"
-              [isDisabled]="compDisabled()"
+              [disabled]="compDisabled()"
               [isLoading]="compIsLoading()"
               [background]="backgroundConfig()"
               [border]="borderConfig()"
@@ -108,7 +110,7 @@
 
         <!-- Quick settings row -->
         <div class="pg-quick-row">
-          @if (selectedComponentId() !== 'alf-input') {
+          @if (selectedComponentId() !== 'alf-input' && selectedComponentId() !== 'alf-button') {
             <div class="pg-field pg-field--inline">
               <label class="pg-field__label" for="pg-label-input">Label</label>
               <input id="pg-label-input" type="text" class="pg-input" [value]="compLabel()" (input)="onInputChange(compLabel, $event)" />
@@ -164,6 +166,73 @@
     <div class="pg-controls-panel">
       <!-- MAIN TABS FOR PROPERTIES -->
       <alf-tabs-container [(activeIndex)]="propTabIndex" [colorVariant]="AlfColorVariantEnum.PrimaryOutline">
+
+        <!-- TAB: Behavior (AlfButton only) -->
+        @if (selectedComponentId() === 'alf-button') {
+          <alf-tab label="⚙️ Behavior">
+            <div class="pg-controls-content">
+              <div class="pg-fields">
+                <div class="pg-field">
+                  <label class="pg-field__label" for="pg-btn-label">label</label>
+                  <span class="pg-field__desc">Texto principal que da título al botón</span>
+                  <input id="pg-btn-label" type="text" class="pg-input" [value]="compLabel()" (input)="onInputChange(compLabel, $event)" placeholder="Ej: Click Me" />
+                </div>
+
+                <div class="pg-field">
+                  <label class="pg-field__label" for="pg-btn-type">type</label>
+                  <span class="pg-field__desc">Tipo nativo del botón</span>
+                  <select id="pg-btn-type" class="pg-select" [value]="buttonBehaviorType()" (change)="onSelectChange(buttonBehaviorType, $event)">
+                    <option value="">— default (button) —</option>
+                    <option value="submit">submit</option>
+                    <option value="reset">reset</option>
+                    <option value="button">button</option>
+                  </select>
+                </div>
+
+                <div class="pg-field">
+                  <label class="pg-field__label" for="pg-btn-iconleft">iconLeft</label>
+                  <span class="pg-field__desc">Icono a la izquierda del texto</span>
+                  <select id="pg-btn-iconleft" class="pg-select" [value]="buttonBehaviorIconLeft()" (change)="onSelectChange(buttonBehaviorIconLeft, $event)">
+                    <option value="">— none —</option>
+                    @for (a of adornmentOptions; track a.key) {
+                      <option [value]="a.value">{{ a.key }} &nbsp; {{ a.value }}</option>
+                    }
+                  </select>
+                </div>
+
+                <div class="pg-field">
+                  <label class="pg-field__label" for="pg-btn-iconright">iconRight</label>
+                  <span class="pg-field__desc">Icono a la derecha del texto</span>
+                  <select id="pg-btn-iconright" class="pg-select" [value]="buttonBehaviorIconRight()" (change)="onSelectChange(buttonBehaviorIconRight, $event)">
+                    <option value="">— none —</option>
+                    @for (a of adornmentOptions; track a.key) {
+                      <option [value]="a.value">{{ a.key }} &nbsp; {{ a.value }}</option>
+                    }
+                  </select>
+                </div>
+
+                <div class="pg-field">
+                  <label class="pg-field__label" for="pg-btn-predefined">predefined</label>
+                  <span class="pg-field__desc">Texto automático vía diccionario i18n</span>
+                  <select id="pg-btn-predefined" class="pg-select" [value]="buttonBehaviorPredefined()" (change)="onPredefinedChange($event)">
+                    <option value="">— none —</option>
+                    <option value="save">save (Guardar)</option>
+                    <option value="cancel">cancel (Cancelar)</option>
+                    <option value="delete">delete (Eliminar)</option>
+                    <option value="edit">edit (Editar)</option>
+                  </select>
+                </div>
+
+                <div class="pg-field pg-field--checkbox">
+                  <label class="pg-checkbox-label">
+                    <input type="checkbox" [checked]="buttonBehaviorElevated()" (change)="onCheckboxChange(buttonBehaviorElevated, $event)" />
+                    <span class="pg-checkbox-text">elevated (Sombra 3D coloreada)</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </alf-tab>
+        }
 
         <!-- TAB: Behavior (AlfInput only) -->
         @if (selectedComponentId() === 'alf-input') {
@@ -614,39 +683,49 @@
           <div class="pg-controls-content">
             <div class="pg-fields">
               <div class="pg-field">
-                <label class="pg-field__label">enterStage (animation)</label>
-                <select class="pg-select" [value]="animEnterStage() || ''" (change)="onSelectChange(animEnterStage, $event)">
+                <label class="pg-field__label" for="pg-anim-enter">enterStage</label>
+                <span class="pg-field__desc">Animación al renderizarse por primera vez</span>
+                <select id="pg-anim-enter" class="pg-select" [value]="animEnterStage() || ''" (change)="onSelectChange(animEnterStage, $event)">
                   <option value="">— none —</option>
                   @for (a of animationOptions; track a.key) {
                     <option [value]="a.value">{{ a.key }}</option>
                   }
                 </select>
               </div>
+
               <div class="pg-field">
-                <label class="pg-field__label">exitStage (animation)</label>
-                <select class="pg-select" [value]="animExitStage() || ''" (change)="onSelectChange(animExitStage, $event)">
+                <label class="pg-field__label" for="pg-anim-exit">exitStage</label>
+                <span class="pg-field__desc">Animación al destruirse (requiere [isExiting]="true")</span>
+                <select id="pg-anim-exit" class="pg-select" [value]="animExitStage() || ''" (change)="onSelectChange(animExitStage, $event)">
                   <option value="">— none —</option>
                   @for (a of animationOptions; track a.key) {
                     <option [value]="a.value">{{ a.key }}</option>
                   }
                 </select>
               </div>
+
               <div class="pg-field">
-                <label class="pg-field__label">duration</label>
-                <input type="text" class="pg-input" [value]="animDuration() || ''" (input)="onInputChange(animDuration, $event)" placeholder="e.g. 1s" />
+                <label class="pg-field__label" for="pg-anim-duration">duration</label>
+                <span class="pg-field__desc">Tiempo total de la animación (ej: 1s, 500ms)</span>
+                <input id="pg-anim-duration" type="text" class="pg-input" [value]="animDuration() || ''" (input)="onInputChange(animDuration, $event)" placeholder="e.g. 1s" />
               </div>
+
               <div class="pg-field">
-                <label class="pg-field__label">delay</label>
-                <input type="text" class="pg-input" [value]="animDelay() || ''" (input)="onInputChange(animDelay, $event)" placeholder="e.g. 200ms" />
+                <label class="pg-field__label" for="pg-anim-delay">delay</label>
+                <span class="pg-field__desc">Retraso antes de que empiece a animar</span>
+                <input id="pg-anim-delay" type="text" class="pg-input" [value]="animDelay() || ''" (input)="onInputChange(animDelay, $event)" placeholder="e.g. 200ms" />
               </div>
+
               <div class="pg-field">
-                <label class="pg-field__label">iterationCount</label>
-                <input type="number" class="pg-input" [value]="animIteration() || ''" (input)="onInputChange(animIteration, $event)" placeholder="e.g. 3" />
+                <label class="pg-field__label" for="pg-anim-iteration">iterationCount</label>
+                <span class="pg-field__desc">Número de veces que se repite la animación</span>
+                <input id="pg-anim-iteration" type="number" class="pg-input" [value]="animIteration() || ''" (input)="onInputChange(animIteration, $event)" placeholder="e.g. 3" />
               </div>
-              <div class="pg-field">
-                <label class="pg-field__label">
+
+              <div class="pg-field pg-field--checkbox">
+                <label class="pg-checkbox-label">
                   <input type="checkbox" [checked]="animInfinite()" (change)="onCheckboxChange(animInfinite, $event)" />
-                  infinite
+                  <span class="pg-checkbox-text">infinite (Repetir en bucle infinito)</span>
                 </label>
               </div>
             </div>

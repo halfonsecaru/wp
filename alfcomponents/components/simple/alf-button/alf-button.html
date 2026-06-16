@@ -2,7 +2,7 @@
 @let bd = borderComputed();
 @let ot = outlineComputed();
 @let sd = shadowsComputed();
-@let an = animations();
+@let an = animationsComputed();
 @let mg = marginComputed();
 @let pd = paddingComputed();
 @let ty = typographyComputed();
@@ -15,11 +15,11 @@
 @let tt = tooltip();
 @let rp = ripple();
 @let cr = cursor();
-@let ds = isDisabled();
+@let ds = disabledComputed();
 @let ie = isExiting();
 @let cc = customClass();
 @let cs = customStyle();
-@let bid = buttonId();
+@let bid = idComputed();
 
 @let ld = isLoading() || inputConfig()?.loading;
 @let bt = typeComputed();

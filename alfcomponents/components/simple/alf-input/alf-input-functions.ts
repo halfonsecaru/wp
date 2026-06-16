@@ -5,7 +5,7 @@ import {
     AlfRadiusEnum,
     AlfColorEnum
 } from "@alfcomponents/enums";
-import { AlfPaddingInterface, AlfBorderInterface, AlfTextStyleInterface, AlfBackgroundsInterface } from "@alfcomponents/interfaces";
+import { AlfPaddingInterface, AlfBorderInterface, AlfTextStyleInterface, AlfBackgroundsInterface, AlfShadowsInterface } from "@alfcomponents/interfaces";
 import { AlfValidationResult } from '@alfcomponents/shared';
 import { getAlfInputLabel, AlfInputI18nLabels } from './i18n/alf-input.i18n';
 import { interpolate } from '@alfcomponents/i18n/i18n-utils';
@@ -15,6 +15,7 @@ export interface InputColorVariants {
     border: AlfBorderInterface;
     textStyle: AlfTextStyleInterface;
     background: AlfBackgroundsInterface;
+    shadows?: AlfShadowsInterface;
 }
 
 export const generatedComponentFunction = (

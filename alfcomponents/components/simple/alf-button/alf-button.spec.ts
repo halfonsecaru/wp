@@ -125,7 +125,7 @@ describe('AlfButton', () => {
   });
 
   it('maneja el estado de carga (loading) sin destruir el contenido', () => {
-    fixture.componentRef.setInput('loading', true);
+    fixture.componentRef.setInput('isLoading', true);
     fixture.detectChanges();
 
     const contentEl = fixture.debugElement.query(By.css('.alf-button__content'));
@@ -136,7 +136,7 @@ describe('AlfButton', () => {
     expect(loaderEl).toBeTruthy();
     expect(spinnerEl).toBeTruthy();
 
-    fixture.componentRef.setInput('loading', false);
+    fixture.componentRef.setInput('isLoading', false);
     fixture.detectChanges();
 
     const loaderElAfter = fixture.debugElement.query(By.css('.alf-button__loader-overlay'));

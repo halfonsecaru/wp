@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  effect,
   ElementRef,
   forwardRef,
   input,
@@ -14,6 +13,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
   generateUniqueId,
+  visualprefixEnum,
 } from '@alfcomponents/shared';
 import { AlfInputTypeEnum, AlfInputAppearanceEnum, AlfInputAdornmentEnum, AlfColorEnum, AlfRemEnum, AlfColorVariantEnum } from '@alfcomponents/enums';
 import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
@@ -39,7 +39,7 @@ import { generatedComponentFunction, calculateErrorBorder, calculateErrorTextSty
   ],
   host: {}
 })
-export class AlfInput extends AlfBaseDirectives implements ControlValueAccessor {
+export class AlfInput extends AlfBaseDirectives {
   // ── 1. Constants & View Queries ───────────────────────────────────────────
   protected readonly AlfRemEnum = AlfRemEnum;
   private readonly inputElement = viewChild<ElementRef<HTMLInputElement | HTMLTextAreaElement>>('inputRef');
@@ -70,9 +70,9 @@ export class AlfInput extends AlfBaseDirectives implements ControlValueAccessor 
   public readonly onClear = output<void>();
 
   // ── 4. Internal State (Signals & Variables) ───────────────────────────────
-  protected readonly internalId: string = generateUniqueId({ prefix: this.baseCssClass() });
+  protected readonly internalId: string = generateUniqueId({ prefix: visualprefixEnum.Input });
   protected readonly isPasswordVisible = signal<boolean>(false);
-  protected readonly internalDisabled = signal<boolean>(false);
+  private readonly _disabled = signal<boolean>(false);
   private debounceTimerId: any = null;
 
   // ── 5. Computed State (Derived from Inputs & State) ───────────────────────
@@ -103,7 +103,7 @@ export class AlfInput extends AlfBaseDirectives implements ControlValueAccessor 
     (this.showCharCounter() && this.maxLength()) ||
     (this.inputConfig()?.showCharCounter && this.inputConfig()?.maxLength)
   );
-  protected readonly disabledComputed = computed(() => this.disabled() || this.internalDisabled() || (this.inputConfig()?.disabled ?? false));
+  protected readonly disabledComputed = computed(() => this.disabled() || this._disabled() || (this.inputConfig()?.disabled ?? false));
   protected readonly isReadonly = computed(() => this.readonly() ?? this.inputConfig()?.readonly ?? false);
 
   protected readonly hasSuffix = computed(() =>
@@ -136,13 +136,12 @@ export class AlfInput extends AlfBaseDirectives implements ControlValueAccessor 
       !this.isLoading();
   });
 
-  // ── 6. i18n Labels ────────────────────────────────────────────────────────
   protected readonly clearLabel = computed(() => getAlfInputLabel('clearAriaLabel'));
   protected readonly showPwdLabel = computed(() => getAlfInputLabel('showPassword'));
   protected readonly hidePwdLabel = computed(() => getAlfInputLabel('hidePassword'));
   protected readonly loadingLabel = computed(() => getAlfInputLabel('loading'));
 
-  // ── 7. Styling Computeds & Overrides ──────────────────────────────────────
+  // ── 6. Styling Computeds & Overrides ──────────────────────────────────────
   protected readonly generatedComponent = computed(() => {
     const appearance = this.appearanceComputed();
     const currentVariant = this.variant() ?? AlfColorVariantEnum.SecondaryOutline;
@@ -161,6 +160,11 @@ export class AlfInput extends AlfBaseDirectives implements ControlValueAccessor 
   protected readonly finalPaddingComputed = computed(() => {
     const comp = this.generatedComponent();
     return deepMergeStates(comp?.padding, this.paddingComputed());
+  });
+
+  protected readonly inputShadowsComputed = computed(() => {
+    const comp = this.generatedComponent();
+    return deepMergeStates(comp?.shadows, this.shadowsComputed());
   });
 
   protected readonly colorComputed = computed(() => {
@@ -191,24 +195,51 @@ export class AlfInput extends AlfBaseDirectives implements ControlValueAccessor 
   });
 
 
-  // ── 7.1. ControlValueAccessor Implementation ──────────────────────────────────────────────
+  // ── 7 ControlValueAccessor Implementation ──────────────────────────────────────────────
+  /**
+   * Getter interno para que el motor base (ej. validadores) sepa qué valor tiene el input actualmente.
+   */
   protected getControlValue = (): string => {
     return this.value();
   }
+
+  /**
+   * Define el tipo de control para el engine base (útil si la clase base hace switch de lógicas por tipo de input).
+   */
   protected getControlType(): string {
     return this.inputTypeComputed();
   }
+
+  /**
+   * Conecta el motor base de validaciones con el diccionario de i18n
+   * para devolver los mensajes de error traducidos según el idioma actual.
+   */
   protected getValidationLabel(key: string) {
     return getAlfInputLabel(key as keyof AlfInputI18nLabels);
   }
+
+  /**
+   * Obtiene la configuración manual del usuario. En el caso del input,
+   * la fusión visual (deepMerge) se hace a nivel de propiedad por propiedad en computeds individuales.
+   */
   protected getControlConfig() {
     return this.inputConfig();
   }
+
+  /**
+   * Implementación del patrón ControlValueAccessor (Reactive Forms / ngModel).
+   * Se ejecuta cuando el formulario inyecta un valor (ej. form.patchValue).
+   */
   protected setControlValue(val: any): void {
     this.value.set(val === null || val === undefined ? '' : String(val));
   }
+
+  /**
+   * Implementación del patrón ControlValueAccessor.
+   * Se ejecuta automáticamente cuando el formGroup deshabilita o habilita el control.
+   */
   protected setControlDisabled(isDisabled: boolean): void {
-    this.internalDisabled.set(isDisabled);
+    this._disabled.set(isDisabled);
   }
 
   // ── 8. Constructor ────────────────────────────────────────────────────────
@@ -268,13 +299,5 @@ export class AlfInput extends AlfBaseDirectives implements ControlValueAccessor 
     this.isPasswordVisible.update(v => !v);
   };
 
-  // ── 10. Private Helpers ───────────────────────────────────────────────────
-  /**
-   * Resuelve el atributo type HTML real para el elemento input nativo.
-   * El tipo 'textarea' no es un type HTML válido, se trata como elemento separado.
-   */
-  // private resolveInputTypeAttr = (type?: AlfInputTypeEnum): string => {
-  //   if (!type) return 'text';
-  //   return type;
-  // };
+
 }

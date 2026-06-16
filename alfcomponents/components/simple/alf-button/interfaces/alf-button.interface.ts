@@ -33,6 +33,7 @@ export interface AlfButtonInterface extends AlfBaseCommonConfigInterface {
   readonly colorVariant?: AlfColorVariantEnum;
   readonly link?: ButtonLink;
   readonly debounceTime?: number;
+  readonly predefined?: keyof import('../i18n/alf-button.i18n').AlfButtonI18nLabels;
   
   // Iconos
   readonly iconLeft?: string | AlfIconsUnicodeIconEnum;

@@ -1,9 +1,10 @@
-import { AlfBorderStyleEnum, AlfColorEnum, AlfColorVariantEnum, AlfFontSizeEnum, AlfInputAppearanceEnum, AlfPxEnum, AlfRadiusEnum } from "@alfcomponents/enums";
-import { AlfBackgroundsInterface, AlfBackgroundsBaseInterface, AlfBorderInterface, AlfBorderBaseInterface, AlfOutlineInterface, AlfOutlineBaseInterface, AlfShadowsInterface, AlfShadowsBaseInterface, AlfMarginInterface, AlfMarginBaseInterface, AlfPaddingInterface, AlfPaddingBaseInterface, AlfTypographyInterface, AlfTypographyBaseInterface, AlfTextStyleInterface, AlfTextStyleStateBaseInterface, AlfTransformInterface, AlfTransformBaseInterface, AlfTransitionInterface, AlfTransitionBaseInterface, AlfDisplayAndLayoutInterface, AlfDisplayAndLayoutBaseInterface, AlfAnimateCssInterface } from "@alfcomponents/interfaces";
+import { AlfBorderStyleEnum, AlfColorEnum, AlfColorVariantEnum, AlfCursorEnum, AlfFontSizeEnum, AlfInputAppearanceEnum, AlfPxEnum, AlfRadiusEnum, AlfSizeEnum, AlfShadowEnum } from "@alfcomponents/enums";
+import { AlfBackgroundsInterface, AlfBackgroundsBaseInterface, AlfBorderInterface, AlfBorderBaseInterface, AlfOutlineInterface, AlfOutlineBaseInterface, AlfShadowsInterface, AlfShadowsBaseInterface, AlfMarginInterface, AlfMarginBaseInterface, AlfPaddingInterface, AlfPaddingBaseInterface, AlfTypographyInterface, AlfTypographyBaseInterface, AlfTextStyleInterface, AlfTextStyleStateBaseInterface, AlfTransformInterface, AlfTransformBaseInterface, AlfTransitionInterface, AlfTransitionBaseInterface, AlfDisplayAndLayoutInterface, AlfDisplayAndLayoutBaseInterface, AlfAnimateCssInterface, AlfAriaBaseInterface, AlfRippleInterface } from "@alfcomponents/interfaces";
 import { AlfValidationResult, alfRequiredValidator, alfMinLengthValidator, alfMaxLengthValidator, alfMinValidator, alfMaxValidator, alfPatternValidator, alfEmailValidator } from '@alfcomponents/shared';
 import { interpolate } from '@alfcomponents/i18n/i18n-utils';
 import { computed, Directive, input, signal, untracked, output, inject, ElementRef, effect } from "@angular/core";
 import { ControlValueAccessor } from '@angular/forms';
+import { AlfTooltipConfig } from "@alfcomponents/directives";
 
 export enum AlfComponentTypeEnum {
     Button = 'Button',
@@ -17,6 +18,13 @@ export enum AlfComponentTypeEnum {
     Card = 'Card',
     Default = 'Default',
 }
+
+const defaultPadding: AlfPaddingBaseInterface = {
+    paddingTop: AlfPxEnum.Px10,
+    paddingBottom: AlfPxEnum.Px10,
+    paddingLeft: AlfPxEnum.Px10,
+    paddingRight: AlfPxEnum.Px10
+};
 
 const deepEqual = (a: any, b: any) => JSON.stringify(a) === JSON.stringify(b);
 
@@ -36,6 +44,16 @@ export const deepMergeStates = (...configs: any[]): any => {
 export abstract class AlfBaseDirectives implements ControlValueAccessor {
     protected readonly el = inject(ElementRef<HTMLElement>);
 
+    // **** sin implementar **** //
+    public readonly aria = input<AlfAriaBaseInterface | undefined>(undefined);
+    public readonly tooltip = input<string | AlfTooltipConfig | undefined>(undefined);
+    public readonly ripple = input<boolean | AlfRippleInterface | undefined>(undefined);
+    public readonly cursor = input<AlfCursorEnum>(AlfCursorEnum.Pointer);
+    public readonly size = input<AlfSizeEnum | string>(AlfSizeEnum.MD);
+    public readonly customClass = input<string | undefined>(undefined);
+    public readonly customStyle = input<string | undefined>(undefined);
+    public readonly elevated = input<boolean>(false);
+    
     // ── 1. Inputs ─────────────────────────────────────────────────────────────
     public readonly variant = input<AlfColorVariantEnum>(undefined);
     public readonly disabled = input<boolean>(false);
@@ -63,7 +81,7 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
     public readonly max = input<number>();
     public readonly pattern = input<string>();
     public readonly validators = input<((v: any) => AlfValidationResult)[]>([]);
-    public readonly error = input<string>();
+    public readonly error = input<string | boolean | undefined>(undefined);
 
     // ── 2. Outputs ────────────────────────────────────────────────────────────
     public readonly onFocus = output<FocusEvent>();
@@ -90,20 +108,20 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
     private readonly _animations = signal<AlfAnimateCssInterface | undefined>(undefined, { equal: deepEqual });
 
     // ── 4. Computed State ─────────────────────────────────────────────────────
-    public readonly backgroundComputed = computed(() => deepMergeStates(this._background(), this.background(), this.getControlConfig()?.backgrounds));
-    public readonly borderComputed = computed(() => deepMergeStates(this._border(), this.border(), this.getControlConfig()?.border));
-    public readonly outlineComputed = computed(() => deepMergeStates(this._outline(), this.outline(), this.getControlConfig()?.outline));
-    public readonly shadowsComputed = computed(() => deepMergeStates(this._shadows(), this.shadows(), this.getControlConfig()?.shadows));
-    public readonly marginComputed = computed(() => deepMergeStates(this._margin(), this.margin(), this.getControlConfig()?.margin));
-    public readonly paddingComputed = computed(() => deepMergeStates(this._padding(), this.padding(), this.getControlConfig()?.padding));
-    public readonly typographyComputed = computed(() => deepMergeStates(this._typography(), this.typography(), this.getControlConfig()?.typography));
-    public readonly textStyleComputed = computed(() => deepMergeStates(this._textStyle(), this.textStyle(), this.getControlConfig()?.textStyle));
-    public readonly transformComputed = computed(() => deepMergeStates(this._transform(), this.transform(), this.getControlConfig()?.transform));
-    public readonly transitionComputed = computed(() => deepMergeStates(this._transition(), this.transition(), this.getControlConfig()?.transition));
+    public readonly backgroundComputed = computed(() => deepMergeStates(this._background(), this.getControlConfig()?.backgrounds, this.background()));
+    public readonly borderComputed = computed(() => deepMergeStates(this._border(), this.getControlConfig()?.border, this.border()));
+    public readonly outlineComputed = computed(() => deepMergeStates(this._outline(), this.getControlConfig()?.outline, this.outline()));
+    public readonly shadowsComputed = computed(() => deepMergeStates(this._shadows(), this.getControlConfig()?.shadows, this.shadows()));
+    public readonly marginComputed = computed(() => deepMergeStates(this._margin(), this.getControlConfig()?.margin, this.margin()));
+    public readonly paddingComputed = computed(() => deepMergeStates(this._padding(), this.getControlConfig()?.padding, this.padding()));
+    public readonly typographyComputed = computed(() => deepMergeStates(this._typography(), this.getControlConfig()?.typography, this.typography()));
+    public readonly textStyleComputed = computed(() => deepMergeStates(this._textStyle(), this.getControlConfig()?.textStyle, this.textStyle()));
+    public readonly transformComputed = computed(() => deepMergeStates(this._transform(), this.getControlConfig()?.transform, this.transform()));
+    public readonly transitionComputed = computed(() => deepMergeStates(this._transition(), this.getControlConfig()?.transition, this.transition()));
     public readonly animationsComputed = computed(() => {
         const c1 = this._animations() || {};
-        const c2 = this.animations() || {};
-        const c3 = this.getControlConfig()?.animations || {};
+        const c2 = this.getControlConfig()?.animations || {};
+        const c3 = this.animations() || {};
         const merged = { ...c1, ...c2, ...c3 };
         return Object.keys(merged).length > 0 ? merged as AlfAnimateCssInterface : undefined;
     });
@@ -463,36 +481,42 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
         return createComponent;
     };
 
-    protected createSolidComponent = (variant: AlfColorVariantEnum): {
+    protected createSolidComponent = (variant: AlfColorVariantEnum, padding: AlfPaddingBaseInterface = defaultPadding): {
         padding: AlfPaddingInterface,
         border: AlfBorderInterface,
         textStyle: AlfTextStyleInterface,
-        background: AlfBackgroundsInterface
+        background: AlfBackgroundsInterface,
+        shadows?: AlfShadowsInterface
     } => {
         const borderColor = this.getColorByVariant(variant, 0);
         const textColor = this.getColorByVariant(variant, 1);
         const backgroundColor = this.getColorByVariant(variant, 2);
 
-        let component: {
-            padding: AlfPaddingInterface,
-            border: AlfBorderInterface,
-            textStyle: AlfTextStyleInterface,
-            background: AlfBackgroundsInterface
-        } = {
-            padding: this.inputPaddingPredefined(AlfPxEnum.Px10, AlfPxEnum.Px10, AlfPxEnum.Px15, AlfPxEnum.Px5)!,
+        let shadows: AlfShadowsInterface | undefined = undefined;
+        if (this.elevated()) {
+            shadows = {
+                default: {
+                    boxShadow: AlfShadowEnum.Elevated,
+                    boxShadowColor: borderColor.default
+                }
+            };
+        }
+
+        return {
+            padding: this.inputPaddingPredefined(padding)!,
             border: this.inputBorderPredefined(AlfPxEnum.Px015, AlfRadiusEnum.Md, AlfBorderStyleEnum.Solid, borderColor),
             textStyle: this.inputTextStylePredefined(textColor),
-            background: this.inputBackgroundPredefined(backgroundColor)
+            background: this.inputBackgroundPredefined(backgroundColor),
+            shadows: shadows
         };
-
-        return component;
     }
 
-    protected createSolidComponentSoftBackground = (variant: AlfColorVariantEnum): {
-        padding: AlfPaddingInterface,
+    protected createSolidComponentSoftBackground = (variant: AlfColorVariantEnum, padding: AlfPaddingBaseInterface = defaultPadding): {
+        background: AlfBackgroundsInterface,
         border: AlfBorderInterface,
+        padding: AlfPaddingInterface,
         textStyle: AlfTextStyleInterface,
-        background: AlfBackgroundsInterface
+        shadows?: AlfShadowsInterface
     } => {
         const variantString = variant as string;
         const softVariantValue = `soft-${variantString}`;
@@ -502,49 +526,53 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
         const textColor = this.getColorByVariant(variant, 1);
         const backgroundColor = this.getColorByVariant(softVariant, 2);
 
-        let component: {
-            padding: AlfPaddingInterface,
-            border: AlfBorderInterface,
-            textStyle: AlfTextStyleInterface,
-            background: AlfBackgroundsInterface
-        } = {
-            padding: deepMergeStates(this.inputPaddingPredefined(AlfPxEnum.Px10, AlfPxEnum.Px10, AlfPxEnum.Px15, AlfPxEnum.Px5), this.getInternalPadding()),
+        let shadows: AlfShadowsInterface | undefined = undefined;
+        if (this.elevated()) {
+            shadows = {
+                default: {
+                    boxShadow: AlfShadowEnum.Elevated,
+                    boxShadowColor: borderColor.default
+                }
+            };
+        }
+
+        return {
+            padding: deepMergeStates(this.inputPaddingPredefined(padding), this.getInternalPadding()),
             border: deepMergeStates(this.inputBorderPredefined(AlfPxEnum.Px015, AlfRadiusEnum.Md, AlfBorderStyleEnum.Solid, borderColor), this.getInternalBorder()),
             textStyle: deepMergeStates(this.inputTextStylePredefined(textColor), this.getInternalTextStyle()),
-            background: deepMergeStates(this.inputBackgroundPredefined(backgroundColor), this.getInternalBackground())
+            background: deepMergeStates(this.inputBackgroundPredefined(backgroundColor), this.getInternalBackground()),
+            shadows: shadows
         };
-
-        return component;
     }
 
-    protected create3dComponentSolidText = (variant: AlfColorVariantEnum): {
-        padding: AlfPaddingInterface,
+    protected create3dComponentSolidText = (variant: AlfColorVariantEnum, padding: AlfPaddingBaseInterface = defaultPadding): {
         border: AlfBorderInterface,
+        padding: AlfPaddingInterface,
         textStyle: AlfTextStyleInterface,
-        background: AlfBackgroundsInterface
+        background: AlfBackgroundsInterface,
+        shadows?: AlfShadowsInterface
     } => {
-        const variantString = variant as string;
-        // El variant es tipo 'depth-primary'. Buscamos el equivalente solid ('primary')
-        const solidVariantValue = variantString.replace('depth-', '');
-        const solidVariant = Object.values(AlfColorVariantEnum).find(v => v === solidVariantValue) as AlfColorVariantEnum || variant;
+        const borderColor = this.getColorByVariant(variant, 0); 
+        const textColor = this.getColorByVariant(variant, 1);
+        const backgroundColor = this.getColorByVariant(variant, 2);
 
-        const borderColor = this.getColorByVariant(variant, 0); // Borde 3D
-        const textColor = this.getColorByVariant(variant, 1); // Texto del 3D
-        const backgroundColor = this.getColorByVariant(variant, 2); // Fondo 3D
+        let shadows: AlfShadowsInterface | undefined = undefined;
+        if (this.elevated()) {
+            shadows = {
+                default: {
+                    boxShadow: AlfShadowEnum.Elevated,
+                    boxShadowColor: borderColor.default
+                }
+            };
+        }
 
-        let component: {
-            padding: AlfPaddingInterface,
-            border: AlfBorderInterface,
-            textStyle: AlfTextStyleInterface,
-            background: AlfBackgroundsInterface
-        } = {
-            padding: this.inputPaddingPredefined(AlfPxEnum.Px10, AlfPxEnum.Px10, AlfPxEnum.Px15, AlfPxEnum.Px5)!,
+        return {
+            padding: this.inputPaddingPredefined(padding)!,
             border: this.inputBorderPredefined(AlfPxEnum.Px3, AlfRadiusEnum.Md, AlfBorderStyleEnum.Ridge, borderColor),
             textStyle: this.inputTextStylePredefined(textColor),
-            background: this.inputBackgroundPredefined(backgroundColor)
+            background: this.inputBackgroundPredefined(backgroundColor),
+            shadows: shadows
         };
-
-        return component;
     }
 
     // ── 8. Private Helpers ────────────────────────────────────────────────────
@@ -566,13 +594,13 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
         }
     }
 
-    private readonly inputPaddingPredefined = (top?: AlfPxEnum, bottom?: AlfPxEnum, left?: AlfPxEnum, right?: AlfPxEnum): AlfPaddingInterface | undefined => {
+    private readonly inputPaddingPredefined = (padding?: AlfPaddingBaseInterface): AlfPaddingInterface | undefined => {
         return {
             default: {
-                paddingTop: top,
-                paddingBottom: bottom,
-                paddingLeft: left,
-                paddingRight: right,
+                paddingTop: padding?.paddingTop,
+                paddingBottom: padding?.paddingBottom,
+                paddingLeft: padding?.paddingLeft,
+                paddingRight: padding?.paddingRight,
             }
         }
     }

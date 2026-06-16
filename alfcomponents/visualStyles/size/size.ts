@@ -9,7 +9,7 @@ import { AlfSizeEnum } from '@alfcomponents/enums';
   }
 })
 export class AlfSizeDirective {
-  public readonly alfSize = input<AlfSizeEnum | undefined>(undefined);
+  public readonly alfSize = input<AlfSizeEnum | string | undefined>(undefined);
 
   public readonly sizeClass = computed(() => {
     const size = this.alfSize();
