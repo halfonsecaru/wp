@@ -1,4 +1,13 @@
-<svg class="alf-spinner-icon" viewBox="0 0 24 24">
-  <circle class="alf-spinner-circle" cx="12" cy="12" r="10" fill="none" stroke="currentColor"
-    [attr.stroke-width]="strokeWidth()" />
+@let s = sizeVal();
+@let c = colorVal();
+<svg class="alf-spinner-icon" viewBox="0 0 24 24" [style.width]="s" [style.height]="s" [style.color]="c">
+  <circle
+    class="alf-spinner-circle"
+    cx="12"
+    cy="12"
+    r="10"
+    fill="none"
+    [attr.stroke]="c || 'currentColor'"
+    [attr.stroke-width]="strokeWidthVal()"
+  />
 </svg>

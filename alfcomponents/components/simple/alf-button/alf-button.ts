@@ -6,7 +6,6 @@ import {
   input,
   output,
   signal,
-  untracked,
   viewChild,
 } from '@angular/core';
 import {
@@ -17,55 +16,18 @@ import {
   AlfButtonTypeEnum,
   AlfColorVariantEnum,
   AlfIconsUnicodeIconEnum,
-  AlfInputAppearanceEnum,
-  AlfRemEnum,
 } from '@alfcomponents/enums';
-import { AlfRippleDirective, AlfTooltipTextDirective } from '@alfcomponents/directives';
-import {
-  AlfBackgroundDirective,
-  AlfBorderDirective,
-  AlfOutlineDirective,
-  AlfShadowsDirective,
-  AlfMarginDirective,
-  AlfPaddingDirective,
-  AlfTypographyDirective,
-  AlfTextStyleDirective,
-  AlfTransformDirective,
-  AlfTransitionDirective,
-  AlfDisplayAndLayoutDirective,
-  AlfCursorDirective,
-  AlfSizeDirective,
-  AlfDisabledDirective,
-  AlfAriaDirective,
-} from '@alfcomponents/visualStyles';
+import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
+
 import { AlfButtonInterface, ButtonLink } from './interfaces/alf-button.interface';
 import { AlfButtonI18nLabels, getAlfButtonLabel } from './i18n/alf-button.i18n';
 import { AlfComponentTypeEnum } from '@alfcomponents/base/defaultVariants';
 import { AlfBaseDirectives, deepMergeStates } from '@alfcomponents/components/base/bases.directive';
-import { generatedComponentFunction } from '../alf-input/alf-input-functions';
-import { AlfInputI18nLabels } from '../alf-input/i18n/alf-input.i18n';
-
 @Component({
   selector: 'alf-button',
   standalone: true,
   imports: [
-    AlfTooltipTextDirective,
-    AlfRippleDirective,
-    AlfBackgroundDirective,
-    AlfBorderDirective,
-    AlfOutlineDirective,
-    AlfShadowsDirective,
-    AlfMarginDirective,
-    AlfPaddingDirective,
-    AlfTypographyDirective,
-    AlfTextStyleDirective,
-    AlfTransformDirective,
-    AlfTransitionDirective,
-    AlfDisplayAndLayoutDirective,
-    AlfCursorDirective,
-    AlfSizeDirective,
-    AlfDisabledDirective,
-    AlfAriaDirective
+    ...ALF_CORE_DIRECTIVES
   ],
   templateUrl: './alf-button.html',
   styleUrl: './alf-button.scss',
@@ -75,14 +37,11 @@ export class AlfButton extends AlfBaseDirectives {
 
 
   // ── 1. Constants & View Queries ───────────────────────────────────────────
-  protected readonly AlfRemEnum = AlfRemEnum;
-  private readonly inputElement = viewChild<ElementRef<HTMLInputElement | HTMLTextAreaElement>>('inputRef');
-
 
   // ── 2. Inputs & Models ────────────────────────────────────────────────────
 
   public readonly inputConfig = input<AlfButtonInterface>(undefined, { alias: 'config' });
-  public readonly id = input<string | undefined>(undefined);
+  public readonly id = input<string>();
   public readonly label = input<string>();
   public readonly type = input<AlfButtonTypeEnum>();
   public readonly iconLeft = input<string | AlfIconsUnicodeIconEnum>();
@@ -123,7 +82,7 @@ export class AlfButton extends AlfBaseDirectives {
   // ── 6. Constructor ────────────────────────────────────────────────────────
   constructor() {
     super();
-    this.initialization('--alf-btn', 'alf-button', AlfComponentTypeEnum.Button);
+    this.initialization(visualprefixEnum.Buttons, visualprefixEnum.Button, AlfComponentTypeEnum.Button);
   };
 
 
@@ -193,7 +152,7 @@ export class AlfButton extends AlfBaseDirectives {
    * Define el tipo de control para el engine base (útil si la clase base hace switch de lógicas por tipo).
    */
   protected getControlType(): string {
-    return undefined;
+    return AlfComponentTypeEnum.Button;
   }
 
   /**

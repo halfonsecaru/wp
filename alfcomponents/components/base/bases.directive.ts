@@ -1,4 +1,4 @@
-import { AlfBorderStyleEnum, AlfColorEnum, AlfColorVariantEnum, AlfCursorEnum, AlfFontSizeEnum, AlfInputAppearanceEnum, AlfPxEnum, AlfRadiusEnum, AlfSizeEnum, AlfShadowEnum } from "@alfcomponents/enums";
+import { AlfBorderStyleEnum, AlfColorEnum, AlfColorVariantEnum, AlfCursorEnum, AlfFontSizeEnum, AlfInputAppearanceEnum, AlfPxEnum, AlfRadiusEnum, AlfSizeEnum, AlfShadowEnum, AlfRemEnum } from "@alfcomponents/enums";
 import { AlfBackgroundsInterface, AlfBackgroundsBaseInterface, AlfBorderInterface, AlfBorderBaseInterface, AlfOutlineInterface, AlfOutlineBaseInterface, AlfShadowsInterface, AlfShadowsBaseInterface, AlfMarginInterface, AlfMarginBaseInterface, AlfPaddingInterface, AlfPaddingBaseInterface, AlfTypographyInterface, AlfTypographyBaseInterface, AlfTextStyleInterface, AlfTextStyleStateBaseInterface, AlfTransformInterface, AlfTransformBaseInterface, AlfTransitionInterface, AlfTransitionBaseInterface, AlfDisplayAndLayoutInterface, AlfDisplayAndLayoutBaseInterface, AlfAnimateCssInterface, AlfAriaBaseInterface, AlfRippleInterface } from "@alfcomponents/interfaces";
 import { AlfValidationResult, alfRequiredValidator, alfMinLengthValidator, alfMaxLengthValidator, alfMinValidator, alfMaxValidator, alfPatternValidator, alfEmailValidator } from '@alfcomponents/shared';
 import { interpolate } from '@alfcomponents/i18n/i18n-utils';
@@ -43,19 +43,22 @@ export const deepMergeStates = (...configs: any[]): any => {
 @Directive()
 export abstract class AlfBaseDirectives implements ControlValueAccessor {
     protected readonly el = inject(ElementRef<HTMLElement>);
+    protected readonly AlfRemEnum = AlfRemEnum;
+
 
     // **** sin implementar **** //
     public readonly aria = input<AlfAriaBaseInterface | undefined>(undefined);
-    public readonly tooltip = input<string | AlfTooltipConfig | undefined>(undefined);
+    public readonly tooltip = input<string | AlfTooltipConfig>();
     public readonly ripple = input<boolean | AlfRippleInterface | undefined>(undefined);
     public readonly cursor = input<AlfCursorEnum>(AlfCursorEnum.Pointer);
-    public readonly size = input<AlfSizeEnum | string>(AlfSizeEnum.MD);
+    public readonly size = input<AlfSizeEnum | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | string>(AlfSizeEnum.MD);
     public readonly customClass = input<string | undefined>(undefined);
     public readonly customStyle = input<string | undefined>(undefined);
     public readonly elevated = input<boolean>(false);
-    
+
     // ── 1. Inputs ─────────────────────────────────────────────────────────────
     public readonly variant = input<AlfColorVariantEnum>(undefined);
+    public readonly colorVariant = input<AlfColorVariantEnum>(undefined);
     public readonly disabled = input<boolean>(false);
     public readonly isLoading = input<boolean>(false);
     public readonly isExiting = input<boolean>(false);
@@ -137,22 +140,22 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
     protected readonly resolvedClasses = computed(() => {
         const stage = this.resolvedStage();
         if (!stage) return [];
-        
+
         let stageStr = typeof stage === 'string' ? stage : (stage as any).name || (stage as any).type;
         if (!stageStr || stageStr === 'none') return [];
-        
+
         const classes = ['animate__animated'];
         if (stageStr.includes('animate__')) {
             classes.push(...stageStr.split(' ').filter((c: string) => c.trim()));
         } else {
             classes.push(`animate__${stageStr}`);
         }
-        
+
         const config = this.animationsComputed();
         if (config?.infinite && !this.isExiting()) {
             classes.push('animate__infinite');
         }
-        
+
         return Array.from(new Set(classes));
     });
 
@@ -160,7 +163,7 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
         const stage = this.resolvedStage();
         const config = this.animationsComputed();
         if (stage && typeof stage !== 'string' && (stage as any).duration) return (stage as any).duration;
-        return config?.duration;
+        return config?.duration || '500ms';
     });
 
     protected readonly resolvedDelay = computed(() => {
@@ -190,7 +193,7 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
         const stage = this.resolvedStage();
         const config = this.animationsComputed();
         if (stage && typeof stage !== 'string' && (stage as any).fillMode) return (stage as any).fillMode;
-        return config?.fillMode || 'both';
+        return config?.fillMode;
     });
 
     protected readonly resolvedDirection = computed(() => {
@@ -205,15 +208,15 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
     private readonly _animationsEffect = effect(() => {
         const el = this.el.nativeElement as HTMLElement;
         const newClasses = this.resolvedClasses();
-        
+
         this.previousAnimClasses.forEach(cls => {
             if (!newClasses.includes(cls)) el.classList.remove(cls);
         });
-        
+
         newClasses.forEach(cls => {
             if (!this.previousAnimClasses.includes(cls)) el.classList.add(cls);
         });
-        
+
         this.previousAnimClasses = [...newClasses];
 
         const set = (prop: string, val: string | number | undefined) => {
@@ -232,7 +235,7 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
     // ── Transitions on Host ───────────────────────────────────────────────────
     private readonly _transitionEffect = effect(() => {
         const tr = this.transitionComputed();
-        const p  = this.cssPrefix();
+        const p = this.cssPrefix();
         const el = this.el.nativeElement as HTMLElement;
 
         if (!p) return;
@@ -258,10 +261,10 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
             set(`${p}-transition${sfx}-property`, state.property);
         };
 
-        applyState(tr.default,  '');
-        applyState(tr.hover,    '-hover');
-        applyState(tr.active,   '-active');
-        applyState(tr.focus,    '-focus');
+        applyState(tr.default, '');
+        applyState(tr.hover, '-hover');
+        applyState(tr.active, '-active');
+        applyState(tr.focus, '-focus');
         applyState(tr.disabled, '-disabled');
     });
 
@@ -278,7 +281,7 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
 
     private readonly _displayAndLayoutEffect = effect(() => {
         const dl = this.displayAndLayoutComputed();
-        const p  = this.cssPrefix();
+        const p = this.cssPrefix();
         const el = this.el.nativeElement as HTMLElement;
 
         if (!p) return;
@@ -297,39 +300,39 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
 
         const applyState = (state: any, sfx: string) => {
             if (!state) return;
-            set(`${p}-layout${sfx}-display`,         state.display);
-            set(`${p}-layout${sfx}-position`,        state.position);
-            set(`${p}-layout${sfx}-top`,             state.top);
-            set(`${p}-layout${sfx}-right`,           state.right);
-            set(`${p}-layout${sfx}-bottom`,          state.bottom);
-            set(`${p}-layout${sfx}-left`,            state.left);
-            set(`${p}-layout${sfx}-z-index`,         state.zIndex);
-            set(`${p}-layout${sfx}-box-sizing`,      state.boxSizing);
-            set(`${p}-layout${sfx}-width`,           state.width);
-            set(`${p}-layout${sfx}-height`,          state.height);
-            set(`${p}-layout${sfx}-min-width`,       state.minWidth);
-            set(`${p}-layout${sfx}-max-width`,       state.maxWidth);
-            set(`${p}-layout${sfx}-min-height`,      state.minHeight);
-            set(`${p}-layout${sfx}-max-height`,      state.maxHeight);
-            set(`${p}-layout${sfx}-overflow`,        state.overflow);
-            set(`${p}-layout${sfx}-overflow-x`,      state.overflowX);
-            set(`${p}-layout${sfx}-overflow-y`,      state.overflowY);
-            set(`${p}-layout${sfx}-visibility`,      state.visibility);
-            set(`${p}-layout${sfx}-object-fit`,      state.objectFit);
-            set(`${p}-layout${sfx}-flex-direction`,  state.flexDirection);
+            set(`${p}-layout${sfx}-display`, state.display);
+            set(`${p}-layout${sfx}-position`, state.position);
+            set(`${p}-layout${sfx}-top`, state.top);
+            set(`${p}-layout${sfx}-right`, state.right);
+            set(`${p}-layout${sfx}-bottom`, state.bottom);
+            set(`${p}-layout${sfx}-left`, state.left);
+            set(`${p}-layout${sfx}-z-index`, state.zIndex);
+            set(`${p}-layout${sfx}-box-sizing`, state.boxSizing);
+            set(`${p}-layout${sfx}-width`, state.width);
+            set(`${p}-layout${sfx}-height`, state.height);
+            set(`${p}-layout${sfx}-min-width`, state.minWidth);
+            set(`${p}-layout${sfx}-max-width`, state.maxWidth);
+            set(`${p}-layout${sfx}-min-height`, state.minHeight);
+            set(`${p}-layout${sfx}-max-height`, state.maxHeight);
+            set(`${p}-layout${sfx}-overflow`, state.overflow);
+            set(`${p}-layout${sfx}-overflow-x`, state.overflowX);
+            set(`${p}-layout${sfx}-overflow-y`, state.overflowY);
+            set(`${p}-layout${sfx}-visibility`, state.visibility);
+            set(`${p}-layout${sfx}-object-fit`, state.objectFit);
+            set(`${p}-layout${sfx}-flex-direction`, state.flexDirection);
             set(`${p}-layout${sfx}-justify-content`, state.justifyContent);
-            set(`${p}-layout${sfx}-align-items`,     state.alignItems);
-            set(`${p}-layout${sfx}-gap`,             state.gap);
-            set(`${p}-layout${sfx}-flex-wrap`,       state.flexWrap);
-            set(`${p}-layout${sfx}-opacity`,         state.opacity);
-            set(`${p}-layout${sfx}-pointer-events`,  state.pointerEvents);
-            set(`${p}-layout${sfx}-cursor`,          state.cursor);
+            set(`${p}-layout${sfx}-align-items`, state.alignItems);
+            set(`${p}-layout${sfx}-gap`, state.gap);
+            set(`${p}-layout${sfx}-flex-wrap`, state.flexWrap);
+            set(`${p}-layout${sfx}-opacity`, state.opacity);
+            set(`${p}-layout${sfx}-pointer-events`, state.pointerEvents);
+            set(`${p}-layout${sfx}-cursor`, state.cursor);
         };
 
-        applyState(dl.default,  '');
-        applyState(dl.hover,    '-hover');
-        applyState(dl.active,   '-active');
-        applyState(dl.focus,    '-focus');
+        applyState(dl.default, '');
+        applyState(dl.hover, '-hover');
+        applyState(dl.active, '-active');
+        applyState(dl.focus, '-focus');
         applyState(dl.disabled, '-disabled');
     });
     // ── 4. Abstract Methods for Validation & CVA ───────────────────────────────
@@ -379,7 +382,7 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
         if (this.minComputed() !== undefined) allValidators.push(alfMinValidator(Number(this.minComputed()!)));
         if (this.maxComputed() !== undefined) allValidators.push(alfMaxValidator(Number(this.maxComputed()!)));
         if (this.patternComputed() !== undefined) allValidators.push(alfPatternValidator(this.patternComputed()!));
-        
+
         const type = this.getControlType();
         if (type === 'email') allValidators.push(alfEmailValidator);
 
@@ -552,7 +555,7 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
         background: AlfBackgroundsInterface,
         shadows?: AlfShadowsInterface
     } => {
-        const borderColor = this.getColorByVariant(variant, 0); 
+        const borderColor = this.getColorByVariant(variant, 0);
         const textColor = this.getColorByVariant(variant, 1);
         const backgroundColor = this.getColorByVariant(variant, 2);
 

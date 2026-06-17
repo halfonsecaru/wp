@@ -1,55 +1,102 @@
-@let styles = combinedStyles();
-@let customClass = customClassComputed();
-@let animationsClass = animationsClassComputed();
-@let isChecked = checked(); 
-@let isComponentDisabled = disabledComputed();
-@let switchStyle = configComputed()?.switchStyle ?? 'elegant'; 
-@let switchSize = size() ?? 'md';
-@let labelPos = configComputed()?.labelPosition ?? 'after'; 
-@let labelText = configComputed()?.labelText ?? '';
-@let helperText = configComputed()?.helperText ?? ''; 
-@let errorMsg = configComputed()?.error ?? '';
-@let isHollow = isOutline();
+<!-- 1. Comportamiento y Directivas -->
+@let bg = backgroundComputed(); @let bd = borderComputed(); @let ot = outlineComputed(); @let sd = shadowsComputed(); @let mg = marginComputed(); 
+@let pd = paddingComputed(); @let ty = typographyComputed(); @let ts = textStyleComputed(); @let tr = transformComputed(); @let tsn = transitionComputed(); 
+@let dl = displayAndLayoutComputed(); @let sz = sizeComputed(); @let ar = aria(); @let tt = tooltip(); @let rp = ripple(); @let cr = cursor(); 
+@let ds = disabledComputed(); @let cc = customClass(); @let cs = customStyle(); @let ie = isExiting(); @let idRadio = idComputed(); @let labelText = labelComputed(); 
+@let labelPos = labelPositionComputed(); @let isChecked = checked(); @let styleVariant = switchStyle() ?? 'elegant'; @let radioName = name(); 
+@let isHovered = hovered(); @let isFocused = focused(); @let ld = isLoading();
 
-<div 
-  class="alf-sw" 
-  [class]="'alf-sw--' + switchStyle + ' ' + 'alf-sw--' + switchSize + ' ' + (isChecked ? 'alf-sw--checked' : '') + ' ' + (isComponentDisabled ? 'alf-sw--disabled' : '') + ' ' + (isHollow ? 'alf-sw--outline' : '') + ' ' + (isGhost() ? 'alf-sw--ghost' : '') + ' ' + (isCrystal() ? 'alf-sw--crystal' : '') + ' ' + customClass + ' ' + animationsClass" 
-  [style]="styles"
+<div
+  (mouseenter)="hovered.set(true)"
+  (mouseleave)="hovered.set(false)"
+  [alfBackground]="bg ? bg : null"
+  alfPrefix="--alf-sw"
+  [alfBorder]="bd ? bd : null"
+  alfPrefix="--alf-sw"
+  [alfOutline]="ot ? ot : null"
+  alfPrefix="--alf-sw"
+  [alfShadows]="sd ? sd : null"
+  alfPrefix="--alf-sw"
+  [alfMargin]="mg ? mg : null"
+  alfPrefix="--alf-sw"
+  [alfPadding]="pd ? pd : null"
+  alfPrefix="--alf-sw"
+  [alfTypography]="ty ? ty : null"
+  alfPrefix="--alf-sw"
+  [alfTextStyle]="ts ? ts : null"
+  alfPrefix="--alf-sw"
+  [alfTransform]="tr ? tr : null"
+  alfPrefix="--alf-sw"
+  [alfTransition]="tsn ? tsn : null"
+  alfPrefix="--alf-sw"
+  [alfDisplayAndLayout]="dl ? dl : null"
+  alfPrefix="--alf-sw"
+  [alfCursor]="cr ? cr : null"
+  [alfSize]="sz ? sz : null"
+  [alfDisabled]="ds"
+  [alfAria]="ar ? ar : null"
+  [class]="'alf-sw alf-sw--' + styleVariant + ' alf-sw--' + sz + (cc ? ' ' + cc : '')"
+  [class.alf-sw--checked]="isChecked"
+  [class.alf-sw--disabled]="ds"
+  [class.alf-sw--loading]="ld"
+  [class.alf-sw--hovered]="isHovered"
+  [class.alf-sw--focused]="isFocused"
+  [style]="cs ? cs : null"
+  [alfRipple]="rp !== undefined ? rp : null"
+  [alfTooltipText]="tt ? tt : null"
+  [alfAnimations]="animations() ? animations() : null"
 >
-  <label 
-    class="alf-sw-wrapper" 
-    [class.alf-sw-wrapper--label-before]="labelPos === 'before'" 
+  <label
+    class="alf-sw-wrapper"
+    [class.alf-sw-wrapper--label-before]="labelPos === 'before'"
+    [attr.for]="idRadio"
+    [style.cursor]="ds || ld ? 'not-allowed' : (cr || null)"
     (click)="$event.preventDefault(); toggle()"
   >
-    <input 
-      type="checkbox" 
-      hidden 
-      [id]="internalId" 
-      [checked]="isChecked" 
-      [disabled]="isComponentDisabled"
-      (keydown)="onInputKeydown($event)" 
+    <!-- Input oculto para accesibilidad y estado -->
+    <input
+      type="checkbox"
+      class="alf-sw-native-input"
+      [id]="idRadio"
+      [name]="radioName"
+      [checked]="isChecked"
+      [disabled]="ds || ld"
+      (focus)="focused.set(true)"
+      (blur)="focused.set(false)"
+      (keydown)="onInputKeydown($event)"
       [attr.aria-checked]="isChecked"
-      [attr.aria-label]="ariaComputed()?.ariaLabel || labelText"
-      [attr.aria-labelledby]="ariaComputed()?.ariaLabelledBy"
-      [attr.aria-describedby]="ariaComputed()?.ariaDescribedBy || (internalId + '-description')"
+      [attr.aria-disabled]="ds"
+      [attr.aria-label]="ar?.ariaLabel || labelText"
+      [attr.aria-describedby]="ar?.ariaDescribedBy"
     />
 
+    <!-- Contenedor Visual (Track & Thumb) -->
     <div class="alf-sw-track">
       <span class="alf-sw-thumb"></span>
     </div>
 
+    <!-- Texto del Label -->
     @if (labelText) {
-      <span class="alf-sw-label-text">{{ labelText }}</span>
+    <span class="alf-sw-label-text"> {{ labelText }} </span>
     }
   </label>
+
+  @if (ld) {
+  <div class="alf-sw-loading-overlay">
+    <alf-spinner [size]="AlfRemEnum.Rem15" />
+  </div>
+  }
 </div>
 
-@if (helperText || errorMsg) {
-<div [id]="internalId + '-description'" class="alf-sw-description">
+<!-- Helper y Errores -->
+@let helper = $safeNavigationMigration(helperText() ?? inputConfig()?.helperText); 
+@let errorMsg = $safeNavigationMigration(error() ?? inputConfig()?.error); 
+@if (helper || errorMsg) {
+<div [id]="idRadio + '-description'" class="alf-sw-description">
   @if (errorMsg) {
-    <span class="alf-sw-error">{{ errorMsg }}</span>
+  <span class="alf-sw-error">{{ errorMsg }}</span>
   } @else {
-    <span class="alf-sw-helper">{{ helperText }}</span>
+  <span class="alf-sw-helper">{{ helper }}</span>
   }
 </div>
 }

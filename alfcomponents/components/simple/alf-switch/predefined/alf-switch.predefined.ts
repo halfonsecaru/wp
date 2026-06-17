@@ -20,7 +20,7 @@ export const ALF_SWITCH_DEFAULT_BASE: AlfSwitchInterface = {
   offLabel: '',
   showLabels: false,
   labelPosition: AlfLabelsPositionEnum.After,
-  labelText: '',
+  label: '',
 };
 
 /**

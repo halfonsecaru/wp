@@ -245,7 +245,7 @@ export class AlfInput extends AlfBaseDirectives {
   // ── 8. Constructor ────────────────────────────────────────────────────────
   constructor() {
     super();
-    this.initialization('--alf-inp', 'alf-input', AlfComponentTypeEnum.Input);
+    this.initialization(visualprefixEnum.Input, visualprefixEnum.Inputt, AlfComponentTypeEnum.Input);
   }
 
   // ── 9. Handlers & Public API ──────────────────────────────────────────────

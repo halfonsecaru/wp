@@ -1,9 +1,9 @@
 @mixin alf-animations-style($prefix) {
-  $duration: var(#{$prefix}-animations-duration, 1s);
+  $duration: var(#{$prefix}-animations-duration, 500ms);
   $delay: var(#{$prefix}-animations-delay, 0s);
   $iteration: var(#{$prefix}-animations-iteration-count, 1);
   $timing: var(#{$prefix}-animations-timing-function, ease);
-  $fill: var(#{$prefix}-animations-fill-mode, both);
+  $fill: var(#{$prefix}-animations-fill-mode, revert);
   $direction: var(#{$prefix}-animations-direction, normal);
 
   animation-duration: $duration;

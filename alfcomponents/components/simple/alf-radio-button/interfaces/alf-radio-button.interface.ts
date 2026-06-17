@@ -2,40 +2,24 @@ import {
   AlfRadioButtonVariantEnum,
   AlfSizeEnum,
   AlfColorVariantEnum,
+  AlfIconsUnicodeIconEnum,
 } from '@alfcomponents/enums';
 import {
-  AlfBackgroundsInterface,
-  AlfBorderInterface,
-  AlfDisplayAndLayoutInterface,
-  AlfMarginInterface,
-  AlfPaddingInterface,
-  AlfShadowsInterface,
-  AlfTextStyleInterface,
-  AlfTypographyInterface,
-  AlfAnimateCssInterface,
+  AlfBaseCommonConfigInterface,
 } from '@alfcomponents/interfaces';
+import { AlfRadioButtonI18nLabels } from '../i18n/alf-radio-button-i18n';
 
-export interface AlfRadioButtonInterface {
+export interface AlfRadioButtonInterface  extends AlfBaseCommonConfigInterface {
+  readonly id?: string;
   readonly radioButtonStyle?: AlfRadioButtonVariantEnum;
   readonly label?: string;
   readonly labelPosition?: 'before' | 'after';
   readonly checked?: boolean;
-  readonly disabled?: boolean;
   readonly size?: AlfSizeEnum;
   readonly error?: string;
   readonly helperText?: string;
-  readonly colorVariant?: AlfColorVariantEnum;
   readonly value?: any;
   readonly name?: string;
-  
-  // Overrides visuales
-  readonly backgrounds?: AlfBackgroundsInterface;
-  readonly border?: AlfBorderInterface;
-  readonly displayAndLayout?: AlfDisplayAndLayoutInterface;
-  readonly margin?: AlfMarginInterface;
-  readonly padding?: AlfPaddingInterface;
-  readonly shadows?: AlfShadowsInterface;
-  readonly textStyle?: AlfTextStyleInterface;
-  readonly typography?: AlfTypographyInterface;
-  readonly animations?: AlfAnimateCssInterface;
+  readonly iconSelected?: AlfIconsUnicodeIconEnum;
+  readonly predefined?: keyof AlfRadioButtonI18nLabels;
 }

@@ -4,7 +4,7 @@ AlfRadioButton is an Elite component designed for high-performance and premium a
 
 ## Implementation Details
 
-- **Inheritance**: Extends `AlfBaseConfiguration<AlfRadioButtonInterface>`.
+- **Inheritance**: Extends `AlfBaseDirectives`.
 - **State Management**: Uses Angular Signals `model()` for two-way binding (`checked`).
 - **Visual Engine**: Uses `visualPrefix = 'RadioButton'` (Maps to `--alf-rb` in CSS).
 - **Variants**: Supports `AlfColorVariantEnum` (Primary, Success, Danger, etc.) with robust string mapping.
@@ -67,7 +67,7 @@ export class MyComp {
 ```
 
 ## Internal Structure
-- `div.alf-rb`: Main container, applies layout/margin styles via the Elite engine.
+- `div.alf-rb`: Main container, applies layout/margin styles via the Elite engine. Also hosts structural directives like `alfRipple`, `alfTooltipText`, and `alfAnimations`.
 - `label.alf-rb-wrapper`: Clickable area, handles gap and orientation.
 - `input[type="radio"][hidden]`: Hidden native input for state and accessibility.
 - `div.alf-rb-circle`: The visual circle, applies background/border/shadow styles.

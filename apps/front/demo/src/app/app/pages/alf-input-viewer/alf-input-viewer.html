@@ -432,16 +432,36 @@
       </div>
     </div>
 
-    <!-- 11. ANIMACIONES -->
+    <!-- 11. COMPORTAMIENTOS EXTRA Y DIRECTIVAS -->
     <div class="inp-card inp-card--wide">
       <h2 class="inp-card__title">
         <span class="inp-card__dot inp-card__dot--cyan"></span>
-        11. Animaciones (Animate.css)
+        11. Comportamientos Extra y Directivas
       </h2>
       <div class="inp-card__body">
         <div class="inp-demo-col" style="gap: 1.5rem;">
           <div class="inp-demo-grid-4">
-            
+
+            <!-- Tooltip Nativo -->
+            <div class="inp-size-item" style="width: 100%;">
+              <alf-input
+                [appearance]="selectedAppearance()"
+                label="Con Tooltip Nativo"
+                [tooltip]="'Soy un tooltip de input!'"
+                helperText="Pasa el ratón sobre mí."
+                [(value)]="valStandard" />
+            </div>
+
+            <!-- Ripple -->
+            <div class="inp-size-item" style="width: 100%;">
+              <alf-input
+                [appearance]="selectedAppearance()"
+                label="Con Efecto Ripple"
+                [ripple]="true"
+                helperText="Haz clic para ver la onda."
+                [(value)]="valStandard" />
+            </div>
+
             <!-- Entrada y Salida -->
             <div class="inp-size-item" style="width: 100%;">
               <alf-input 

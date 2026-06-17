@@ -36,7 +36,7 @@ import { AlfRadioButton } from '@alfcomponents/components';
 | `config` | `AlfRadioButtonInterface` | Configuración detallada del componente. |
 | `checked` | `model<boolean>` | Estado de selección (Two-way binding). |
 | `label` | `input<string>` | Texto de la etiqueta. |
-| `size` | `input<AlfSizeEnum>` | Tamaño (SM, MD, LG, XL). |
+| `size` | `input<AlfSizeEnum \| string>` | Tamaño (SM, MD, LG, XL). |
 
 ## Variantes de Estilo
 

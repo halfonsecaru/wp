@@ -1,4 +1,4 @@
-@use '../../../visualStyles' as *;
+@use '../../../visualStyles/index' as *;
 
 :host {
   display: inline-flex;
@@ -15,14 +15,10 @@
 
   @include alf-transition;
 
-  // @include alf-display-layout-css-vars($prefix: '--alf-rb',     $display: flex,     $align: center,     $justify: flex-start,     $disabled-selectors: '&--disabled',     $focus-selectors: '&:focus-within, &:focus-visible'   );
-
-  // @include alf-padding-css-vars('--alf-rb', '&--disabled', '&:focus-within, &:focus-visible');
-  // @include alf-margin-css-vars('--alf-rb', '&--disabled', '&:focus-within, &:focus-visible');
-  // @include alf-typography-css-vars('--alf-rb', '&--disabled', '&:focus-within, &:focus-visible');
-  // // @include alf-text-style-css-vars('--alf-rb', '&--disabled', '&:focus-within, &:focus-visible');
-  // @include alf-outline-css-vars('--alf-rb', '&--disabled');
-  // @include alf-transform-css-vars('--alf-rb', '&--disabled');
+  @include alf-display-and-layout-style('--alf-rb', '&--disabled', '&--focused, &:focus-within, &:focus-visible');
+  @include alf-margin-style('--alf-rb', '&--disabled', '&--focused, &:focus-within, &:focus-visible');
+  @include alf-text-style('--alf-rb', '&--disabled', '&--focused, &:focus-within, &:focus-visible');
+  @include alf-size-style('--alf-rb', '&--disabled', '&--focused, &:focus-within, &:focus-visible');
 
   position: relative;
   cursor: pointer;
@@ -47,6 +43,20 @@
     &--label-before {
       flex-direction: row-reverse;
     }
+
+    .alf-rb-native-input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
   }
 
   // El "circulito" visual
@@ -64,17 +74,11 @@
     border-radius: 50%;
 
     // Aplicación de variables Élite de Borde y Sombra
-    // @include alf-background-css-vars('--alf-rb', '&--disabled', ':focus-within');
-    // @include alf-border-css-vars('--alf-rb', '&--disabled', ':focus-within');
-    // @include alf-shadows-css-vars('--alf-rb', '&--disabled');
-    // @include alf-transform-css-vars('--alf-rb', '&--disabled');
-
-    // Estilo Base (Unchecked)
-    background-color: transparent;
-
-    border-width: 1px !important;
-    border-style: solid !important;
-    border-color: var(--alf-rb-border-color, var(--alf-gray-300, #d1d5db));
+    @include alf-background-style('--alf-rb', '.alf-rb--disabled &', '.alf-rb--focused &');
+    @include alf-padding-style('--alf-rb', '.alf-rb--disabled &', '.alf-rb--focused &');
+    @include alf-border-style('--alf-rb', '.alf-rb--disabled &', '.alf-rb--focused &');
+    @include alf-shadows-style('--alf-rb', '.alf-rb--disabled &', '.alf-rb--focused &', '.alf-rb--hovered &', '.alf-rb--active &');
+    @include alf-transform-style('--alf-rb', '.alf-rb--disabled &', '.alf-rb--focused &');
 
     @include alf-transition;
   }
@@ -87,7 +91,7 @@
     width: 65%;
     height: 65%;
     border-radius: inherit;
-    background-color: var(--alf-rb-border-color, var(--alf-rb-bg-color, currentColor));
+    background-color: var(--alf-rb-text-color, var(--alf-rb-icon-color, var(--alf-white, #ffffff)));
     opacity: 0;
     transform: translate(-50%, -50%) scale(0);
     --alf-transition-duration: 0.3s;
@@ -96,16 +100,34 @@
   }
 
   // Estado Seleccionado
-  &--checked &-circle {
-    border-color: var(--alf-rb-border-color);
+  &--checked {
+    .alf-rb-circle {
+      background-color: var(--alf-rb-bg-color, var(--alf-rb-bg, var(--alf-rb-border-color, currentColor)));
+      background-image: var(--alf-rb-bg-img, none);
+      border-color: var(--alf-rb-border-color, var(--alf-rb-bg-color, currentColor));
 
-    .alf-rb-dot {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
+      .alf-rb-dot {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
+    &:hover .alf-rb-circle,
+    &.alf-rb--hovered .alf-rb-circle {
+      background-color: var(--alf-rb-bg-hover-color, var(--alf-rb-bg-hover, var(--alf-rb-bg-color, currentColor)));
+      background-image: var(--alf-rb-bg-hover-img, var(--alf-rb-bg-img, none));
+      border-color: var(--alf-rb-border-hover-color, var(--alf-rb-border-color, currentColor));
+    }
+
+    &:active .alf-rb-circle,
+    &.alf-rb--active .alf-rb-circle {
+      background-color: var(--alf-rb-bg-active-color, var(--alf-rb-bg-active, var(--alf-rb-bg-hover-color, var(--alf-rb-bg-color, currentColor))));
+      background-image: var(--alf-rb-bg-active-img, var(--alf-rb-bg-hover-img, var(--alf-rb-bg-img, none)));
+      border-color: var(--alf-rb-border-active-color, var(--alf-rb-border-hover-color, var(--alf-rb-border-color, currentColor)));
     }
   }
 
-  // Ripple Background (Opcional, si se usa WAAPI o CSS)
+  // Ripple Background
   &-ripple-bg {
     position: absolute;
     top: 50%;
@@ -120,6 +142,19 @@
     z-index: 0;
   }
 
+  .alf-rb-loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 10;
+  }
+
   // Texto del Label
   &-label-text {
     display: inline-flex;
@@ -127,8 +162,27 @@
     vertical-align: middle;
     font-family: inherit;
     line-height: normal;
-    color: var(--alf-rb-bg-color, var(--alf-rb-border-color, inherit)) !important;
+    color: var(--alf-rb-typography-color, var(--alf-rb-text-color, var(--alf-rb-border-color, inherit))) !important;
     @include alf-transition;
+    @include alf-typography-style(
+      '--alf-rb',
+      '.alf-rb--disabled &',
+      '.alf-rb--focused &',
+      '.alf-rb--hovered &',
+      '.alf-rb--active &'
+    );
+  }
+
+  &--hovered &-label-text {
+    color: var(--alf-rb-typography-hover-color, var(--alf-rb-typography-color, var(--alf-rb-text-color, var(--alf-rb-border-color, inherit)))) !important;
+  }
+
+  &--focused &-label-text {
+    color: var(--alf-rb-typography-focus-color, var(--alf-rb-typography-color, var(--alf-rb-text-color, var(--alf-rb-border-color, inherit)))) !important;
+  }
+
+  &--disabled &-label-text {
+    color: var(--alf-rb-typography-disabled-color, var(--alf-rb-text-disabled-color, var(--alf-rb-border-disabled-color, var(--alf-rb-border-color, inherit)))) !important;
   }
 
   // Descripciones y Helpers
@@ -149,6 +203,10 @@
 
   &--standard &-circle {
     border-radius: 0.25rem;
+
+    .alf-rb-dot {
+      border-radius: 0.15rem;
+    }
   }
 
   &--elegant &-circle {

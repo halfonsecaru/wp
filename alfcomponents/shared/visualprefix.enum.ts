@@ -1,4 +1,6 @@
 export enum visualprefixEnum {
+
+    
     // Componentes
     Buttons = '--alf-btn',
     TabsContainer = '--alf-tabs',
@@ -15,15 +17,25 @@ export enum visualprefixEnum {
     CardBody = '--alf-card-body',
     CardImg = '--alf-card-img',
     CardActions = '--alf-card-actions',
-
+    
+    
     // InternalIds
     ButtonsInternalId = '-alf-btn-id',
     SwitchInternalId = '-alf-sw-id',
+    
+    
     // Directivas
+    Button = 'alf-button',
     Ripple = '--alf-ripple',
     Tooltip = '--alf-tooltip',
     Loading = '--alf-loading',
     Popover = '--alf-popover',
+    Radio = 'alf-radio-button',
+    Check = 'alf-checkbox',
+    Inputt = 'alf-input',
+    Switchh = 'alf-switch',
+
+
     TabsContainerInternalId = "--alf-tabs-id",
     AutocompleteInternalId = '--alf-autocomplete-id',
     CardInternalId = '--alf-card-id'

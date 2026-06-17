@@ -572,7 +572,6 @@ export abstract class AlfBaseDirective {
     duration: '300ms',
     delay: '0ms',
     iterationCount: 1,
-    fillMode: 'both',
     direction: 'normal'
   });
 

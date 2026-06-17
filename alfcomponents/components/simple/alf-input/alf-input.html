@@ -8,10 +8,17 @@
 @let transform = transformComputed();
 @let transition = transitionComputed();
 @let typography = typographyComputed();
+@let tt = tooltip();
+@let rp = ripple();
+@let an = animations();
 
 <div class="alf-input-wrapper" 
   [alfMargin]="margin" 
-  [alfPrefix]="cssPrefix()">
+  [alfPrefix]="cssPrefix()"
+  [alfRipple]="rp !== undefined ? rp : null"
+  [alfTooltipText]="tt ? tt : null"
+  [alfAnimations]="an ? an : null"
+>
   <div
     [class]="baseCssClass()"
     [class.alf-input--disabled]="disabledComputed()"

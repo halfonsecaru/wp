@@ -59,19 +59,40 @@ describe('AlfRadioButton', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  describe('Elite Variants', () => {
-    it('should resolve PrimaryOutline correctly', () => {
-      fixture.componentRef.setInput('variant', AlfColorVariantEnum.PrimaryOutline);
+  describe('Component Configuration', () => {
+    it('should compute labelPosition correctly', () => {
+      fixture.componentRef.setInput('labelPosition', 'before');
       fixture.detectChanges();
       
-      expect(component.isOutline()).toBe(true);
+      expect(component.labelPositionComputed()).toBe('before');
     });
 
-    it('should resolve PrimarySoft correctly', () => {
-      fixture.componentRef.setInput('variant', AlfColorVariantEnum.PrimarySoft);
+    it('should compute radioButtonStyle correctly', () => {
+      fixture.componentRef.setInput('radioButtonStyle', 'standard');
       fixture.detectChanges();
       
-      expect(component.isSoft()).toBe(true);
+    });
+
+    it('should compute size correctly', () => {
+      fixture.componentRef.setInput('size', 'lg');
+      fixture.detectChanges();
+      
+      expect(component.sizeComputed()).toBe('lg');
+    });
+
+    it('should compute value correctly', () => {
+      fixture.componentRef.setInput('value', 'testValue');
+      fixture.detectChanges();
+      
+      expect(component.value()).toBe('testValue');
+    });
+
+    it('should fall back to inputConfig correctly', () => {
+      fixture.componentRef.setInput('config', { radioButtonStyle: 'elegant', labelPosition: 'after' });
+      fixture.detectChanges();
+      
+      expect(component.radioButtonStyleComputed()).toBe('elegant');
+      expect(component.labelPositionComputed()).toBe('after');
     });
   });
 

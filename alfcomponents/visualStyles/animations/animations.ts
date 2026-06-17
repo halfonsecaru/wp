@@ -48,7 +48,7 @@ export class AlfAnimationsDirective {
     if (stage && typeof stage !== 'string' && (stage as AlfAnimateCssStateInterface).duration) {
       return (stage as AlfAnimateCssStateInterface).duration;
     }
-    return config?.duration;
+    return config?.duration || '500ms';
   });
 
   protected readonly resolvedDelay = computed(() => {
@@ -86,7 +86,7 @@ export class AlfAnimationsDirective {
     if (stage && typeof stage !== 'string' && (stage as AlfAnimateCssStateInterface).fillMode) {
       return (stage as AlfAnimateCssStateInterface).fillMode;
     }
-    return config?.fillMode || 'both';
+    return config?.fillMode;
   });
 
   protected readonly resolvedDirection = computed(() => {

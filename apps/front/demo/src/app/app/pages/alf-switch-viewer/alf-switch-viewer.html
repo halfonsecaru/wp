@@ -15,11 +15,11 @@
         <div class="sw-demo-row">
           <div class="sw-demo-item">
             <span class="sw-demo-label">Elegant</span>
-            <alf-switch switchStyle="elegant" labelText="Estilo elegant" (checked)="checkedElegant" />
+            <alf-switch switchStyle="elegant" labelText="Estilo elegant" [(checked)]="checkedElegant" />
           </div>
           <div class="sw-demo-item">
             <span class="sw-demo-label">Standard</span>
-            <alf-switch switchStyle="standard" labelText="Estilo standard" (checked)="checkedStandard" />
+            <alf-switch switchStyle="standard" labelText="Estilo standard" [(checked)]="checkedStandard" />
           </div>
         </div>
       </div>
@@ -33,8 +33,8 @@
       </h2>
       <div class="sw-card__body">
         <div class="sw-demo-col">
-          <alf-switch labelText="Label a la derecha (Default)" (checked)="checkedBasic" />
-          <alf-switch labelText="Label a la izquierda" labelPosition="before" (checked)="checkedLabelBefore" />
+          <alf-switch labelText="Label a la derecha (Default)" [(checked)]="checkedBasic" />
+          <alf-switch labelText="Label a la izquierda" labelPosition="before" [(checked)]="checkedLabelBefore" />
         </div>
       </div>
     </div>
@@ -49,27 +49,27 @@
         <div class="sw-demo-sizes">
           <div class="sw-size-item">
             <span class="sw-size-badge">XS</span>
-            <alf-switch size="xs" labelText="XS" (checked)="checkedXS" />
+            <alf-switch size="xs" labelText="XS" [(checked)]="checkedXS" />
           </div>
           <div class="sw-size-item">
             <span class="sw-size-badge">SM</span>
-            <alf-switch size="sm" labelText="SM" (checked)="checkedSM" />
+            <alf-switch size="sm" labelText="SM" [(checked)]="checkedSM" />
           </div>
           <div class="sw-size-item">
             <span class="sw-size-badge">MD</span>
-            <alf-switch size="md" labelText="MD" (checked)="checkedMD" />
+            <alf-switch size="md" labelText="MD" [(checked)]="checkedMD" />
           </div>
           <div class="sw-size-item">
             <span class="sw-size-badge">LG</span>
-            <alf-switch size="lg" labelText="LG" (checked)="checkedLG" />
+            <alf-switch size="lg" labelText="LG" [(checked)]="checkedLG" />
           </div>
           <div class="sw-size-item">
             <span class="sw-size-badge">XL</span>
-            <alf-switch size="xl" labelText="XL" (checked)="checkedXL" />
+            <alf-switch size="xl" labelText="XL" [(checked)]="checkedXL" />
           </div>
           <div class="sw-size-item">
             <span class="sw-size-badge">2XL</span>
-            <alf-switch size="2xl" labelText="2XL" (checked)="checkedXXL" />
+            <alf-switch size="2xl" labelText="2XL" [(checked)]="checkedXXL" />
           </div>
         </div>
       </div>
@@ -311,8 +311,8 @@
       </h2>
       <div class="sw-card__body">
         <div class="sw-demo-col">
-          <alf-switch labelText="Notificaciones push" helperText="Recibirás alertas en tiempo real" (checked)="checkedWithHelper" />
-          <alf-switch labelText="Campo obligatorio" error="Este campo es obligatorio" (checked)="checkedWithError" />
+          <alf-switch labelText="Notificaciones push" helperText="Recibirás alertas en tiempo real" [(checked)]="checkedWithHelper" />
+          <alf-switch labelText="Campo obligatorio" error="Este campo es obligatorio" [(checked)]="checkedWithError" />
           
           <div class="sw-demo-row" style="margin-top: 0.5rem; gap: 1rem;">
             <div class="sw-demo-item">
@@ -356,7 +356,7 @@
                   --alf-sw-shadows-hover-box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
                 "
                 labelText="Interactiva"
-                (checked)="checkedShadowSoft"
+                [(checked)]="checkedShadowSoft"
               />
             </div>
             <div class="sw-size-item">
@@ -367,7 +367,7 @@
                   --alf-sw-shadows-focus-box-shadow: 0 0 15px rgba(59, 130, 246, 0.8);
                 "
                 labelText="Foco brillante"
-                (checked)="checkedShadowGlow"
+                [(checked)]="checkedShadowGlow"
               />
             </div>
           </div>
@@ -381,7 +381,7 @@
                   --alf-sw-shadows-hover-box-shadow: 0 12px 24px rgba(139, 92, 246, 0.45);
                 "
                 labelText="Neón profundo"
-                (checked)="checkedShadowNeon"
+                [(checked)]="checkedShadowNeon"
               />
             </div>
             <div class="sw-size-item">
@@ -392,9 +392,53 @@
                   --alf-sw-shadows-hover-box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.4);
                 "
                 labelText="Sombra dura"
-                (checked)="checkedShadowRetro"
+                [(checked)]="checkedShadowRetro"
               />
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. COMPORTAMIENTOS EXTRA Y DIRECTIVAS -->
+    <div class="sw-card sw-card--wide">
+      <h2 class="sw-card__title">
+        <span class="sw-card__dot sw-card__dot--cyan"></span>
+        Comportamientos Extra y Directivas
+      </h2>
+      <div class="sw-card__body">
+        <div class="sw-demo-row">
+          <!-- Tooltip -->
+          <div class="sw-demo-item">
+            <span class="sw-demo-label">Con Tooltip Nativo</span>
+            <alf-switch 
+              [config]="{ labelText: 'Pasa el ratón' }" 
+              [tooltip]="'Soy un tooltip interactivo nativo'"
+              [checked]="selectedExtraGroup() === 'tooltip'"
+              (onCheckedChange)="selectedExtraGroup.set('tooltip')"
+            />
+          </div>
+
+          <!-- Sin Ripple -->
+          <div class="sw-demo-item">
+            <span class="sw-demo-label">Sin Efecto Ripple</span>
+            <alf-switch 
+              [config]="{ labelText: 'Click sin onda' }" 
+              [ripple]="false"
+              [checked]="selectedExtraGroup() === 'noripple'"
+              (onCheckedChange)="selectedExtraGroup.set('noripple')"
+            />
+          </div>
+
+          <!-- Animaciones -->
+          <div class="sw-demo-item">
+            <span class="sw-demo-label">Animación Infinita</span>
+            <alf-switch 
+              [config]="{ labelText: 'Mírame pulsar' }" 
+              [animations]="{ enterStage: 'pulse', infinite: true, duration: '2s' }"
+              [checked]="selectedExtraGroup() === 'anim'"
+              (onCheckedChange)="selectedExtraGroup.set('anim')"
+            />
           </div>
         </div>
       </div>

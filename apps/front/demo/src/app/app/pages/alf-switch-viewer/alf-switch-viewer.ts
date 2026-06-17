@@ -19,6 +19,9 @@ export class AlfSwitchViewer {
   // ── Reactive state of individual examples ──────────────────────────────────
   public readonly checkedElegant = signal<boolean>(true);
   public readonly checkedStandard = signal<boolean>(false);
+  public readonly selectedStyleGroup = signal<string>('elegant');
+  public readonly selectedLabelPosGroup = signal<string>('after');
+  public readonly selectedExtraGroup = signal<string>('tooltip');
   public readonly checkedBasic = signal<boolean>(false);
   public readonly checkedLabelBefore = signal<boolean>(false);
   public readonly checkedWithHelper = signal<boolean>(false);

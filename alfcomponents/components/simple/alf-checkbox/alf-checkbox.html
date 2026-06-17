@@ -1,50 +1,36 @@
-@let bg = backgroundComputed();
-@let bd = borderComputed();
-@let ot = outlineComputed();
-@let sd = shadowsComputed();
-@let an = animations();
-@let mg = marginComputed();
-@let pd = paddingComputed();
-@let ty = typographyComputed();
-@let ts = textStyleComputed();
-@let tr = transformComputed();
-@let tsn = transitionComputed();
-@let dl = displayAndLayoutComputed();
-@let sz = sizeComputed();
-@let ar = aria();
-@let tt = tooltip();
-@let rp = ripple();
-@let cr = cursor();
-@let ds = isDisabled();
-@let cc = customClass();
-@let cs = customStyle();
-@let ie = isExiting();
-
-@let idCheckbox = internalId;
-@let labelText = labelComputed();
-@let labelPos = labelPositionComputed();
-@let isChecked = checked();
-@let isIndeterminate = isIndeterminatedComputed();
-@let styleVariant = checkboxStyleComputed();
-@let icon = iconSelectedComputed();
-@let checkboxName = nameComputed();
-@let isHovered = hovered();
-@let isFocused = focused();
+@let bg = backgroundComputed(); @let bd = borderComputed(); @let ot = outlineComputed(); @let sd = shadowsComputed(); @let an = animations(); @let mg
+= marginComputed(); @let pd = paddingComputed(); @let ty = typographyComputed(); @let ts = textStyleComputed(); @let tr = transformComputed(); @let
+tsn = transitionComputed(); @let dl = displayAndLayoutComputed(); @let sz = sizeComputed(); @let ar = aria(); @let tt = tooltip(); @let rp = ripple();
+@let cr = cursor(); @let ds = disabled(); @let cc = customClass(); @let cs = customStyle(); @let ie = isExiting(); @let idCheckbox = idComputed();
+@let labelText = labelComputed(); @let labelPos = labelPositionComputed(); @let isChecked = checked(); @let isIndeterminate =
+isIndeterminatedComputed(); @let styleVariant = checkboxStyleComputed(); @let icon = iconSelectedComputed(); @let checkboxName = nameComputed(); @let
+isHovered = hovered(); @let isFocused = focused(); @let ld = isLoading();
 
 <div
   (mouseenter)="hovered.set(true)"
   (mouseleave)="hovered.set(false)"
-  [alfBackground]="bg ? bg : null" alfPrefix="--alf-cb"
-  [alfBorder]="bd ? bd : null"     alfPrefix="--alf-cb"
-  [alfOutline]="ot ? ot : null"    alfPrefix="--alf-cb"
-  [alfShadows]="sd ? sd : null"    alfPrefix="--alf-cb"
-  [alfMargin]="mg ? mg : null"     alfPrefix="--alf-cb"
-  [alfPadding]="pd ? pd : null"    alfPrefix="--alf-cb"
-  [alfTypography]="ty ? ty : null" alfPrefix="--alf-cb"
-  [alfTextStyle]="ts ? ts : null"  alfPrefix="--alf-cb"
-  [alfTransform]="tr ? tr : null"  alfPrefix="--alf-cb"
-  [alfTransition]="tsn ? tsn : null" alfPrefix="--alf-cb"
-  [alfDisplayAndLayout]="dl ? dl : null" alfPrefix="--alf-cb"
+  [alfBackground]="bg ? bg : null"
+  alfPrefix="--alf-cb"
+  [alfBorder]="bd ? bd : null"
+  alfPrefix="--alf-cb"
+  [alfOutline]="ot ? ot : null"
+  alfPrefix="--alf-cb"
+  [alfShadows]="sd ? sd : null"
+  alfPrefix="--alf-cb"
+  [alfMargin]="mg ? mg : null"
+  alfPrefix="--alf-cb"
+  [alfPadding]="pd ? pd : null"
+  alfPrefix="--alf-cb"
+  [alfTypography]="ty ? ty : null"
+  alfPrefix="--alf-cb"
+  [alfTextStyle]="ts ? ts : null"
+  alfPrefix="--alf-cb"
+  [alfTransform]="tr ? tr : null"
+  alfPrefix="--alf-cb"
+  [alfTransition]="tsn ? tsn : null"
+  alfPrefix="--alf-cb"
+  [alfDisplayAndLayout]="dl ? dl : null"
+  alfPrefix="--alf-cb"
   [alfCursor]="cr ? cr : null"
   [alfSize]="sz ? sz : null"
   [alfDisabled]="ds"
@@ -53,24 +39,28 @@
   [class.alf-cb--checked]="isChecked"
   [class.alf-cb--indeterminate]="isIndeterminate"
   [class.alf-cb--disabled]="ds"
+  [class.alf-cb--loading]="ld"
   [class.alf-cb--hovered]="isHovered"
   [class.alf-cb--focused]="isFocused"
   [style]="cs ? cs : null"
+  [alfRipple]="rp !== undefined ? rp : null"
+  [alfTooltipText]="tt ? tt : null"
+  [alfAnimations]="an ? an : null"
 >
   <label
     class="alf-cb-wrapper"
     [class.alf-cb-wrapper--label-before]="labelPos === 'before'"
     [attr.for]="idCheckbox"
-    [style.cursor]="ds ? 'not-allowed' : (cr || null)"
+    [style.cursor]="ds || ld ? 'not-allowed' : (cr || null)"
     (click)="onLabelClick($event)"
   >
-    <!-- Input oculto para accesibilidad -->
+    <!-- Input nativo oculto pero accesible por tabulación -->
     <input
       type="checkbox"
-      hidden
+      class="alf-cb-native-input"
       [id]="idCheckbox"
       [name]="checkboxName"
-      [disabled]="ds"
+      [disabled]="ds || ld"
       [checked]="isChecked"
       [indeterminate]="isIndeterminate"
       (change)="onInputChange($event)"
@@ -83,7 +73,7 @@
     />
 
     <!-- Contenedor Visual (Box) -->
-    <div class="alf-cb-box" [alfRipple]="rp !== undefined ? rp : null" [alfTooltipText]="tt ? tt : null">
+    <div class="alf-cb-box">
       @if (isIndeterminate || (isChecked && iconSelected())) {
       <span class="alf-cb-icon">{{ icon }}</span>
       } @else if (isChecked) {
@@ -106,11 +96,16 @@
     <span class="alf-cb-label-text">{{ labelText }}</span>
     }
   </label>
+
+  @if (ld) {
+  <div class="alf-cb-loading-overlay">
+    <alf-spinner [size]="AlfRemEnum.Rem15" />
+  </div>
+  }
 </div>
 
 <!-- Helper y Errores -->
-@let helper = $safeNavigationMigration(helperComputed()); @let errorMsg = $safeNavigationMigration(errorComputed()); 
-@if (helper || errorMsg) {
+@let helper = $safeNavigationMigration(helperComputed()); @let errorMsg = $safeNavigationMigration(errorComputed()); @if (helper || errorMsg) {
 <div [id]="idCheckbox + '-description'" class="alf-cb-description">
   @if (errorMsg) {
   <span class="alf-cb-error">{{ errorMsg }}</span>

@@ -21,6 +21,7 @@ export class AlfCheckboxViewer {
 
   public readonly selectedStyleGroup = signal<string>('elegant');
   public readonly selectedLabelPosGroup = signal<string>('after');
+  public readonly selectedExtraGroup = signal<string>('tooltip');
   public readonly selectedSizeGroup = signal<AlfSizeEnum>(AlfSizeEnum.MD);
 
   public readonly selectedSolidElegantGroup = signal<string>('primary');

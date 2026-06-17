@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, signal, computed } from '@angular/core';
-import { AlfButton, AlfCheckbox, AlfInput, AlfTabsContainerComponent, AlfTabComponent, AlfSpinner } from '@alfcomponents/components';
+import { AlfButton, AlfCheckbox, AlfInput, AlfRadioButton, AlfTabsContainerComponent, AlfTabComponent, AlfSpinner } from '@alfcomponents/components';
 import { AlfInputInterface } from '@alfcomponents/components/simple/alf-input/interfaces/alf-input.interface';
 import {
   AlfColorVariantEnum,
@@ -51,7 +51,7 @@ type CssState = 'default' | 'hover' | 'focus' | 'active' | 'disabled';
 @Component({
   selector: 'app-alf-playground',
   standalone: true,
-  imports: [AlfButton, AlfCheckbox, AlfInput, AlfTabsContainerComponent, AlfTabComponent, AlfSpinner],
+  imports: [AlfButton, AlfCheckbox, AlfInput, AlfRadioButton, AlfTabsContainerComponent, AlfTabComponent, AlfSpinner],
   templateUrl: './alf-playground.html',
   styleUrl: './alf-playground.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -84,8 +84,8 @@ export class AlfPlayground {
   public readonly components = [
     { id: 'alf-button', label: 'AlfButton', icon: '🔘' },
     { id: 'alf-checkbox', label: 'AlfCheckbox', icon: '☑️' },
-    { id: 'alf-input', label: 'AlfInput', icon: '✍️' },
-    { id: 'alf-spinner', label: 'AlfSpinner', icon: '⏳' },
+    { id: 'alf-input', label: 'AlfInput', icon: '⌨️' },
+    { id: 'alf-radio-button', label: 'AlfRadioButton', icon: '📻' }
   ] as const;
   public readonly selectedComponentId = signal<string>('alf-button');
 
@@ -123,7 +123,7 @@ export class AlfPlayground {
   public readonly textColor = this.initStateSignal();
   public readonly fontSize = this.initStateSignal();
   public readonly fontWeight = this.initStateSignal();
-  
+
   public readonly typographyColor = this.initStateSignal();
   public readonly typographyFontSize = this.initStateSignal();
   public readonly typographyFontWeight = this.initStateSignal();
@@ -137,10 +137,10 @@ export class AlfPlayground {
 
   public readonly transitionDuration = this.initStateSignal();
   public readonly transitionTiming = this.initStateSignal();
-  
+
   public readonly animEnterStage = signal<string | undefined>(undefined);
   public readonly animExitStage = signal<string | undefined>(undefined);
-  public readonly animDuration = signal<string | undefined>('400ms');
+  public readonly animDuration = signal<string | undefined>(undefined);
   public readonly animDelay = signal<string | undefined>(undefined);
   public readonly animIteration = signal<string | undefined>(undefined);
   public readonly animInfinite = signal<boolean>(false);
@@ -182,23 +182,38 @@ export class AlfPlayground {
   public readonly inputBehaviorMinLength = signal<string>('');
   public readonly inputBehaviorMin = signal<string>('');
   public readonly inputBehaviorMax = signal<string>('');
+
+  // Checkbox properties
+  public readonly cbBehaviorLabelPos = signal<'before' | 'after'>('after');
+  public readonly cbBehaviorStyle = signal<'standard' | 'elegant'>('elegant');
+  public readonly cbBehaviorHelper = signal<string>('');
+  public readonly cbBehaviorError = signal<string>('');
+  public readonly cbBehaviorChecked = signal<boolean>(false);
+  public readonly cbBehaviorIndeterminate = signal<boolean>(false);
   public readonly inputBehaviorPattern = signal<string>('');
 
+  // Radio Button properties
+  public readonly rbBehaviorLabelPos = signal<'before' | 'after'>('after');
+  public readonly rbBehaviorStyle = signal<'standard' | 'elegant'>('elegant');
+  public readonly rbBehaviorHelper = signal<string>('');
+  public readonly rbBehaviorError = signal<string>('');
+  public readonly rbBehaviorChecked = signal<boolean>(false);
+
   public readonly inputBehaviorConfig = computed<AlfInputInterface>(() => {
-    const label       = this.inputBehaviorLabel();
+    const label = this.inputBehaviorLabel();
     const placeholder = this.inputBehaviorPlaceholder();
-    const helperText  = this.inputBehaviorHelperText();
-    const error       = this.inputBehaviorError();
-    const appearance  = this.inputBehaviorAppearance();
-    const type        = this.inputBehaviorType();
-    const prefix      = this.inputBehaviorPrefix();
-    const suffix      = this.inputBehaviorSuffix();
-    const required    = this.inputBehaviorRequired();
-    const readonly    = this.inputBehaviorReadonly();
-    const clearable   = this.inputBehaviorClearable();
-    const showPwd     = this.inputBehaviorShowPwdToggle();
+    const helperText = this.inputBehaviorHelperText();
+    const error = this.inputBehaviorError();
+    const appearance = this.inputBehaviorAppearance();
+    const type = this.inputBehaviorType();
+    const prefix = this.inputBehaviorPrefix();
+    const suffix = this.inputBehaviorSuffix();
+    const required = this.inputBehaviorRequired();
+    const readonly = this.inputBehaviorReadonly();
+    const clearable = this.inputBehaviorClearable();
+    const showPwd = this.inputBehaviorShowPwdToggle();
     const maxLengthRaw = this.inputBehaviorMaxLength();
-    const maxLength   = maxLengthRaw ? parseInt(maxLengthRaw, 10) : undefined;
+    const maxLength = maxLengthRaw ? parseInt(maxLengthRaw, 10) : undefined;
     const showCounter = this.inputBehaviorShowCharCounter();
 
     const stepRaw = this.inputBehaviorStep();
@@ -217,19 +232,19 @@ export class AlfPlayground {
     const pattern = this.inputBehaviorPattern();
 
     const cfg: AlfInputInterface = {};
-    if (label)       (cfg as any).label       = label;
+    if (label) (cfg as any).label = label;
     if (placeholder) (cfg as any).placeholder = placeholder;
-    if (helperText)  (cfg as any).helperText  = helperText;
-    if (error)       (cfg as any).error        = error;
-    if (appearance)  (cfg as any).appearance   = appearance as AlfInputAppearanceEnum;
-    if (type)        (cfg as any).inputType    = type as AlfInputTypeEnum;
-    if (prefix)      (cfg as any).prefix       = prefix;
-    if (suffix)      (cfg as any).suffix       = suffix;
-    if (required)    (cfg as any).required     = true;
-    if (readonly)    (cfg as any).readonly     = true;
-    if (clearable)   (cfg as any).clearable    = true;
+    if (helperText) (cfg as any).helperText = helperText;
+    if (error) (cfg as any).error = error;
+    if (appearance) (cfg as any).appearance = appearance as AlfInputAppearanceEnum;
+    if (type) (cfg as any).inputType = type as AlfInputTypeEnum;
+    if (prefix) (cfg as any).prefix = prefix;
+    if (suffix) (cfg as any).suffix = suffix;
+    if (required) (cfg as any).required = true;
+    if (readonly) (cfg as any).readonly = true;
+    if (clearable) (cfg as any).clearable = true;
     (cfg as any).showPasswordToggle = showPwd;
-    if (maxLength)   (cfg as any).maxLength    = maxLength;
+    if (maxLength) (cfg as any).maxLength = maxLength;
     if (showCounter) (cfg as any).showCharCounter = true;
 
     if (step !== undefined) (cfg as any).step = step;
@@ -260,53 +275,34 @@ export class AlfPlayground {
   });
 
   private parseDuration(duration: string | undefined): number {
-    if (!duration) return 400;
+    if (!duration) return 500;
     if (duration.endsWith('ms')) return parseInt(duration, 10);
     if (duration.endsWith('s')) return parseFloat(duration) * 1000;
-    return 400;
+    return 500;
   }
 
   public readonly playAnimation = (): void => {
-    // 1. Desactivar animación limpiando las clases
-    this.forceNoAnimation.set(true);
     const dur = this.parseDuration(this.animDuration());
     const hasExit = !!this.animExitStage();
     const hasEnter = !!this.animEnterStage();
 
     if (!hasExit && !hasEnter) {
-      this.forceNoAnimation.set(false);
       return;
     }
 
-    // Pequeño delay para que Angular procese forceNoAnimation=true en el DOM
-    setTimeout(() => {
-      this.forceNoAnimation.set(false);
-
-      if (hasExit && hasEnter) {
-        this.isExiting.set(true); // Arranca salida
+    if (hasExit && hasEnter) {
+      this.isExiting.set(true); // Arranca salida
+      setTimeout(() => {
+        // La salida terminó. Esperamos 5 segundos antes de lanzar la entrada
         setTimeout(() => {
-          // Limpiar clases un instante
-          this.forceNoAnimation.set(true);
-          setTimeout(() => {
-            this.isExiting.set(false); // Arranca entrada
-            this.forceNoAnimation.set(false);
-            setTimeout(() => this.forceNoAnimation.set(true), dur);
-          }, 20);
-        }, dur);
-      } else if (hasExit && !hasEnter) {
-        this.isExiting.set(true);
-        setTimeout(() => {
-          this.forceNoAnimation.set(true);
-          this.isExiting.set(false);
-        }, dur);
-      } else if (!hasExit && hasEnter) {
-        this.isExiting.set(false);
-        setTimeout(() => {
-          this.forceNoAnimation.set(true);
-        }, dur);
-      }
-
-    }, 20);
+          this.isExiting.set(false); // Arranca entrada directamente
+        }, 500);
+      }, dur);
+    } else if (hasExit && !hasEnter) {
+      this.isExiting.set(true);
+    } else if (!hasExit && hasEnter) {
+      this.isExiting.set(false);
+    }
   };
 
   public readonly layoutDisplay = this.initStateSignal();
@@ -543,7 +539,7 @@ export class AlfPlayground {
 
     this.animEnterStage.set(undefined);
     this.animExitStage.set(undefined);
-    this.animDuration.set('400ms');
+    this.animDuration.set(undefined);
     this.animDelay.set(undefined);
     this.animIteration.set(undefined);
     this.animInfinite.set(false);
@@ -620,10 +616,6 @@ export class AlfPlayground {
     const parts: string[] = [];
     const comp = this.selectedComponentId();
     const variant = this.compVariant();
-    if (comp === 'alf-spinner') {
-      const sizeStr = this.compSize() ? ` size="${this.compSize()}"` : '';
-      return `<alf-spinner${sizeStr}></alf-spinner>`;
-    }
 
     const size = this.compSize();
     const label = this.compLabel();
@@ -634,6 +626,23 @@ export class AlfPlayground {
     if (size) parts.push(`  size="${size}"`);
     if (this.compDisabled()) parts.push(`  [isDisabled]="true"`);
     if (this.compIsLoading()) parts.push(`  [isLoading]="true"`);
+
+    if (comp === 'alf-checkbox') {
+      if (this.cbBehaviorLabelPos() !== 'after') parts.push(`  labelPosition="${this.cbBehaviorLabelPos()}"`);
+      if (this.cbBehaviorStyle() !== 'elegant') parts.push(`  checkboxStyle="${this.cbBehaviorStyle()}"`);
+      if (this.cbBehaviorHelper()) parts.push(`  helperText="${this.cbBehaviorHelper()}"`);
+      if (this.cbBehaviorError()) parts.push(`  error="${this.cbBehaviorError()}"`);
+      if (this.cbBehaviorChecked()) parts.push(`  [checked]="true"`);
+      if (this.cbBehaviorIndeterminate()) parts.push(`  [indeterminate]="true"`);
+    }
+
+    if (comp === 'alf-radio-button') {
+      if (this.rbBehaviorLabelPos() !== 'after') parts.push(`  labelPosition="${this.rbBehaviorLabelPos()}"`);
+      if (this.rbBehaviorStyle() !== 'elegant') parts.push(`  radioButtonStyle="${this.rbBehaviorStyle()}"`);
+      if (this.rbBehaviorHelper()) parts.push(`  helperText="${this.rbBehaviorHelper()}"`);
+      if (this.rbBehaviorError()) parts.push(`  error="${this.rbBehaviorError()}"`);
+      if (this.rbBehaviorChecked()) parts.push(`  [checked]="true"`);
+    }
 
     if (comp === 'alf-input' && Object.keys(this.inputBehaviorConfig()).length) {
       parts.push(`  [config]="myInputConfig"`);
@@ -658,7 +667,7 @@ export class AlfPlayground {
 
   public readonly tsPreview = computed<string>(() => {
     const parts: string[] = [];
-    
+
     if (this.selectedComponentId() === 'alf-input') {
       const inpCfg = this.inputBehaviorConfig();
       if (Object.keys(inpCfg).length) {
@@ -668,7 +677,7 @@ export class AlfPlayground {
 
     const bg = this.backgroundConfig();
     if (Object.keys(bg).length) parts.push(`public myBackgroundConfig: AlfBackgroundsInterface = ${this.stringifyConfig(bg)};\n`);
-    
+
     const border = this.borderConfig();
     if (Object.keys(border).length) parts.push(`public myBorderConfig: AlfBorderInterface = ${this.stringifyConfig(border)};\n`);
 
@@ -709,25 +718,25 @@ export class AlfPlayground {
     return parts.join('\n');
   });
 
-  private readonly propEnumMap: Record<string, { enumName: string, entries: {key: string, value: string}[] }[]> = {
+  private readonly propEnumMap: Record<string, { enumName: string, entries: { key: string, value: string }[] }[]> = {
     backgroundColor: [{ enumName: 'AlfColorEnum', entries: enumEntries(AlfColorEnum) }],
     borderColor: [{ enumName: 'AlfColorEnum', entries: enumEntries(AlfColorEnum) }],
     outlineColor: [{ enumName: 'AlfColorEnum', entries: enumEntries(AlfColorEnum) }],
     boxShadowColor: [{ enumName: 'AlfColorEnum', entries: enumEntries(AlfColorEnum) }],
     color: [{ enumName: 'AlfColorEnum', entries: enumEntries(AlfColorEnum) }],
-    
+
     borderWidth: [{ enumName: 'AlfPxEnum', entries: enumEntries(AlfPxEnum) }],
     outlineWidth: [{ enumName: 'AlfPxEnum', entries: enumEntries(AlfPxEnum) }],
     outlineOffset: [{ enumName: 'AlfPxEnum', entries: enumEntries(AlfPxEnum) }],
     padding: [{ enumName: 'AlfPxEnum', entries: enumEntries(AlfPxEnum) }],
     margin: [{ enumName: 'AlfPxEnum', entries: enumEntries(AlfPxEnum) }],
-    
+
     width: [{ enumName: 'AlfPercentageEnum', entries: enumEntries(AlfPercentageEnum) }, { enumName: 'AlfPxEnum', entries: enumEntries(AlfPxEnum) }],
     height: [{ enumName: 'AlfPercentageEnum', entries: enumEntries(AlfPercentageEnum) }, { enumName: 'AlfPxEnum', entries: enumEntries(AlfPxEnum) }],
-    
+
     borderStyle: [{ enumName: 'AlfBorderStyleEnum', entries: enumEntries(AlfBorderStyleEnum) }],
     outlineStyle: [{ enumName: 'AlfBorderStyleEnum', entries: enumEntries(AlfBorderStyleEnum) }],
-    
+
     borderRadius: [{ enumName: 'AlfRadiusEnum', entries: enumEntries(AlfRadiusEnum) }],
     boxShadow: [{ enumName: 'AlfShadowEnum', entries: enumEntries(AlfShadowEnum) }],
     fontSize: [{ enumName: 'AlfFontSizeEnum', entries: enumEntries(AlfFontSizeEnum) }],
@@ -744,7 +753,7 @@ export class AlfPlayground {
   private formatConfigValue(prop: string, val: any): string {
     if (typeof val === 'number') return val.toString();
     if (typeof val === 'boolean') return val.toString();
-    
+
     const mappings = this.propEnumMap[prop];
     if (mappings) {
       for (const mapping of mappings) {
@@ -759,7 +768,7 @@ export class AlfPlayground {
 
   private stringifyConfig(obj: any, indent: string = ''): string {
     if (!obj || typeof obj !== 'object') return String(obj);
-    
+
     const lines: string[] = [];
     lines.push('{');
     for (const [key, value] of Object.entries(obj)) {

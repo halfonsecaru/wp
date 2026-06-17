@@ -59,6 +59,39 @@
           @if (selectedComponentId() === 'alf-checkbox') {
             <alf-checkbox
               [label]="compLabel()"
+              [labelPosition]="$any(cbBehaviorLabelPos())"
+              [checkboxStyle]="$any(cbBehaviorStyle())"
+              [helperText]="cbBehaviorHelper()"
+              [error]="cbBehaviorError()"
+              [checked]="cbBehaviorChecked()"
+              [indeterminate]="cbBehaviorIndeterminate()"
+              [variant]="compVariant()"
+              [size]="compSize()"
+              [disabled]="compDisabled()"
+              [isLoading]="compIsLoading()"
+              [background]="backgroundConfig()"
+              [border]="borderConfig()"
+              [outline]="outlineConfig()"
+              [shadows]="shadowsConfig()"
+              [textStyle]="textStyleConfig()"
+              [typography]="typographyConfig()"
+              [padding]="paddingConfig()"
+              [margin]="marginConfig()"
+              [transform]="transformConfig()"
+              [transition]="transitionConfig()"
+              [animations]="previewAnimationsConfig()"
+              [isExiting]="isExiting()"
+              [displayAndLayout]="displayLayoutConfig()"
+            />
+          }
+          @if (selectedComponentId() === 'alf-radio-button') {
+            <alf-radio-button
+              [label]="compLabel()"
+              [labelPosition]="$any(rbBehaviorLabelPos())"
+              [radioButtonStyle]="$any(rbBehaviorStyle())"
+              [helperText]="rbBehaviorHelper()"
+              [error]="rbBehaviorError()"
+              [checked]="rbBehaviorChecked()"
               [variant]="compVariant()"
               [size]="compSize()"
               [disabled]="compDisabled()"
@@ -417,6 +450,128 @@
             </div>
           </alf-tab>
         }
+
+          <!-- TAB: Behavior (AlfCheckbox only) -->
+          @if (selectedComponentId() === 'alf-checkbox') {
+            <alf-tab label="⚙️ Behavior">
+              <div class="pg-controls-content">
+                <div class="pg-fields">
+                  
+                  <div class="pg-field">
+                    <label class="pg-field__label" for="pg-cb-label">label</label>
+                    <span class="pg-field__desc">Texto principal del checkbox</span>
+                    <input id="pg-cb-label" type="text" class="pg-input" [value]="compLabel()" (input)="onInputChange(compLabel, $event)" placeholder="Ej: Acepto los términos" />
+                  </div>
+
+                  <div class="pg-field">
+                    <label class="pg-field__label" for="pg-cb-labelpos">labelPosition</label>
+                    <span class="pg-field__desc">Posición del texto respecto a la caja</span>
+                    <select id="pg-cb-labelpos" class="pg-select" [value]="cbBehaviorLabelPos()" (change)="onSelectChange(cbBehaviorLabelPos, $event)">
+                      <option value="after">after (derecha)</option>
+                      <option value="before">before (izquierda)</option>
+                    </select>
+                  </div>
+
+                  <div class="pg-field">
+                    <label class="pg-field__label" for="pg-cb-style">checkboxStyle</label>
+                    <span class="pg-field__desc">Estilo del check interior</span>
+                    <select id="pg-cb-style" class="pg-select" [value]="cbBehaviorStyle()" (change)="onSelectChange(cbBehaviorStyle, $event)">
+                      <option value="elegant">elegant (suave)</option>
+                      <option value="standard">standard (recto)</option>
+                    </select>
+                  </div>
+
+                  <div class="pg-field">
+                    <label class="pg-field__label" for="pg-cb-helper">helperText</label>
+                    <span class="pg-field__desc">Texto descriptivo inferior</span>
+                    <input id="pg-cb-helper" type="text" class="pg-input" [value]="cbBehaviorHelper()" (input)="onInputChange(cbBehaviorHelper, $event)" placeholder="Ej: Es necesario para continuar" />
+                  </div>
+
+                  <div class="pg-field">
+                    <label class="pg-field__label" for="pg-cb-error">error</label>
+                    <span class="pg-field__desc">Fuerza estado de error con texto</span>
+                    <input id="pg-cb-error" type="text" class="pg-input" [value]="cbBehaviorError()" (input)="onInputChange(cbBehaviorError, $event)" placeholder="Ej: Campo obligatorio" />
+                  </div>
+
+                  <div class="pg-field pg-field--checkboxes">
+                    <label class="pg-checkbox-label">
+                      <input type="checkbox" [checked]="cbBehaviorChecked()" (change)="onCheckboxChange(cbBehaviorChecked, $event)" />
+                      <div class="pg-checkbox-text">
+                        <span class="pg-checkbox-text__title">checked</span>
+                        <span class="pg-checkbox-text__desc">Estado forzado activado</span>
+                      </div>
+                    </label>
+
+                    <label class="pg-checkbox-label">
+                      <input type="checkbox" [checked]="cbBehaviorIndeterminate()" (change)="onCheckboxChange(cbBehaviorIndeterminate, $event)" />
+                      <div class="pg-checkbox-text">
+                        <span class="pg-checkbox-text__title">indeterminate</span>
+                        <span class="pg-checkbox-text__desc">Estado parcial (guion)</span>
+                      </div>
+                    </label>
+                  </div>
+
+                </div>
+              </div>
+            </alf-tab>
+          }
+
+          <!-- TAB: Behavior (AlfRadioButton only) -->
+          @if (selectedComponentId() === 'alf-radio-button') {
+            <alf-tab label="⚙️ Behavior">
+              <div class="pg-controls-content">
+                <div class="pg-fields">
+                  
+                  <div class="pg-field">
+                    <label class="pg-field__label" for="pg-rb-label">label</label>
+                    <span class="pg-field__desc">Texto principal del radio button</span>
+                    <input id="pg-rb-label" type="text" class="pg-input" [value]="compLabel()" (input)="onInputChange(compLabel, $event)" placeholder="Ej: Opción 1" />
+                  </div>
+
+                  <div class="pg-field">
+                    <label class="pg-field__label" for="pg-rb-labelpos">labelPosition</label>
+                    <span class="pg-field__desc">Posición del texto respecto a la bolita</span>
+                    <select id="pg-rb-labelpos" class="pg-select" [value]="rbBehaviorLabelPos()" (change)="onSelectChange(rbBehaviorLabelPos, $event)">
+                      <option value="after">after (derecha)</option>
+                      <option value="before">before (izquierda)</option>
+                    </select>
+                  </div>
+
+                  <div class="pg-field">
+                    <label class="pg-field__label" for="pg-rb-style">radioButtonStyle</label>
+                    <span class="pg-field__desc">Estilo del radio button</span>
+                    <select id="pg-rb-style" class="pg-select" [value]="rbBehaviorStyle()" (change)="onSelectChange(rbBehaviorStyle, $event)">
+                      <option value="elegant">elegant (redondo)</option>
+                      <option value="standard">standard (cuadrado suave)</option>
+                    </select>
+                  </div>
+
+                  <div class="pg-field">
+                    <label class="pg-field__label" for="pg-rb-helper">helperText</label>
+                    <span class="pg-field__desc">Texto descriptivo inferior</span>
+                    <input id="pg-rb-helper" type="text" class="pg-input" [value]="rbBehaviorHelper()" (input)="onInputChange(rbBehaviorHelper, $event)" placeholder="Ej: Describe la opción" />
+                  </div>
+
+                  <div class="pg-field">
+                    <label class="pg-field__label" for="pg-rb-error">error</label>
+                    <span class="pg-field__desc">Fuerza estado de error con texto</span>
+                    <input id="pg-rb-error" type="text" class="pg-input" [value]="rbBehaviorError()" (input)="onInputChange(rbBehaviorError, $event)" placeholder="Ej: Opción no válida" />
+                  </div>
+
+                  <div class="pg-field pg-field--checkboxes">
+                    <label class="pg-checkbox-label">
+                      <input type="checkbox" [checked]="rbBehaviorChecked()" (change)="onCheckboxChange(rbBehaviorChecked, $event)" />
+                      <div class="pg-checkbox-text">
+                        <span class="pg-checkbox-text__title">checked</span>
+                        <span class="pg-checkbox-text__desc">Estado forzado activado</span>
+                      </div>
+                    </label>
+                  </div>
+
+                </div>
+              </div>
+            </alf-tab>
+          }
 
         <!-- TAB: Background -->
         <alf-tab label="🎨 Background">

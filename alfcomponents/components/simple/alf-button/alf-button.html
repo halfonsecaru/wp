@@ -1,125 +1,122 @@
-@let bg = backgroundComputed();
-@let bd = borderComputed();
-@let ot = outlineComputed();
-@let sd = shadowsComputed();
-@let an = animationsComputed();
-@let mg = marginComputed();
-@let pd = paddingComputed();
-@let ty = typographyComputed();
-@let ts = textStyleComputed();
-@let tr = transformComputed();
-@let tsn = transitionComputed();
-@let dl = displayAndLayoutComputed();
-@let sz = size();
-@let ar = aria();
-@let tt = tooltip();
-@let rp = ripple();
-@let cr = cursor();
-@let ds = disabledComputed();
-@let ie = isExiting();
-@let cc = customClass();
-@let cs = customStyle();
-@let bid = idComputed();
-
-@let ld = isLoading() || inputConfig()?.loading;
-@let bt = typeComputed();
-@let lk = linkComputed();
-@let lb = labelComputed();
-@let il = iconLeftComputed();
-@let ir = iconRightComputed();
-
-@if (lk) {
-  <a
-    [id]="bid"
-    (click)="onHostClick($event)"
-    (mouseenter)="onMouseEnter($event)"
-    (mouseleave)="onMouseLeave($event)"
-    [attr.href]="ds ? null : lk.url"
-    [attr.target]="lk.target ?? '_self'"
-    [attr.rel]="(lk.target ?? '_self') === '_blank' ? 'noopener noreferrer' : null"
-    [attr.tabindex]="ds ? -1 : null"
-    [alfBackground]="bg ? bg : null" alfPrefix="--alf-btn"
-    [alfBorder]="bd ? bd : null"     alfPrefix="--alf-btn"
-    [alfOutline]="ot ? ot : null"    alfPrefix="--alf-btn"
-    [alfShadows]="sd ? sd : null"    alfPrefix="--alf-btn"
-    [alfMargin]="mg ? mg : null"     alfPrefix="--alf-btn"
-    [alfPadding]="pd ? pd : null"    alfPrefix="--alf-btn"
-    [alfTypography]="ty ? ty : null" alfPrefix="--alf-btn"
-    [alfTextStyle]="ts ? ts : null"  alfPrefix="--alf-btn"
-    [alfTransform]="tr ? tr : null"  alfPrefix="--alf-btn"
-    [alfTransition]="tsn ? tsn : null" alfPrefix="--alf-btn"
-    [alfDisplayAndLayout]="dl ? dl : null" alfPrefix="--alf-btn"
-    [alfCursor]="cr ? cr : null"
-    [alfSize]="sz ? sz : null"
-    [alfDisabled]="ds"
-    [alfTooltipText]="tt ? tt : null"
-    [alfRipple]="rp !== undefined ? rp : null"
-    [alfAria]="ar ? ar : null"
-    [class]="'alf-button' + (cc ? ' ' + cc : '')"
-    [class.alf-button--disabled]="ds"
-    [class.alf-button--loading]="ld"
-    [style]="cs ? cs : null"
-    [style.cursor]="ds ? 'not-allowed' : null"
-  >
-    <span class="alf-button__content" [class.alf-button__content--hidden]="ld">
-      @if (il) {
-        <span class="alf-button__icon alf-button__icon--left">{{ il }}</span>
-      }
-      <span class="alf-button__label">{{ lb }}</span>
-      @if (ir) {
-        <span class="alf-button__icon alf-button__icon--right">{{ ir }}</span>
-      }
-    </span>
-    @if (ld) {
-      <span class="alf-button__loader-overlay">
-        <span class="alf-button__spinner"></span>
-      </span>
+@let bg = backgroundComputed(); @let bd = borderComputed(); @let ot = outlineComputed(); @let sd = shadowsComputed(); @let an = animationsComputed();
+@let mg = marginComputed(); @let pd = paddingComputed(); @let ty = typographyComputed(); @let ts = textStyleComputed(); @let tr = transformComputed();
+@let tsn = transitionComputed(); @let dl = displayAndLayoutComputed(); @let sz = size(); @let ar = aria(); @let tt = tooltip(); @let rp = ripple();
+@let cr = cursor(); @let ds = disabledComputed(); @let ie = isExiting(); @let cc = customClass(); @let cs = customStyle(); @let bid = idComputed();
+@let ld = isLoading() || inputConfig()?.loading; @let bt = typeComputed(); @let lk = linkComputed(); @let lb = labelComputed(); @let il =
+iconLeftComputed(); @let ir = iconRightComputed(); @if (lk) {
+<a
+  [id]="bid"
+  (click)="onHostClick($event)"
+  (mouseenter)="onMouseEnter($event)"
+  (mouseleave)="onMouseLeave($event)"
+  [attr.href]="ds ? null : lk.url"
+  [attr.target]="lk.target ?? '_self'"
+  [attr.rel]="(lk.target ?? '_self') === '_blank' ? 'noopener noreferrer' : null"
+  [attr.tabindex]="ds ? -1 : null"
+  [alfBackground]="bg ? bg : null"
+  alfPrefix="--alf-btn"
+  [alfBorder]="bd ? bd : null"
+  alfPrefix="--alf-btn"
+  [alfOutline]="ot ? ot : null"
+  alfPrefix="--alf-btn"
+  [alfShadows]="sd ? sd : null"
+  alfPrefix="--alf-btn"
+  [alfMargin]="mg ? mg : null"
+  alfPrefix="--alf-btn"
+  [alfPadding]="pd ? pd : null"
+  alfPrefix="--alf-btn"
+  [alfTypography]="ty ? ty : null"
+  alfPrefix="--alf-btn"
+  [alfTextStyle]="ts ? ts : null"
+  alfPrefix="--alf-btn"
+  [alfTransform]="tr ? tr : null"
+  alfPrefix="--alf-btn"
+  [alfTransition]="tsn ? tsn : null"
+  alfPrefix="--alf-btn"
+  [alfDisplayAndLayout]="dl ? dl : null"
+  alfPrefix="--alf-btn"
+  [alfCursor]="cr ? cr : null"
+  [alfSize]="sz ? sz : null"
+  [alfDisabled]="ds"
+  [alfTooltipText]="tt ? tt : null"
+  [alfRipple]="rp !== undefined ? rp : null"
+  [alfAria]="ar ? ar : null"
+  [class]="'alf-button' + (cc ? ' ' + cc : '')"
+  [class.alf-button--disabled]="ds"
+  [class.alf-button--loading]="ld"
+  [style]="cs ? cs : null"
+  [style.cursor]="ds ? 'not-allowed' : null"
+>
+  <span class="alf-button__content" [class.alf-button__content--hidden]="ld">
+    @if (il) {
+    <span class="alf-button__icon alf-button__icon--left">{{ il }}</span>
     }
-  </a>
+    <span class="alf-button__label">{{ lb }}</span>
+    @if (ir) {
+    <span class="alf-button__icon alf-button__icon--right">{{ ir }}</span>
+    }
+  </span>
+  @if (ld) {
+  <span class="alf-button__loader-overlay">
+    <span class="alf-button__spinner"></span>
+  </span>
+  }
+</a>
 } @else {
-  <button
-    [id]="bid"
-    (click)="onHostClick($event)"
-    (mouseenter)="onMouseEnter($event)"
-    (mouseleave)="onMouseLeave($event)"
-    [type]="bt"
-    [disabled]="ds"
-    [alfBackground]="bg ? bg : null" alfPrefix="--alf-btn"
-    [alfBorder]="bd ? bd : null"     alfPrefix="--alf-btn"
-    [alfOutline]="ot ? ot : null"    alfPrefix="--alf-btn"
-    [alfShadows]="sd ? sd : null"    alfPrefix="--alf-btn"
-    [alfMargin]="mg ? mg : null"     alfPrefix="--alf-btn"
-    [alfPadding]="pd ? pd : null"    alfPrefix="--alf-btn"
-    [alfTypography]="ty ? ty : null" alfPrefix="--alf-btn"
-    [alfTextStyle]="ts ? ts : null"  alfPrefix="--alf-btn"
-    [alfTransform]="tr ? tr : null"  alfPrefix="--alf-btn"
-    [alfTransition]="tsn ? tsn : null" alfPrefix="--alf-btn"
-    [alfDisplayAndLayout]="dl ? dl : null" alfPrefix="--alf-btn"
-    [alfCursor]="cr ? cr : null"
-    [alfSize]="sz ? sz : null"
-    [alfDisabled]="ds"
-    [alfTooltipText]="tt ? tt : null"
-    [alfRipple]="rp !== undefined ? rp : null"
-    [alfAria]="ar ? ar : null"
-    [class]="'alf-button' + (cc ? ' ' + cc : '')"
-    [class.alf-button--disabled]="ds"
-    [class.alf-button--loading]="ld"
-    [style]="cs ? cs : null"
-    [style.cursor]="ds ? 'not-allowed' : null"
-  >
-    <span class="alf-button__content" [class.alf-button__content--hidden]="ld">
-      @if (il) {
-        <span class="alf-button__icon alf-button__icon--left">{{ il }}</span>
-      }
-      <span class="alf-button__label">{{ lb }}</span>
-      @if (ir) {
-        <span class="alf-button__icon alf-button__icon--right">{{ ir }}</span>
-      }
-    </span>
-    @if (ld) {
-      <span class="alf-button__loader-overlay">
-        <span class="alf-button__spinner"></span>
-      </span>
+<button
+  [id]="bid"
+  (click)="onHostClick($event)"
+  (mouseenter)="onMouseEnter($event)"
+  (mouseleave)="onMouseLeave($event)"
+  [type]="bt"
+  [disabled]="ds"
+  [alfBackground]="bg ? bg : null"
+  alfPrefix="--alf-btn"
+  [alfBorder]="bd ? bd : null"
+  alfPrefix="--alf-btn"
+  [alfOutline]="ot ? ot : null"
+  alfPrefix="--alf-btn"
+  [alfShadows]="sd ? sd : null"
+  alfPrefix="--alf-btn"
+  [alfMargin]="mg ? mg : null"
+  alfPrefix="--alf-btn"
+  [alfPadding]="pd ? pd : null"
+  alfPrefix="--alf-btn"
+  [alfTypography]="ty ? ty : null"
+  alfPrefix="--alf-btn"
+  [alfTextStyle]="ts ? ts : null"
+  alfPrefix="--alf-btn"
+  [alfTransform]="tr ? tr : null"
+  alfPrefix="--alf-btn"
+  [alfTransition]="tsn ? tsn : null"
+  alfPrefix="--alf-btn"
+  [alfDisplayAndLayout]="dl ? dl : null"
+  alfPrefix="--alf-btn"
+  [alfCursor]="cr ? cr : null"
+  [alfSize]="sz ? sz : null"
+  [alfDisabled]="ds"
+  [alfTooltipText]="tt ? tt : null"
+  [alfRipple]="rp !== undefined ? rp : null"
+  [alfAria]="ar ? ar : null"
+  [class]="'alf-button' + (cc ? ' ' + cc : '')"
+  [class.alf-button--disabled]="ds"
+  [class.alf-button--loading]="ld"
+  [style]="cs ? cs : null"
+  [style.cursor]="ds ? 'not-allowed' : null"
+>
+  <span class="alf-button__content" [class.alf-button__content--hidden]="ld">
+    @if (il) {
+    <span class="alf-button__icon alf-button__icon--left">{{ il }}</span>
     }
-  </button>
+    <span class="alf-button__label">{{ lb }}</span>
+    @if (ir) {
+    <span class="alf-button__icon alf-button__icon--right">{{ ir }}</span>
+    }
+  </span>
+  @if (ld) {
+  <span class="alf-button__loader-overlay">
+    <span class="alf-button__spinner"></span>
+  </span>
+  }
+</button>
 }

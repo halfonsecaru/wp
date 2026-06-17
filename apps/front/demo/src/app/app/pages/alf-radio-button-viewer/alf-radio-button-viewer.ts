@@ -23,11 +23,18 @@ export class AlfRadioButtonViewer {
   // ── Reactive group states ──────────────────────────────────────────────────
   public readonly selectedStyleGroup = signal<string>('elegant');
   public readonly selectedLabelPosGroup = signal<string>('after');
+  public readonly selectedExtraGroup = signal<string>('tooltip');
   public readonly selectedSizeGroup = signal<AlfSizeEnum>(AlfSizeEnum.MD);
   
   // States for demo groups
   public readonly selectedSolidElegantGroup = signal<string>('primary');
   public readonly selectedSolidStandardGroup = signal<string>('primary');
+  public readonly selectedOutlineGroup = signal<string>('primary-outline');
+  public readonly selectedSoftGroup = signal<string>('primary-soft');
+  public readonly selectedGhostGroup = signal<string>('primary-ghost');
+  public readonly selectedCrystalGroup = signal<string>('primary-crystal');
+  public readonly selectedGradientGroup = signal<string>('sunset-gradient');
+  public readonly selectedDepth3DGroup = signal<string>('primary-3d');
 
   // Functional States
   public readonly checkedWithHelper = signal<boolean>(false);
@@ -44,6 +51,73 @@ export class AlfRadioButtonViewer {
     AlfColorVariantEnum.Info,
     AlfColorVariantEnum.Dark,
     AlfColorVariantEnum.Light
+  ];
+
+  public readonly outlineVariants: readonly AlfColorVariantEnum[] = [
+    AlfColorVariantEnum.PrimaryOutline,
+    AlfColorVariantEnum.SecondaryOutline,
+    AlfColorVariantEnum.SuccessOutline,
+    AlfColorVariantEnum.DangerOutline,
+    AlfColorVariantEnum.WarningOutline,
+    AlfColorVariantEnum.InfoOutline,
+    AlfColorVariantEnum.DarkOutline,
+    AlfColorVariantEnum.LightOutline
+  ];
+
+  public readonly softVariants: readonly AlfColorVariantEnum[] = [
+    AlfColorVariantEnum.PrimarySoft,
+    AlfColorVariantEnum.SecondarySoft,
+    AlfColorVariantEnum.SuccessSoft,
+    AlfColorVariantEnum.DangerSoft,
+    AlfColorVariantEnum.WarningSoft,
+    AlfColorVariantEnum.InfoSoft,
+    AlfColorVariantEnum.DarkSoft,
+    AlfColorVariantEnum.LightSoft
+  ];
+
+  public readonly ghostVariants: readonly AlfColorVariantEnum[] = [
+    AlfColorVariantEnum.PrimaryGhost,
+    AlfColorVariantEnum.SecondaryGhost,
+    AlfColorVariantEnum.SuccessGhost,
+    AlfColorVariantEnum.DangerGhost,
+    AlfColorVariantEnum.WarningGhost,
+    AlfColorVariantEnum.InfoGhost,
+    AlfColorVariantEnum.DarkGhost,
+    AlfColorVariantEnum.LightGhost
+  ];
+
+  public readonly crystalVariants: readonly AlfColorVariantEnum[] = [
+    AlfColorVariantEnum.PrimaryCrystal,
+    AlfColorVariantEnum.SecondaryCrystal,
+    AlfColorVariantEnum.SuccessCrystal,
+    AlfColorVariantEnum.DangerCrystal,
+    AlfColorVariantEnum.WarningCrystal,
+    AlfColorVariantEnum.InfoCrystal,
+    AlfColorVariantEnum.DarkCrystal,
+    AlfColorVariantEnum.LightCrystal
+  ];
+
+  public readonly gradientVariants: readonly AlfColorVariantEnum[] = [
+    AlfColorVariantEnum.GradientPurple,
+    AlfColorVariantEnum.GradientSunset,
+    AlfColorVariantEnum.GradientOcean,
+    AlfColorVariantEnum.GradientForest,
+    AlfColorVariantEnum.GradientPrimary,
+    AlfColorVariantEnum.GradientDanger,
+    AlfColorVariantEnum.GradientSuccess,
+    AlfColorVariantEnum.GradientWarning,
+    AlfColorVariantEnum.GradientInfo
+  ];
+
+  public readonly depth3DVariants: readonly AlfColorVariantEnum[] = [
+    AlfColorVariantEnum.Primary3D,
+    AlfColorVariantEnum.Secondary3D,
+    AlfColorVariantEnum.Success3D,
+    AlfColorVariantEnum.Danger3D,
+    AlfColorVariantEnum.Warning3D,
+    AlfColorVariantEnum.Info3D,
+    AlfColorVariantEnum.Dark3D,
+    AlfColorVariantEnum.Light3D
   ];
 
   public readonly sizes: readonly AlfSizeEnum[] = [
