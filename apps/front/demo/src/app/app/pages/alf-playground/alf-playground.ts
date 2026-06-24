@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, signal, computed } from '@angular/core';
-import { AlfButton, AlfCheckbox, AlfInput, AlfRadioButton, AlfTabsContainerComponent, AlfTabComponent, AlfSpinner } from '@alfcomponents/components';
+import { AlfButton, AlfCheckbox, AlfInput, AlfRadioButton, AlfSwitch, AlfSpinner, AlfAutocompleteComponent } from '@alfcomponents/components';
+import { AlfSelectOption } from '@alfcomponents/components/composed/alf-autocomplete/interfaces/alf-auto-complete-options-interface';
+import { AlfAutocompleteConfigInterface } from '@alfcomponents/components/composed/alf-autocomplete/interfaces/alf-autocomplete.interface';
 import { AlfInputInterface } from '@alfcomponents/components/simple/alf-input/interfaces/alf-input.interface';
 import {
   AlfColorVariantEnum,
@@ -34,7 +36,7 @@ import {
   AlfTransformInterface,
   AlfTransitionInterface,
   AlfDisplayAndLayoutInterface,
-  AlfAnimateCssInterface
+  AlfAnimateCssInterface,
 } from '@alfcomponents/interfaces';
 
 const enumEntries = (e: Record<string, string>): { key: string; value: string }[] =>
@@ -51,7 +53,7 @@ type CssState = 'default' | 'hover' | 'focus' | 'active' | 'disabled';
 @Component({
   selector: 'app-alf-playground',
   standalone: true,
-  imports: [AlfButton, AlfCheckbox, AlfInput, AlfRadioButton, AlfTabsContainerComponent, AlfTabComponent, AlfSpinner],
+  imports: [AlfButton, AlfCheckbox, AlfInput, AlfRadioButton, AlfSwitch, AlfSpinner, AlfAutocompleteComponent],
   templateUrl: './alf-playground.html',
   styleUrl: './alf-playground.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -85,9 +87,11 @@ export class AlfPlayground {
     { id: 'alf-button', label: 'AlfButton', icon: '🔘' },
     { id: 'alf-checkbox', label: 'AlfCheckbox', icon: '☑️' },
     { id: 'alf-input', label: 'AlfInput', icon: '⌨️' },
-    { id: 'alf-radio-button', label: 'AlfRadioButton', icon: '📻' }
+    { id: 'alf-radio-button', label: 'AlfRadioButton', icon: '📻' },
+    { id: 'alf-switch', label: 'AlfSwitch', icon: '🎚️' },
+    { id: 'alf-autocomplete', label: 'AlfAutocomplete', icon: '🔍' }
   ] as const;
-  public readonly selectedComponentId = signal<string>('alf-button');
+  public readonly selectedComponentId = signal<string>('alf-autocomplete');
 
   public readonly propTabIndex = signal<number>(0);
   public readonly stateTabIndex = signal<number>(0);
@@ -198,6 +202,43 @@ export class AlfPlayground {
   public readonly rbBehaviorHelper = signal<string>('');
   public readonly rbBehaviorError = signal<string>('');
   public readonly rbBehaviorChecked = signal<boolean>(false);
+
+  // Switch properties
+  public readonly swBehaviorLabelPos = signal<'before' | 'after'>('after');
+  public readonly swBehaviorStyle = signal<'standard' | 'elegant'>('elegant');
+  public readonly swBehaviorHelper = signal<string>('');
+  public readonly swBehaviorError = signal<string>('');
+  public readonly swBehaviorChecked = signal<boolean>(false);
+
+  // Autocomplete properties
+  public readonly acBehaviorSearchable = signal<boolean>(true);
+  public readonly acBehaviorVirtualScroll = signal<boolean>(false);
+  public readonly acBehaviorGroupBy = signal<string>('');
+
+  public readonly countries: AlfSelectOption[] = [
+    { value: 'es', label: 'España', icon: '🇪🇸', group: 'Europa' },
+    { value: 'fr', label: 'Francia', icon: '🇫🇷', group: 'Europa', disabled: true },
+    { value: 'it', label: 'Italia', icon: '🇮🇹', group: 'Europa' },
+    { value: 'de', label: 'Alemania', icon: '🇩🇪', group: 'Europa' },
+    { value: 'uk', label: 'Reino Unido', icon: '🇬🇧', group: 'Europa' },
+    { value: 'us', label: 'Estados Unidos', icon: '🇺🇸', group: 'América' },
+    { value: 'ca', label: 'Canadá', icon: '🇨🇦', group: 'América', disabled: true },
+    { value: 'mx', label: 'México', icon: '🇲🇽', group: 'América' },
+    { value: 'br', label: 'Brasil', icon: '🇧🇷', group: 'América' },
+    { value: 'jp', label: 'Japón', icon: '🇯🇵', group: 'Asia' },
+    { value: 'cn', label: 'China', icon: '🇨🇳', group: 'Asia' },
+    { value: 'in', label: 'India', icon: '🇮🇳', group: 'Asia' },
+  ];
+
+  public readonly acBehaviorConfig = computed<AlfAutocompleteConfigInterface>(() => {
+    const inputCfg = this.inputBehaviorConfig();
+    return {
+      ...inputCfg,
+      searchable: this.acBehaviorSearchable(),
+      virtualScroll: this.acBehaviorVirtualScroll(),
+      groupBy: this.acBehaviorGroupBy() || undefined,
+    } as unknown as AlfAutocompleteConfigInterface;
+  });
 
   public readonly inputBehaviorConfig = computed<AlfInputInterface>(() => {
     const label = this.inputBehaviorLabel();
@@ -570,6 +611,29 @@ export class AlfPlayground {
     this.inputBehaviorMax.set('');
     this.inputBehaviorPattern.set('');
 
+    this.cbBehaviorLabelPos.set('after');
+    this.cbBehaviorStyle.set('elegant');
+    this.cbBehaviorHelper.set('');
+    this.cbBehaviorError.set('');
+    this.cbBehaviorChecked.set(false);
+    this.cbBehaviorIndeterminate.set(false);
+
+    this.rbBehaviorLabelPos.set('after');
+    this.rbBehaviorStyle.set('elegant');
+    this.rbBehaviorHelper.set('');
+    this.rbBehaviorError.set('');
+    this.rbBehaviorChecked.set(false);
+
+    this.swBehaviorLabelPos.set('after');
+    this.swBehaviorStyle.set('elegant');
+    this.swBehaviorHelper.set('');
+    this.swBehaviorError.set('');
+    this.swBehaviorChecked.set(false);
+
+    this.acBehaviorSearchable.set(true);
+    this.acBehaviorVirtualScroll.set(false);
+    this.acBehaviorGroupBy.set('');
+
     for (const s of this.states) {
       this.bgColor[s].set('');
       this.borderColor[s].set('');
@@ -644,8 +708,23 @@ export class AlfPlayground {
       if (this.rbBehaviorChecked()) parts.push(`  [checked]="true"`);
     }
 
+    if (comp === 'alf-switch') {
+      if (this.swBehaviorLabelPos() !== 'after') parts.push(`  labelPosition="${this.swBehaviorLabelPos()}"`);
+      if (this.swBehaviorStyle() !== 'elegant') parts.push(`  switchStyle="${this.swBehaviorStyle()}"`);
+      if (this.swBehaviorHelper()) parts.push(`  helperText="${this.swBehaviorHelper()}"`);
+      if (this.swBehaviorError()) parts.push(`  error="${this.swBehaviorError()}"`);
+      if (this.swBehaviorChecked()) parts.push(`  [checked]="true"`);
+    }
+
     if (comp === 'alf-input' && Object.keys(this.inputBehaviorConfig()).length) {
       parts.push(`  [config]="myInputConfig"`);
+    }
+
+    if (comp === 'alf-autocomplete') {
+      parts.push(`  [options]="countries"`);
+      if (Object.keys(this.acBehaviorConfig()).length) {
+        parts.push(`  [config]="myAutocompleteConfig"`);
+      }
     }
 
     if (Object.keys(this.backgroundConfig()).length) parts.push(`  [background]="myBackgroundConfig"`);
@@ -672,6 +751,13 @@ export class AlfPlayground {
       const inpCfg = this.inputBehaviorConfig();
       if (Object.keys(inpCfg).length) {
         parts.push(`public myInputConfig: AlfInputInterface = ${this.stringifyConfig(inpCfg)};\n`);
+      }
+    }
+
+    if (this.selectedComponentId() === 'alf-autocomplete') {
+      const acCfg = this.acBehaviorConfig();
+      if (Object.keys(acCfg).length) {
+        parts.push(`public myAutocompleteConfig: AlfAutocompleteConfigInterface = ${this.stringifyConfig(acCfg)};\n`);
       }
     }
 

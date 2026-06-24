@@ -6,7 +6,7 @@
   $active-selectors: '&:active'
 ) {
   // --- 1. BASE / DEFAULT ---
-  $bgc: var(#{$prefix}-bg-color, transparent);
+  $bgc: var(#{$prefix}-bg-color, inherit);
   $bgi: var(#{$prefix}-bg-img, none);
   $bgs: var(#{$prefix}-bg-size, auto);
   $bgp: var(#{$prefix}-bg-pos, initial);
@@ -23,36 +23,44 @@
   background-clip: $bgcl;
 
   // --- 2. HOVER STATE ---
-  #{$hover-selectors} {
-    background-color: var(#{$prefix}-bg-hover-color, var(#{$prefix}-bg-hover, $bgc));
-    background-image: var(#{$prefix}-bg-hover-img, $bgi);
-    background-size: var(#{$prefix}-bg-hover-size, $bgs);
-    background-position: var(#{$prefix}-bg-hover-pos, $bgp);
-    background-repeat: var(#{$prefix}-bg-hover-repeat, $bgr);
-    background-attachment: var(#{$prefix}-bg-hover-attachment, $bga);
-    background-clip: var(#{$prefix}-bg-hover-clip, $bgcl);
+  @if $hover-selectors != '' {
+    #{$hover-selectors} {
+      background-color: var(#{$prefix}-bg-hover-color, var(#{$prefix}-bg-hover, $bgc));
+      background-image: var(#{$prefix}-bg-hover-img, $bgi);
+      background-size: var(#{$prefix}-bg-hover-size, $bgs);
+      background-position: var(#{$prefix}-bg-hover-pos, $bgp);
+      background-repeat: var(#{$prefix}-bg-hover-repeat, $bgr);
+      background-attachment: var(#{$prefix}-bg-hover-attachment, $bga);
+      background-clip: var(#{$prefix}-bg-hover-clip, $bgcl);
+    }
   }
 
   // --- 3. ACTIVE STATE ---
-  #{$active-selectors} {
-    $hbgc: var(#{$prefix}-bg-hover-color, var(#{$prefix}-bg-hover, $bgc));
-    $hbgi: var(#{$prefix}-bg-hover-img, $bgi);
+  @if $active-selectors != '' {
+    #{$active-selectors} {
+      $hbgc: var(#{$prefix}-bg-hover-color, var(#{$prefix}-bg-hover, $bgc));
+      $hbgi: var(#{$prefix}-bg-hover-img, $bgi);
 
-    background-color: var(#{$prefix}-bg-active-color, var(#{$prefix}-bg-active, $hbgc));
-    background-image: var(#{$prefix}-bg-active-img, $hbgi);
+      background-color: var(#{$prefix}-bg-active-color, var(#{$prefix}-bg-active, $hbgc));
+      background-image: var(#{$prefix}-bg-active-img, $hbgi);
+    }
   }
 
   // --- 4. FOCUS STATE ---
-  #{$focus-selectors} {
-    background-color: var(#{$prefix}-bg-focus-color, var(#{$prefix}-bg-focus, $bgc));
-    background-image: var(#{$prefix}-bg-focus-img, $bgi);
+  @if $focus-selectors != '' {
+    #{$focus-selectors} {
+      background-color: var(#{$prefix}-bg-focus-color, var(#{$prefix}-bg-focus, $bgc));
+      background-image: var(#{$prefix}-bg-focus-img, $bgi);
+    }
   }
 
   // --- 5. DISABLED STATE ---
-  #{$disabled-selectors} {
-    background-color: var(#{$prefix}-bg-disabled-color, var(#{$prefix}-bg-disabled, transparent));
-    background-image: var(#{$prefix}-bg-disabled-img, var(#{$prefix}-bg-disabled, none));
-    opacity: 0.6;
+  @if $disabled-selectors != '' {
+    #{$disabled-selectors} {
+      background-color: var(#{$prefix}-bg-disabled-color, var(#{$prefix}-bg-disabled, transparent));
+      background-image: var(#{$prefix}-bg-disabled-img, var(#{$prefix}-bg-disabled, none));
+      opacity: 0.6;
+    }
   }
 }
 

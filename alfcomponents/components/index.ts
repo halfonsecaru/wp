@@ -1,6 +1,4 @@
 export * from './simple/alf-spinner/alf-spinner';
-export * from './base/base';
-export * from './base/base.directive';
 export * from './simple/alf-button/alf-button';
 export * from './simple/alf-button/interfaces/alf-button.interface';
 export * from './simple/alf-checkbox/alf-checkbox';
@@ -12,7 +10,6 @@ export * from './simple/alf-input/alf-input';
 export * from './simple/alf-input/interfaces/alf-input.interface';
 export * from './simple/alf-switch/alf-switch';
 export * from './simple/alf-switch/interfaces/alf-switch.interface';
-export * from './simple/alf-switch/predefined/alf-switch.predefined';
 
 
 // Standar Components
@@ -28,12 +25,10 @@ export * from './composed/alf-tabs-container/predefined/alf-tabs-container.prede
 export * from './composed/alf-autocomplete/alf-autocomplete';
 export * from './composed/alf-autocomplete/interfaces/alf-autocomplete.interface';
 export * from './composed/alf-autocomplete/enums/alf-autocomplete.enum';
-export * from './composed/alf-autocomplete/predefined/alf-autocomplete.predefined';
 
 export * from './composed/alf-card/alf-card';
 export * from './composed/alf-card/interfaces/alf-card.interface';
 export * from './composed/alf-card/enums/alf-card.enum';
-export * from './composed/alf-card/predefined/alf-card.predefined';
 export * from './composed/alf-card/components/alf-card-title/alf-card-title';
 export * from './composed/alf-card/components/alf-card-title/interfaces/alf-card-title.interface';
 export * from './composed/alf-card/components/alf-card-body/alf-card-body';

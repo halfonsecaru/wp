@@ -10,13 +10,14 @@ import { AlfShadowsInterface } from './alf-shadows.interface';
 import { AlfTextStyleInterface } from './alf-text-style.interface';
 import { AlfTransformInterface } from './alf-transform.interface';
 import { AlfTypographyInterface } from './alf-typography.interface';
+import { AlfTransitionInterface } from './alf-transition.interface';
 
 /**
  * Propiedades comunes para la configuración de componentes visuales Alfonizer.
  * Sirve como base para el tipado fuerte de configuraciones reactivas.
  */
 export interface AlfBaseCommonConfigInterface {
-  readonly colorVariant?: AlfColorVariantEnum;
+  readonly variant?: AlfColorVariantEnum;
   readonly cursor?: AlfCursorEnum;
   readonly disabled?: boolean;
   readonly backgrounds?: AlfBackgroundsInterface;
@@ -32,4 +33,5 @@ export interface AlfBaseCommonConfigInterface {
   readonly animations?: AlfAnimateCssInterface;
   readonly customClass?: string;
   readonly customStyle?: string;
+  readonly transition?: AlfTransitionInterface;
 }

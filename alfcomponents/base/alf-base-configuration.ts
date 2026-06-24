@@ -74,7 +74,7 @@ export abstract class AlfBaseConfiguration<TConfig extends AlfBaseCommonConfigIn
 
   // Computeds de resolución de estado
   protected readonly colorVariantComputed = computed(() => {
-    const v = this.colorVariant() ?? this.inputConfig()?.colorVariant;
+    const v = this.colorVariant() ?? this.inputConfig()?.variant;
     return resolveAlfColorVariant(v);
   });
 

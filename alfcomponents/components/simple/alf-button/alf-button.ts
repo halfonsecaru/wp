@@ -33,7 +33,7 @@ import { AlfBaseDirectives, deepMergeStates } from '@alfcomponents/components/ba
   styleUrl: './alf-button.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AlfButton extends AlfBaseDirectives {
+export class AlfButton extends AlfBaseDirectives<AlfButtonInterface> {
 
 
   // ── 1. Constants & View Queries ───────────────────────────────────────────

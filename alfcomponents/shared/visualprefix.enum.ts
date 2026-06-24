@@ -1,27 +1,49 @@
 export enum visualprefixEnum {
 
-    
+    // Switch
+    SwitchPrefix = 'alf-sw',
+    SwitchClass= 'alf-switch',
+    Switch = `--${visualprefixEnum.SwitchPrefix}`,
+
+    // Radios
+    RadioClass = 'alf-rb',
+    Radio = 'alf-radio-button',
+    RadioButton = `--${visualprefixEnum.RadioClass}`,
+
+    // Autocomplete
+    AutocompletePrefix = 'alf-ac',
+    AutocompleteClass = 'alf-autocomplete',
+    Autocomplete = `--${visualprefixEnum.AutocompletePrefix}`,
+
+    // Autocomplete
+    AutocompletePanelPrefix = 'alf-ac-p',
+    AutocompletePanelClass = 'alf-autocomplete-panel',
+    AutocompletePanel = `--${visualprefixEnum.AutocompletePrefix}`,
+
+    // Cards
+    CardPrefix = 'alf-card',
+    CardClass = 'alf-cards',
+    Card = `--${visualprefixEnum.CardPrefix}`,
+
+    CardTitle = '--alf-card-title',
+    CardBody = '--alf-card-body',
+    CardImg = '--alf-card-img',
+    CardActions = '--alf-card-actions',
+
     // Componentes
     Buttons = '--alf-btn',
     TabsContainer = '--alf-tabs',
     TabsContent = '--alf-tab-content',
     TabsNavigation = '--alf-tabs-navigation',
     TabsSlider = '--alf-tabs-slider',
+    CheckPrefix = 'alf-cb',
     Checkbox = '--alf-cb',
-    RadioButton = '--alf-rb',
     Input = '--alf-inp',
-    Switch = '--alf-sw',
-    Autocomplete = '--alf-autocomplete',
-    Card = '--alf-card',
-    CardTitle = '--alf-card-title',
-    CardBody = '--alf-card-body',
-    CardImg = '--alf-card-img',
-    CardActions = '--alf-card-actions',
+
     
     
     // InternalIds
     ButtonsInternalId = '-alf-btn-id',
-    SwitchInternalId = '-alf-sw-id',
     
     
     // Directivas
@@ -30,13 +52,10 @@ export enum visualprefixEnum {
     Tooltip = '--alf-tooltip',
     Loading = '--alf-loading',
     Popover = '--alf-popover',
-    Radio = 'alf-radio-button',
     Check = 'alf-checkbox',
     Inputt = 'alf-input',
-    Switchh = 'alf-switch',
 
 
     TabsContainerInternalId = "--alf-tabs-id",
-    AutocompleteInternalId = '--alf-autocomplete-id',
     CardInternalId = '--alf-card-id'
 }

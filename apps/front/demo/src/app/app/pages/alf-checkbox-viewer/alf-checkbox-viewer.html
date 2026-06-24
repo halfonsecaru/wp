@@ -267,22 +267,22 @@
 					<div class="rb-demo-row" style="margin-top: 0.5rem; gap: 1rem;">
 						<div class="rb-demo-item">
 							<span class="rb-demo-label">Elegant Disabled Off</span>
-							<alf-checkbox label="Bloqueado" [config]="{ disabled: true, checked: false }" />
+							<alf-checkbox label="Bloqueado" [disabled]="true" [config]="{ checked: false }" />
 						</div>
 						<div class="rb-demo-item">
 							<span class="rb-demo-label">Elegant Disabled On</span>
-							<alf-checkbox label="Bloqueado" [config]="{ disabled: true, checked: true }" />
+							<alf-checkbox label="Bloqueado" [disabled]="false" [config]="{checked: true }" />
 						</div>
 					</div>
           
 					<div class="rb-demo-row" style="gap: 1rem;">
 						<div class="rb-demo-item">
 							<span class="rb-demo-label">Standard Disabled Off</span>
-							<alf-checkbox checkboxStyle="standard" label="Bloqueado" [config]="{ disabled: true, checked: false }" />
+							<alf-checkbox checkboxStyle="standard" label="Bloqueado" [disabled]="true" [config]="{ checked: false }" />
 						</div>
 						<div class="rb-demo-item">
 							<span class="rb-demo-label">Standard Disabled On</span>
-							<alf-checkbox checkboxStyle="standard" label="Bloqueado" [config]="{ disabled: true, checked: true }" />
+							<alf-checkbox checkboxStyle="standard" label="Bloqueado" [disabled]="false" [config]="{ checked: true }" />
 						</div>
 					</div>
 				</div>

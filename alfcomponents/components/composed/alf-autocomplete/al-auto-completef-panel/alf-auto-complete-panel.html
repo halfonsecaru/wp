@@ -1,0 +1,42 @@
+@let bg = backgroundComputed();
+@let bd = borderComputed();
+@let ol = outlineComputed();
+@let an = animationsComputed();
+@let ts = textStyleComputed();
+@let tsn = transitionComputed();
+@let tp = typographyComputed();
+
+<div 
+ [class]="classPrefix"
+ [alfPrefix]="cssVarPrefix"
+ [class.alf-ac-p--disabled]="disabled()"
+ [class.alf-ac-p--focused]="isFocused()"
+ [alfAnimations]="an ? an : null"
+ [isExiting]="isExiting()"
+ [alfTextStyle]="ts ? ts : null"
+ [alfTypography]="tp ? tp : null"
+ [alfTransition]="tsn ? tsn : null"
+ [alfBorder]="bd"
+ [alfOutline]="ol"
+ [alfBackground]="bg"
+>
+  @for (group of groupedOptions(); track group.name) {
+    @if (group.name) {
+      <div class="alf-autocomplete-group-header">{{ group.name }}</div>
+    }
+    @for (option of group.options; track option.value) {
+      <div 
+        (click)="!option.disabled && selectOption(option)" 
+        class="alf-autocomplete-option"
+        [class.alf-autocomplete-option--disabled]="option.disabled"
+      >
+        @if (option.icon) {
+          <span>{{ option.icon }}</span>
+        }
+        <span>{{ option.label }}</span>
+      </div>
+    }
+  } @empty {
+    <div class="alf-autocomplete-empty">Sin resultados</div>
+  }
+</div>

@@ -1,73 +1,55 @@
-import { Component, input, computed, HostBinding, ChangeDetectionStrategy } from '@angular/core';
+import { Component, input, computed, ChangeDetectionStrategy, signal } from '@angular/core';
 import { visualprefixEnum } from '@alfcomponents/shared';
-import { AlfColorVariantEnum, AlfCursorEnum } from '@alfcomponents/enums';
-import { AlfBaseConfiguration } from '@alfcomponents/base/alf-base-configuration';
 import { AlfComponentTypeEnum } from '@alfcomponents/base/defaultVariants';
 import { AlfCardImgConfigInterface } from './interfaces/alf-card-img.interface';
+import { AlfBaseDirectives, deepMergeStates } from '@alfcomponents/components/base/bases.directive';
+import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
 
 @Component({
   selector: 'alf-card-img',
   standalone: true,
-  imports: [],
+  imports: [
+    ...ALF_CORE_DIRECTIVES,
+  ],
   templateUrl: './alf-card-img.html',
   styleUrl: './alf-card-img.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AlfCardImgComponent extends AlfBaseConfiguration<AlfCardImgConfigInterface> {
+export class AlfCardImgComponent extends AlfBaseDirectives<AlfCardImgConfigInterface> {
+  protected readonly cssVarPrefix: string = visualprefixEnum.CardImg as string;
+  protected readonly classPrefix: string = 'alf-card-img';
 
-  // ==========================================
-  // 1. Attributes (Properties, Injections)
-  // ==========================================
-  protected override readonly visualPrefix: string = visualprefixEnum.CardImg;
-  protected override readonly componentType = AlfComponentTypeEnum.Card;
-
-  // ==========================================
-  // 3. Signals (Inputs, Models, State)
-  // ==========================================
-  public override readonly colorVariant = input<AlfColorVariantEnum>();
-  public override readonly inputConfig = input<AlfCardImgConfigInterface>(undefined, { alias: 'config' });
-
-  /** Direct input shortcut for image src */
+  public readonly inputConfig = input<AlfCardImgConfigInterface>(undefined, { alias: 'config' });
   public readonly src = input<string | undefined>();
-  /** Direct input shortcut for image alt text */
   public readonly alt = input<string | undefined>();
+  private readonly _disabled = signal<boolean>(false);
 
-  // ==========================================
-  // 4. Computed
-  // ==========================================
-  protected override readonly colorVariantComputed = computed(() => {
-    return this.colorVariant() ?? this.inputConfig()?.colorVariant;
+  public readonly disabledComputed = computed<boolean>(() => {
+    return !!(this.disabled() || this.inputConfig()?.disabled || this._disabled());
   });
 
-  protected override readonly cursorComputed = computed(() => {
-    return this.cursor() ?? this.resolvedConfig()?.cursor ?? AlfCursorEnum.Default;
+  protected readonly resolvedSrc = computed(() => this.src() ?? this.inputConfig()?.src ?? '');
+  protected readonly resolvedAlt = computed(() => this.alt() ?? this.inputConfig()?.alt ?? '');
+
+  protected readonly predefinedConfig = computed(() => {
+    return {};
   });
 
-  public override readonly resolvedConfig = computed(() => {
-    const manual = this.inputConfig();
-    return { ...manual };
-  });
-
-  public readonly resolvedSrc = computed(() => this.src() ?? this.inputConfig()?.src ?? '');
-  public readonly resolvedAlt = computed(() => this.alt() ?? this.inputConfig()?.alt ?? '');
-
-  // ==========================================
-  // 5. Host Bindings
-  // ==========================================
-  @HostBinding('class')
-  get hostClass(): string {
-    return ('alf-card-img ' + this.customClassComputed()).trim();
-  }
-
-  @HostBinding('style')
-  get hostStyle(): string {
-    return this.combinedStyles();
-  }
-
-  // ==========================================
-  // 6. Lifecycle Hooks
-  // ==========================================
   constructor() {
     super();
+    this.componentType.set(AlfComponentTypeEnum.Card);
+    this.initialization(this.classPrefix, this.classPrefix, AlfComponentTypeEnum.Card);
+  }
+
+  protected override getControlValue = (): any => {
+    return undefined;
+  };
+
+  protected override getControlType(): string {
+    return 'CardImg';
+  }
+
+  protected override getControlConfig() {
+    return deepMergeStates(this.predefinedConfig(), this.inputConfig());
   }
 }

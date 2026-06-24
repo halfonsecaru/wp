@@ -43,7 +43,7 @@
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 1rem;
-  overflow: hidden;
+  overflow: visible;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
   transition: box-shadow 0.2s ease;
 
@@ -79,10 +79,21 @@
     border-radius: 50%;
     flex-shrink: 0;
 
-    &--blue   { background: #3b82f6; }
-    &--purple { background: #8b5cf6; }
-    &--amber  { background: #f59e0b; }
-    &--red    { background: #ef4444; }
+    &--blue {
+      background: #3b82f6;
+    }
+
+    &--purple {
+      background: #8b5cf6;
+    }
+
+    &--amber {
+      background: #f59e0b;
+    }
+
+    &--red {
+      background: #ef4444;
+    }
   }
 }
 

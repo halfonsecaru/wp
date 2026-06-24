@@ -1,5 +1,5 @@
 import { AlfComponentTypeEnum, resolveVariantConfig } from "@alfcomponents/base/defaultVariants";
-import { AlfColorVariantEnum } from "@alfcomponents/enums";
+import { AlfColorVariantEnum, AlfRadiusEnum } from "@alfcomponents/enums";
 
 /**
  * Genera la configuración final de un componente combinando capas de configuración
@@ -40,3 +40,12 @@ export const getAlfDefaultConfig = <T extends object>(
         colorVariant: variant,
     };
 };
+
+export const resetAlfBorderRadiusAndGiveBorder = (newBorderRadius: AlfRadiusEnum, object: any) => {
+    object.border.default.borderRadius = newBorderRadius;
+    object.border.hover.borderRadius = undefined;
+    object.border.focus.borderRadius = undefined;
+    object.border.active.borderRadius = undefined;
+    object.border.disabled.borderRadius = undefined;
+    return object;
+}

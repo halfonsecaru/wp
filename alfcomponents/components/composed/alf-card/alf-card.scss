@@ -1,42 +1,28 @@
-@use '../../../visualStyles' as *;
+@use '../../../visualStyles/index' as *;
 
 :host {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  transition: box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;
+}
 
-  // @include alf-background-css-vars('--alf-card', '&.alf-card--disabled', '&:focus');
-  // @include alf-border-css-vars('--alf-card', '&.alf-card--disabled', '&:focus');
-  // @include alf-shadows-css-vars('--alf-card', '&.alf-card--disabled');
-  // // @include alf-text-style-css-vars('--alf-card', '&.alf-card--disabled', '&:focus');
+.alf-card {
+  @include alf-transition;
+  @include alf-background-style('--alf-card');
+  @include alf-border-style('--alf-card');
+  @include alf-padding-style('--alf-card');
+  @include alf-margin-style('--alf-card');
+  @include alf-shadows-style('--alf-card');
+  @include alf-outline-style('--alf-card');
+  @include alf-transform-style('--alf-card');
+  @include alf-text-style('--alf-card');
+  @include alf-typography-style('--alf-card');
+  @include alf-display-and-layout-style('--alf-card');
 
-  // Interactive state
-  &.alf-card--interactive {
-    cursor: pointer;
-
-    &:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08), 0 4px 6px rgba(0, 0, 0, 0.04);
-    }
-
-    &:active {
-      transform: translateY(-1px);
-      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.06);
-    }
-
-    &:focus-visible {
-      outline: 2px solid var(--alf-primary, #0d6efd);
-      outline-offset: 3px;
-    }
-  }
-
-  // Disabled state
-  &.alf-card--disabled {
-    cursor: not-allowed;
-    pointer-events: none;
-    opacity: 0.65;
-    transform: none !important;
-    box-shadow: none !important;
-  }
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
 }

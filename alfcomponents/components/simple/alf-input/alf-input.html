@@ -46,8 +46,9 @@
       <label
         [for]="idComputed()"
         class="alf-input-label"
-        [class.alf-input-label--float]="isFocused() || value()"
+        [class.alf-input-label--float]="shouldFloat()"
         [class.alf-input-label--has-prefix]="prefixComputed()"
+        [style.color]="(shouldFloat() && contrastingLabelColor()) ? contrastingLabelColor() : null"
       >
         {{ labelComputed() }}@if (requiredComputed()) {
         <span class="alf-input-required">&nbsp;*</span>
@@ -59,7 +60,7 @@
         #inputRef
         [id]="idComputed()"
         [type]="inputTypeComputed()"
-        [placeholder]="(!labelComputed() || isFocused() || value()) ? (placeholderComputed() || '') : ''"
+        [placeholder]="(!labelComputed() || shouldFloat()) ? (placeholderComputed() || '') : ''"
         [disabled]="disabledComputed()"
         [readOnly]="isReadonly()"
         [value]="value() || ''"

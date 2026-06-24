@@ -1,0 +1,112 @@
+@use '../../../../visualStyles' as *;
+
+:host {
+  display: block;
+  position: absolute !important;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+  margin-top: 4px;
+  background-clip: padding-box;
+
+  // Evita el parpadeo inicial: el host empieza invisible.
+  // animate.css (animate__fadeIn + fill-mode:both) lo hace aparecer.
+  // Si no hay animación, la clase .animate__animated no se añade y
+  // el fallback de opacity:1 a continuación lo restaura.
+  opacity: 0;
+  will-change: opacity, transform;
+  contain: layout style;
+  // El fill-mode 'both' asegura que tras el fadeIn el panel quede en opacity:1
+  --alf-ac-animations-fill-mode: both;
+
+  // Fallback sin animación: cuando no se añaden las clases de animate.css
+  // se aplica una transición mínima para evitar el flash.
+  &:not(.animate__animated) {
+    opacity: 1;
+    transition: opacity 1ms;
+  }
+}
+
+.alf-ac-p {
+  box-sizing: border-box;
+  max-height: 250px;
+  overflow-y: auto;
+
+  // --- 1. CONFIGURACIÓN ÉLITE ---
+  @include alf-background-style('--alf-ac', '&--disabled', '', '');
+  @include alf-border-style('--alf-ac', '&--disabled', '&--focused, &:focus-within, &:focus-visible', '&:hover');
+  @include alf-outline-style('--alf-ac', '&--disabled', '&--focused, &:focus-within, &:focus-visible', '&:hover');
+  @include alf-shadows-style('--alf-ac', '&--disabled', '&--focused, &:focus-within, &:focus-visible', '&:hover');
+  @include alf-text-style('--alf-ac', '&--disabled', '&--focused, &:focus-within, &:focus-visible', '&:hover');
+  @include alf-typography-style('--alf-ac', '&--disabled', '&--focused, &:focus-within, &:focus-visible', '&:hover');
+  @include alf-transition-style('--alf-ac', '&--disabled', '&--focused, &:focus-within, &:focus-visible');
+  @include alf-animations-style('--alf-ac');
+
+  // Estilo de la barra de scroll
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--alf-scrollbar-thumb, #cbd5e1);
+    border-radius: 99px;
+
+    &:hover {
+      background: var(--alf-scrollbar-thumb-hover, #94a3b8);
+    }
+  }
+
+  // Firefox scrollbar
+  scrollbar-width: thin;
+  scrollbar-color: var(--alf-scrollbar-thumb, #cbd5e1) transparent;
+}
+
+
+
+.alf-autocomplete-option {
+  padding: 8px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 0px;
+  transition: background-color 0.2s, color 0.2s;
+
+  &:hover {
+    background-color: var(--alf-ac-bg-hover-color, color-mix(in srgb, var(--alf-ac-text-color, currentColor) 12%, transparent));
+    color: var(--alf-ac-text-hover-color, var(--alf-ac-text-color, inherit));
+  }
+
+  &:active {
+    background-color: var(--alf-ac-bg-active-color, color-mix(in srgb, var(--alf-ac-text-color, currentColor) 24%, transparent));
+    color: var(--alf-ac-text-hover-color, var(--alf-ac-text-color, inherit));
+  }
+
+  &--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+.alf-autocomplete-group-header {
+  padding: 8px 12px 4px 12px;
+  font-weight: bold;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: color-mix(in srgb, var(--alf-ac-text-color, currentColor) 60%, transparent);
+}
+
+.alf-autocomplete-empty {
+  padding: 8px 12px;
+  color: #64748b;
+  font-size: 0.9rem;
+  text-align: center;
+}

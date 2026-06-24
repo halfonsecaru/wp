@@ -21,7 +21,7 @@
   @include alf-shadows-style('--alf-inp', '&--disabled', '&--focused, &:focus-within, &:focus-visible');
   @include alf-transition-style('--alf-inp', '&--disabled', '&--focused, &:focus-within, &:focus-visible');
   @include alf-margin-style('--alf-inp', '&--disabled', '&--focused, &:focus-within, &:focus-visible');
-  @include alf-display-and-layout-style('--alf-inp', '&--disabled', '&--focused, &:focus-within, &:focus-visible', inline-flex);
+  @include alf-display-and-layout-style('--alf-inp', '&--disabled', '&--focused, &:focus-within, &:focus-visible', $default-display: inline-flex);
   @include alf-animations-style('--alf-inp');
 }
 
@@ -100,6 +100,7 @@
     font-weight: 500;
     opacity: 1;
     font-size: 12px;
+    color: var(--alf-inp-text-focus-color, var(--alf-inp-text-color, inherit));
   }
 
   &--has-prefix {
@@ -109,10 +110,10 @@
     }
   }
 
-  // Si es un input con fondo sólido o degradado (Solid, 3D o gradient) y está enfocado, 
+  // Si es un input con fondo sólido o degradado (Solid, 3D o gradient) y está flotando, 
   // forzamos que el label tome el color del borde para que sea visible fuera del fondo
-  .alf-input--contrasting-label.alf-input--focused & {
-    color: var(--alf-inp-border-color-focus) !important;
+  .alf-input--contrasting-label &--float {
+    color: var(--alf-inp-border-color-focus);
     opacity: 1;
   }
 }

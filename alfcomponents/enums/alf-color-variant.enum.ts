@@ -10,6 +10,8 @@
  * ```
  */
 export enum AlfColorVariantEnum {
+  // Sin variante
+  Standard = 'standard',
   // Variantes Sólidas
   Primary = 'primary',
   Secondary = 'secondary',

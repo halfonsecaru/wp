@@ -1,5 +1,5 @@
 import { AlfBorderStyleEnum, AlfColorEnum, AlfColorVariantEnum, AlfCursorEnum, AlfFontSizeEnum, AlfInputAppearanceEnum, AlfPxEnum, AlfRadiusEnum, AlfSizeEnum, AlfShadowEnum, AlfRemEnum } from "@alfcomponents/enums";
-import { AlfBackgroundsInterface, AlfBackgroundsBaseInterface, AlfBorderInterface, AlfBorderBaseInterface, AlfOutlineInterface, AlfOutlineBaseInterface, AlfShadowsInterface, AlfShadowsBaseInterface, AlfMarginInterface, AlfMarginBaseInterface, AlfPaddingInterface, AlfPaddingBaseInterface, AlfTypographyInterface, AlfTypographyBaseInterface, AlfTextStyleInterface, AlfTextStyleStateBaseInterface, AlfTransformInterface, AlfTransformBaseInterface, AlfTransitionInterface, AlfTransitionBaseInterface, AlfDisplayAndLayoutInterface, AlfDisplayAndLayoutBaseInterface, AlfAnimateCssInterface, AlfAriaBaseInterface, AlfRippleInterface } from "@alfcomponents/interfaces";
+import { AlfBackgroundsInterface, AlfBackgroundsBaseInterface, AlfBorderInterface, AlfBorderBaseInterface, AlfOutlineInterface, AlfOutlineBaseInterface, AlfShadowsInterface, AlfShadowsBaseInterface, AlfMarginInterface, AlfMarginBaseInterface, AlfPaddingInterface, AlfPaddingBaseInterface, AlfTypographyInterface, AlfTypographyBaseInterface, AlfTextStyleInterface, AlfTextStyleStateBaseInterface, AlfTransformInterface, AlfTransformBaseInterface, AlfTransitionInterface, AlfTransitionBaseInterface, AlfDisplayAndLayoutInterface, AlfDisplayAndLayoutBaseInterface, AlfAnimateCssInterface, AlfAriaBaseInterface, AlfRippleInterface, AlfBaseCommonConfigInterface } from "@alfcomponents/interfaces";
 import { AlfValidationResult, alfRequiredValidator, alfMinLengthValidator, alfMaxLengthValidator, alfMinValidator, alfMaxValidator, alfPatternValidator, alfEmailValidator } from '@alfcomponents/shared';
 import { interpolate } from '@alfcomponents/i18n/i18n-utils';
 import { computed, Directive, input, signal, untracked, output, inject, ElementRef, effect } from "@angular/core";
@@ -28,6 +28,31 @@ const defaultPadding: AlfPaddingBaseInterface = {
 
 const deepEqual = (a: any, b: any) => JSON.stringify(a) === JSON.stringify(b);
 
+/**
+ * Cuando el usuario pasa un objeto de estilos con solo el estado `default` (sin hover/focus/etc.),
+ * lo expande copiando `default` a todos los demás estados para que el merge final
+ * sobreescriba también hover, focus, active y disabled del config predefinido.
+ * Si el usuario ya definió estados explícitos, esos se respetan.
+ */
+const VISUAL_STATES = ['hover', 'focus', 'active', 'disabled'] as const;
+export const expandToAllStates = (input: any): any => {
+    if (!input || typeof input !== 'object') return input;
+    // Si NO tiene ningún estado explícito (hover, focus, active, disabled) pero SÍ tiene default,
+    // es una BaseInterface → la expandimos a todos los estados.
+    const hasExplicitStates = VISUAL_STATES.some(s => s in input);
+    if (!hasExplicitStates && input.default) {
+        return {
+            default: input.default,
+            hover: input.default,
+            focus: input.default,
+            active: input.default,
+            disabled: input.default,
+        };
+    }
+    return input;
+};
+
+
 export const deepMergeStates = (...configs: any[]): any => {
     const result: any = {};
     for (const config of configs) {
@@ -41,12 +66,13 @@ export const deepMergeStates = (...configs: any[]): any => {
 }
 
 @Directive()
-export abstract class AlfBaseDirectives implements ControlValueAccessor {
+export abstract class AlfBaseDirectives<TConfig extends AlfBaseCommonConfigInterface> implements ControlValueAccessor {
     protected readonly el = inject(ElementRef<HTMLElement>);
     protected readonly AlfRemEnum = AlfRemEnum;
 
+    private readonly _config = signal<TConfig | undefined>(undefined, { equal: deepEqual });
 
-    // **** sin implementar **** //
+    // ── 1. Visual & Interactive Inputs ───────────────────────────────────────
     public readonly aria = input<AlfAriaBaseInterface | undefined>(undefined);
     public readonly tooltip = input<string | AlfTooltipConfig>();
     public readonly ripple = input<boolean | AlfRippleInterface | undefined>(undefined);
@@ -56,13 +82,13 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
     public readonly customStyle = input<string | undefined>(undefined);
     public readonly elevated = input<boolean>(false);
 
-    // ── 1. Inputs ─────────────────────────────────────────────────────────────
+    // ── 2. State Inputs ──────────────────────────────────────────────────────
     public readonly variant = input<AlfColorVariantEnum>(undefined);
-    public readonly colorVariant = input<AlfColorVariantEnum>(undefined);
     public readonly disabled = input<boolean>(false);
     public readonly isLoading = input<boolean>(false);
     public readonly isExiting = input<boolean>(false);
 
+    // ── 3. Visual Style Inputs ───────────────────────────────────────────────
     public readonly background = input<AlfBackgroundsInterface | AlfBackgroundsBaseInterface | undefined>(undefined);
     public readonly border = input<AlfBorderInterface | AlfBorderBaseInterface | undefined>(undefined);
     public readonly outline = input<AlfOutlineInterface | AlfOutlineBaseInterface | undefined>(undefined);
@@ -76,7 +102,7 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
     public readonly displayAndLayout = input<AlfDisplayAndLayoutInterface | AlfDisplayAndLayoutBaseInterface | undefined>(undefined);
     public readonly animations = input<AlfAnimateCssInterface | undefined>(undefined);
 
-    // Validation Inputs
+    // ── 4. Validation Inputs
     public readonly required = input<boolean | undefined>(undefined);
     public readonly maxLength = input<number>();
     public readonly minLength = input<number>();
@@ -86,11 +112,11 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
     public readonly validators = input<((v: any) => AlfValidationResult)[]>([]);
     public readonly error = input<string | boolean | undefined>(undefined);
 
-    // ── 2. Outputs ────────────────────────────────────────────────────────────
+    // ── 5. Outputs ────────────────────────────────────────────────────────────
     public readonly onFocus = output<FocusEvent>();
     public readonly onBlur = output<FocusEvent>();
 
-    // ── 3. Internal State (Signals) ───────────────────────────────────────────
+    // ── 6. Internal State (Signals) ───────────────────────────────────────────
     protected readonly isFocused = signal<boolean>(false);
     protected readonly isDirty = signal<boolean>(false);
     protected readonly componentType = signal<AlfComponentTypeEnum>(AlfComponentTypeEnum.Default);
@@ -110,13 +136,13 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
     private readonly _displayAndLayout = signal<AlfDisplayAndLayoutInterface | AlfDisplayAndLayoutBaseInterface | undefined>(undefined, { equal: deepEqual });
     private readonly _animations = signal<AlfAnimateCssInterface | undefined>(undefined, { equal: deepEqual });
 
-    // ── 4. Computed State ─────────────────────────────────────────────────────
-    public readonly backgroundComputed = computed(() => deepMergeStates(this._background(), this.getControlConfig()?.backgrounds, this.background()));
-    public readonly borderComputed = computed(() => deepMergeStates(this._border(), this.getControlConfig()?.border, this.border()));
+    // ── 7. Computed State ─────────────────────────────────────────────────────
+    public readonly backgroundComputed = computed(() => deepMergeStates(this._background(), this.getControlConfig()?.backgrounds, expandToAllStates(this.background())));
+    public readonly borderComputed = computed(() => deepMergeStates(this._border(), this.getControlConfig()?.border, expandToAllStates(this.border())));
     public readonly outlineComputed = computed(() => deepMergeStates(this._outline(), this.getControlConfig()?.outline, this.outline()));
     public readonly shadowsComputed = computed(() => deepMergeStates(this._shadows(), this.getControlConfig()?.shadows, this.shadows()));
     public readonly marginComputed = computed(() => deepMergeStates(this._margin(), this.getControlConfig()?.margin, this.margin()));
-    public readonly paddingComputed = computed(() => deepMergeStates(this._padding(), this.getControlConfig()?.padding, this.padding()));
+    public readonly paddingComputed = computed(() => deepMergeStates(this._padding(), this.getControlConfig()?.padding, expandToAllStates(this.padding())));
     public readonly typographyComputed = computed(() => deepMergeStates(this._typography(), this.getControlConfig()?.typography, this.typography()));
     public readonly textStyleComputed = computed(() => deepMergeStates(this._textStyle(), this.getControlConfig()?.textStyle, this.textStyle()));
     public readonly transformComputed = computed(() => deepMergeStates(this._transform(), this.getControlConfig()?.transform, this.transform()));
@@ -129,6 +155,28 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
         return Object.keys(merged).length > 0 ? merged as AlfAnimateCssInterface : undefined;
     });
     public readonly displayAndLayoutComputed = computed(() => deepMergeStates(this._displayAndLayout(), this.displayAndLayout(), this.getControlConfig()?.displayAndLayout));
+
+
+
+    public readonly spinnerColorComputed = computed<string | undefined>(() => {
+        const state: 'default' | 'hover' | 'focus' | 'disabled' = !!this.disabled()
+            ? 'disabled'
+            : this.isFocused()
+                ? 'focus'
+                : false
+                    ? 'hover'
+                    : 'default';
+
+        const typography = this.typographyComputed() as any;
+        const textStyle = this.textStyleComputed() as any;
+
+        return (
+            typography?.[state]?.color ??
+            textStyle?.[state]?.color ??
+            typography?.default?.color ??
+            textStyle?.default?.color
+        );
+    });
 
     // ── Animations on Host ───────────────────────────────────────────────────
     protected readonly resolvedStage = computed(() => {
@@ -336,14 +384,22 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
         applyState(dl.disabled, '-disabled');
     });
     // ── 4. Abstract Methods for Validation & CVA ───────────────────────────────
-    protected abstract getControlValue(): any;
-    protected abstract getControlType(): string | undefined;
-    protected abstract getValidationLabel(key: string): string;
-    protected abstract getControlConfig(): any;
-    protected abstract setControlValue(val: any): void;
-    protected abstract setControlDisabled(isDisabled: boolean): void;
+    protected getControlValue(): any {
+        return undefined;
+    }
+    protected getControlType(): string | undefined {
+        return undefined;
+    }
+    protected getValidationLabel(key: string): string {
+        return '';
+    }
+    protected getControlConfig(): any {
+        return undefined;
+    }
+    protected setControlValue(val: any): void {}
+    protected setControlDisabled(isDisabled: boolean): void {}
 
-    // ── 5. ControlValueAccessor Implementation ─────────────────────────────────
+    // ── 4b. ControlValueAccessor Implementation ─────────────────────────────────
     protected onChange?: (value: any) => void;
     protected onTouched?: () => void;
 
@@ -363,7 +419,7 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
         this.setControlDisabled(isDisabled);
     }
 
-    // ── 6. State Validation ───────────────────────────────────────────────────
+    // ── 4c. State Validation ───────────────────────────────────────────────────
     protected readonly requiredComputed = computed(() => this.required() ?? this.getControlConfig()?.required ?? false);
     protected readonly maxLengthComputed = computed(() => this.maxLength() ?? this.getControlConfig()?.maxLength);
     protected readonly minLengthComputed = computed(() => this.minLength() ?? this.getControlConfig()?.minLength);
@@ -424,7 +480,7 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
 
     protected readonly errorComputed = computed(() => this.error() ?? this.validationError() ?? this.getControlConfig()?.error);
 
-    // ── 5. Base Handlers & Initialization ─────────────────────────────────────
+    // ── 8. Base Handlers & Initialization ─────────────────────────────────────
     protected readonly initialization = (cssPrefixIn: string, baseCssClassIn: string, componentTypeIn: AlfComponentTypeEnum) => {
         this.cssPrefix.set(cssPrefixIn);
         this.baseCssClass.set(baseCssClassIn);
@@ -451,7 +507,7 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
         this.onBlur.emit(event);
     };
 
-    // ── 6. Getters & Setters ──────────────────────────────────────────────────
+    // ── 9. Getters & Setters ──────────────────────────────────────────────────
     protected getInternalBackground() { return untracked(() => this._background()); }
     protected getInternalBorder() { return untracked(() => this._border()); }
     protected getInternalOutline() { return untracked(() => this._outline()); }
@@ -478,9 +534,9 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
     protected setDisplayAndLayout(value: AlfDisplayAndLayoutInterface | AlfDisplayAndLayoutBaseInterface) { this._displayAndLayout.set(value); }
     protected setAnimations(value: AlfAnimateCssInterface) { this._animations.set(value); }
 
-    // ── 7. Component Generation Factories ─────────────────────────────────────
+    // ── 10. Component Generation Factories ─────────────────────────────────────
     protected predefinedInputComponent = () => {
-        const createComponent = this.createSolidComponent(AlfColorVariantEnum.SecondaryOutline);
+        const createComponent = this.createSolidComponent(AlfColorVariantEnum.Standard);
         return createComponent;
     };
 
@@ -491,27 +547,7 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
         background: AlfBackgroundsInterface,
         shadows?: AlfShadowsInterface
     } => {
-        const borderColor = this.getColorByVariant(variant, 0);
-        const textColor = this.getColorByVariant(variant, 1);
-        const backgroundColor = this.getColorByVariant(variant, 2);
-
-        let shadows: AlfShadowsInterface | undefined = undefined;
-        if (this.elevated()) {
-            shadows = {
-                default: {
-                    boxShadow: AlfShadowEnum.Elevated,
-                    boxShadowColor: borderColor.default
-                }
-            };
-        }
-
-        return {
-            padding: this.inputPaddingPredefined(padding)!,
-            border: this.inputBorderPredefined(AlfPxEnum.Px015, AlfRadiusEnum.Md, AlfBorderStyleEnum.Solid, borderColor),
-            textStyle: this.inputTextStylePredefined(textColor),
-            background: this.inputBackgroundPredefined(backgroundColor),
-            shadows: shadows
-        };
+        return createSolidComponent(variant, padding, this.elevated());
     }
 
     protected createSolidComponentSoftBackground = (variant: AlfColorVariantEnum, padding: AlfPaddingBaseInterface = defaultPadding): {
@@ -521,30 +557,13 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
         textStyle: AlfTextStyleInterface,
         shadows?: AlfShadowsInterface
     } => {
-        const variantString = variant as string;
-        const softVariantValue = `soft-${variantString}`;
-        const softVariant = Object.values(AlfColorVariantEnum).find(v => v === softVariantValue) as AlfColorVariantEnum || variant;
-
-        const borderColor = this.getColorByVariant(variant, 0);
-        const textColor = this.getColorByVariant(variant, 1);
-        const backgroundColor = this.getColorByVariant(softVariant, 2);
-
-        let shadows: AlfShadowsInterface | undefined = undefined;
-        if (this.elevated()) {
-            shadows = {
-                default: {
-                    boxShadow: AlfShadowEnum.Elevated,
-                    boxShadowColor: borderColor.default
-                }
-            };
-        }
-
+        const baseComponent = createSolidComponentSoftBackground(variant, padding, this.elevated());
         return {
-            padding: deepMergeStates(this.inputPaddingPredefined(padding), this.getInternalPadding()),
-            border: deepMergeStates(this.inputBorderPredefined(AlfPxEnum.Px015, AlfRadiusEnum.Md, AlfBorderStyleEnum.Solid, borderColor), this.getInternalBorder()),
-            textStyle: deepMergeStates(this.inputTextStylePredefined(textColor), this.getInternalTextStyle()),
-            background: deepMergeStates(this.inputBackgroundPredefined(backgroundColor), this.getInternalBackground()),
-            shadows: shadows
+            padding: deepMergeStates(baseComponent.padding, this.getInternalPadding()),
+            border: deepMergeStates(baseComponent.border, this.getInternalBorder()),
+            textStyle: deepMergeStates(baseComponent.textStyle, this.getInternalTextStyle()),
+            background: deepMergeStates(baseComponent.background, this.getInternalBackground()),
+            shadows: baseComponent.shadows
         };
     }
 
@@ -555,153 +574,228 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
         background: AlfBackgroundsInterface,
         shadows?: AlfShadowsInterface
     } => {
-        const borderColor = this.getColorByVariant(variant, 0);
-        const textColor = this.getColorByVariant(variant, 1);
-        const backgroundColor = this.getColorByVariant(variant, 2);
+        return create3dComponentSolidText(variant, padding, this.elevated());
+    }
+}
 
-        let shadows: AlfShadowsInterface | undefined = undefined;
-        if (this.elevated()) {
-            shadows = {
-                default: {
-                    boxShadow: AlfShadowEnum.Elevated,
-                    boxShadowColor: borderColor.default
-                }
-            };
-        }
+// ---- Funciones fuera de la clase ----
 
-        return {
-            padding: this.inputPaddingPredefined(padding)!,
-            border: this.inputBorderPredefined(AlfPxEnum.Px3, AlfRadiusEnum.Md, AlfBorderStyleEnum.Ridge, borderColor),
-            textStyle: this.inputTextStylePredefined(textColor),
-            background: this.inputBackgroundPredefined(backgroundColor),
-            shadows: shadows
-        };
+const getPredefinedColorByVariant = (variant: AlfColorVariantEnum, seleccion: number): {
+    default: AlfColorEnum,
+    hover: AlfColorEnum,
+    focus: AlfColorEnum,
+    disabled: AlfColorEnum,
+    active: AlfColorEnum,
+} => {
+    const variantKeys = Object.keys(AlfColorVariantEnum) as (keyof typeof AlfColorVariantEnum)[];
+    const prefix = variantKeys.find(key => AlfColorVariantEnum[key] === variant) || 'Default';
+
+    let suffixDefault = '';
+    let suffixHover = 'Hover';
+    let suffixFocus = 'Focus';
+    let suffixDisabled = 'Disabled';
+    let suffixActive = 'Active';
+
+    if (seleccion === 0) {
+        suffixDefault = 'Border';
+        suffixHover = 'BorderHover';
+        suffixFocus = 'BorderFocus';
+        suffixDisabled = 'BorderDisabled';
+        suffixActive = 'BorderActive';
+    } else if (seleccion === 1) {
+        suffixDefault = 'Text';
+        suffixHover = 'TextHover';
+        suffixFocus = 'TextFocus';
+        suffixDisabled = 'TextDisabled';
+        suffixActive = 'TextActive';
+    } else if (seleccion === 2) {
+        suffixDefault = 'BG';
+        suffixHover = 'HoverBG';
+        suffixFocus = 'FocusBG';
+        suffixDisabled = 'DisabledBG';
+        suffixActive = 'ActiveBG';
     }
 
-    // ── 8. Private Helpers ────────────────────────────────────────────────────
-    private readonly inputBackgroundPredefined = (color: any): AlfBackgroundsInterface => {
-        const resolveBg = (c: any) => {
-            if (!c) return {};
-            if (typeof c === 'string' && c.includes('gradient')) {
-                return { backgroundImage: c };
+    const kDefault = `${prefix}${suffixDefault}` as keyof typeof AlfColorEnum;
+    const kHover = `${prefix}${suffixHover}` as keyof typeof AlfColorEnum;
+    const kFocus = `${prefix}${suffixFocus}` as keyof typeof AlfColorEnum;
+    const kDisabled = `${prefix}${suffixDisabled}` as keyof typeof AlfColorEnum;
+    const kActive = `${prefix}${suffixActive}` as keyof typeof AlfColorEnum;
+
+    return {
+        default: AlfColorEnum[kDefault] || AlfColorEnum.Transparent,
+        hover: AlfColorEnum[kHover] || AlfColorEnum.Transparent,
+        focus: AlfColorEnum[kFocus] || AlfColorEnum.Transparent,
+        disabled: AlfColorEnum[kDisabled] || AlfColorEnum.Transparent,
+        active: AlfColorEnum[kActive] || AlfColorEnum.Transparent,
+    };
+}
+
+const inputBackgroundPredefined = (color: any): AlfBackgroundsInterface => {
+    const resolveBg = (c: any) => {
+        if (!c) return {};
+        if (typeof c === 'string' && c.includes('gradient')) {
+            return { backgroundImage: c };
+        }
+        return { backgroundColor: c };
+    };
+
+    return {
+        default: resolveBg(color.default),
+        hover: resolveBg(color.hover),
+        focus: resolveBg(color.focus),
+        disabled: resolveBg(color.disabled),
+        active: resolveBg(color.active)
+    }
+}
+
+const inputPaddingPredefined = (padding?: AlfPaddingBaseInterface): AlfPaddingInterface | undefined => {
+    return {
+        default: {
+            paddingTop: padding?.paddingTop,
+            paddingBottom: padding?.paddingBottom,
+            paddingLeft: padding?.paddingLeft,
+            paddingRight: padding?.paddingRight,
+        }
+    }
+}
+
+const inputTextStylePredefined = (color: {
+    default: AlfColorEnum;
+    hover: AlfColorEnum;
+    focus: AlfColorEnum;
+    disabled: AlfColorEnum;
+    active: AlfColorEnum;
+}): AlfTextStyleInterface => {
+    return {
+        default: {
+            fontSize: AlfFontSizeEnum.Md,
+            color: color.default
+        },
+        hover: { color: color.hover },
+        focus: { color: color.focus },
+        disabled: { color: color.disabled },
+        active: { color: color.active }
+    }
+}
+
+const inputBorderPredefined = (width: AlfPxEnum, radius: AlfRadiusEnum, style: AlfBorderStyleEnum, color: {
+    default: AlfColorEnum;
+    hover: AlfColorEnum;
+    focus: AlfColorEnum;
+    disabled: AlfColorEnum;
+    active: AlfColorEnum;
+}): AlfBorderInterface => {
+
+    const defaultColor = {
+        borderWidth: width,
+        borderRadius: radius,
+        borderColor: color.default,
+        borderStyle: style
+    }
+
+    return {
+        default: {
+            ...defaultColor,
+            borderColor: color.default
+        },
+        hover: { borderColor: color.hover },
+        focus: { borderColor: color.focus },
+        disabled: { borderColor: color.disabled },
+        active: { borderColor: color.active }
+    };
+}
+
+export const createSolidComponent = (variant: AlfColorVariantEnum, padding: AlfPaddingBaseInterface = defaultPadding, elevated: boolean = false): {
+    padding: AlfPaddingInterface,
+    border: AlfBorderInterface,
+    textStyle: AlfTextStyleInterface,
+    background: AlfBackgroundsInterface,
+    shadows?: AlfShadowsInterface
+} => {
+    const borderColor = getPredefinedColorByVariant(variant, 0);
+    const textColor = getPredefinedColorByVariant(variant, 1);
+    const backgroundColor = getPredefinedColorByVariant(variant, 2);
+
+    let shadows: AlfShadowsInterface | undefined = undefined;
+    if (elevated) {
+        shadows = {
+            default: {
+                boxShadow: AlfShadowEnum.Elevated,
+                boxShadowColor: borderColor.default
             }
-            return { backgroundColor: c };
         };
-
-        return {
-            default: resolveBg(color.default),
-            hover: resolveBg(color.hover),
-            focus: resolveBg(color.focus),
-            disabled: resolveBg(color.disabled),
-            active: resolveBg(color.active)
-        }
     }
 
-    private readonly inputPaddingPredefined = (padding?: AlfPaddingBaseInterface): AlfPaddingInterface | undefined => {
-        return {
+    return {
+        padding: inputPaddingPredefined(padding)!,
+        border: inputBorderPredefined(AlfPxEnum.Px015, AlfRadiusEnum.Md, AlfBorderStyleEnum.Solid, borderColor),
+        textStyle: inputTextStylePredefined(textColor),
+        background: inputBackgroundPredefined(backgroundColor),
+        shadows: shadows
+    };
+}
+
+export const createSolidComponentSoftBackground = (variant: AlfColorVariantEnum, padding: AlfPaddingBaseInterface = defaultPadding, elevated: boolean = false): {
+    background: AlfBackgroundsInterface,
+    border: AlfBorderInterface,
+    padding: AlfPaddingInterface,
+    textStyle: AlfTextStyleInterface,
+    shadows?: AlfShadowsInterface
+} => {
+    const variantString = variant as string;
+    const softVariantValue = `soft-${variantString}`;
+    const softVariant = Object.values(AlfColorVariantEnum).find(v => v === softVariantValue) as AlfColorVariantEnum || variant;
+
+    const borderColor = getPredefinedColorByVariant(variant, 0);
+    const textColor = getPredefinedColorByVariant(variant, 1);
+    const backgroundColor = getPredefinedColorByVariant(softVariant, 2);
+
+    let shadows: AlfShadowsInterface | undefined = undefined;
+    if (elevated) {
+        shadows = {
             default: {
-                paddingTop: padding?.paddingTop,
-                paddingBottom: padding?.paddingBottom,
-                paddingLeft: padding?.paddingLeft,
-                paddingRight: padding?.paddingRight,
+                boxShadow: AlfShadowEnum.Elevated,
+                boxShadowColor: borderColor.default
             }
-        }
-    }
-
-    private readonly inputTextStylePredefined = (color: {
-        default: AlfColorEnum;
-        hover: AlfColorEnum;
-        focus: AlfColorEnum;
-        disabled: AlfColorEnum;
-        active: AlfColorEnum;
-    }): AlfTextStyleInterface => {
-        return {
-            default: {
-                fontSize: AlfFontSizeEnum.Md,
-                color: color.default
-            },
-            hover: { color: color.hover },
-            focus: { color: color.focus },
-            disabled: { color: color.disabled },
-            active: { color: color.active }
-        }
-    }
-
-    private readonly inputBorderPredefined = (width: AlfPxEnum, radius: AlfRadiusEnum, style: AlfBorderStyleEnum, color: {
-        default: AlfColorEnum;
-        hover: AlfColorEnum;
-        focus: AlfColorEnum;
-        disabled: AlfColorEnum;
-        active: AlfColorEnum;
-    }): AlfBorderInterface => {
-
-        const defaultColor = {
-            borderWidth: width,
-            borderRadius: radius,
-            borderColor: color.default,
-            borderStyle: style
-        }
-
-        return {
-            default: {
-                ...defaultColor,
-                borderColor: color.default
-            },
-            hover: { borderColor: color.hover },
-            focus: { borderColor: color.focus },
-            disabled: { borderColor: color.disabled },
-            active: { borderColor: color.active }
         };
     }
 
-    private readonly getColorByVariant = (variant: AlfColorVariantEnum, seleccion: number): {
-        default: AlfColorEnum,
-        hover: AlfColorEnum,
-        focus: AlfColorEnum,
-        disabled: AlfColorEnum,
-        active: AlfColorEnum,
-    } => {
-        const variantKeys = Object.keys(AlfColorVariantEnum) as (keyof typeof AlfColorVariantEnum)[];
-        const prefix = variantKeys.find(key => AlfColorVariantEnum[key] === variant) || 'Default';
+    return {
+        padding: inputPaddingPredefined(padding)!,
+        border: inputBorderPredefined(AlfPxEnum.Px015, AlfRadiusEnum.Md, AlfBorderStyleEnum.Solid, borderColor),
+        textStyle: inputTextStylePredefined(textColor),
+        background: inputBackgroundPredefined(backgroundColor),
+        shadows: shadows
+    };
+}
 
-        let suffixDefault = '';
-        let suffixHover = 'Hover';
-        let suffixFocus = 'Focus';
-        let suffixDisabled = 'Disabled';
-        let suffixActive = 'Active';
+export const create3dComponentSolidText = (variant: AlfColorVariantEnum, padding: AlfPaddingBaseInterface = defaultPadding, elevated: boolean = false): {
+    border: AlfBorderInterface,
+    padding: AlfPaddingInterface,
+    textStyle: AlfTextStyleInterface,
+    background: AlfBackgroundsInterface,
+    shadows?: AlfShadowsInterface
+} => {
+    const borderColor = getPredefinedColorByVariant(variant, 0);
+    const textColor = getPredefinedColorByVariant(variant, 1);
+    const backgroundColor = getPredefinedColorByVariant(variant, 2);
 
-        if (seleccion === 0) {
-            suffixDefault = 'Border';
-            suffixHover = 'BorderHover';
-            suffixFocus = 'BorderFocus';
-            suffixDisabled = 'BorderDisabled';
-            suffixActive = 'BorderActive';
-        } else if (seleccion === 1) {
-            suffixDefault = 'Text';
-            suffixHover = 'TextHover';
-            suffixFocus = 'TextFocus';
-            suffixDisabled = 'TextDisabled';
-            suffixActive = 'TextActive';
-        } else if (seleccion === 2) {
-            suffixDefault = 'BG';
-            suffixHover = 'HoverBG';
-            suffixFocus = 'FocusBG';
-            suffixDisabled = 'DisabledBG';
-            suffixActive = 'ActiveBG';
-        }
-
-        const kDefault = `${prefix}${suffixDefault}` as keyof typeof AlfColorEnum;
-        const kHover = `${prefix}${suffixHover}` as keyof typeof AlfColorEnum;
-        const kFocus = `${prefix}${suffixFocus}` as keyof typeof AlfColorEnum;
-        const kDisabled = `${prefix}${suffixDisabled}` as keyof typeof AlfColorEnum;
-        const kActive = `${prefix}${suffixActive}` as keyof typeof AlfColorEnum;
-
-        return {
-            default: AlfColorEnum[kDefault] || AlfColorEnum.Transparent,
-            hover: AlfColorEnum[kHover] || AlfColorEnum.Transparent,
-            focus: AlfColorEnum[kFocus] || AlfColorEnum.Transparent,
-            disabled: AlfColorEnum[kDisabled] || AlfColorEnum.Transparent,
-            active: AlfColorEnum[kActive] || AlfColorEnum.Transparent,
+    let shadows: AlfShadowsInterface | undefined = undefined;
+    if (elevated) {
+        shadows = {
+            default: {
+                boxShadow: AlfShadowEnum.Elevated,
+                boxShadowColor: borderColor.default
+            }
         };
     }
+
+    return {
+        padding: inputPaddingPredefined(padding)!,
+        border: inputBorderPredefined(AlfPxEnum.Px3, AlfRadiusEnum.Md, AlfBorderStyleEnum.Ridge, borderColor),
+        textStyle: inputTextStylePredefined(textColor),
+        background: inputBackgroundPredefined(backgroundColor),
+        shadows: shadows
+    };
 }

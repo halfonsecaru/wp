@@ -1,1 +1,44 @@
-<ng-content />
+@let bg = backgroundComputed(); 
+@let bd = borderComputed(); 
+@let ot = outlineComputed(); 
+@let sd = shadowsComputed(); 
+@let an = animationsComputed();
+@let mg = marginComputed(); 
+@let pd = paddingComputed(); 
+@let ty = typographyComputed(); 
+@let ts = textStyleComputed(); 
+@let tr = transformComputed(); 
+@let tsn = transitionComputed(); 
+@let dl = displayAndLayoutComputed(); 
+@let ar = aria(); 
+@let tt = tooltip(); 
+@let rp = ripple(); 
+@let cr = cursor(); 
+@let ds = disabledComputed(); 
+@let cc = customClass(); 
+@let cs = customStyle(); 
+
+<div
+  [alfBackground]="bg ? bg : null"
+  [alfBorder]="bd ? bd : null"
+  [alfOutline]="ot ? ot : null"
+  [alfShadows]="sd ? sd : null"
+  [alfMargin]="mg ? mg : null"
+  [alfPadding]="pd ? pd : null"
+  [alfTypography]="ty ? ty : null"
+  [alfTextStyle]="ts ? ts : null"
+  [alfTransform]="tr ? tr : null"
+  [alfTransition]="tsn ? tsn : null"
+  [alfDisplayAndLayout]="dl ? dl : null"
+  [alfCursor]="cr ? cr : null"
+  [alfDisabled]="ds"
+  [alfAria]="ar ? ar : null"
+  [class]="'alf-card-actions' + (cc ? ' ' + cc : '')"
+  [style]="cs ? cs : null"
+  [alfRipple]="rp !== undefined ? rp : false"
+  [alfTooltipText]="tt ? tt : null"
+  [alfAnimations]="an ? an : null"
+  [alfPrefix]="cssVarPrefix"
+>
+  <ng-content />
+</div>

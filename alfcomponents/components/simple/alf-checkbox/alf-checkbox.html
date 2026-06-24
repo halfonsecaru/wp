@@ -1,36 +1,26 @@
 @let bg = backgroundComputed(); @let bd = borderComputed(); @let ot = outlineComputed(); @let sd = shadowsComputed(); @let an = animations(); @let mg
 = marginComputed(); @let pd = paddingComputed(); @let ty = typographyComputed(); @let ts = textStyleComputed(); @let tr = transformComputed(); @let
 tsn = transitionComputed(); @let dl = displayAndLayoutComputed(); @let sz = sizeComputed(); @let ar = aria(); @let tt = tooltip(); @let rp = ripple();
-@let cr = cursor(); @let ds = disabled(); @let cc = customClass(); @let cs = customStyle(); @let ie = isExiting(); @let idCheckbox = idComputed();
+@let cr = cursor(); @let ds = disabledComputed(); @let cc = customClass(); @let cs = customStyle(); @let idCheckbox = idComputed();
 @let labelText = labelComputed(); @let labelPos = labelPositionComputed(); @let isChecked = checked(); @let isIndeterminate =
 isIndeterminatedComputed(); @let styleVariant = checkboxStyleComputed(); @let icon = iconSelectedComputed(); @let checkboxName = nameComputed(); @let
 isHovered = hovered(); @let isFocused = focused(); @let ld = isLoading();
 
 <div
+  [alfPrefix]="cssVarPrefix"
   (mouseenter)="hovered.set(true)"
   (mouseleave)="hovered.set(false)"
   [alfBackground]="bg ? bg : null"
-  alfPrefix="--alf-cb"
   [alfBorder]="bd ? bd : null"
-  alfPrefix="--alf-cb"
   [alfOutline]="ot ? ot : null"
-  alfPrefix="--alf-cb"
   [alfShadows]="sd ? sd : null"
-  alfPrefix="--alf-cb"
   [alfMargin]="mg ? mg : null"
-  alfPrefix="--alf-cb"
   [alfPadding]="pd ? pd : null"
-  alfPrefix="--alf-cb"
   [alfTypography]="ty ? ty : null"
-  alfPrefix="--alf-cb"
   [alfTextStyle]="ts ? ts : null"
-  alfPrefix="--alf-cb"
   [alfTransform]="tr ? tr : null"
-  alfPrefix="--alf-cb"
   [alfTransition]="tsn ? tsn : null"
-  alfPrefix="--alf-cb"
   [alfDisplayAndLayout]="dl ? dl : null"
-  alfPrefix="--alf-cb"
   [alfCursor]="cr ? cr : null"
   [alfSize]="sz ? sz : null"
   [alfDisabled]="ds"

@@ -3,7 +3,31 @@
 :host {
   display: block;
   width: 100%;
-  box-sizing: border-box;
+}
 
-  // @include alf-padding-css-vars('--alf-card-title');
+.alf-card-title {
+  @include alf-transition;
+  @include alf-padding-style('--alf-card-title', '.alf-card--disabled &', '.alf-card:focus &', '.alf-card:hover &', '.alf-card:active &');
+  @include alf-background-style('--alf-card-title', '.alf-card--disabled &', '.alf-card:focus &', '.alf-card:hover &', '.alf-card:active &');
+  @include alf-border-style('--alf-card-title', '.alf-card--disabled &', '.alf-card:focus &', '.alf-card:hover &', '.alf-card:active &');
+  @include alf-shadows-style('--alf-card-title', '.alf-card--disabled &', '.alf-card:focus &', '.alf-card:hover &', '.alf-card:active &');
+  @include alf-outline-style('--alf-card-title', '.alf-card--disabled &', '.alf-card:focus &', '.alf-card:hover &', '.alf-card:active &');
+  @include alf-typography-style('--alf-card-title', '.alf-card--disabled &', '.alf-card:focus &', '.alf-card:hover &', '.alf-card:active &');
+  @include alf-text-style('--alf-card-title', '.alf-card--disabled &', '.alf-card:focus &', '.alf-card:hover &', '.alf-card:active &');
+  @include alf-transform-style('--alf-card-title', '.alf-card--disabled &', '.alf-card:focus &', '.alf-card:hover &', '.alf-card:active &');
+
+  --alf-card-title-layout-box-sizing: border-box;
+  --alf-card-title-layout-width: 100%;
+  
+  // Pretty Centered Typography
+  --alf-card-title-typography-text-align: center;
+  --alf-card-title-typography-font-size: 1.25rem;
+  --alf-card-title-typography-font-weight: 700;
+  --alf-card-title-padding-top: 1rem;
+  --alf-card-title-padding-bottom: 0.5rem;
+  --alf-card-title-padding-left: 1rem;
+  --alf-card-title-padding-right: 1rem;
+  --alf-card-title-text-transform: capitalize;
+
+  @include alf-display-and-layout-style('--alf-card-title', '.alf-card--disabled &', '.alf-card:focus &', '.alf-card:hover &', '.alf-card:active &');
 }

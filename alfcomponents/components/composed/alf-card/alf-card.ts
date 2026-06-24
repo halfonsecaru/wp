@@ -2,182 +2,88 @@ import {
   Component,
   input,
   computed,
-  HostBinding,
-  HostListener,
   ChangeDetectionStrategy,
-  output,
-  inject,
-  ElementRef,
+  signal,
 } from '@angular/core';
 import { generateUniqueId, visualprefixEnum } from '@alfcomponents/shared';
-import { AlfColorVariantEnum, AlfCursorEnum } from '@alfcomponents/enums';
-import { AlfBaseConfiguration } from '@alfcomponents/base/alf-base-configuration';
+import { AlfColorVariantEnum } from '@alfcomponents/enums';
 import { AlfComponentTypeEnum } from '@alfcomponents/base/defaultVariants';
 import { AlfCardConfigInterface } from './interfaces/alf-card.interface';
-import { getAlfDefaultConfig } from '@alfcomponents/shared/functions/generateStyles';
-import { ALF_CARD_DEFAULT } from './predefined/alf-card.predefined';
+import { AlfBaseDirectives, deepMergeStates } from '@alfcomponents/components/base/bases.directive';
+import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
 
 @Component({
   selector: 'alf-card',
   standalone: true,
-  imports: [],
+  imports: [
+    ...ALF_CORE_DIRECTIVES,
+  ],
   templateUrl: './alf-card.html',
   styleUrl: './alf-card.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AlfCardComponent extends AlfBaseConfiguration<AlfCardConfigInterface> {
+export class AlfCardComponent extends AlfBaseDirectives<AlfCardConfigInterface> {
 
-  // ==========================================
-  // 1. Attributes (Properties, Injections)
-  // ==========================================
-  protected override readonly visualPrefix: string = visualprefixEnum.Card;
-  protected override readonly componentType = AlfComponentTypeEnum.Card;
-  private readonly internalId = generateUniqueId({ prefix: visualprefixEnum.CardInternalId });
-  private readonly el = inject(ElementRef);
+  // ── 1. Constants & View Queries ───────────────────────────────────────────
+  protected readonly cssVarPrefix: string = visualprefixEnum.Card as string;
+  protected readonly classPrefix: string = visualprefixEnum.CardPrefix as string;
 
-  // ==========================================
-  // 2. Signals & Inputs
-  // ==========================================
-  public override readonly colorVariant = input<AlfColorVariantEnum>();
-  public override readonly inputConfig = input<AlfCardConfigInterface>(undefined, { alias: 'config' });
+  // ── 2. Inputs & Models ────────────────────────────────────────────────────
+  public readonly id = input<string>();
+  public readonly inputConfig = input<AlfCardConfigInterface>(undefined, { alias: 'config' });
+  public readonly helperText = input<string>();
+  override readonly elevated = input<boolean>(true);
+  private readonly _disabled = signal<boolean>(false);
 
-  /** Whether the card is clickable and behaves as a button */
-  public readonly clickable = input<boolean>(false);
-  /** Anchor link URL if the card should act as a link */
-  public readonly href = input<string | undefined>();
-  /** Target attribute for the anchor link */
-  public readonly target = input<string>('_self');
-
-  // ==========================================
-  // 3. Outputs
-  // ==========================================
-  public readonly onClick = output<MouseEvent>();
-
-  // ==========================================
-  // 4. Computed
-  // ==========================================
-  protected readonly predefinedConfigComputed = computed(() => {
-    const rawV = this.colorVariant() ?? this.inputConfig()?.colorVariant;
-    const hasVariant = rawV && rawV !== AlfColorVariantEnum.Default && rawV !== AlfColorVariantEnum.Transparent;
-
-    const defaultStyles = { ...ALF_CARD_DEFAULT };
-    if (hasVariant) {
-      delete defaultStyles.backgrounds;
-      delete defaultStyles.border;
-      delete defaultStyles.shadows;
-    }
-
-    return getAlfDefaultConfig(rawV, this.componentType, defaultStyles, this.inputConfig() ?? {});
+  // ── 3. Internal State (Signals & Variables) ─────────────────────────────────────────────
+  protected readonly internalId: string = generateUniqueId({ prefix: this.classPrefix });
+  
+  // ── 4. Computed State (Derived from Inputs & State) ───────────────────────
+  protected readonly idComputed = computed(() => this.id() ?? this.inputConfig()?.id ?? this.internalId);
+  protected readonly helperTextComputed = computed(() => this.helperText() ?? this.inputConfig()?.helperText);
+  public readonly disabledComputed = computed<boolean>(() => {
+    return !!(this.disabled() || this.inputConfig()?.disabled || this._disabled());
   });
 
-  protected override readonly colorVariantComputed = computed(() => {
-    return this.predefinedConfigComputed()?.colorVariant;
+  protected readonly predefinedConfig = computed(() => {
+    const currentVariant = this.variant() ?? AlfColorVariantEnum.SecondaryOutline;
+    const vStr = currentVariant.toString();
+
+    let comp;
+    if (vStr.includes('soft-')) {
+      comp = this.createSolidComponentSoftBackground(currentVariant);
+    } else if (vStr.includes('depth-')) {
+      comp = this.create3dComponentSolidText(currentVariant);
+    } else {
+      comp = this.createSolidComponent(currentVariant);
+    }
+
+    return {
+      backgrounds: comp.background,
+      border: comp.border,
+      padding: comp.padding,
+      textStyle: comp.textStyle,
+      shadows: comp.shadows,
+    };
   });
 
-  protected override readonly cursorComputed = computed(() => {
-    if (this.disabledComputed()) return AlfCursorEnum.NotAllowed;
-    if (this.clickable() || this.href()) return AlfCursorEnum.Pointer;
-    return this.cursor() ?? this.resolvedConfig()?.cursor ?? AlfCursorEnum.Default;
-  });
-
-  public override readonly resolvedConfig = computed(() => {
-    const predefined = this.predefinedConfigComputed();
-    const manual = this.inputConfig();
-    const variant = this.colorVariantComputed();
-    return { ...predefined, ...manual, colorVariant: variant };
-  });
-
-  public readonly containerId = computed(() =>
-    this.resolvedConfig()?.id ?? this.internalId
-  );
-
-  // ==========================================
-  // 5. Host Bindings
-  // ==========================================
-  @HostBinding('class')
-  get hostClass(): string {
-    const custom = this.customClassComputed();
-    const disabledClass = this.disabledComputed() ? ' alf-card--disabled' : '';
-    const interactiveClass = (this.clickable() || !!this.href()) ? ' alf-card--interactive' : '';
-    return `alf-card${disabledClass}${interactiveClass} ${custom}`.trim();
-  }
-
-  @HostBinding('attr.id')
-  get hostId(): string {
-    return this.containerId();
-  }
-
-  @HostBinding('style')
-  get hostStyle(): string {
-    return this.combinedStyles();
-  }
-
-  @HostBinding('attr.role')
-  get hostRole(): string {
-    if (this.href()) return 'link';
-    if (this.clickable()) return 'button';
-    return 'article';
-  }
-
-  @HostBinding('attr.tabindex')
-  get hostTabIndex(): number | null {
-    if (this.disabledComputed()) return -1;
-    if (this.clickable() || this.href()) return 0;
-    return null;
-  }
-
-  // ==========================================
-  // 6. Host Listeners / Handlers
-  // ==========================================
-  @HostListener('click', ['$event'])
-  public onHostClick(event: MouseEvent): void {
-    if (this.disabledComputed()) {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      return;
-    }
-
-    // Ignore clicks bubbling from interactive children inside the card
-    const target = event.target as HTMLElement;
-    const interactiveDescendant = target.closest('button, a, alf-button, [role="button"]');
-    if (interactiveDescendant && interactiveDescendant !== this.el.nativeElement) {
-      return;
-    }
-
-    this.onClick.emit(event);
-
-    if (this.href()) {
-      const url = this.href()!;
-      const tgt = this.target();
-      if (tgt === '_blank') {
-        window.open(url, '_blank', 'noopener noreferrer');
-      } else {
-        window.location.href = url;
-      }
-    }
-  }
-
-  @HostListener('keydown.enter', ['$event'])
-  @HostListener('keydown.space', ['$event'])
-  public onHostKeydown(event: KeyboardEvent): void {
-    if (this.disabledComputed()) {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      return;
-    }
-    if (this.clickable() || this.href()) {
-      event.preventDefault();
-      // Simulate click
-      const clickEvent = new MouseEvent('click', {
-        bubbles: true,
-        cancelable: true,
-        view: window
-      });
-      this.onHostClick(clickEvent);
-    }
-  }
-
+  // ── 5. Constructor ────────────────────────────────────────────────────────
   constructor() {
     super();
+    this.componentType.set(AlfComponentTypeEnum.Card);
+    this.initialization(visualprefixEnum.CardPrefix, visualprefixEnum.CardClass, AlfComponentTypeEnum.Card);
+  }
+
+  // ── 6. Control Value Accessor / Core Override ─────────────────────────────
+  protected override getControlValue = (): any => {
+    return undefined;
+  };
+
+  protected override getControlType(): string {
+    return AlfComponentTypeEnum.Card;
+  }
+
+  protected override getControlConfig() {
+    return deepMergeStates(this.predefinedConfig(), this.inputConfig());
   }
 }

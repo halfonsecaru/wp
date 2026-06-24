@@ -1,53 +1,66 @@
 <!-- 1. Comportamiento y Directivas -->
-@let bg = backgroundComputed(); @let bd = borderComputed(); @let ot = outlineComputed(); @let sd = shadowsComputed(); @let mg = marginComputed(); 
-@let pd = paddingComputed(); @let ty = typographyComputed(); @let ts = textStyleComputed(); @let tr = transformComputed(); @let tsn = transitionComputed(); 
-@let dl = displayAndLayoutComputed(); @let sz = sizeComputed(); @let ar = aria(); @let tt = tooltip(); @let rp = ripple(); @let cr = cursor(); 
-@let ds = disabledComputed(); @let cc = customClass(); @let cs = customStyle(); @let ie = isExiting(); @let idRadio = idComputed(); @let labelText = labelComputed(); 
-@let labelPos = labelPositionComputed(); @let isChecked = checked(); @let styleVariant = radioButtonStyleComputed(); @let radioName = name(); 
-@let isHovered = hovered(); @let isFocused = focused(); @let ld = isLoading();
+@let bg = backgroundComputed(); 
+@let bd = borderComputed(); 
+@let ot = outlineComputed(); 
+@let sd = shadowsComputed(); 
+@let mg = marginComputed(); 
+@let pd = paddingComputed(); 
+@let ty = typographyComputed(); 
+@let ts = textStyleComputed(); 
+@let tr = transformComputed(); 
+@let tsn = transitionComputed(); 
+@let dl = displayAndLayoutComputed(); 
+@let sz = sizeComputed(); 
+@let ar = aria(); 
+@let tt = tooltip(); 
+@let rp = ripple(); 
+@let cr = cursor(); 
+@let ds = disabledComputed();
+@let cc = customClass(); 
+@let cs = customStyle(); 
+
+
+@let idRadio = idComputed(); 
+@let labelText = labelComputed(); 
+@let labelPos = labelPositionComputed(); 
+@let isChecked = checked();
+@let styleVariant = radioButtonStyleComputed(); 
+@let radioName = name();
+@let isHovered = hovered(); 
+@let isFocused = focused(); 
+@let ld = isLoading();
 
 <div
   (mouseenter)="hovered.set(true)"
   (mouseleave)="hovered.set(false)"
   [alfBackground]="bg ? bg : null"
-  alfPrefix="--alf-rb"
+  [alfPrefix]="cssVarPrefix"
   [alfBorder]="bd ? bd : null"
-  alfPrefix="--alf-rb"
   [alfOutline]="ot ? ot : null"
-  alfPrefix="--alf-rb"
   [alfShadows]="sd ? sd : null"
-  alfPrefix="--alf-rb"
   [alfMargin]="mg ? mg : null"
-  alfPrefix="--alf-rb"
   [alfPadding]="pd ? pd : null"
-  alfPrefix="--alf-rb"
   [alfTypography]="ty ? ty : null"
-  alfPrefix="--alf-rb"
   [alfTextStyle]="ts ? ts : null"
-  alfPrefix="--alf-rb"
   [alfTransform]="tr ? tr : null"
-  alfPrefix="--alf-rb"
   [alfTransition]="tsn ? tsn : null"
-  alfPrefix="--alf-rb"
   [alfDisplayAndLayout]="dl ? dl : null"
-  alfPrefix="--alf-rb"
   [alfCursor]="cr ? cr : null"
   [alfSize]="sz ? sz : null"
   [alfDisabled]="ds"
   [alfAria]="ar ? ar : null"
-  [class]="'alf-rb alf-rb--' + styleVariant + ' alf-rb--' + sz + (cc ? ' ' + cc : '')"
+  [class]="classPrefix + ' ' + classPrefix + '--' + styleVariant + ' ' + classPrefix + '--' + sz + (cc ? ' ' + cc : '')"
   [class.alf-rb--checked]="isChecked"
   [class.alf-rb--disabled]="ds"
   [class.alf-rb--loading]="ld"
   [class.alf-rb--hovered]="isHovered"
   [class.alf-rb--focused]="isFocused"
   [style]="cs ? cs : null"
-  [alfRipple]="rp !== undefined ? rp : null"
   [alfTooltipText]="tt ? tt : null"
   [alfAnimations]="animations() ? animations() : null"
 >
   <label
-    class="alf-rb-wrapper"
+    [class]="classPrefix + '-wrapper'"
     [class.alf-rb-wrapper--label-before]="labelPos === 'before'"
     [attr.for]="idRadio"
     [style.cursor]="ds || ld ? 'not-allowed' : (cr || null)"
@@ -73,7 +86,7 @@
     />
 
     <!-- Contenedor Visual (Circle) -->
-    <div class="alf-rb-circle">
+    <div class="alf-rb-circle" [alfRipple]="rp !== undefined ? rp : null">
       <div class="alf-rb-ripple-bg"></div>
       <div class="alf-rb-dot"></div>
     </div>

@@ -1,9 +1,7 @@
-import { AlfBaseConfiguration } from '@alfcomponents/base/alf-base-configuration';
 import { ChangeDetectionStrategy, Component, computed, input, model, output, signal, ViewEncapsulation } from '@angular/core';
-import { AlfSwitchInterface } from './interfaces/alf-switch.interface';
-import { generateUniqueId, visualprefixEnum, resolveAlfColorVariant } from '@alfcomponents/shared';
-import { AlfLabelsPositionEnum, AlfColorVariantEnum, AlfSizeEnum } from '@alfcomponents/enums';
-import { getAlfSwitchDefaultConfig } from './predefined/alf-switch.predefined';
+import { AlfSwitchInterface, AlfSwitchVariantEnum } from './interfaces/alf-switch.interface';
+import { generateUniqueId, visualprefixEnum } from '@alfcomponents/shared';
+import { AlfLabelsPositionEnum, AlfColorVariantEnum, AlfSizeEnum, AlfRadiusEnum, AlfColorEnum } from '@alfcomponents/enums';
 
 import { AlfComponentTypeEnum } from '@alfcomponents/base/defaultVariants';
 import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
@@ -11,6 +9,24 @@ import { AlfBaseDirectives, deepMergeStates } from '@alfcomponents/components/ba
 import { AlfSwitchI18nLabels, getAlfSwitchLabel } from './i18n/switch-i18n';
 import { AlfSpinner } from '../alf-spinner/alf-spinner';
 import { AlfRemEnum } from '@alfcomponents/enums';
+import { resetAlfBorderRadiusAndGiveBorder } from '@alfcomponents/shared/functions/generateStyles';
+
+type SwitchCompConfig = {
+  background: any;
+  border: any;
+  padding: any;
+  textStyle: any;
+  shadows?: any;
+  typography?: {
+    default?: { color?: string };
+    hover?: { color?: string };
+    focus?: { color?: string };
+    active?: { color?: string };
+    disabled?: { color?: string };
+  };
+};
+
+
 
 @Component({
   selector: 'alf-switch',
@@ -21,10 +37,12 @@ import { AlfRemEnum } from '@alfcomponents/enums';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class AlfSwitch extends AlfBaseDirectives {
+export class AlfSwitch extends AlfBaseDirectives<AlfSwitchInterface> {
 
   // ── 1. Constants & View Queries ───────────────────────────────────────────
   public readonly AlfRemEnum = AlfRemEnum;
+  protected readonly cssVarPrefix: string = visualprefixEnum.Switch as string;
+  protected readonly classPrefix: string = visualprefixEnum.SwitchPrefix as string;
 
   // ── 2. Inputs & Models ────────────────────────────────────────────────────
   public readonly checked = model<boolean>(false);
@@ -33,11 +51,16 @@ export class AlfSwitch extends AlfBaseDirectives {
   public readonly id = input<string>();
   public readonly inputConfig = input<AlfSwitchInterface>(undefined, { alias: 'config' });
   public readonly label = input<string | undefined>();
-  public readonly switchStyle = input<'standard' | 'elegant' | undefined>();
+  public readonly labelText = input<string | undefined>(undefined, { alias: 'labelText' });
+  public readonly switchStyle = input<AlfSwitchVariantEnum | 'standard' | 'elegant'>(AlfSwitchVariantEnum.Elegant);
   public readonly name = input<string>();
   public readonly helperText = input<string | undefined>();
-  public readonly labelPosition = input<AlfLabelsPositionEnum>(AlfLabelsPositionEnum.After);
+  public readonly labelPosition = input<AlfLabelsPositionEnum | 'before' | 'after'>(AlfLabelsPositionEnum.After);
   public readonly predefined = input<keyof AlfSwitchI18nLabels>();
+  public readonly colorSwitch = input<AlfColorEnum | string | undefined>(undefined);
+
+  // Workaround for strict template checker not resolving inherited signal/computed members.
+
 
   // A) Generales a todo el componente
   //protected override readonly visualPrefix: string = visualprefixEnum.Switch;
@@ -54,18 +77,22 @@ export class AlfSwitch extends AlfBaseDirectives {
 
 
   // ── 4. Internal State (Signals & Variables) ─────────────────────────────────────────────
-  protected readonly internalId: string = generateUniqueId({ prefix: 'alf-rb' });
+  protected readonly internalId: string = generateUniqueId({ prefix: this.classPrefix });
 
   // ── 5. Computed State (Derived from Inputs & State) ───────────────────────
   protected readonly idComputed = computed(() => this.id() ?? this.inputConfig()?.id ?? this.internalId);
 
   public readonly disabledComputed = computed<boolean>(() => {
-    return this.disabled() ?? this.inputConfig()?.disabled ?? this._disabled() ?? false;
+    return !!(this.disabled() || this.inputConfig()?.disabled || this._disabled());
   });
 
   protected readonly labelComputed = computed<string | null>(() => {
-    const lbl = this._label() ?? this.label() ?? this.inputConfig()?.label;
-    if (lbl) return lbl;
+    // Prefer explicit label input/config; internal CVA label is only a fallback.
+    const explicitLabel = this.label() ?? this.labelText() ?? this.inputConfig()?.label;
+    if (explicitLabel) return explicitLabel;
+
+    const internalLabel = this._label();
+    if (internalLabel) return internalLabel;
 
     const pref = this.predefined() ?? this.inputConfig()?.predefined;
     if (pref) return getAlfSwitchLabel(pref as keyof AlfSwitchI18nLabels);
@@ -73,84 +100,59 @@ export class AlfSwitch extends AlfBaseDirectives {
     return '';
   });
 
+  public readonly switchStyleComputed = computed<AlfSwitchVariantEnum>(() =>
+    (this.switchStyle() ?? this.inputConfig()?.switchStyle ?? AlfSwitchVariantEnum.Elegant) as AlfSwitchVariantEnum
+  );
+
   protected readonly predefinedConfig = computed(() => {
-    const currentVariant = this.colorVariant() ?? this.variant() ?? AlfColorVariantEnum.Primary;
-    const vStr = currentVariant.toString();
+    const currentVariant = this.variant() ?? this.inputConfig()?.variant ?? AlfColorVariantEnum.SecondaryOutline;
+    const currentSwitchStyle = this.switchStyleComputed();
 
-    let comp;
-    if (vStr.includes('soft-')) {
-      comp = this.createSolidComponentSoftBackground(currentVariant);
-    } else if (vStr.includes('depth-')) {
-      comp = this.create3dComponentSolidText(currentVariant);
-    } else {
-      comp = this.createSolidComponent(currentVariant);
-    }
-
-    // Override label color for solid, gradient, and 3D variants
-    // so the label matches the base color (which is stored in border color) instead of being white.
-    // Soft, outline, ghost, and crystal already handle their text color appropriately.
-    if (!vStr.includes('outline-') && !vStr.includes('ghost-') && !vStr.includes('soft-') && !vStr.includes('crystal-') && vStr !== 'transparent' && vStr !== 'Default') {
-      if (comp.border) {
-        if (!comp.typography) comp.typography = {};
-        if (!comp.typography.default) comp.typography.default = {};
-        comp.typography.default.color = comp.border.default?.borderColor;
-
-        if (comp.border.hover) {
-          if (!comp.typography.hover) comp.typography.hover = {};
-          comp.typography.hover.color = comp.border.hover.borderColor || comp.border.default?.borderColor;
-        }
-        if (comp.border.focus) {
-          if (!comp.typography.focus) comp.typography.focus = {};
-          comp.typography.focus.color = comp.border.focus.borderColor || comp.border.default?.borderColor;
-        }
-        if (comp.border.active) {
-          if (!comp.typography.active) comp.typography.active = {};
-          comp.typography.active.color = comp.border.active.borderColor || comp.border.default?.borderColor;
-        }
-        if (comp.border.disabled) {
-          if (!comp.typography.disabled) comp.typography.disabled = {};
-          comp.typography.disabled.color = comp.border.disabled.borderColor || comp.border.default?.borderColor;
-        }
-      }
-    }
-
-    return {
-      backgrounds: comp.background,
-      border: comp.border,
-      padding: comp.padding,
-      textStyle: comp.textStyle,
-      typography: comp.typography,
-      shadows: comp.shadows
-    };
-
+    return getSwitch(
+      currentVariant,
+      currentSwitchStyle,
+      (v) => this.createSolidComponentSoftBackground(v),
+      (v) => this.create3dComponentSolidText(v),
+      (v) => this.createSolidComponent(v)
+    );
   });
 
   public readonly labelPositionComputed = computed<AlfLabelsPositionEnum>(
-    () => this.labelPosition() ?? this.inputConfig()?.labelPosition ?? AlfLabelsPositionEnum.After
+    () => (this.labelPosition() ?? this.inputConfig()?.labelPosition ?? AlfLabelsPositionEnum.After) as AlfLabelsPositionEnum
   );
 
   public readonly sizeComputed = computed<AlfSizeEnum>(() =>
     (this.size() as AlfSizeEnum) ?? (this.inputConfig()?.size as AlfSizeEnum) ?? AlfSizeEnum.MD);
 
+  public readonly isOutlineVariant = computed<boolean>(() => {
+    const currentVariant = this.variant() ?? AlfColorVariantEnum.Secondary;
+    const vStr = currentVariant.toString();
+    return vStr.includes('outline-');
+  });
+
+
+  protected readonly colorSwitchComputed = computed<AlfColorEnum | string | undefined>(() =>
+    this.colorSwitch() ?? this.inputConfig()?.colorSwitch
+  );
+
   // ── 6. Constructor ────────────────────────────────────────────────────────
   constructor() {
     super();
-    this.componentType.set(AlfComponentTypeEnum.RadioButton);
-    this.initialization(visualprefixEnum.Switch, visualprefixEnum.Switchh, AlfComponentTypeEnum.Switch);
+    this.initialization(this.cssVarPrefix, visualprefixEnum.SwitchClass, AlfComponentTypeEnum.Switch);
   };
 
 
   // ── 7. Handlers & Public API ──────────────────────────────────────────────
 
   public readonly toggle = (): void => {
-    if (this.disabledComputed()) return;
+    if (this.disabledComputed() || this.isLoading()) return;
     const newValue = !this.checked();
     this.checked.set(newValue);
     this.onCheckedChange.emit(newValue);
   };
 
   protected readonly onInputKeydown = (event: KeyboardEvent): void => {
-    if (this.disabledComputed()) return;
+    if (this.disabledComputed() || this.isLoading()) return;
     if (event.key === ' ' || event.key === 'Enter') {
       event.preventDefault();
       this.toggle();
@@ -186,7 +188,17 @@ export class AlfSwitch extends AlfBaseDirectives {
    * con cualquier configuración global/manual que el usuario pase por inputConfig.
    */
   protected getControlConfig() {
-    return deepMergeStates(this.predefinedConfig(), this.inputConfig());
+    const thumbColor = this.colorSwitchComputed();
+
+    const thumbColorConfig = thumbColor
+      ? {
+        textStyle: {
+          default: { color: thumbColor },
+        }
+      }
+      : undefined;
+
+    return deepMergeStates(this.predefinedConfig(), this.inputConfig(), thumbColorConfig);
   }
 
   /**
@@ -205,4 +217,58 @@ export class AlfSwitch extends AlfBaseDirectives {
     this._disabled.set(isDisabled);
   }
 
+}
+
+
+const getSwitch = (
+  currentVariant: AlfColorVariantEnum,
+  currentSwitchStyle: AlfSwitchVariantEnum,
+  createSolidComponentSoftBackground: (variant: AlfColorVariantEnum) => SwitchCompConfig,
+  create3dComponentSolidText: (variant: AlfColorVariantEnum) => SwitchCompConfig,
+  createSolidComponent: (variant: AlfColorVariantEnum) => SwitchCompConfig
+) => {
+
+  const vStr = currentVariant.toString();
+
+  let comp: SwitchCompConfig;
+  if (vStr.includes('soft-')) {
+    comp = createSolidComponentSoftBackground(currentVariant);
+  } else if (vStr.includes('depth-')) {
+    comp = create3dComponentSolidText(currentVariant);
+  } else {
+    comp = createSolidComponent(currentVariant);
+  }
+
+  if (currentSwitchStyle === AlfSwitchVariantEnum.Standard) {
+    resetAlfBorderRadiusAndGiveBorder(AlfRadiusEnum.Lg, comp);
+  } else {
+    resetAlfBorderRadiusAndGiveBorder(AlfRadiusEnum.Full, comp);
+  }
+
+  if (
+    !vStr.includes('outline-') &&
+    !vStr.includes('ghost-') &&
+    !vStr.includes('soft-') &&
+    !vStr.includes('crystal-') &&
+    vStr !== 'transparent' &&
+    vStr !== 'Default') {
+
+    if (comp.border) {
+      if (!comp.typography) comp.typography = {
+        default: { color: comp.border.default?.borderColor }
+      };
+    }
+
+  }
+
+  const finalConfig = {
+    backgrounds: comp.background,
+    border: comp.border,
+    padding: comp.padding,
+    textStyle: comp.textStyle,
+    typography: comp.typography,
+    shadows: comp.shadows
+  };
+
+  return finalConfig;
 }

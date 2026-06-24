@@ -7,7 +7,7 @@
   },
   "include": ["src/**/*.ts"],
   "angularCompilerOptions": {
-    "strictTemplates": false
+    "strictTemplates": true
   },
   "references": [
     {

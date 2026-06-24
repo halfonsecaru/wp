@@ -5,6 +5,21 @@
   flex: 1;
   width: 100%;
   box-sizing: border-box;
+}
 
-  // @include alf-padding-css-vars('--alf-card-body');
+.alf-card-body {
+  @include alf-transition;
+  @include alf-padding-style('--alf-card-body', '.alf-card--disabled &', '.alf-card:focus &', '.alf-card:hover &', '.alf-card:active &');
+  @include alf-background-style('--alf-card-body', '.alf-card--disabled &', '.alf-card:focus &', '.alf-card:hover &', '.alf-card:active &');
+  @include alf-border-style('--alf-card-body', '.alf-card--disabled &', '.alf-card:focus &', '.alf-card:hover &', '.alf-card:active &');
+  @include alf-shadows-style('--alf-card-body', '.alf-card--disabled &', '.alf-card:focus &', '.alf-card:hover &', '.alf-card:active &');
+  @include alf-outline-style('--alf-card-body', '.alf-card--disabled &', '.alf-card:focus &', '.alf-card:hover &', '.alf-card:active &');
+  @include alf-typography-style('--alf-card-body', '.alf-card--disabled &', '.alf-card:focus &', '.alf-card:hover &', '.alf-card:active &');
+  @include alf-text-style('--alf-card-body', '.alf-card--disabled &', '.alf-card:focus &', '.alf-card:hover &', '.alf-card:active &');
+  --alf-card-body-layout-box-sizing: border-box;
+  --alf-card-body-layout-width: 100%;
+
+  @include alf-display-and-layout-style('--alf-card-body', '.alf-card--disabled &', '.alf-card:focus &', '.alf-card:hover &', '.alf-card:active &');
+
+  flex: 1;
 }

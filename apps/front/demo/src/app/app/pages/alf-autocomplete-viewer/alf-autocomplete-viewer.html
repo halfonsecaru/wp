@@ -1,218 +1,268 @@
 <div class="viewer-page">
-  <header class="viewer-page__header">
-    <h1 class="viewer-page__title">💎 AlfAutocomplete Showcase</h1>
-    <p class="viewer-page__subtitle">Componente Autocomplete/Select reactivo de alto rendimiento integrado con el Elite Visual Engine.</p>
+  <header class="viewer-page__header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2.5rem;">
+    <div>
+      <h1 class="viewer-page__title">💎 AlfAutocomplete Elite Demo</h1>
+      <p class="viewer-page__subtitle">Selector desplegable premium integrado con el Elite Visual Engine y <code>alf-input</code>.</p>
+    </div>
+
+    <!-- Selector de Apariencia Premium -->
+    <div class="appearance-selector" style="display: flex; background: #f1f5f9; padding: 4px; border-radius: 12px; gap: 4px; border: 1px solid #e2e8f0; box-shadow: inset 0 2px 4px rgba(0,0,0,0.04);">
+      <button 
+        type="button"
+        (click)="selectedAppearance.set(AlfInputAppearanceEnum.Outline)"
+        [style.background]="selectedAppearance() === AlfInputAppearanceEnum.Outline ? '#ffffff' : 'transparent'"
+        [style.color]="selectedAppearance() === AlfInputAppearanceEnum.Outline ? '#4f46e5' : '#64748b'"
+        [style.font-weight]="selectedAppearance() === AlfInputAppearanceEnum.Outline ? '600' : '400'"
+        style="border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s ease; display: flex; align-items: center; gap: 6px;"
+      >
+        🔲 Outline
+      </button>
+      <button 
+        type="button"
+        (click)="selectedAppearance.set(AlfInputAppearanceEnum.Fill)"
+        [style.background]="selectedAppearance() === AlfInputAppearanceEnum.Fill ? '#ffffff' : 'transparent'"
+        [style.color]="selectedAppearance() === AlfInputAppearanceEnum.Fill ? '#4f46e5' : '#64748b'"
+        [style.font-weight]="selectedAppearance() === AlfInputAppearanceEnum.Fill ? '600' : '400'"
+        style="border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s ease; display: flex; align-items: center; gap: 6px;"
+      >
+        🗂️ Fill
+      </button>
+      <button 
+        type="button"
+        (click)="selectedAppearance.set(AlfInputAppearanceEnum.Standard)"
+        [style.background]="selectedAppearance() === AlfInputAppearanceEnum.Standard ? '#ffffff' : 'transparent'"
+        [style.color]="selectedAppearance() === AlfInputAppearanceEnum.Standard ? '#4f46e5' : '#64748b'"
+        [style.font-weight]="selectedAppearance() === AlfInputAppearanceEnum.Standard ? '600' : '400'"
+        style="border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s ease; display: flex; align-items: center; gap: 6px;"
+      >
+        ➖ Standard
+      </button>
+    </div>
   </header>
 
   <div class="viewer-grid">
-    <!-- 1. COMPORTAMIENTO BÁSICO -->
-    <div class="viewer-card">
+    
+    <!-- 1. CARACTERÍSTICAS PRINCIPALES -->
+    <div class="viewer-card viewer-card--wide">
       <h2 class="viewer-card__title">
         <span class="viewer-card__dot viewer-card__dot--blue"></span>
-        Selección Simple (Searchable & Clearable)
+        Características Principales
       </h2>
       <div class="viewer-card__body">
-        <alf-autocomplete 
-          [config]="configSingle" 
-          [value]="singleValue()" 
-          (valueChange)="singleValue.set($event)">
-        </alf-autocomplete>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
+          
+          <!-- Básico -->
+          <div>
+            <alf-autocomplete
+              label="Básico (Selecciona un país)"
+              [options]="countries"
+              [config]="{ appearance: selectedAppearance() }"
+            ></alf-autocomplete>
+          </div>
+
+          <!-- Con Búsqueda -->
+          <div>
+            <alf-autocomplete
+              label="Con Búsqueda"
+              [options]="countries"
+              [config]="{ appearance: selectedAppearance(), searchable: true }"
+            ></alf-autocomplete>
+          </div>
+
+          <!-- Con Limpiado -->
+          <div>
+            <alf-autocomplete
+              label="Con Limpiado (Clearable)"
+              [options]="countries"
+              [config]="{ appearance: selectedAppearance(), clearable: true }"
+            ></alf-autocomplete>
+          </div>
+
+          <!-- Con Grupos -->
+          <div>
+            <alf-autocomplete
+              label="Con Grupos"
+              [options]="groupedCountries"
+              [config]="{ appearance: selectedAppearance(), groupBy: 'group' }"
+            ></alf-autocomplete>
+          </div>
+
+          <!-- Scroll Virtual -->
+          <div>
+            <alf-autocomplete
+              label="Scroll Virtual (1000 Elementos)"
+              [options]="largeDataset"
+              [config]="{ appearance: selectedAppearance(), virtualScroll: true }"
+            ></alf-autocomplete>
+          </div>
+
+          <!-- Deshabilitado -->
+          <div>
+            <alf-autocomplete
+              label="Deshabilitado"
+              [options]="countries"
+              [disabled]="true"
+              [config]="{ appearance: selectedAppearance() }"
+            ></alf-autocomplete>
+          </div>
+
+        </div>
       </div>
     </div>
 
-    <!-- 2. SELECCIÓN MÚLTIPLE -->
-    <div class="viewer-card">
+    <!-- 2. VARIANTES SOLID -->
+    <div class="viewer-card viewer-card--wide">
+      <h2 class="viewer-card__title">
+        <span class="viewer-card__dot viewer-card__dot--blue"></span>
+        VARIANTES SOLID (Fondo Relleno Premium)
+      </h2>
+      <div class="viewer-card__body">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
+          @for (variant of solidVariants; track variant) {
+            <div>
+              <alf-autocomplete
+                [variant]="variant"
+                [label]="variant"
+                [options]="countries"
+                [config]="{ appearance: selectedAppearance() }"
+              ></alf-autocomplete>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. VARIANTES OUTLINE -->
+    <div class="viewer-card viewer-card--wide">
+      <h2 class="viewer-card__title">
+        <span class="viewer-card__dot viewer-card__dot--blue"></span>
+        VARIANTES OUTLINE (Borde Fino Premium)
+      </h2>
+      <div class="viewer-card__body">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
+          @for (variant of outlineVariants; track variant) {
+            <div>
+              <alf-autocomplete
+                [variant]="variant"
+                [label]="variant"
+                [options]="countries"
+                [config]="{ appearance: selectedAppearance() }"
+              ></alf-autocomplete>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. VARIANTES GHOST -->
+    <div class="viewer-card viewer-card--wide">
       <h2 class="viewer-card__title">
         <span class="viewer-card__dot viewer-card__dot--purple"></span>
-        Selección Múltiple
+        VARIANTES GHOST (Minimalista Transparente)
       </h2>
       <div class="viewer-card__body">
-        <alf-autocomplete 
-          [config]="configMultiple" 
-          [value]="multipleValue()" 
-          (valueChange)="multipleValue.set($event)">
-        </alf-autocomplete>
-      </div>
-    </div>
-
-    <!-- 3. VARIANTES SÓLIDAS -->
-    <div class="viewer-card viewer-card--wide">
-      <h2 class="viewer-card__title">
-        VARIANTES SÓLIDAS (SOLID COLORS)
-      </h2>
-      <div class="viewer-card__body">
-        <div class="viewer-grid" style="grid-template-columns: repeat(4, 1fr); gap: 1.5rem 1rem;">
-          @for (variant of solidVariants; track variant) {
-            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-              <span class="viewer-desc" style="margin: 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase;">{{ variant }}</span>
-              <alf-autocomplete 
-                [config]="getConfigForVariant(variant, AlfInputAppearanceEnum.Outline)" 
-                [value]="valuesMap()[variant]" 
-                (valueChange)="updateValue(variant, $event)">
-              </alf-autocomplete>
-            </div>
-          }
-        </div>
-      </div>
-    </div>
-
-    <!-- 4. VARIANTES BORDES (OUTLINES) -->
-    <div class="viewer-card viewer-card--wide">
-      <h2 class="viewer-card__title">
-        VARIANTES BORDES (OUTLINES)
-      </h2>
-      <div class="viewer-card__body">
-        <div class="viewer-grid" style="grid-template-columns: repeat(4, 1fr); gap: 1.5rem 1rem;">
-          @for (variant of outlineVariants; track variant) {
-            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-              <span class="viewer-desc" style="margin: 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase;">{{ variant }}</span>
-              <alf-autocomplete 
-                [config]="getConfigForVariant(variant, AlfInputAppearanceEnum.Outline)" 
-                [value]="valuesMap()[variant]" 
-                (valueChange)="updateValue(variant, $event)">
-              </alf-autocomplete>
-            </div>
-          }
-        </div>
-      </div>
-    </div>
-
-    <!-- 5. VARIANTES FANTASMA (GHOSTS) -->
-    <div class="viewer-card viewer-card--wide">
-      <h2 class="viewer-card__title">
-        VARIANTES FANTASMA (GHOSTS)
-      </h2>
-      <div class="viewer-card__body">
-        <div class="viewer-grid" style="grid-template-columns: repeat(4, 1fr); gap: 1.5rem 1rem;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
           @for (variant of ghostVariants; track variant) {
-            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-              <span class="viewer-desc" style="margin: 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase;">{{ variant }}</span>
-              <alf-autocomplete 
-                [config]="getConfigForVariant(variant, AlfInputAppearanceEnum.Outline)" 
-                [value]="valuesMap()[variant]" 
-                (valueChange)="updateValue(variant, $event)">
-              </alf-autocomplete>
+            <div>
+              <alf-autocomplete
+                [variant]="variant"
+                [label]="variant"
+                [options]="countries"
+                [config]="{ appearance: selectedAppearance() }"
+              ></alf-autocomplete>
             </div>
           }
         </div>
       </div>
     </div>
 
-    <!-- 6. VARIANTES SUAVES (SOFT COLORS) -->
+    <!-- 5. VARIANTES SOFT -->
     <div class="viewer-card viewer-card--wide">
       <h2 class="viewer-card__title">
-        VARIANTES SUAVES (SOFT COLORS)
+        <span class="viewer-card__dot viewer-card__dot--amber"></span>
+        VARIANTES SOFT (Fondo Pastel Elegante)
       </h2>
       <div class="viewer-card__body">
-        <div class="viewer-grid" style="grid-template-columns: repeat(4, 1fr); gap: 1.5rem 1rem;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
           @for (variant of softVariants; track variant) {
-            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-              <span class="viewer-desc" style="margin: 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase;">{{ variant }}</span>
-              <alf-autocomplete 
-                [config]="getConfigForVariant(variant, AlfInputAppearanceEnum.Outline)" 
-                [value]="valuesMap()[variant]" 
-                (valueChange)="updateValue(variant, $event)">
-              </alf-autocomplete>
+            <div>
+              <alf-autocomplete
+                [variant]="variant"
+                [label]="variant"
+                [options]="countries"
+                [config]="{ appearance: selectedAppearance() }"
+              ></alf-autocomplete>
             </div>
           }
         </div>
       </div>
     </div>
 
-    <!-- 7. VARIANTES CRISTAL (CRYSTAL GLASSMORPHISM) -->
+    <!-- 6. VARIANTES CRYSTAL -->
     <div class="viewer-card viewer-card--wide">
       <h2 class="viewer-card__title">
-        VARIANTES CRISTAL (CRYSTAL GLASSMORPHISM)
+        <span class="viewer-card__dot viewer-card__dot--purple"></span>
+        VARIANTES CRYSTAL (Glassmorphic Neumorfismo)
       </h2>
-      <div class="viewer-card__body" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border-radius: 0.75rem; padding: 2rem;">
-        <div class="viewer-grid" style="grid-template-columns: repeat(4, 1fr); gap: 1.5rem 1rem;">
+      <div class="viewer-card__body">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
           @for (variant of crystalVariants; track variant) {
-            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-              <span class="viewer-desc" style="margin: 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: #94a3b8;">{{ variant }}</span>
-              <alf-autocomplete 
-                [config]="getConfigForVariant(variant, AlfInputAppearanceEnum.Outline)" 
-                [value]="valuesMap()[variant]" 
-                (valueChange)="updateValue(variant, $event)">
-              </alf-autocomplete>
+            <div>
+              <alf-autocomplete
+                [variant]="variant"
+                [label]="variant"
+                [options]="countries"
+                [config]="{ appearance: selectedAppearance() }"
+              ></alf-autocomplete>
             </div>
           }
         </div>
       </div>
     </div>
 
-    <!-- 8. VARIANTES TÁCTILES 3D (TACTILE DEPTH) -->
+    <!-- 7. VARIANTES 3D -->
     <div class="viewer-card viewer-card--wide">
       <h2 class="viewer-card__title">
-        VARIANTES TÁCTILES 3D (TACTILE DEPTH)
+        <span class="viewer-card__dot viewer-card__dot--blue"></span>
+        VARIANTES 3D (Efecto de Profundidad)
       </h2>
       <div class="viewer-card__body">
-        <div class="viewer-grid" style="grid-template-columns: repeat(4, 1fr); gap: 1.5rem 1rem;">
-          @for (variant of depth3DVariants; track variant) {
-            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-              <span class="viewer-desc" style="margin: 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase;">{{ variant }}</span>
-              <alf-autocomplete 
-                [config]="getConfigForVariant(variant, AlfInputAppearanceEnum.Outline)" 
-                [value]="valuesMap()[variant]" 
-                (valueChange)="updateValue(variant, $event)">
-              </alf-autocomplete>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
+          @for (variant of depthVariants; track variant) {
+            <div>
+              <alf-autocomplete
+                [variant]="variant"
+                [label]="variant"
+                [options]="countries"
+                [config]="{ appearance: selectedAppearance() }"
+              ></alf-autocomplete>
             </div>
           }
         </div>
       </div>
     </div>
 
-    <!-- 9. VARIANTES DEGRADADO (PREMIUM GRADIENTS) -->
+    <!-- 8. VARIANTES GRADIENT -->
     <div class="viewer-card viewer-card--wide">
       <h2 class="viewer-card__title">
-        VARIANTES DEGRADADO (PREMIUM GRADIENTS)
+        <span class="viewer-card__dot viewer-card__dot--purple"></span>
+        VARIANTES GRADIENT (Fondos y Colores Vibrantes)
       </h2>
       <div class="viewer-card__body">
-        <div class="viewer-grid" style="grid-template-columns: repeat(3, 1fr); gap: 1.5rem 1rem;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
           @for (variant of gradientVariants; track variant) {
-            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-              <span class="viewer-desc" style="margin: 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase;">{{ variant }}</span>
-              <alf-autocomplete 
-                [config]="getConfigForVariant(variant, AlfInputAppearanceEnum.Outline)" 
-                [value]="valuesMap()[variant]" 
-                (valueChange)="updateValue(variant, $event)">
-              </alf-autocomplete>
+            <div>
+              <alf-autocomplete
+                [variant]="variant"
+                [label]="variant"
+                [options]="countries"
+                [config]="{ appearance: selectedAppearance() }"
+              ></alf-autocomplete>
             </div>
           }
         </div>
       </div>
     </div>
 
-    <!-- 10. ESTADO REACTIVO TERMINAL -->
-    <div class="viewer-card viewer-card--wide" style="background: #0f172a; border-color: #1e293b;">
-      <h2 class="viewer-card__title" style="color: #94a3b8; border-bottom-color: #1e293b;">
-        <span class="viewer-card__dot" style="background: #ef4444;"></span>
-        <span class="viewer-card__dot" style="background: #f59e0b;"></span>
-        <span class="viewer-card__dot" style="background: #22c55e;"></span>
-        <span style="margin-left: 0.5rem;">Consola de Estado Reactiva (Valores del Autocomplete)</span>
-      </h2>
-      <div style="padding: 1.25rem; font-family: 'Courier New', monospace; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
-        <div>
-          <p style="display: flex; align-items: center; gap: 0.75rem; margin: 0; font-size: 0.85rem; color: #7dd3fc;">
-            <span>simpleValue</span>
-            <span style="color: #475569;">→</span>
-            <span style="color: #4ade80; font-weight: 700;">"{{ singleValue() }}"</span>
-          </p>
-        </div>
-        <div>
-          <p style="display: flex; align-items: center; gap: 0.75rem; margin: 0; font-size: 0.85rem; color: #7dd3fc;">
-            <span>multipleValue</span>
-            <span style="color: #475569;">→</span>
-            <span style="color: #4ade80; font-weight: 700;">{{ multipleValue().join(', ') }}</span>
-          </p>
-        </div>
-        <div>
-          <p style="display: flex; align-items: center; gap: 0.75rem; margin: 0; font-size: 0.85rem; color: #7dd3fc;">
-            <span>activeSelectionCount</span>
-            <span style="color: #475569;">→</span>
-            <span style="color: #4ade80; font-weight: 700;">{{ valuesMap() ? (valuesMap() | json) : '{}' }}</span>
-          </p>
-        </div>
-      </div>
-    </div>
   </div>
 </div>

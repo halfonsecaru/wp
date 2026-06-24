@@ -91,7 +91,7 @@
                   <span class="sw-variant-badge sw-variant-badge--{{ variant }}">{{ variant }}</span>
                   <alf-switch 
                     switchStyle="elegant" 
-                    [colorVariant]="variant" 
+                    [variant]="variant" 
                     [labelText]="variant" 
                     [checked]="swSignal()"
                     (checkedChange)="swSignal.set($event)" />
@@ -109,7 +109,7 @@
                   <span class="sw-variant-badge sw-variant-badge--{{ variant }}">{{ variant }}</span>
                   <alf-switch 
                     switchStyle="standard" 
-                    [colorVariant]="variant" 
+                    [variant]="variant" 
                     [labelText]="variant" 
                     [checked]="swSignal()"
                     (checkedChange)="swSignal.set($event)" />
@@ -138,7 +138,7 @@
                   <span class="sw-variant-badge sw-variant-badge--{{ getBadgeColorClass(variant) }}">{{ variant }}</span>
                   <alf-switch 
                     switchStyle="elegant" 
-                    [colorVariant]="variant" 
+                    [variant]="variant" 
                     [labelText]="variant" 
                     [checked]="swSignal()"
                     (checkedChange)="swSignal.set($event)" />
@@ -156,7 +156,7 @@
                   <span class="sw-variant-badge sw-variant-badge--{{ getBadgeColorClass(variant) }}">{{ variant }}</span>
                   <alf-switch 
                     switchStyle="standard" 
-                    [colorVariant]="variant" 
+                    [variant]="variant" 
                     [labelText]="variant" 
                     [checked]="swSignal()"
                     (checkedChange)="swSignal.set($event)" />
@@ -184,7 +184,7 @@
                   <span class="sw-variant-badge sw-variant-badge--{{ getBadgeColorClass(variant) }}">{{ variant }}</span>
                   <alf-switch 
                     switchStyle="elegant" 
-                    [colorVariant]="variant" 
+                    [variant]="variant" 
                     [labelText]="variant" 
                     [checked]="swSignal()"
                     (checkedChange)="swSignal.set($event)" />
@@ -202,7 +202,7 @@
                   <span class="sw-variant-badge sw-variant-badge--{{ getBadgeColorClass(variant) }}">{{ variant }}</span>
                   <alf-switch 
                     switchStyle="standard" 
-                    [colorVariant]="variant" 
+                    [variant]="variant" 
                     [labelText]="variant" 
                     [checked]="swSignal()"
                     (checkedChange)="swSignal.set($event)" />
@@ -226,7 +226,7 @@
             <div class="sw-size-item" style="align-items: flex-start; gap: 0.5rem;">
               <span class="sw-variant-badge sw-variant-badge--{{ getBadgeColorClass(variant) }}">{{ variant }}</span>
               <alf-switch 
-                [colorVariant]="variant" 
+                [variant]="variant" 
                 [labelText]="variant" 
                 [checked]="swSignal()"
                 (checkedChange)="swSignal.set($event)" />
@@ -248,7 +248,7 @@
             <div class="sw-size-item" style="align-items: flex-start; gap: 0.5rem;">
               <span class="sw-variant-badge sw-variant-badge--{{ getBadgeColorClass(variant) }}">{{ variant }}</span>
               <alf-switch 
-                [colorVariant]="variant" 
+                [variant]="variant" 
                 [labelText]="variant" 
                 [checked]="swSignal()"
                 (checkedChange)="swSignal.set($event)" />
@@ -270,7 +270,7 @@
             <div class="sw-size-item" style="align-items: flex-start; gap: 0.5rem;">
               <span class="sw-variant-badge sw-variant-badge--{{ getBadgeColorClass(variant) }}">{{ variant }}</span>
               <alf-switch 
-                [colorVariant]="variant" 
+                [variant]="variant" 
                 [labelText]="variant" 
                 [checked]="swSignal()"
                 (checkedChange)="swSignal.set($event)" />
@@ -292,7 +292,7 @@
             <div class="sw-size-item" style="align-items: flex-start; gap: 0.5rem;">
               <span class="sw-variant-badge sw-variant-badge--{{ getBadgeColorClass(variant) }}">{{ variant }}</span>
               <alf-switch 
-                [colorVariant]="variant" 
+                [variant]="variant" 
                 [labelText]="variant" 
                 [checked]="swSignal()"
                 (checkedChange)="swSignal.set($event)" />
@@ -317,7 +317,7 @@
           <div class="sw-demo-row" style="margin-top: 0.5rem; gap: 1rem;">
             <div class="sw-demo-item">
               <span class="sw-demo-label">Elegant Disabled Off</span>
-              <alf-switch labelText="Bloqueado" [config]="{ disabled: true, checked: false }" />
+              <alf-switch labelText="Bloqueado" [config]="{ disabled: false, checked: false }" />
             </div>
             <div class="sw-demo-item">
               <span class="sw-demo-label">Elegant Disabled On</span>
@@ -328,7 +328,7 @@
           <div class="sw-demo-row" style="gap: 1rem;">
             <div class="sw-demo-item">
               <span class="sw-demo-label">Standard Disabled Off</span>
-              <alf-switch switchStyle="standard" labelText="Bloqueado" [config]="{ disabled: true, checked: false }" />
+              <alf-switch switchStyle="standard" labelText="Bloqueado" [config]="{ disabled: false, checked: false }" />
             </div>
             <div class="sw-demo-item">
               <span class="sw-demo-label">Standard Disabled On</span>

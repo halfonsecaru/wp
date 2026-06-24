@@ -8,7 +8,6 @@
 
   <!-- ═══════════ MAIN LAYOUT: Preview + Controls ═══════════ -->
   <div class="pg-layout">
-
     <!-- ──── LEFT: Live Preview ──── -->
     <div class="pg-preview-panel">
       <div class="pg-preview-panel__header">
@@ -23,7 +22,7 @@
         <label class="pg-field__label" for="pg-comp-sel">Componente</label>
         <select id="pg-comp-sel" class="pg-select" [value]="selectedComponentId()" (change)="onComponentChange($event)">
           @for (c of components; track c.id) {
-            <option [value]="c.id">{{ c.icon }} {{ c.label }}</option>
+          <option [value]="c.id">{{ c.icon }} {{ c.label }}</option>
           }
         </select>
       </div>
@@ -31,130 +30,171 @@
       <!-- Live component -->
       <div class="pg-preview-area">
         <div class="pg-preview-stage">
-          @if (showPreview()) {
-            @if (selectedComponentId() === 'alf-button') {
-            <alf-button
-              [config]="buttonBehaviorConfig()"
-              [label]="compLabel()"
-              [variant]="compVariant()"
-              [size]="compSize()"
-              [disabled]="compDisabled()"
-              [isLoading]="compIsLoading()"
-              [elevated]="buttonBehaviorElevated()"
-              [background]="backgroundConfig()"
-              [border]="borderConfig()"
-              [outline]="outlineConfig()"
-              [shadows]="shadowsConfig()"
-              [textStyle]="textStyleConfig()"
-              [typography]="typographyConfig()"
-              [padding]="paddingConfig()"
-              [margin]="marginConfig()"
-              [transform]="transformConfig()"
-              [transition]="transitionConfig()"
-              [animations]="previewAnimationsConfig()"
-              [isExiting]="isExiting()"
-              [displayAndLayout]="displayLayoutConfig()"
-            />
-          }
-          @if (selectedComponentId() === 'alf-checkbox') {
-            <alf-checkbox
-              [label]="compLabel()"
-              [labelPosition]="$any(cbBehaviorLabelPos())"
-              [checkboxStyle]="$any(cbBehaviorStyle())"
-              [helperText]="cbBehaviorHelper()"
-              [error]="cbBehaviorError()"
-              [checked]="cbBehaviorChecked()"
-              [indeterminate]="cbBehaviorIndeterminate()"
-              [variant]="compVariant()"
-              [size]="compSize()"
-              [disabled]="compDisabled()"
-              [isLoading]="compIsLoading()"
-              [background]="backgroundConfig()"
-              [border]="borderConfig()"
-              [outline]="outlineConfig()"
-              [shadows]="shadowsConfig()"
-              [textStyle]="textStyleConfig()"
-              [typography]="typographyConfig()"
-              [padding]="paddingConfig()"
-              [margin]="marginConfig()"
-              [transform]="transformConfig()"
-              [transition]="transitionConfig()"
-              [animations]="previewAnimationsConfig()"
-              [isExiting]="isExiting()"
-              [displayAndLayout]="displayLayoutConfig()"
-            />
-          }
-          @if (selectedComponentId() === 'alf-radio-button') {
-            <alf-radio-button
-              [label]="compLabel()"
-              [labelPosition]="$any(rbBehaviorLabelPos())"
-              [radioButtonStyle]="$any(rbBehaviorStyle())"
-              [helperText]="rbBehaviorHelper()"
-              [error]="rbBehaviorError()"
-              [checked]="rbBehaviorChecked()"
-              [variant]="compVariant()"
-              [size]="compSize()"
-              [disabled]="compDisabled()"
-              [isLoading]="compIsLoading()"
-              [background]="backgroundConfig()"
-              [border]="borderConfig()"
-              [outline]="outlineConfig()"
-              [shadows]="shadowsConfig()"
-              [textStyle]="textStyleConfig()"
-              [typography]="typographyConfig()"
-              [padding]="paddingConfig()"
-              [margin]="marginConfig()"
-              [transform]="transformConfig()"
-              [transition]="transitionConfig()"
-              [animations]="previewAnimationsConfig()"
-              [isExiting]="isExiting()"
-              [displayAndLayout]="displayLayoutConfig()"
-            />
-          }
-          @if (selectedComponentId() === 'alf-input') {
-            <alf-input
-              [config]="inputBehaviorConfig()"
-              [variant]="compVariant()"
-              [disabled]="compDisabled()"
-              [isLoading]="compIsLoading()"
-              [background]="backgroundConfig()"
-              [border]="borderConfig()"
-              [outline]="outlineConfig()"
-              [shadows]="shadowsConfig()"
-              [textStyle]="textStyleConfig()"
-              [typography]="typographyConfig()"
-              [padding]="paddingConfig()"
-              [margin]="marginConfig()"
-              [transform]="transformConfig()"
-              [transition]="transitionConfig()"
-              [animations]="previewAnimationsConfig()"
-              [isExiting]="isExiting()"
-              [displayAndLayout]="displayLayoutConfig()"
-            />
-          }
-          @if (selectedComponentId() === 'alf-spinner') {
-            <div style="position: relative; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center;">
-              <alf-spinner />
-            </div>
-          }
-          }
+          @if (showPreview()) { @if (selectedComponentId() === 'alf-button') {
+          <alf-button
+            [config]="buttonBehaviorConfig()"
+            [label]="compLabel()"
+            [variant]="compVariant()"
+            [size]="compSize()"
+            [disabled]="compDisabled()"
+            [isLoading]="compIsLoading()"
+            [elevated]="buttonBehaviorElevated()"
+            [background]="backgroundConfig()"
+            [border]="borderConfig()"
+            [outline]="outlineConfig()"
+            [shadows]="shadowsConfig()"
+            [textStyle]="textStyleConfig()"
+            [typography]="typographyConfig()"
+            [padding]="paddingConfig()"
+            [margin]="marginConfig()"
+            [transform]="transformConfig()"
+            [transition]="transitionConfig()"
+            [animations]="previewAnimationsConfig()"
+            [isExiting]="isExiting()"
+            [displayAndLayout]="displayLayoutConfig()"
+          />
+          } @if (selectedComponentId() === 'alf-checkbox') {
+          <alf-checkbox
+            [label]="compLabel()"
+            [labelPosition]="$any(cbBehaviorLabelPos())"
+            [checkboxStyle]="$any(cbBehaviorStyle())"
+            [helperText]="cbBehaviorHelper()"
+            [error]="cbBehaviorError()"
+            [checked]="cbBehaviorChecked()"
+            [indeterminate]="cbBehaviorIndeterminate()"
+            [variant]="compVariant()"
+            [size]="compSize()"
+            [disabled]="compDisabled()"
+            [isLoading]="compIsLoading()"
+            [background]="backgroundConfig()"
+            [border]="borderConfig()"
+            [outline]="outlineConfig()"
+            [shadows]="shadowsConfig()"
+            [textStyle]="textStyleConfig()"
+            [typography]="typographyConfig()"
+            [padding]="paddingConfig()"
+            [margin]="marginConfig()"
+            [transform]="transformConfig()"
+            [transition]="transitionConfig()"
+            [animations]="previewAnimationsConfig()"
+            [isExiting]="isExiting()"
+            [displayAndLayout]="displayLayoutConfig()"
+          />
+          } @if (selectedComponentId() === 'alf-radio-button') {
+          <alf-radio-button
+            [label]="compLabel()"
+            [labelPosition]="$any(rbBehaviorLabelPos())"
+            [radioButtonStyle]="$any(rbBehaviorStyle())"
+            [helperText]="rbBehaviorHelper()"
+            [error]="rbBehaviorError()"
+            [checked]="rbBehaviorChecked()"
+            [variant]="compVariant()"
+            [size]="compSize()"
+            [disabled]="compDisabled()"
+            [isLoading]="compIsLoading()"
+            [background]="backgroundConfig()"
+            [border]="borderConfig()"
+            [outline]="outlineConfig()"
+            [shadows]="shadowsConfig()"
+            [textStyle]="textStyleConfig()"
+            [typography]="typographyConfig()"
+            [padding]="paddingConfig()"
+            [margin]="marginConfig()"
+            [transform]="transformConfig()"
+            [transition]="transitionConfig()"
+            [animations]="previewAnimationsConfig()"
+            [isExiting]="isExiting()"
+            [displayAndLayout]="displayLayoutConfig()"
+          />
+          } @if (selectedComponentId() === 'alf-switch') {
+          <alf-switch
+            [label]="compLabel()"
+            [labelPosition]="$any(swBehaviorLabelPos())"
+            [switchStyle]="$any(swBehaviorStyle())"
+            [helperText]="swBehaviorHelper()"
+            [error]="swBehaviorError()"
+            [checked]="swBehaviorChecked()"
+            [variant]="compVariant()"
+            [size]="compSize()"
+            [disabled]="compDisabled()"
+            [isLoading]="compIsLoading()"
+            [background]="backgroundConfig()"
+            [border]="borderConfig()"
+            [outline]="outlineConfig()"
+            [shadows]="shadowsConfig()"
+            [textStyle]="textStyleConfig()"
+            [typography]="typographyConfig()"
+            [padding]="paddingConfig()"
+            [margin]="marginConfig()"
+            [transform]="transformConfig()"
+            [transition]="transitionConfig()"
+            [animations]="previewAnimationsConfig()"
+            [isExiting]="isExiting()"
+            [displayAndLayout]="displayLayoutConfig()"
+          ></alf-switch>
+          } @if (selectedComponentId() === 'alf-input') {
+          <alf-input
+            [config]="inputBehaviorConfig()"
+            [variant]="compVariant()"
+            [disabled]="compDisabled()"
+            [isLoading]="compIsLoading()"
+            [background]="backgroundConfig()"
+            [border]="borderConfig()"
+            [outline]="outlineConfig()"
+            [shadows]="shadowsConfig()"
+            [textStyle]="textStyleConfig()"
+            [typography]="typographyConfig()"
+            [padding]="paddingConfig()"
+            [margin]="marginConfig()"
+            [transform]="transformConfig()"
+            [transition]="transitionConfig()"
+            [animations]="previewAnimationsConfig()"
+            [isExiting]="isExiting()"
+            [displayAndLayout]="displayLayoutConfig()"
+          />
+          } @if (selectedComponentId() === 'alf-autocomplete') {
+          <alf-autocomplete
+            [options]="countries"
+            [config]="acBehaviorConfig()"
+            [variant]="compVariant()"
+            [disabled]="compDisabled()"
+            [isLoading]="compIsLoading()"
+            [background]="backgroundConfig()"
+            [border]="borderConfig()"
+            [outline]="outlineConfig()"
+            [shadows]="shadowsConfig()"
+            [textStyle]="textStyleConfig()"
+            [typography]="typographyConfig()"
+            [padding]="paddingConfig()"
+            [margin]="marginConfig()"
+            [transform]="transformConfig()"
+            [transition]="transitionConfig()"
+            [animations]="previewAnimationsConfig()"
+            [isExiting]="isExiting()"
+            [displayAndLayout]="displayLayoutConfig()"
+          />
+          } @if (selectedComponentId() === 'alf-spinner') {
+          <div style="position: relative; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center">
+            <alf-spinner />
+          </div>
+          } }
         </div>
       </div>
 
-        <!-- Quick settings row -->
-        <div class="pg-quick-row">
-          @if (selectedComponentId() !== 'alf-input' && selectedComponentId() !== 'alf-button') {
-            <div class="pg-field pg-field--inline">
-              <label class="pg-field__label" for="pg-label-input">Label</label>
-              <input id="pg-label-input" type="text" class="pg-input" [value]="compLabel()" (input)="onInputChange(compLabel, $event)" />
-            </div>
-          }
+      <!-- Quick settings row -->
+      <div class="pg-quick-row">
+        @if (selectedComponentId() !== 'alf-input' && selectedComponentId() !== 'alf-button' && selectedComponentId() !== 'alf-autocomplete') {
+        <div class="pg-field pg-field--inline">
+          <label class="pg-field__label" for="pg-label-input">Label</label>
+          <input id="pg-label-input" type="text" class="pg-input" [value]="compLabel()" (input)="onInputChange(compLabel, $event)" />
+        </div>
+        }
         <div class="pg-field pg-field--inline">
           <label class="pg-field__label" for="pg-variant-sel">Variant</label>
           <select id="pg-variant-sel" class="pg-select pg-select--sm" [value]="compVariant() ?? ''" (change)="onVariantChange($event)">
             <option value="">— none —</option>
             @for (v of variantOptions; track v.key) {
-              <option [value]="v.value">{{ v.key }}</option>
+            <option [value]="v.value">{{ v.key }}</option>
             }
           </select>
         </div>
@@ -163,7 +203,7 @@
           <select id="pg-size-sel" class="pg-select pg-select--sm" [value]="compSize() ?? ''" (change)="onSizeChange($event)">
             <option value="">— auto —</option>
             @for (s of sizeOptions; track s.key) {
-              <option [value]="s.value">{{ s.key }}</option>
+            <option [value]="s.value">{{ s.key }}</option>
             }
           </select>
         </div>
@@ -182,794 +222,1141 @@
         <div class="pg-code-block__header">
           <span>📋 Código generado</span>
         </div>
-        <div class="pg-code-block__tabs">
-          <alf-tabs-container [(activeIndex)]="codeTabIndex" [colorVariant]="AlfColorVariantEnum.SecondaryOutline">
-            <alf-tab label="HTML">
-              <pre class="pg-code-block__body">{{ htmlPreview() }}</pre>
-            </alf-tab>
-            <alf-tab label="TypeScript">
-              <pre class="pg-code-block__body">{{ tsPreview() }}</pre>
-            </alf-tab>
-          </alf-tabs-container>
+        <div class="pg-tabs pg-tabs--dark">
+          <button class="pg-tab-btn pg-tab-btn--dark" [class.pg-tab-btn--dark--active]="codeTabIndex() === 0" (click)="codeTabIndex.set(0)">HTML</button>
+          <button class="pg-tab-btn pg-tab-btn--dark" [class.pg-tab-btn--dark--active]="codeTabIndex() === 1" (click)="codeTabIndex.set(1)">TypeScript</button>
         </div>
+        @if (codeTabIndex() === 0) {
+          <pre class="pg-code-block__body">{{ htmlPreview() }}</pre>
+        } @else if (codeTabIndex() === 1) {
+          <pre class="pg-code-block__body">{{ tsPreview() }}</pre>
+        }
       </div>
     </div>
 
     <!-- ──── RIGHT: Property Controls ──── -->
     <div class="pg-controls-panel">
       <!-- MAIN TABS FOR PROPERTIES -->
-      <alf-tabs-container [(activeIndex)]="propTabIndex" [colorVariant]="AlfColorVariantEnum.PrimaryOutline">
+      <div class="pg-tabs">
+        <button class="pg-tab-btn" [class.pg-tab-btn--active]="propTabIndex() === 0" (click)="propTabIndex.set(0)">⚙️ Behavior</button>
+        <button class="pg-tab-btn" [class.pg-tab-btn--active]="propTabIndex() === 1" (click)="propTabIndex.set(1)">🎨 Background</button>
+        <button class="pg-tab-btn" [class.pg-tab-btn--active]="propTabIndex() === 2" (click)="propTabIndex.set(2)">📐 Border</button>
+        <button class="pg-tab-btn" [class.pg-tab-btn--active]="propTabIndex() === 3" (click)="propTabIndex.set(3)">✒️ Outline</button>
+        <button class="pg-tab-btn" [class.pg-tab-btn--active]="propTabIndex() === 4" (click)="propTabIndex.set(4)">🌑 Shadows</button>
+        <button class="pg-tab-btn" [class.pg-tab-btn--active]="propTabIndex() === 5" (click)="propTabIndex.set(5)">A Typography</button>
+        <button class="pg-tab-btn" [class.pg-tab-btn--active]="propTabIndex() === 6" (click)="propTabIndex.set(6)">📏 Spacing</button>
+        <button class="pg-tab-btn" [class.pg-tab-btn--active]="propTabIndex() === 7" (click)="propTabIndex.set(7)">🔄 Transform</button>
+        <button class="pg-tab-btn" [class.pg-tab-btn--active]="propTabIndex() === 8" (click)="propTabIndex.set(8)">✨ Animations</button>
+        <button class="pg-tab-btn" [class.pg-tab-btn--active]="propTabIndex() === 9" (click)="propTabIndex.set(9)">⏱️ Transition</button>
+        <button class="pg-tab-btn" [class.pg-tab-btn--active]="propTabIndex() === 10" (click)="propTabIndex.set(10)">📐 Layout</button>
+      </div>
 
+      @if (propTabIndex() === 0) {
         <!-- TAB: Behavior (AlfButton only) -->
         @if (selectedComponentId() === 'alf-button') {
-          <alf-tab label="⚙️ Behavior">
-            <div class="pg-controls-content">
-              <div class="pg-fields">
-                <div class="pg-field">
-                  <label class="pg-field__label" for="pg-btn-label">label</label>
-                  <span class="pg-field__desc">Texto principal que da título al botón</span>
-                  <input id="pg-btn-label" type="text" class="pg-input" [value]="compLabel()" (input)="onInputChange(compLabel, $event)" placeholder="Ej: Click Me" />
-                </div>
-
-                <div class="pg-field">
-                  <label class="pg-field__label" for="pg-btn-type">type</label>
-                  <span class="pg-field__desc">Tipo nativo del botón</span>
-                  <select id="pg-btn-type" class="pg-select" [value]="buttonBehaviorType()" (change)="onSelectChange(buttonBehaviorType, $event)">
-                    <option value="">— default (button) —</option>
-                    <option value="submit">submit</option>
-                    <option value="reset">reset</option>
-                    <option value="button">button</option>
-                  </select>
-                </div>
-
-                <div class="pg-field">
-                  <label class="pg-field__label" for="pg-btn-iconleft">iconLeft</label>
-                  <span class="pg-field__desc">Icono a la izquierda del texto</span>
-                  <select id="pg-btn-iconleft" class="pg-select" [value]="buttonBehaviorIconLeft()" (change)="onSelectChange(buttonBehaviorIconLeft, $event)">
-                    <option value="">— none —</option>
-                    @for (a of adornmentOptions; track a.key) {
-                      <option [value]="a.value">{{ a.key }} &nbsp; {{ a.value }}</option>
-                    }
-                  </select>
-                </div>
-
-                <div class="pg-field">
-                  <label class="pg-field__label" for="pg-btn-iconright">iconRight</label>
-                  <span class="pg-field__desc">Icono a la derecha del texto</span>
-                  <select id="pg-btn-iconright" class="pg-select" [value]="buttonBehaviorIconRight()" (change)="onSelectChange(buttonBehaviorIconRight, $event)">
-                    <option value="">— none —</option>
-                    @for (a of adornmentOptions; track a.key) {
-                      <option [value]="a.value">{{ a.key }} &nbsp; {{ a.value }}</option>
-                    }
-                  </select>
-                </div>
-
-                <div class="pg-field">
-                  <label class="pg-field__label" for="pg-btn-predefined">predefined</label>
-                  <span class="pg-field__desc">Texto automático vía diccionario i18n</span>
-                  <select id="pg-btn-predefined" class="pg-select" [value]="buttonBehaviorPredefined()" (change)="onPredefinedChange($event)">
-                    <option value="">— none —</option>
-                    <option value="save">save (Guardar)</option>
-                    <option value="cancel">cancel (Cancelar)</option>
-                    <option value="delete">delete (Eliminar)</option>
-                    <option value="edit">edit (Editar)</option>
-                  </select>
-                </div>
-
-                <div class="pg-field pg-field--checkbox">
-                  <label class="pg-checkbox-label">
-                    <input type="checkbox" [checked]="buttonBehaviorElevated()" (change)="onCheckboxChange(buttonBehaviorElevated, $event)" />
-                    <span class="pg-checkbox-text">elevated (Sombra 3D coloreada)</span>
-                  </label>
-                </div>
-              </div>
-            </div>
-          </alf-tab>
-        }
-
-        <!-- TAB: Behavior (AlfInput only) -->
-        @if (selectedComponentId() === 'alf-input') {
-          <alf-tab label="⚙️ Behavior">
-            <div class="pg-controls-content">
-              <div class="pg-fields">
-
-                <div class="pg-field">
-                  <label class="pg-field__label" for="pg-inp-label">label</label>
-                  <span class="pg-field__desc">Texto principal que da título al campo</span>
-                  <input id="pg-inp-label" type="text" class="pg-input" [value]="inputBehaviorLabel()" (input)="onInputChange(inputBehaviorLabel, $event)" placeholder="Ej: Email" />
-                </div>
-
-                <div class="pg-field">
-                  <label class="pg-field__label" for="pg-inp-placeholder">placeholder</label>
-                  <span class="pg-field__desc">Texto orientativo de fondo cuando está vacío</span>
-                  <input id="pg-inp-placeholder" type="text" class="pg-input" [value]="inputBehaviorPlaceholder()" (input)="onInputChange(inputBehaviorPlaceholder, $event)" placeholder="Ej: Escribe aquí..." />
-                </div>
-
-                <div class="pg-field">
-                  <label class="pg-field__label" for="pg-inp-appearance">appearance</label>
-                  <span class="pg-field__desc">Estilo visual general del input</span>
-                  <select id="pg-inp-appearance" class="pg-select" [value]="inputBehaviorAppearance()" (change)="onSelectChange(inputBehaviorAppearance, $event)">
-                    <option value="">— default —</option>
-                    <option [value]="AlfInputAppearanceEnum.Outline">Outline</option>
-                    <option [value]="AlfInputAppearanceEnum.Fill">Fill</option>
-                    <option [value]="AlfInputAppearanceEnum.Standard">Standard</option>
-                  </select>
-                </div>
-
-                <div class="pg-field">
-                  <label class="pg-field__label" for="pg-inp-type">type</label>
-                  <span class="pg-field__desc">Comportamiento del teclado y campo nativo</span>
-                  <select id="pg-inp-type" class="pg-select" [value]="inputBehaviorType()" (change)="onSelectChange(inputBehaviorType, $event)">
-                    <option value="">— default (text) —</option>
-                    <option [value]="AlfInputTypeEnum.Text">text</option>
-                    <option [value]="AlfInputTypeEnum.Email">email</option>
-                    <option [value]="AlfInputTypeEnum.Password">password</option>
-                    <option [value]="AlfInputTypeEnum.Number">number</option>
-                    <option [value]="AlfInputTypeEnum.Tel">tel</option>
-                    <option [value]="AlfInputTypeEnum.Url">url</option>
-                    <option [value]="AlfInputTypeEnum.Search">search</option>
-                    <option value="textarea">textarea</option>
-                  </select>
-                </div>
-
-                <div class="pg-field">
-                  <label class="pg-field__label" for="pg-inp-prefix">prefix</label>
-                  <span class="pg-field__desc">Icono de la librería a la izquierda</span>
-                  <select id="pg-inp-prefix" class="pg-select" [value]="inputBehaviorPrefix()" (change)="onSelectChange(inputBehaviorPrefix, $event)">
-                    <option value="">— none —</option>
-                    @for (a of adornmentOptions; track a.key) {
-                      <option [value]="a.value">{{ a.key }} &nbsp; {{ a.value }}</option>
-                    }
-                  </select>
-                </div>
-
-                <div class="pg-field">
-                  <label class="pg-field__label" for="pg-inp-suffix">suffix</label>
-                  <span class="pg-field__desc">Icono de la librería a la derecha</span>
-                  <select id="pg-inp-suffix" class="pg-select" [value]="inputBehaviorSuffix()" (change)="onSelectChange(inputBehaviorSuffix, $event)">
-                    <option value="">— none —</option>
-                    @for (a of adornmentOptions; track a.key) {
-                      <option [value]="a.value">{{ a.key }} &nbsp; {{ a.value }}</option>
-                    }
-                  </select>
-                </div>
-
-                <div class="pg-field">
-                  <label class="pg-field__label" for="pg-inp-helpertext">helperText</label>
-                  <span class="pg-field__desc">Texto auxiliar que aparece bajo el input</span>
-                  <input id="pg-inp-helpertext" type="text" class="pg-input" [value]="inputBehaviorHelperText()" (input)="onInputChange(inputBehaviorHelperText, $event)" placeholder="Ej: Mínimo 8 caracteres" />
-                </div>
-
-                <div class="pg-field">
-                  <label class="pg-field__label" for="pg-inp-error">error</label>
-                  <span class="pg-field__desc">Fuerza el input a estado de error visible</span>
-                  <input id="pg-inp-error" type="text" class="pg-input" [value]="inputBehaviorError()" (input)="onInputChange(inputBehaviorError, $event)" placeholder="Ej: Campo requerido" />
-                </div>
-
-                <div class="pg-field">
-                  <label class="pg-field__label" for="pg-inp-maxlength">maxLength</label>
-                  <span class="pg-field__desc">Tope de caracteres permitidos</span>
-                  <input id="pg-inp-maxlength" type="number" class="pg-input" [value]="inputBehaviorMaxLength()" (input)="onInputChange(inputBehaviorMaxLength, $event)" placeholder="Ej: 50" />
-                </div>
-
-                <div class="pg-field">
-                  <label class="pg-field__label" for="pg-inp-minlength">minLength</label>
-                  <span class="pg-field__desc">Mínimo de caracteres exigidos</span>
-                  <input id="pg-inp-minlength" type="number" class="pg-input" [value]="inputBehaviorMinLength()" (input)="onInputChange(inputBehaviorMinLength, $event)" placeholder="Ej: 3" />
-                </div>
-
-                <div class="pg-field">
-                  <label class="pg-field__label" for="pg-inp-min">min</label>
-                  <span class="pg-field__desc">Valor mínimo (si type="number")</span>
-                  <input id="pg-inp-min" type="number" step="any" class="pg-input" [value]="inputBehaviorMin()" (input)="onInputChange(inputBehaviorMin, $event)" placeholder="Ej: 0" />
-                </div>
-
-                <div class="pg-field">
-                  <label class="pg-field__label" for="pg-inp-max">max</label>
-                  <span class="pg-field__desc">Valor máximo (si type="number")</span>
-                  <input id="pg-inp-max" type="number" step="any" class="pg-input" [value]="inputBehaviorMax()" (input)="onInputChange(inputBehaviorMax, $event)" placeholder="Ej: 100" />
-                </div>
-
-                <div class="pg-field">
-                  <label class="pg-field__label" for="pg-inp-step">step</label>
-                  <span class="pg-field__desc">Saltos de valor al subir/bajar (ej: 0.5 o 1)</span>
-                  <input id="pg-inp-step" type="number" step="any" class="pg-input" [value]="inputBehaviorStep()" (input)="onInputChange(inputBehaviorStep, $event)" placeholder="Ej: 1" />
-                </div>
-
-                <div class="pg-field">
-                  <label class="pg-field__label" for="pg-inp-autocomplete">autocomplete</label>
-                  <span class="pg-field__desc">Sugerencias del navegador (ej: off, username)</span>
-                  <input id="pg-inp-autocomplete" type="text" class="pg-input" [value]="inputBehaviorAutocomplete()" (input)="onInputChange(inputBehaviorAutocomplete, $event)" placeholder="Ej: off" />
-                </div>
-
-                <div class="pg-field">
-                  <label class="pg-field__label" for="pg-inp-pattern">pattern</label>
-                  <span class="pg-field__desc">Validación por expresión regular (Regex)</span>
-                  <input id="pg-inp-pattern" type="text" class="pg-input" [value]="inputBehaviorPattern()" (input)="onInputChange(inputBehaviorPattern, $event)" placeholder="Ej: [A-Za-z]+" />
-                </div>
-
-                <div class="pg-field">
-                  <label class="pg-field__label" for="pg-inp-debouncetime">debounceTime (ms)</label>
-                  <span class="pg-field__desc">Milisegundos antes de emitir evento input</span>
-                  <input id="pg-inp-debouncetime" type="number" class="pg-input" [value]="inputBehaviorDebounceTime()" (input)="onInputChange(inputBehaviorDebounceTime, $event)" placeholder="Ej: 300" />
-                </div>
-
-                <div class="pg-field pg-field--checkboxes">
-                  <label class="pg-checkbox-label">
-                    <input type="checkbox" [checked]="inputBehaviorRequired()" (change)="onCheckboxChange(inputBehaviorRequired, $event)" />
-                    <div class="pg-checkbox-text">
-                      <span class="pg-checkbox-text__title">required</span>
-                      <span class="pg-checkbox-text__desc">Añade estado obligatorio</span>
-                    </div>
-                  </label>
-                  <label class="pg-checkbox-label">
-                    <input type="checkbox" [checked]="inputBehaviorReadonly()" (change)="onCheckboxChange(inputBehaviorReadonly, $event)" />
-                    <div class="pg-checkbox-text">
-                      <span class="pg-checkbox-text__title">readonly</span>
-                      <span class="pg-checkbox-text__desc">Valor de solo lectura</span>
-                    </div>
-                  </label>
-                  <label class="pg-checkbox-label">
-                    <input type="checkbox" [checked]="inputBehaviorClearable()" (change)="onCheckboxChange(inputBehaviorClearable, $event)" />
-                    <div class="pg-checkbox-text">
-                      <span class="pg-checkbox-text__title">clearable</span>
-                      <span class="pg-checkbox-text__desc">Muestra un icono (X) para borrar el contenido</span>
-                    </div>
-                  </label>
-                  <label class="pg-checkbox-label">
-                    <input type="checkbox" [checked]="inputBehaviorShowPwdToggle()" (change)="onCheckboxChange(inputBehaviorShowPwdToggle, $event)" />
-                    <div class="pg-checkbox-text">
-                      <span class="pg-checkbox-text__title">showPasswordToggle</span>
-                      <span class="pg-checkbox-text__desc">Permite revelar la contraseña (ojito)</span>
-                    </div>
-                  </label>
-                  <label class="pg-checkbox-label">
-                    <input type="checkbox" [checked]="inputBehaviorShowCharCounter()" (change)="onCheckboxChange(inputBehaviorShowCharCounter, $event)" />
-                    <div class="pg-checkbox-text">
-                      <span class="pg-checkbox-text__title">showCharCounter</span>
-                      <span class="pg-checkbox-text__desc">Contador numérico (ej: 0/50). Necesita maxLength.</span>
-                    </div>
-                  </label>
-                  <label class="pg-checkbox-label">
-                    <input type="checkbox" [checked]="inputBehaviorAutofocus()" (change)="onCheckboxChange(inputBehaviorAutofocus, $event)" />
-                    <div class="pg-checkbox-text">
-                      <span class="pg-checkbox-text__title">autofocus</span>
-                      <span class="pg-checkbox-text__desc">Foco automático al arrancar</span>
-                    </div>
-                  </label>
-                  <label class="pg-checkbox-label">
-                    <input type="checkbox" [checked]="inputBehaviorClearOnClick()" (change)="onCheckboxChange(inputBehaviorClearOnClick, $event)" />
-                    <div class="pg-checkbox-text">
-                      <span class="pg-checkbox-text__title">clearOnClick</span>
-                      <span class="pg-checkbox-text__desc">Borra el texto al hacerle clic dentro</span>
-                    </div>
-                  </label>
-                </div>
-
-              </div>
-            </div>
-          </alf-tab>
-        }
-
-          <!-- TAB: Behavior (AlfCheckbox only) -->
-          @if (selectedComponentId() === 'alf-checkbox') {
-            <alf-tab label="⚙️ Behavior">
-              <div class="pg-controls-content">
-                <div class="pg-fields">
-                  
-                  <div class="pg-field">
-                    <label class="pg-field__label" for="pg-cb-label">label</label>
-                    <span class="pg-field__desc">Texto principal del checkbox</span>
-                    <input id="pg-cb-label" type="text" class="pg-input" [value]="compLabel()" (input)="onInputChange(compLabel, $event)" placeholder="Ej: Acepto los términos" />
-                  </div>
-
-                  <div class="pg-field">
-                    <label class="pg-field__label" for="pg-cb-labelpos">labelPosition</label>
-                    <span class="pg-field__desc">Posición del texto respecto a la caja</span>
-                    <select id="pg-cb-labelpos" class="pg-select" [value]="cbBehaviorLabelPos()" (change)="onSelectChange(cbBehaviorLabelPos, $event)">
-                      <option value="after">after (derecha)</option>
-                      <option value="before">before (izquierda)</option>
-                    </select>
-                  </div>
-
-                  <div class="pg-field">
-                    <label class="pg-field__label" for="pg-cb-style">checkboxStyle</label>
-                    <span class="pg-field__desc">Estilo del check interior</span>
-                    <select id="pg-cb-style" class="pg-select" [value]="cbBehaviorStyle()" (change)="onSelectChange(cbBehaviorStyle, $event)">
-                      <option value="elegant">elegant (suave)</option>
-                      <option value="standard">standard (recto)</option>
-                    </select>
-                  </div>
-
-                  <div class="pg-field">
-                    <label class="pg-field__label" for="pg-cb-helper">helperText</label>
-                    <span class="pg-field__desc">Texto descriptivo inferior</span>
-                    <input id="pg-cb-helper" type="text" class="pg-input" [value]="cbBehaviorHelper()" (input)="onInputChange(cbBehaviorHelper, $event)" placeholder="Ej: Es necesario para continuar" />
-                  </div>
-
-                  <div class="pg-field">
-                    <label class="pg-field__label" for="pg-cb-error">error</label>
-                    <span class="pg-field__desc">Fuerza estado de error con texto</span>
-                    <input id="pg-cb-error" type="text" class="pg-input" [value]="cbBehaviorError()" (input)="onInputChange(cbBehaviorError, $event)" placeholder="Ej: Campo obligatorio" />
-                  </div>
-
-                  <div class="pg-field pg-field--checkboxes">
-                    <label class="pg-checkbox-label">
-                      <input type="checkbox" [checked]="cbBehaviorChecked()" (change)="onCheckboxChange(cbBehaviorChecked, $event)" />
-                      <div class="pg-checkbox-text">
-                        <span class="pg-checkbox-text__title">checked</span>
-                        <span class="pg-checkbox-text__desc">Estado forzado activado</span>
-                      </div>
-                    </label>
-
-                    <label class="pg-checkbox-label">
-                      <input type="checkbox" [checked]="cbBehaviorIndeterminate()" (change)="onCheckboxChange(cbBehaviorIndeterminate, $event)" />
-                      <div class="pg-checkbox-text">
-                        <span class="pg-checkbox-text__title">indeterminate</span>
-                        <span class="pg-checkbox-text__desc">Estado parcial (guion)</span>
-                      </div>
-                    </label>
-                  </div>
-
-                </div>
-              </div>
-            </alf-tab>
-          }
-
-          <!-- TAB: Behavior (AlfRadioButton only) -->
-          @if (selectedComponentId() === 'alf-radio-button') {
-            <alf-tab label="⚙️ Behavior">
-              <div class="pg-controls-content">
-                <div class="pg-fields">
-                  
-                  <div class="pg-field">
-                    <label class="pg-field__label" for="pg-rb-label">label</label>
-                    <span class="pg-field__desc">Texto principal del radio button</span>
-                    <input id="pg-rb-label" type="text" class="pg-input" [value]="compLabel()" (input)="onInputChange(compLabel, $event)" placeholder="Ej: Opción 1" />
-                  </div>
-
-                  <div class="pg-field">
-                    <label class="pg-field__label" for="pg-rb-labelpos">labelPosition</label>
-                    <span class="pg-field__desc">Posición del texto respecto a la bolita</span>
-                    <select id="pg-rb-labelpos" class="pg-select" [value]="rbBehaviorLabelPos()" (change)="onSelectChange(rbBehaviorLabelPos, $event)">
-                      <option value="after">after (derecha)</option>
-                      <option value="before">before (izquierda)</option>
-                    </select>
-                  </div>
-
-                  <div class="pg-field">
-                    <label class="pg-field__label" for="pg-rb-style">radioButtonStyle</label>
-                    <span class="pg-field__desc">Estilo del radio button</span>
-                    <select id="pg-rb-style" class="pg-select" [value]="rbBehaviorStyle()" (change)="onSelectChange(rbBehaviorStyle, $event)">
-                      <option value="elegant">elegant (redondo)</option>
-                      <option value="standard">standard (cuadrado suave)</option>
-                    </select>
-                  </div>
-
-                  <div class="pg-field">
-                    <label class="pg-field__label" for="pg-rb-helper">helperText</label>
-                    <span class="pg-field__desc">Texto descriptivo inferior</span>
-                    <input id="pg-rb-helper" type="text" class="pg-input" [value]="rbBehaviorHelper()" (input)="onInputChange(rbBehaviorHelper, $event)" placeholder="Ej: Describe la opción" />
-                  </div>
-
-                  <div class="pg-field">
-                    <label class="pg-field__label" for="pg-rb-error">error</label>
-                    <span class="pg-field__desc">Fuerza estado de error con texto</span>
-                    <input id="pg-rb-error" type="text" class="pg-input" [value]="rbBehaviorError()" (input)="onInputChange(rbBehaviorError, $event)" placeholder="Ej: Opción no válida" />
-                  </div>
-
-                  <div class="pg-field pg-field--checkboxes">
-                    <label class="pg-checkbox-label">
-                      <input type="checkbox" [checked]="rbBehaviorChecked()" (change)="onCheckboxChange(rbBehaviorChecked, $event)" />
-                      <div class="pg-checkbox-text">
-                        <span class="pg-checkbox-text__title">checked</span>
-                        <span class="pg-checkbox-text__desc">Estado forzado activado</span>
-                      </div>
-                    </label>
-                  </div>
-
-                </div>
-              </div>
-            </alf-tab>
-          }
-
-        <!-- TAB: Background -->
-        <alf-tab label="🎨 Background">
-          <div class="pg-controls-content">
-            <alf-tabs-container [(activeIndex)]="stateTabIndex" [colorVariant]="AlfColorVariantEnum.SecondaryOutline">
-              @for (state of states; track state) {
-                <alf-tab [label]="state">
-                  <div class="pg-fields">
-                    <div class="pg-field">
-                      <label class="pg-field__label">backgroundColor</label>
-                      <select class="pg-select" [value]="bgColor[state]()" (change)="onSelectChange(bgColor[state], $event)">
-                        <option value="">— none —</option>
-                        @for (c of colorOptions; track c.key) {
-                          <option [value]="c.value">{{ c.key }}</option>
-                        }
-                      </select>
-                    </div>
-                  </div>
-                </alf-tab>
-              }
-            </alf-tabs-container>
-          </div>
-        </alf-tab>
-
-        <!-- TAB: Border -->
-        <alf-tab label="📐 Border">
-          <div class="pg-controls-content">
-            <alf-tabs-container [(activeIndex)]="stateTabIndex" [colorVariant]="AlfColorVariantEnum.SecondaryOutline">
-              @for (state of states; track state) {
-                <alf-tab [label]="state">
-                  <div class="pg-fields">
-                    <div class="pg-field">
-                      <label class="pg-field__label">borderColor</label>
-                      <select class="pg-select" [value]="borderColor[state]()" (change)="onSelectChange(borderColor[state], $event)">
-                        <option value="">— none —</option>
-                        @for (c of colorOptions; track c.key) {
-                          <option [value]="c.value">{{ c.key }}</option>
-                        }
-                      </select>
-                    </div>
-                    <div class="pg-field">
-                      <label class="pg-field__label">borderWidth</label>
-                      <select class="pg-select" [value]="borderWidth[state]()" (change)="onSelectChange(borderWidth[state], $event)">
-                        <option value="">— none —</option>
-                        @for (p of pxOptions; track p.key) {
-                          <option [value]="p.value">{{ p.key }} ({{ p.value }})</option>
-                        }
-                      </select>
-                    </div>
-                    <div class="pg-field">
-                      <label class="pg-field__label">borderStyle</label>
-                      <select class="pg-select" [value]="borderStyle[state]()" (change)="onSelectChange(borderStyle[state], $event)">
-                        <option value="">— none —</option>
-                        @for (b of borderStyleOptions; track b.key) {
-                          <option [value]="b.value">{{ b.key }}</option>
-                        }
-                      </select>
-                    </div>
-                    <div class="pg-field">
-                      <label class="pg-field__label">borderRadius</label>
-                      <select class="pg-select" [value]="borderRadius[state]()" (change)="onSelectChange(borderRadius[state], $event)">
-                        <option value="">— none —</option>
-                        @for (r of radiusOptions; track r.key) {
-                          <option [value]="r.value">{{ r.key }} ({{ r.value }})</option>
-                        }
-                      </select>
-                    </div>
-                  </div>
-                </alf-tab>
-              }
-            </alf-tabs-container>
-          </div>
-        </alf-tab>
-
-        <!-- TAB: Outline -->
-        <alf-tab label="✒️ Outline">
-          <div class="pg-controls-content">
-            <alf-tabs-container [(activeIndex)]="stateTabIndex" [colorVariant]="AlfColorVariantEnum.SecondaryOutline">
-              @for (state of states; track state) {
-                <alf-tab [label]="state">
-                  <div class="pg-fields">
-                    <div class="pg-field">
-                      <label class="pg-field__label">outlineColor</label>
-                      <select class="pg-select" [value]="outlineColor[state]()" (change)="onSelectChange(outlineColor[state], $event)">
-                        <option value="">— none —</option>
-                        @for (c of colorOptions; track c.key) {
-                          <option [value]="c.value">{{ c.key }}</option>
-                        }
-                      </select>
-                    </div>
-                    <div class="pg-field">
-                      <label class="pg-field__label">outlineWidth</label>
-                      <select class="pg-select" [value]="outlineWidth[state]()" (change)="onSelectChange(outlineWidth[state], $event)">
-                        <option value="">— none —</option>
-                        @for (p of pxOptions; track p.key) {
-                          <option [value]="p.value">{{ p.key }} ({{ p.value }})</option>
-                        }
-                      </select>
-                    </div>
-                    <div class="pg-field">
-                      <label class="pg-field__label">outlineStyle</label>
-                      <select class="pg-select" [value]="outlineStyle[state]()" (change)="onSelectChange(outlineStyle[state], $event)">
-                        <option value="">— none —</option>
-                        @for (b of borderStyleOptions; track b.key) {
-                          <option [value]="b.value">{{ b.key }}</option>
-                        }
-                      </select>
-                    </div>
-                    <div class="pg-field">
-                      <label class="pg-field__label">outlineOffset</label>
-                      <select class="pg-select" [value]="outlineOffset[state]()" (change)="onSelectChange(outlineOffset[state], $event)">
-                        <option value="">— none —</option>
-                        @for (p of pxOptions; track p.key) {
-                          <option [value]="p.value">{{ p.key }} ({{ p.value }})</option>
-                        }
-                      </select>
-                    </div>
-                  </div>
-                </alf-tab>
-              }
-            </alf-tabs-container>
-          </div>
-        </alf-tab>
-
-        <!-- TAB: Shadows -->
-        <alf-tab label="🌑 Shadows">
-          <div class="pg-controls-content">
-            <alf-tabs-container [(activeIndex)]="stateTabIndex" [colorVariant]="AlfColorVariantEnum.SecondaryOutline">
-              @for (state of states; track state) {
-                <alf-tab [label]="state">
-                  <div class="pg-fields">
-                    <div class="pg-field">
-                      <label class="pg-field__label">boxShadow (enum / custom)</label>
-                      <select class="pg-select" [value]="boxShadow[state]()" (change)="onSelectChange(boxShadow[state], $event)">
-                        <option value="">— none —</option>
-                        @for (s of shadowOptions; track s.key) {
-                          <option [value]="s.value">{{ s.key }}</option>
-                        }
-                      </select>
-                      <input type="text" class="pg-input" style="width: 100%; margin-top: 0.25rem;" placeholder="ej: 0 4px 15px rgba(255,0,0,0.5)" [value]="boxShadow[state]()" (input)="onInputChange(boxShadow[state], $event)">
-                    </div>
-                    <div class="pg-field">
-                      <label class="pg-field__label">boxShadowColor</label>
-                      <select class="pg-select" [value]="boxShadowColor[state]()" (change)="onSelectChange(boxShadowColor[state], $event)">
-                        <option value="">— none —</option>
-                        @for (c of colorOptions; track c.key) {
-                          <option [value]="c.value">{{ c.key }}</option>
-                        }
-                      </select>
-                    </div>
-                  </div>
-                </alf-tab>
-              }
-            </alf-tabs-container>
-          </div>
-        </alf-tab>
-
-        <!-- TAB: Typography -->
-        <alf-tab label="A Typography">
-          <div class="pg-controls-content">
-            <alf-tabs-container [(activeIndex)]="stateTabIndex" [colorVariant]="AlfColorVariantEnum.SecondaryOutline">
-              @for (state of states; track state) {
-                <alf-tab [label]="state">
-                  <div class="pg-fields">
-                    <div class="pg-field">
-                      <label class="pg-field__label">color</label>
-                      <select class="pg-select" [value]="typographyColor[state]()" (change)="onSelectChange(typographyColor[state], $event)">
-                        <option value="">— none —</option>
-                        @for (c of colorOptions; track c.key) {
-                          <option [value]="c.value">{{ c.key }}</option>
-                        }
-                      </select>
-                    </div>
-                    <div class="pg-field">
-                      <label class="pg-field__label">fontSize</label>
-                      <select class="pg-select" [value]="typographyFontSize[state]()" (change)="onSelectChange(typographyFontSize[state], $event)">
-                        <option value="">— none —</option>
-                        @for (f of fontSizeOptions; track f.key) {
-                          <option [value]="f.value">{{ f.key }} ({{ f.value }})</option>
-                        }
-                      </select>
-                    </div>
-                    <div class="pg-field">
-                      <label class="pg-field__label">fontWeight</label>
-                      <select class="pg-select" [value]="typographyFontWeight[state]()" (change)="onSelectChange(typographyFontWeight[state], $event)">
-                        <option value="">— none —</option>
-                        @for (w of fontWeightOptions; track w.key) {
-                          <option [value]="w.value">{{ w.key }} ({{ w.value }})</option>
-                        }
-                      </select>
-                    </div>
-                    <div class="pg-field">
-                      <label class="pg-field__label">textAlign</label>
-                      <select class="pg-select" [value]="typographyTextAlign[state]()" (change)="onSelectChange(typographyTextAlign[state], $event)">
-                        <option value="">— none —</option>
-                        @for (a of textAlignOptions; track a.key) {
-                          <option [value]="a.value">{{ a.key }}</option>
-                        }
-                      </select>
-                    </div>
-                  </div>
-                </alf-tab>
-              }
-            </alf-tabs-container>
-          </div>
-        </alf-tab>
-
-        <!-- TAB: Spacing (Padding/Margin) -->
-        <alf-tab label="📏 Spacing">
-          <div class="pg-controls-content">
-            <alf-tabs-container [(activeIndex)]="stateTabIndex" [colorVariant]="AlfColorVariantEnum.SecondaryOutline">
-              @for (state of states; track state) {
-                <alf-tab [label]="state">
-                  <div class="pg-fields">
-                    <div class="pg-field">
-                      <label class="pg-field__label">padding</label>
-                      <select class="pg-select" [value]="paddingVal[state]()" (change)="onSelectChange(paddingVal[state], $event)">
-                        <option value="">— none —</option>
-                        @for (p of pxOptions; track p.key) {
-                          <option [value]="p.value">{{ p.key }} ({{ p.value }})</option>
-                        }
-                      </select>
-                    </div>
-                    <div class="pg-field">
-                      <label class="pg-field__label">margin</label>
-                      <select class="pg-select" [value]="marginVal[state]()" (change)="onSelectChange(marginVal[state], $event)">
-                        <option value="">— none —</option>
-                        @for (p of pxOptions; track p.key) {
-                          <option [value]="p.value">{{ p.key }} ({{ p.value }})</option>
-                        }
-                      </select>
-                    </div>
-                  </div>
-                </alf-tab>
-              }
-            </alf-tabs-container>
-          </div>
-        </alf-tab>
-
-        <!-- TAB: Transform -->
-        <alf-tab label="🔄 Transform">
-          <div class="pg-controls-content">
-            <alf-tabs-container [(activeIndex)]="stateTabIndex" [colorVariant]="AlfColorVariantEnum.SecondaryOutline">
-              @for (state of states; track state) {
-                <alf-tab [label]="state">
-                  <div class="pg-fields">
-                    <div class="pg-field">
-                      <label class="pg-field__label">scale (e.g. 1.1)</label>
-                      <input type="number" step="0.1" class="pg-input" [value]="transformScale[state]()" (input)="onInputChange(transformScale[state], $event)" />
-                    </div>
-                    <div class="pg-field">
-                      <label class="pg-field__label">rotate (deg)</label>
-                      <input type="number" step="1" class="pg-input" [value]="transformRotate[state]()" (input)="onInputChange(transformRotate[state], $event)" />
-                    </div>
-                  </div>
-                </alf-tab>
-              }
-            </alf-tabs-container>
-          </div>
-        </alf-tab>
-
-        <!-- TAB: Animations -->
-        <alf-tab label="✨ Animations">
           <div class="pg-controls-content">
             <div class="pg-fields">
               <div class="pg-field">
-                <label class="pg-field__label" for="pg-anim-enter">enterStage</label>
-                <span class="pg-field__desc">Animación al renderizarse por primera vez</span>
-                <select id="pg-anim-enter" class="pg-select" [value]="animEnterStage() || ''" (change)="onSelectChange(animEnterStage, $event)">
+                <label class="pg-field__label" for="pg-btn-label">label</label>
+                <span class="pg-field__desc">Texto principal que da título al botón</span>
+                <input
+                  id="pg-btn-label"
+                  type="text"
+                  class="pg-input"
+                  [value]="compLabel()"
+                  (input)="onInputChange(compLabel, $event)"
+                  placeholder="Ej: Click Me"
+                />
+              </div>
+
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-btn-type">type</label>
+                <span class="pg-field__desc">Tipo nativo del botón</span>
+                <select id="pg-btn-type" class="pg-select" [value]="buttonBehaviorType()" (change)="onSelectChange(buttonBehaviorType, $event)">
+                  <option value="">— default (button) —</option>
+                  <option value="submit">submit</option>
+                  <option value="reset">reset</option>
+                  <option value="button">button</option>
+                </select>
+              </div>
+
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-btn-iconleft">iconLeft</label>
+                <span class="pg-field__desc">Icono a la izquierda del texto</span>
+                <select
+                  id="pg-btn-iconleft"
+                  class="pg-select"
+                  [value]="buttonBehaviorIconLeft()"
+                  (change)="onSelectChange(buttonBehaviorIconLeft, $event)"
+                >
                   <option value="">— none —</option>
-                  @for (a of animationOptions; track a.key) {
-                    <option [value]="a.value">{{ a.key }}</option>
+                  @for (a of adornmentOptions; track a.key) {
+                  <option [value]="a.value">{{ a.key }} &nbsp; {{ a.value }}</option>
                   }
                 </select>
               </div>
 
               <div class="pg-field">
-                <label class="pg-field__label" for="pg-anim-exit">exitStage</label>
-                <span class="pg-field__desc">Animación al destruirse (requiere [isExiting]="true")</span>
-                <select id="pg-anim-exit" class="pg-select" [value]="animExitStage() || ''" (change)="onSelectChange(animExitStage, $event)">
+                <label class="pg-field__label" for="pg-btn-iconright">iconRight</label>
+                <span class="pg-field__desc">Icono a la derecha del texto</span>
+                <select
+                  id="pg-btn-iconright"
+                  class="pg-select"
+                  [value]="buttonBehaviorIconRight()"
+                  (change)="onSelectChange(buttonBehaviorIconRight, $event)"
+                >
                   <option value="">— none —</option>
-                  @for (a of animationOptions; track a.key) {
-                    <option [value]="a.value">{{ a.key }}</option>
+                  @for (a of adornmentOptions; track a.key) {
+                  <option [value]="a.value">{{ a.key }} &nbsp; {{ a.value }}</option>
                   }
                 </select>
               </div>
 
               <div class="pg-field">
-                <label class="pg-field__label" for="pg-anim-duration">duration</label>
-                <span class="pg-field__desc">Tiempo total de la animación (ej: 1s, 500ms)</span>
-                <input id="pg-anim-duration" type="text" class="pg-input" [value]="animDuration() || ''" (input)="onInputChange(animDuration, $event)" placeholder="e.g. 1s" />
-              </div>
-
-              <div class="pg-field">
-                <label class="pg-field__label" for="pg-anim-delay">delay</label>
-                <span class="pg-field__desc">Retraso antes de que empiece a animar</span>
-                <input id="pg-anim-delay" type="text" class="pg-input" [value]="animDelay() || ''" (input)="onInputChange(animDelay, $event)" placeholder="e.g. 200ms" />
-              </div>
-
-              <div class="pg-field">
-                <label class="pg-field__label" for="pg-anim-iteration">iterationCount</label>
-                <span class="pg-field__desc">Número de veces que se repite la animación</span>
-                <input id="pg-anim-iteration" type="number" class="pg-input" [value]="animIteration() || ''" (input)="onInputChange(animIteration, $event)" placeholder="e.g. 3" />
+                <label class="pg-field__label" for="pg-btn-predefined">predefined</label>
+                <span class="pg-field__desc">Texto automático vía diccionario i18n</span>
+                <select id="pg-btn-predefined" class="pg-select" [value]="buttonBehaviorPredefined()" (change)="onPredefinedChange($event)">
+                  <option value="">— none —</option>
+                  <option value="save">save (Guardar)</option>
+                  <option value="cancel">cancel (Cancelar)</option>
+                  <option value="delete">delete (Eliminar)</option>
+                  <option value="edit">edit (Editar)</option>
+                </select>
               </div>
 
               <div class="pg-field pg-field--checkbox">
                 <label class="pg-checkbox-label">
-                  <input type="checkbox" [checked]="animInfinite()" (change)="onCheckboxChange(animInfinite, $event)" />
-                  <span class="pg-checkbox-text">infinite (Repetir en bucle infinito)</span>
+                  <input type="checkbox" [checked]="buttonBehaviorElevated()" (change)="onCheckboxChange(buttonBehaviorElevated, $event)" />
+                  <span class="pg-checkbox-text">elevated (Sombra 3D coloreada)</span>
                 </label>
               </div>
             </div>
           </div>
-        </alf-tab>
+        }
 
+        <!-- TAB: Behavior (AlfInput / AlfAutocomplete) -->
+        @if (selectedComponentId() === 'alf-input' || selectedComponentId() === 'alf-autocomplete') {
+          <div class="pg-controls-content">
+            <div class="pg-fields">
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-inp-label">label</label>
+                <span class="pg-field__desc">Texto principal que da título al campo</span>
+                <input
+                  id="pg-inp-label"
+                  type="text"
+                  class="pg-input"
+                  [value]="inputBehaviorLabel()"
+                  (input)="onInputChange(inputBehaviorLabel, $event)"
+                  placeholder="Ej: Email"
+                />
+              </div>
+
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-inp-placeholder">placeholder</label>
+                <span class="pg-field__desc">Texto orientativo de fondo cuando está vacío</span>
+                <input
+                  id="pg-inp-placeholder"
+                  type="text"
+                  class="pg-input"
+                  [value]="inputBehaviorPlaceholder()"
+                  (input)="onInputChange(inputBehaviorPlaceholder, $event)"
+                  placeholder="Ej: Escribe aquí..."
+                />
+              </div>
+
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-inp-appearance">appearance</label>
+                <span class="pg-field__desc">Estilo visual general del input</span>
+                <select
+                  id="pg-inp-appearance"
+                  class="pg-select"
+                  [value]="inputBehaviorAppearance()"
+                  (change)="onSelectChange(inputBehaviorAppearance, $event)"
+                >
+                  <option value="">— default —</option>
+                  <option [value]="AlfInputAppearanceEnum.Outline">Outline</option>
+                  <option [value]="AlfInputAppearanceEnum.Fill">Fill</option>
+                  <option [value]="AlfInputAppearanceEnum.Standard">Standard</option>
+                </select>
+              </div>
+
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-inp-type">type</label>
+                <span class="pg-field__desc">Comportamiento del teclado y campo nativo</span>
+                <select id="pg-inp-type" class="pg-select" [value]="inputBehaviorType()" (change)="onSelectChange(inputBehaviorType, $event)">
+                  <option value="">— default (text) —</option>
+                  <option [value]="AlfInputTypeEnum.Text">text</option>
+                  <option [value]="AlfInputTypeEnum.Email">email</option>
+                  <option [value]="AlfInputTypeEnum.Password">password</option>
+                  <option [value]="AlfInputTypeEnum.Number">number</option>
+                  <option [value]="AlfInputTypeEnum.Tel">tel</option>
+                  <option [value]="AlfInputTypeEnum.Url">url</option>
+                  <option [value]="AlfInputTypeEnum.Search">search</option>
+                  <option value="textarea">textarea</option>
+                </select>
+              </div>
+
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-inp-prefix">prefix</label>
+                <span class="pg-field__desc">Icono de la librería a la izquierda</span>
+                <select id="pg-inp-prefix" class="pg-select" [value]="inputBehaviorPrefix()" (change)="onSelectChange(inputBehaviorPrefix, $event)">
+                  <option value="">— none —</option>
+                  @for (a of adornmentOptions; track a.key) {
+                  <option [value]="a.value">{{ a.key }} &nbsp; {{ a.value }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-inp-suffix">suffix</label>
+                <span class="pg-field__desc">Icono de la librería a la derecha</span>
+                <select id="pg-inp-suffix" class="pg-select" [value]="inputBehaviorSuffix()" (change)="onSelectChange(inputBehaviorSuffix, $event)">
+                  <option value="">— none —</option>
+                  @for (a of adornmentOptions; track a.key) {
+                  <option [value]="a.value">{{ a.key }} &nbsp; {{ a.value }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-inp-helpertext">helperText</label>
+                <span class="pg-field__desc">Texto auxiliar que aparece bajo el input</span>
+                <input
+                  id="pg-inp-helpertext"
+                  type="text"
+                  class="pg-input"
+                  [value]="inputBehaviorHelperText()"
+                  (input)="onInputChange(inputBehaviorHelperText, $event)"
+                  placeholder="Ej: Mínimo 8 caracteres"
+                />
+              </div>
+
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-inp-error">error</label>
+                <span class="pg-field__desc">Fuerza el input a estado de error visible</span>
+                <input
+                  id="pg-inp-error"
+                  type="text"
+                  class="pg-input"
+                  [value]="inputBehaviorError()"
+                  (input)="onInputChange(inputBehaviorError, $event)"
+                  placeholder="Ej: Campo requerido"
+                />
+              </div>
+
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-inp-maxlength">maxLength</label>
+                <span class="pg-field__desc">Tope de caracteres permitidos</span>
+                <input
+                  id="pg-inp-maxlength"
+                  type="number"
+                  class="pg-input"
+                  [value]="inputBehaviorMaxLength()"
+                  (input)="onInputChange(inputBehaviorMaxLength, $event)"
+                  placeholder="Ej: 50"
+                />
+              </div>
+
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-inp-minlength">minLength</label>
+                <span class="pg-field__desc">Mínimo de caracteres exigidos</span>
+                <input
+                  id="pg-inp-minlength"
+                  type="number"
+                  class="pg-input"
+                  [value]="inputBehaviorMinLength()"
+                  (input)="onInputChange(inputBehaviorMinLength, $event)"
+                  placeholder="Ej: 3"
+                />
+              </div>
+
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-inp-min">min</label>
+                <span class="pg-field__desc">Valor mínimo (si type="number")</span>
+                <input
+                  id="pg-inp-min"
+                  type="number"
+                  step="any"
+                  class="pg-input"
+                  [value]="inputBehaviorMin()"
+                  (input)="onInputChange(inputBehaviorMin, $event)"
+                  placeholder="Ej: 0"
+                />
+              </div>
+
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-inp-max">max</label>
+                <span class="pg-field__desc">Valor máximo (si type="number")</span>
+                <input
+                  id="pg-inp-max"
+                  type="number"
+                  step="any"
+                  class="pg-input"
+                  [value]="inputBehaviorMax()"
+                  (input)="onInputChange(inputBehaviorMax, $event)"
+                  placeholder="Ej: 100"
+                />
+              </div>
+
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-inp-step">step</label>
+                <span class="pg-field__desc">Saltos de valor al subir/bajar (ej: 0.5 o 1)</span>
+                <input
+                  id="pg-inp-step"
+                  type="number"
+                  step="any"
+                  class="pg-input"
+                  [value]="inputBehaviorStep()"
+                  (input)="onInputChange(inputBehaviorStep, $event)"
+                  placeholder="Ej: 1"
+                />
+              </div>
+
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-inp-autocomplete">autocomplete</label>
+                <span class="pg-field__desc">Sugerencias del navegador (ej: off, username)</span>
+                <input
+                  id="pg-inp-autocomplete"
+                  type="text"
+                  class="pg-input"
+                  [value]="inputBehaviorAutocomplete()"
+                  (input)="onInputChange(inputBehaviorAutocomplete, $event)"
+                  placeholder="Ej: off"
+                />
+              </div>
+
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-inp-pattern">pattern</label>
+                <span class="pg-field__desc">Validación por expresión regular (Regex)</span>
+                <input
+                  id="pg-inp-pattern"
+                  type="text"
+                  class="pg-input"
+                  [value]="inputBehaviorPattern()"
+                  (input)="onInputChange(inputBehaviorPattern, $event)"
+                  placeholder="Ej: [A-Za-z]+"
+                />
+              </div>
+
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-inp-debouncetime">debounceTime (ms)</label>
+                <span class="pg-field__desc">Milisegundos antes de emitir evento input</span>
+                <input
+                  id="pg-inp-debouncetime"
+                  type="number"
+                  class="pg-input"
+                  [value]="inputBehaviorDebounceTime()"
+                  (input)="onInputChange(inputBehaviorDebounceTime, $event)"
+                  placeholder="Ej: 300"
+                />
+              </div>
+
+              <div class="pg-field pg-field--checkboxes">
+                <label class="pg-checkbox-label">
+                  <input type="checkbox" [checked]="inputBehaviorRequired()" (change)="onCheckboxChange(inputBehaviorRequired, $event)" />
+                  <div class="pg-checkbox-text">
+                    <span class="pg-checkbox-text__title">required</span>
+                    <span class="pg-checkbox-text__desc">Añade estado obligatorio</span>
+                  </div>
+                </label>
+                <label class="pg-checkbox-label">
+                  <input type="checkbox" [checked]="inputBehaviorReadonly()" (change)="onCheckboxChange(inputBehaviorReadonly, $event)" />
+                  <div class="pg-checkbox-text">
+                    <span class="pg-checkbox-text__title">readonly</span>
+                    <span class="pg-checkbox-text__desc">Valor de solo lectura</span>
+                  </div>
+                </label>
+                <label class="pg-checkbox-label">
+                  <input type="checkbox" [checked]="inputBehaviorClearable()" (change)="onCheckboxChange(inputBehaviorClearable, $event)" />
+                  <div class="pg-checkbox-text">
+                    <span class="pg-checkbox-text__title">clearable</span>
+                    <span class="pg-checkbox-text__desc">Muestra un icono (X) para borrar el contenido</span>
+                  </div>
+                </label>
+                <label class="pg-checkbox-label">
+                  <input type="checkbox" [checked]="inputBehaviorShowPwdToggle()" (change)="onCheckboxChange(inputBehaviorShowPwdToggle, $event)" />
+                  <div class="pg-checkbox-text">
+                    <span class="pg-checkbox-text__title">showPasswordToggle</span>
+                    <span class="pg-checkbox-text__desc">Permite revelar la contraseña (ojito)</span>
+                  </div>
+                </label>
+                <label class="pg-checkbox-label">
+                  <input
+                    type="checkbox"
+                    [checked]="inputBehaviorShowCharCounter()"
+                    (change)="onCheckboxChange(inputBehaviorShowCharCounter, $event)"
+                  />
+                  <div class="pg-checkbox-text">
+                    <span class="pg-checkbox-text__title">showCharCounter</span>
+                    <span class="pg-checkbox-text__desc">Contador numérico (ej: 0/50). Necesita maxLength.</span>
+                  </div>
+                </label>
+                <label class="pg-checkbox-label">
+                  <input type="checkbox" [checked]="inputBehaviorAutofocus()" (change)="onCheckboxChange(inputBehaviorAutofocus, $event)" />
+                  <div class="pg-checkbox-text">
+                    <span class="pg-checkbox-text__title">autofocus</span>
+                    <span class="pg-checkbox-text__desc">Foco automático al arrancar</span>
+                  </div>
+                </label>
+                <label class="pg-checkbox-label">
+                  <input type="checkbox" [checked]="inputBehaviorClearOnClick()" (change)="onCheckboxChange(inputBehaviorClearOnClick, $event)" />
+                  <div class="pg-checkbox-text">
+                    <span class="pg-checkbox-text__title">clearOnClick</span>
+                    <span class="pg-checkbox-text__desc">Borra el texto al hacerle clic dentro</span>
+                  </div>
+                </label>
+              </div>
+
+              @if (selectedComponentId() === 'alf-autocomplete') {
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-ac-groupby">groupBy</label>
+                <span class="pg-field__desc">Agrupar por esta propiedad (ej. group)</span>
+                <input
+                  id="pg-ac-groupby"
+                  type="text"
+                  class="pg-input"
+                  [value]="acBehaviorGroupBy()"
+                  (input)="onInputChange(acBehaviorGroupBy, $event)"
+                  placeholder="Ej: group"
+                />
+              </div>
+
+              <div class="pg-field pg-field--checkboxes">
+                <label class="pg-checkbox-label">
+                  <input type="checkbox" [checked]="acBehaviorSearchable()" (change)="onCheckboxChange(acBehaviorSearchable, $event)" />
+                  <div class="pg-checkbox-text">
+                    <span class="pg-checkbox-text__title">searchable</span>
+                    <span class="pg-checkbox-text__desc">Permite buscar/filtrar entre las opciones</span>
+                  </div>
+                </label>
+                <label class="pg-checkbox-label">
+                  <input type="checkbox" [checked]="acBehaviorVirtualScroll()" (change)="onCheckboxChange(acBehaviorVirtualScroll, $event)" />
+                  <div class="pg-checkbox-text">
+                    <span class="pg-checkbox-text__title">virtualScroll</span>
+                    <span class="pg-checkbox-text__desc">Optimiza el renderizado de listas muy grandes</span>
+                  </div>
+                </label>
+              </div>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- TAB: Behavior (AlfCheckbox only) -->
+        @if (selectedComponentId() === 'alf-checkbox') {
+          <div class="pg-controls-content">
+            <div class="pg-fields">
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-cb-label">label</label>
+                <span class="pg-field__desc">Texto principal del checkbox</span>
+                <input
+                  id="pg-cb-label"
+                  type="text"
+                  class="pg-input"
+                  [value]="compLabel()"
+                  (input)="onInputChange(compLabel, $event)"
+                  placeholder="Ej: Acepto los términos"
+                />
+              </div>
+
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-cb-labelpos">labelPosition</label>
+                <span class="pg-field__desc">Posición del texto respecto a la caja</span>
+                <select id="pg-cb-labelpos" class="pg-select" [value]="cbBehaviorLabelPos()" (change)="onSelectChange(cbBehaviorLabelPos, $event)">
+                  <option value="after">after (derecha)</option>
+                  <option value="before">before (izquierda)</option>
+                </select>
+              </div>
+
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-cb-style">checkboxStyle</label>
+                <span class="pg-field__desc">Estilo del check interior</span>
+                <select id="pg-cb-style" class="pg-select" [value]="cbBehaviorStyle()" (change)="onSelectChange(cbBehaviorStyle, $event)">
+                  <option value="elegant">elegant (suave)</option>
+                  <option value="standard">standard (recto)</option>
+                </select>
+              </div>
+
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-cb-helper">helperText</label>
+                <span class="pg-field__desc">Texto descriptivo inferior</span>
+                <input
+                  id="pg-cb-helper"
+                  type="text"
+                  class="pg-input"
+                  [value]="cbBehaviorHelper()"
+                  (input)="onInputChange(cbBehaviorHelper, $event)"
+                  placeholder="Ej: Es necesario para continuar"
+                />
+              </div>
+
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-cb-error">error</label>
+                <span class="pg-field__desc">Fuerza estado de error con texto</span>
+                <input
+                  id="pg-cb-error"
+                  type="text"
+                  class="pg-input"
+                  [value]="cbBehaviorError()"
+                  (input)="onInputChange(cbBehaviorError, $event)"
+                  placeholder="Ej: Campo obligatorio"
+                />
+              </div>
+
+              <div class="pg-field pg-field--checkboxes">
+                <label class="pg-checkbox-label">
+                  <input type="checkbox" [checked]="cbBehaviorChecked()" (change)="onCheckboxChange(cbBehaviorChecked, $event)" />
+                  <div class="pg-checkbox-text">
+                    <span class="pg-checkbox-text__title">checked</span>
+                    <span class="pg-checkbox-text__desc">Estado forzado activado</span>
+                  </div>
+                </label>
+
+                <label class="pg-checkbox-label">
+                  <input type="checkbox" [checked]="cbBehaviorIndeterminate()" (change)="onCheckboxChange(cbBehaviorIndeterminate, $event)" />
+                  <div class="pg-checkbox-text">
+                    <span class="pg-checkbox-text__title">indeterminate</span>
+                    <span class="pg-checkbox-text__desc">Estado parcial (guion)</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- TAB: Behavior (AlfRadioButton only) -->
+        @if (selectedComponentId() === 'alf-radio-button') {
+          <div class="pg-controls-content">
+            <div class="pg-fields">
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-rb-label">label</label>
+                <span class="pg-field__desc">Texto principal del radio button</span>
+                <input
+                  id="pg-rb-label"
+                  type="text"
+                  class="pg-input"
+                  [value]="compLabel()"
+                  (input)="onInputChange(compLabel, $event)"
+                  placeholder="Ej: Opción 1"
+                />
+              </div>
+
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-rb-labelpos">labelPosition</label>
+                <span class="pg-field__desc">Posición del texto respecto a la bolita</span>
+                <select id="pg-rb-labelpos" class="pg-select" [value]="rbBehaviorLabelPos()" (change)="onSelectChange(rbBehaviorLabelPos, $event)">
+                  <option value="after">after (derecha)</option>
+                  <option value="before">before (izquierda)</option>
+                </select>
+              </div>
+
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-rb-style">radioButtonStyle</label>
+                <span class="pg-field__desc">Estilo del radio button</span>
+                <select id="pg-rb-style" class="pg-select" [value]="rbBehaviorStyle()" (change)="onSelectChange(rbBehaviorStyle, $event)">
+                  <option value="elegant">elegant (redondo)</option>
+                  <option value="standard">standard (cuadrado suave)</option>
+                </select>
+              </div>
+
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-rb-helper">helperText</label>
+                <span class="pg-field__desc">Texto descriptivo inferior</span>
+                <input
+                  id="pg-rb-helper"
+                  type="text"
+                  class="pg-input"
+                  [value]="rbBehaviorHelper()"
+                  (input)="onInputChange(rbBehaviorHelper, $event)"
+                  placeholder="Ej: Describe la opción"
+                />
+              </div>
+
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-rb-error">error</label>
+                <span class="pg-field__desc">Fuerza estado de error con texto</span>
+                <input
+                  id="pg-rb-error"
+                  type="text"
+                  class="pg-input"
+                  [value]="rbBehaviorError()"
+                  (input)="onInputChange(rbBehaviorError, $event)"
+                  placeholder="Ej: Opción no válida"
+                />
+              </div>
+
+              <div class="pg-field pg-field--checkboxes">
+                <label class="pg-checkbox-label">
+                  <input type="checkbox" [checked]="rbBehaviorChecked()" (change)="onCheckboxChange(rbBehaviorChecked, $event)" />
+                  <div class="pg-checkbox-text">
+                    <span class="pg-checkbox-text__title">checked</span>
+                    <span class="pg-checkbox-text__desc">Estado forzado activado</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- TAB: Behavior (AlfSwitch only) -->
+        @if (selectedComponentId() === 'alf-switch') {
+          <div class="pg-controls-content">
+            <div class="pg-fields">
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-sw-label">label</label>
+                <span class="pg-field__desc">Texto principal del switch</span>
+                <input
+                  id="pg-sw-label"
+                  type="text"
+                  class="pg-input"
+                  [value]="compLabel()"
+                  (input)="onInputChange(compLabel, $event)"
+                  placeholder="Ej: Activar notificaciones"
+                />
+              </div>
+
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-sw-labelpos">labelPosition</label>
+                <span class="pg-field__desc">Posición del texto respecto al switch</span>
+                <select id="pg-sw-labelpos" class="pg-select" [value]="swBehaviorLabelPos()" (change)="onSelectChange(swBehaviorLabelPos, $event)">
+                  <option value="after">after (derecha)</option>
+                  <option value="before">before (izquierda)</option>
+                </select>
+              </div>
+
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-sw-style">switchStyle</label>
+                <span class="pg-field__desc">Estilo visual del switch</span>
+                <select id="pg-sw-style" class="pg-select" [value]="swBehaviorStyle()" (change)="onSelectChange(swBehaviorStyle, $event)">
+                  <option value="elegant">elegant (pill)</option>
+                  <option value="standard">standard (recto)</option>
+                </select>
+              </div>
+
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-sw-helper">helperText</label>
+                <span class="pg-field__desc">Texto descriptivo inferior</span>
+                <input
+                  id="pg-sw-helper"
+                  type="text"
+                  class="pg-input"
+                  [value]="swBehaviorHelper()"
+                  (input)="onInputChange(swBehaviorHelper, $event)"
+                  placeholder="Ej: Puedes cambiarlo luego"
+                />
+              </div>
+
+              <div class="pg-field">
+                <label class="pg-field__label" for="pg-sw-error">error</label>
+                <span class="pg-field__desc">Fuerza estado de error con texto</span>
+                <input
+                  id="pg-sw-error"
+                  type="text"
+                  class="pg-input"
+                  [value]="swBehaviorError()"
+                  (input)="onInputChange(swBehaviorError, $event)"
+                  placeholder="Ej: Valor inválido"
+                />
+              </div>
+
+              <div class="pg-field pg-field--checkboxes">
+                <label class="pg-checkbox-label">
+                  <input type="checkbox" [checked]="swBehaviorChecked()" (change)="onCheckboxChange(swBehaviorChecked, $event)" />
+                  <div class="pg-checkbox-text">
+                    <span class="pg-checkbox-text__title">checked</span>
+                    <span class="pg-checkbox-text__desc">Estado forzado activado</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+        }
+      }
+
+      @if (propTabIndex() === 1) {
+        <!-- TAB: Background -->
+        <div class="pg-controls-content">
+          <div class="pg-tabs pg-tabs--sm">
+            @for (state of states; track state; let idx = $index) {
+              <button class="pg-tab-btn pg-tab-btn--sm" [class.pg-tab-btn--active]="stateTabIndex() === idx" (click)="stateTabIndex.set(idx)">
+                {{ state }}
+              </button>
+            }
+          </div>
+          @for (state of states; track state; let idx = $index) {
+            @if (stateTabIndex() === idx) {
+              <div class="pg-fields">
+                <div class="pg-field">
+                  <label class="pg-field__label">backgroundColor</label>
+                  <select class="pg-select" [value]="bgColor[state]()" (change)="onSelectChange(bgColor[state], $event)">
+                    <option value="">— none —</option>
+                    @for (c of colorOptions; track c.key) {
+                    <option [value]="c.value">{{ c.key }}</option>
+                    }
+                  </select>
+                </div>
+              </div>
+            }
+          }
+        </div>
+      }
+
+      @if (propTabIndex() === 2) {
+        <!-- TAB: Border -->
+        <div class="pg-controls-content">
+          <div class="pg-tabs pg-tabs--sm">
+            @for (state of states; track state; let idx = $index) {
+              <button class="pg-tab-btn pg-tab-btn--sm" [class.pg-tab-btn--active]="stateTabIndex() === idx" (click)="stateTabIndex.set(idx)">
+                {{ state }}
+              </button>
+            }
+          </div>
+          @for (state of states; track state; let idx = $index) {
+            @if (stateTabIndex() === idx) {
+              <div class="pg-fields">
+                <div class="pg-field">
+                  <label class="pg-field__label">borderColor</label>
+                  <select class="pg-select" [value]="borderColor[state]()" (change)="onSelectChange(borderColor[state], $event)">
+                    <option value="">— none —</option>
+                    @for (c of colorOptions; track c.key) {
+                    <option [value]="c.value">{{ c.key }}</option>
+                    }
+                  </select>
+                </div>
+                <div class="pg-field">
+                  <label class="pg-field__label">borderWidth</label>
+                  <select class="pg-select" [value]="borderWidth[state]()" (change)="onSelectChange(borderWidth[state], $event)">
+                    <option value="">— none —</option>
+                    @for (p of pxOptions; track p.key) {
+                    <option [value]="p.value">{{ p.key }} ({{ p.value }})</option>
+                    }
+                  </select>
+                </div>
+                <div class="pg-field">
+                  <label class="pg-field__label">borderStyle</label>
+                  <select class="pg-select" [value]="borderStyle[state]()" (change)="onSelectChange(borderStyle[state], $event)">
+                    <option value="">— none —</option>
+                    @for (b of borderStyleOptions; track b.key) {
+                    <option [value]="b.value">{{ b.key }}</option>
+                    }
+                  </select>
+                </div>
+                <div class="pg-field">
+                  <label class="pg-field__label">borderRadius</label>
+                  <select class="pg-select" [value]="borderRadius[state]()" (change)="onSelectChange(borderRadius[state], $event)">
+                    <option value="">— none —</option>
+                    @for (r of radiusOptions; track r.key) {
+                    <option [value]="r.value">{{ r.key }} ({{ r.value }})</option>
+                    }
+                  </select>
+                </div>
+              </div>
+            }
+          }
+        </div>
+      }
+
+      @if (propTabIndex() === 3) {
+        <!-- TAB: Outline -->
+        <div class="pg-controls-content">
+          <div class="pg-tabs pg-tabs--sm">
+            @for (state of states; track state; let idx = $index) {
+              <button class="pg-tab-btn pg-tab-btn--sm" [class.pg-tab-btn--active]="stateTabIndex() === idx" (click)="stateTabIndex.set(idx)">
+                {{ state }}
+              </button>
+            }
+          </div>
+          @for (state of states; track state; let idx = $index) {
+            @if (stateTabIndex() === idx) {
+              <div class="pg-fields">
+                <div class="pg-field">
+                  <label class="pg-field__label">outlineColor</label>
+                  <select class="pg-select" [value]="outlineColor[state]()" (change)="onSelectChange(outlineColor[state], $event)">
+                    <option value="">— none —</option>
+                    @for (c of colorOptions; track c.key) {
+                    <option [value]="c.value">{{ c.key }}</option>
+                    }
+                  </select>
+                </div>
+                <div class="pg-field">
+                  <label class="pg-field__label">outlineWidth</label>
+                  <select class="pg-select" [value]="outlineWidth[state]()" (change)="onSelectChange(outlineWidth[state], $event)">
+                    <option value="">— none —</option>
+                    @for (p of pxOptions; track p.key) {
+                    <option [value]="p.value">{{ p.key }} ({{ p.value }})</option>
+                    }
+                  </select>
+                </div>
+                <div class="pg-field">
+                  <label class="pg-field__label">outlineStyle</label>
+                  <select class="pg-select" [value]="outlineStyle[state]()" (change)="onSelectChange(outlineStyle[state], $event)">
+                    <option value="">— none —</option>
+                    @for (b of borderStyleOptions; track b.key) {
+                    <option [value]="b.value">{{ b.key }}</option>
+                    }
+                  </select>
+                </div>
+                <div class="pg-field">
+                  <label class="pg-field__label">outlineOffset</label>
+                  <select class="pg-select" [value]="outlineOffset[state]()" (change)="onSelectChange(outlineOffset[state], $event)">
+                    <option value="">— none —</option>
+                    @for (p of pxOptions; track p.key) {
+                    <option [value]="p.value">{{ p.key }} ({{ p.value }})</option>
+                    }
+                  </select>
+                </div>
+              </div>
+            }
+          }
+        </div>
+      }
+
+      @if (propTabIndex() === 4) {
+        <!-- TAB: Shadows -->
+        <div class="pg-controls-content">
+          <div class="pg-tabs pg-tabs--sm">
+            @for (state of states; track state; let idx = $index) {
+              <button class="pg-tab-btn pg-tab-btn--sm" [class.pg-tab-btn--active]="stateTabIndex() === idx" (click)="stateTabIndex.set(idx)">
+                {{ state }}
+              </button>
+            }
+          </div>
+          @for (state of states; track state; let idx = $index) {
+            @if (stateTabIndex() === idx) {
+              <div class="pg-fields">
+                <div class="pg-field">
+                  <label class="pg-field__label">boxShadow (enum / custom)</label>
+                  <select class="pg-select" [value]="boxShadow[state]()" (change)="onSelectChange(boxShadow[state], $event)">
+                    <option value="">— none —</option>
+                    @for (s of shadowOptions; track s.key) {
+                    <option [value]="s.value">{{ s.key }}</option>
+                    }
+                  </select>
+                  <input
+                    type="text"
+                    class="pg-input"
+                    style="width: 100%; margin-top: 0.25rem"
+                    placeholder="ej: 0 4px 15px rgba(255,0,0,0.5)"
+                    [value]="boxShadow[state]()"
+                    (input)="onInputChange(boxShadow[state], $event)"
+                  />
+                </div>
+                <div class="pg-field">
+                  <label class="pg-field__label">boxShadowColor</label>
+                  <select class="pg-select" [value]="boxShadowColor[state]()" (change)="onSelectChange(boxShadowColor[state], $event)">
+                    <option value="">— none —</option>
+                    @for (c of colorOptions; track c.key) {
+                    <option [value]="c.value">{{ c.key }}</option>
+                    }
+                  </select>
+                </div>
+              </div>
+            }
+          }
+        </div>
+      }
+
+        <!-- TAB: Typography -->
+      @if (propTabIndex() === 5) {
+        <!-- TAB: Typography -->
+        <div class="pg-controls-content">
+          <div class="pg-tabs pg-tabs--sm">
+            @for (state of states; track state; let idx = $index) {
+              <button class="pg-tab-btn pg-tab-btn--sm" [class.pg-tab-btn--active]="stateTabIndex() === idx" (click)="stateTabIndex.set(idx)">
+                {{ state }}
+              </button>
+            }
+          </div>
+          @for (state of states; track state; let idx = $index) {
+            @if (stateTabIndex() === idx) {
+              <div class="pg-fields">
+                <div class="pg-field">
+                  <label class="pg-field__label">color</label>
+                  <select class="pg-select" [value]="typographyColor[state]()" (change)="onSelectChange(typographyColor[state], $event)">
+                    <option value="">— none —</option>
+                    @for (c of colorOptions; track c.key) {
+                    <option [value]="c.value">{{ c.key }}</option>
+                    }
+                  </select>
+                </div>
+                <div class="pg-field">
+                  <label class="pg-field__label">fontSize</label>
+                  <select class="pg-select" [value]="typographyFontSize[state]()" (change)="onSelectChange(typographyFontSize[state], $event)">
+                    <option value="">— none —</option>
+                    @for (f of fontSizeOptions; track f.key) {
+                    <option [value]="f.value">{{ f.key }} ({{ f.value }})</option>
+                    }
+                  </select>
+                </div>
+                <div class="pg-field">
+                  <label class="pg-field__label">fontWeight</label>
+                  <select class="pg-select" [value]="typographyFontWeight[state]()" (change)="onSelectChange(typographyFontWeight[state], $event)">
+                    <option value="">— none —</option>
+                    @for (w of fontWeightOptions; track w.key) {
+                    <option [value]="w.value">{{ w.key }} ({{ w.value }})</option>
+                    }
+                  </select>
+                </div>
+                <div class="pg-field">
+                  <label class="pg-field__label">textAlign</label>
+                  <select class="pg-select" [value]="typographyTextAlign[state]()" (change)="onSelectChange(typographyTextAlign[state], $event)">
+                    <option value="">— none —</option>
+                    @for (a of textAlignOptions; track a.key) {
+                    <option [value]="a.value">{{ a.key }}</option>
+                    }
+                  </select>
+                </div>
+              </div>
+            }
+          }
+        </div>
+      }
+
+      @if (propTabIndex() === 6) {
+        <!-- TAB: Spacing (Padding/Margin) -->
+        <div class="pg-controls-content">
+          <div class="pg-tabs pg-tabs--sm">
+            @for (state of states; track state; let idx = $index) {
+              <button class="pg-tab-btn pg-tab-btn--sm" [class.pg-tab-btn--active]="stateTabIndex() === idx" (click)="stateTabIndex.set(idx)">
+                {{ state }}
+              </button>
+            }
+          </div>
+          @for (state of states; track state; let idx = $index) {
+            @if (stateTabIndex() === idx) {
+              <div class="pg-fields">
+                <div class="pg-field">
+                  <label class="pg-field__label">padding</label>
+                  <select class="pg-select" [value]="paddingVal[state]()" (change)="onSelectChange(paddingVal[state], $event)">
+                    <option value="">— none —</option>
+                    @for (p of pxOptions; track p.key) {
+                    <option [value]="p.value">{{ p.key }} ({{ p.value }})</option>
+                    }
+                  </select>
+                </div>
+                <div class="pg-field">
+                  <label class="pg-field__label">margin</label>
+                  <select class="pg-select" [value]="marginVal[state]()" (change)="onSelectChange(marginVal[state], $event)">
+                    <option value="">— none —</option>
+                    @for (p of pxOptions; track p.key) {
+                    <option [value]="p.value">{{ p.key }} ({{ p.value }})</option>
+                    }
+                  </select>
+                </div>
+              </div>
+            }
+          }
+        </div>
+      }
+
+      @if (propTabIndex() === 7) {
+        <!-- TAB: Transform -->
+        <div class="pg-controls-content">
+          <div class="pg-tabs pg-tabs--sm">
+            @for (state of states; track state; let idx = $index) {
+              <button class="pg-tab-btn pg-tab-btn--sm" [class.pg-tab-btn--active]="stateTabIndex() === idx" (click)="stateTabIndex.set(idx)">
+                {{ state }}
+              </button>
+            }
+          </div>
+          @for (state of states; track state; let idx = $index) {
+            @if (stateTabIndex() === idx) {
+              <div class="pg-fields">
+                <div class="pg-field">
+                  <label class="pg-field__label">scale (e.g. 1.1)</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    class="pg-input"
+                    [value]="transformScale[state]()"
+                    (input)="onInputChange(transformScale[state], $event)"
+                  />
+                </div>
+                <div class="pg-field">
+                  <label class="pg-field__label">rotate (deg)</label>
+                  <input
+                    type="number"
+                    step="1"
+                    class="pg-input"
+                    [value]="transformRotate[state]()"
+                    (input)="onInputChange(transformRotate[state], $event)"
+                  />
+                </div>
+              </div>
+            }
+          }
+        </div>
+      }
+
+      @if (propTabIndex() === 8) {
+        <!-- TAB: Animations -->
+        <div class="pg-controls-content">
+          <div class="pg-fields">
+            <div class="pg-field">
+              <label class="pg-field__label" for="pg-anim-enter">enterStage</label>
+              <span class="pg-field__desc">Animación al renderizarse por primera vez</span>
+              <select id="pg-anim-enter" class="pg-select" [value]="animEnterStage() || ''" (change)="onSelectChange(animEnterStage, $event)">
+                <option value="">— none —</option>
+                @for (a of animationOptions; track a.key) {
+                <option [value]="a.value">{{ a.key }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="pg-field">
+              <label class="pg-field__label" for="pg-anim-exit">exitStage</label>
+              <span class="pg-field__desc">Animación al destruirse (requiere [isExiting]="true")</span>
+              <select id="pg-anim-exit" class="pg-select" [value]="animExitStage() || ''" (change)="onSelectChange(animExitStage, $event)">
+                <option value="">— none —</option>
+                @for (a of animationOptions; track a.key) {
+                <option [value]="a.value">{{ a.key }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="pg-field">
+              <label class="pg-field__label" for="pg-anim-duration">duration</label>
+              <span class="pg-field__desc">Tiempo total de la animación (ej: 1s, 500ms)</span>
+              <input
+                id="pg-anim-duration"
+                type="text"
+                class="pg-input"
+                [value]="animDuration() || ''"
+                (input)="onInputChange(animDuration, $event)"
+                placeholder="e.g. 1s"
+              />
+            </div>
+
+            <div class="pg-field">
+              <label class="pg-field__label" for="pg-anim-delay">delay</label>
+              <span class="pg-field__desc">Retraso antes de que empiece a animar</span>
+              <input
+                id="pg-anim-delay"
+                type="text"
+                class="pg-input"
+                [value]="animDelay() || ''"
+                (input)="onInputChange(animDelay, $event)"
+                placeholder="e.g. 200ms"
+              />
+            </div>
+
+            <div class="pg-field">
+              <label class="pg-field__label" for="pg-anim-iteration">iterationCount</label>
+              <span class="pg-field__desc">Número de veces que se repite la animación</span>
+              <input
+                id="pg-anim-iteration"
+                type="number"
+                class="pg-input"
+                [value]="animIteration() || ''"
+                (input)="onInputChange(animIteration, $event)"
+                placeholder="e.g. 3"
+              />
+            </div>
+
+            <div class="pg-field pg-field--checkbox">
+              <label class="pg-checkbox-label">
+                <input type="checkbox" [checked]="animInfinite()" (change)="onCheckboxChange(animInfinite, $event)" />
+                <span class="pg-checkbox-text">infinite (Repetir en bucle infinito)</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      }
+
+      @if (propTabIndex() === 9) {
         <!-- TAB: Transition -->
-        <alf-tab label="⏱️ Transition">
-          <div class="pg-controls-content">
-            <alf-tabs-container [(activeIndex)]="stateTabIndex" [colorVariant]="AlfColorVariantEnum.SecondaryOutline">
-              @for (state of states; track state) {
-                <alf-tab [label]="state">
-                  <div class="pg-fields">
-                    <div class="pg-field">
-                      <label class="pg-field__label">duration (e.g. 300ms)</label>
-                      <input type="text" class="pg-input" [value]="transitionDuration[state]()" (input)="onInputChange(transitionDuration[state], $event)" placeholder="e.g. 300ms" />
-                    </div>
-                    <div class="pg-field">
-                      <label class="pg-field__label">timing function</label>
-                      <select class="pg-select" [value]="transitionTiming[state]()" (change)="onSelectChange(transitionTiming[state], $event)">
-                        <option value="">— none —</option>
-                        @for (t of timingOptions; track t.key) {
-                          <option [value]="t.value">{{ t.key }}</option>
-                        }
-                      </select>
-                    </div>
-                  </div>
-                </alf-tab>
-              }
-            </alf-tabs-container>
+        <div class="pg-controls-content">
+          <div class="pg-tabs pg-tabs--sm">
+            @for (state of states; track state; let idx = $index) {
+              <button class="pg-tab-btn pg-tab-btn--sm" [class.pg-tab-btn--active]="stateTabIndex() === idx" (click)="stateTabIndex.set(idx)">
+                {{ state }}
+              </button>
+            }
           </div>
-        </alf-tab>
+          @for (state of states; track state; let idx = $index) {
+            @if (stateTabIndex() === idx) {
+              <div class="pg-fields">
+                <div class="pg-field">
+                  <label class="pg-field__label">duration (e.g. 300ms)</label>
+                  <input
+                    type="text"
+                    class="pg-input"
+                    [value]="transitionDuration[state]()"
+                    (input)="onInputChange(transitionDuration[state], $event)"
+                    placeholder="e.g. 300ms"
+                  />
+                </div>
+                <div class="pg-field">
+                  <label class="pg-field__label">timing function</label>
+                  <select class="pg-select" [value]="transitionTiming[state]()" (change)="onSelectChange(transitionTiming[state], $event)">
+                    <option value="">— none —</option>
+                    @for (t of timingOptions; track t.key) {
+                    <option [value]="t.value">{{ t.key }}</option>
+                    }
+                  </select>
+                </div>
+              </div>
+            }
+          }
+        </div>
+      }
 
+      @if (propTabIndex() === 10) {
         <!-- TAB: Layout -->
-        <alf-tab label="📐 Layout">
-          <div class="pg-controls-content">
-            <alf-tabs-container [(activeIndex)]="stateTabIndex" [colorVariant]="AlfColorVariantEnum.SecondaryOutline">
-              @for (state of states; track state) {
-                <alf-tab [label]="state">
-                  <div class="pg-fields">
-                    <div class="pg-field">
-                      <label class="pg-field__label">display</label>
-                      <select class="pg-select" [value]="layoutDisplay[state]()" (change)="onSelectChange(layoutDisplay[state], $event)">
-                        <option value="">— none —</option>
-                        @for (d of displayOptions; track d.key) {
-                          <option [value]="d.value">{{ d.key }}</option>
-                        }
-                      </select>
-                    </div>
-                    <div class="pg-field">
-                      <label class="pg-field__label">position</label>
-                      <select class="pg-select" [value]="layoutPosition[state]()" (change)="onSelectChange(layoutPosition[state], $event)">
-                        <option value="">— none —</option>
-                        @for (p of positionOptions; track p.key) {
-                          <option [value]="p.value">{{ p.key }}</option>
-                        }
-                      </select>
-                    </div>
-                    <div class="pg-field">
-                      <label class="pg-field__label">cursor</label>
-                      <select class="pg-select" [value]="layoutCursor[state]()" (change)="onSelectChange(layoutCursor[state], $event)">
-                        <option value="">— none —</option>
-                        @for (c of cursorOptions; track c.key) {
-                          <option [value]="c.value">{{ c.key }}</option>
-                        }
-                      </select>
-                    </div>
-                    <div class="pg-field">
-                      <label class="pg-field__label">width</label>
-                      <select class="pg-select" [value]="layoutWidth[state]()" (change)="onSelectChange(layoutWidth[state], $event)">
-                        <option value="">— none —</option>
-                        @for (p of percentOptions; track p.key) {
-                          <option [value]="p.value">{{ p.key }} ({{ p.value }})</option>
-                        }
-                        @for (p of pxOptions; track p.key) {
-                          <option [value]="p.value">{{ p.key }} ({{ p.value }})</option>
-                        }
-                      </select>
-                    </div>
-                  </div>
-                </alf-tab>
-              }
-            </alf-tabs-container>
+        <div class="pg-controls-content">
+          <div class="pg-tabs pg-tabs--sm">
+            @for (state of states; track state; let idx = $index) {
+              <button class="pg-tab-btn pg-tab-btn--sm" [class.pg-tab-btn--active]="stateTabIndex() === idx" (click)="stateTabIndex.set(idx)">
+                {{ state }}
+              </button>
+            }
           </div>
-        </alf-tab>
-
-        
-      </alf-tabs-container>
+          @for (state of states; track state; let idx = $index) {
+            @if (stateTabIndex() === idx) {
+              <div class="pg-fields">
+                <div class="pg-field">
+                  <label class="pg-field__label">display</label>
+                  <select class="pg-select" [value]="layoutDisplay[state]()" (change)="onSelectChange(layoutDisplay[state], $event)">
+                    <option value="">— none —</option>
+                    @for (d of displayOptions; track d.key) {
+                    <option [value]="d.value">{{ d.key }}</option>
+                    }
+                  </select>
+                </div>
+                <div class="pg-field">
+                  <label class="pg-field__label">position</label>
+                  <select class="pg-select" [value]="layoutPosition[state]()" (change)="onSelectChange(layoutPosition[state], $event)">
+                    <option value="">— none —</option>
+                    @for (p of positionOptions; track p.key) {
+                    <option [value]="p.value">{{ p.key }}</option>
+                    }
+                  </select>
+                </div>
+                <div class="pg-field">
+                  <label class="pg-field__label">cursor</label>
+                  <select class="pg-select" [value]="layoutCursor[state]()" (change)="onSelectChange(layoutCursor[state], $event)">
+                    <option value="">— none —</option>
+                    @for (c of cursorOptions; track c.key) {
+                    <option [value]="c.value">{{ c.key }}</option>
+                    }
+                  </select>
+                </div>
+                <div class="pg-field">
+                  <label class="pg-field__label">width</label>
+                  <select class="pg-select" [value]="layoutWidth[state]()" (change)="onSelectChange(layoutWidth[state], $event)">
+                    <option value="">— none —</option>
+                    @for (p of percentOptions; track p.key) {
+                    <option [value]="p.value">{{ p.key }} ({{ p.value }})</option>
+                    } @for (p of pxOptions; track p.key) {
+                    <option [value]="p.value">{{ p.key }} ({{ p.value }})</option>
+                    }
+                  </select>
+                </div>
+              </div>
+            }
+          }
+        </div>
+      }
     </div>
-
   </div>
 </div>

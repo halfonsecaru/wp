@@ -1,53 +1,42 @@
 <!-- 1. Comportamiento y Directivas -->
-@let bg = backgroundComputed(); @let bd = borderComputed(); @let ot = outlineComputed(); @let sd = shadowsComputed(); @let mg = marginComputed(); 
-@let pd = paddingComputed(); @let ty = typographyComputed(); @let ts = textStyleComputed(); @let tr = transformComputed(); @let tsn = transitionComputed(); 
-@let dl = displayAndLayoutComputed(); @let sz = sizeComputed(); @let ar = aria(); @let tt = tooltip(); @let rp = ripple(); @let cr = cursor(); 
-@let ds = disabledComputed(); @let cc = customClass(); @let cs = customStyle(); @let ie = isExiting(); @let idRadio = idComputed(); @let labelText = labelComputed(); 
-@let labelPos = labelPositionComputed(); @let isChecked = checked(); @let styleVariant = switchStyle() ?? 'elegant'; @let radioName = name(); 
-@let isHovered = hovered(); @let isFocused = focused(); @let ld = isLoading();
+@let bg = backgroundComputed(); @let bd = borderComputed(); @let ot = outlineComputed(); @let sd = shadowsComputed(); @let mg = marginComputed(); @let
+pd = paddingComputed(); @let ty = typographyComputed(); @let ts = textStyleComputed(); @let tr = transformComputed(); @let tsn = transitionComputed();
+@let dl = displayAndLayoutComputed(); @let sz = sizeComputed(); @let ar = aria(); @let tt = tooltip(); @let rp = ripple(); @let cr = cursor(); @let ds
+= disabledComputed(); @let cc = customClass(); @let cs = customStyle(); @let idRadio = idComputed(); @let labelText = labelComputed(); @let labelPos =
+labelPositionComputed(); @let isChecked = checked(); @let styleVariant = switchStyleComputed(); @let radioName = name(); @let isHovered = hovered();
+@let isFocused = focused(); @let ld = isLoading();
 
 <div
+  [alfPrefix]="cssVarPrefix"
   (mouseenter)="hovered.set(true)"
   (mouseleave)="hovered.set(false)"
   [alfBackground]="bg ? bg : null"
-  alfPrefix="--alf-sw"
   [alfBorder]="bd ? bd : null"
-  alfPrefix="--alf-sw"
   [alfOutline]="ot ? ot : null"
-  alfPrefix="--alf-sw"
   [alfShadows]="sd ? sd : null"
-  alfPrefix="--alf-sw"
   [alfMargin]="mg ? mg : null"
-  alfPrefix="--alf-sw"
   [alfPadding]="pd ? pd : null"
-  alfPrefix="--alf-sw"
   [alfTypography]="ty ? ty : null"
-  alfPrefix="--alf-sw"
   [alfTextStyle]="ts ? ts : null"
-  alfPrefix="--alf-sw"
   [alfTransform]="tr ? tr : null"
-  alfPrefix="--alf-sw"
   [alfTransition]="tsn ? tsn : null"
-  alfPrefix="--alf-sw"
   [alfDisplayAndLayout]="dl ? dl : null"
-  alfPrefix="--alf-sw"
   [alfCursor]="cr ? cr : null"
   [alfSize]="sz ? sz : null"
   [alfDisabled]="ds"
   [alfAria]="ar ? ar : null"
-  [class]="'alf-sw alf-sw--' + styleVariant + ' alf-sw--' + sz + (cc ? ' ' + cc : '')"
+  [class]="classPrefix + ' ' + classPrefix + '--' + styleVariant + ' ' + classPrefix + '--' + sz + (isOutlineVariant() ? ' ' + classPrefix + '--outline' : '') + (cc ? ' ' + cc : '')"
   [class.alf-sw--checked]="isChecked"
   [class.alf-sw--disabled]="ds"
   [class.alf-sw--loading]="ld"
   [class.alf-sw--hovered]="isHovered"
   [class.alf-sw--focused]="isFocused"
   [style]="cs ? cs : null"
-  [alfRipple]="rp !== undefined ? rp : null"
   [alfTooltipText]="tt ? tt : null"
   [alfAnimations]="animations() ? animations() : null"
 >
   <label
-    class="alf-sw-wrapper"
+    [class]="classPrefix + '-wrapper'"
     [class.alf-sw-wrapper--label-before]="labelPos === 'before'"
     [attr.for]="idRadio"
     [style.cursor]="ds || ld ? 'not-allowed' : (cr || null)"
@@ -56,7 +45,7 @@
     <!-- Input oculto para accesibilidad y estado -->
     <input
       type="checkbox"
-      class="alf-sw-native-input"
+      [class]="classPrefix + '-native-input'"
       [id]="idRadio"
       [name]="radioName"
       [checked]="isChecked"
@@ -71,32 +60,31 @@
     />
 
     <!-- Contenedor Visual (Track & Thumb) -->
-    <div class="alf-sw-track">
-      <span class="alf-sw-thumb"></span>
+    <div [class]="classPrefix + '-track'" [alfRipple]="rp !== undefined ? rp : null">
+      <span [class]="classPrefix + '-thumb'"></span>
     </div>
 
     <!-- Texto del Label -->
     @if (labelText) {
-    <span class="alf-sw-label-text"> {{ labelText }} </span>
+    <span [class]="classPrefix + '-label-text'"> {{ labelText }} </span>
     }
   </label>
 
   @if (ld) {
-  <div class="alf-sw-loading-overlay">
-    <alf-spinner [size]="AlfRemEnum.Rem15" />
+  <div [class]="classPrefix + '-loading-overlay'">
+    <alf-spinner [size]="AlfRemEnum.Rem15" [color]="spinnerColorComputed()"></alf-spinner>
   </div>
   }
 </div>
 
 <!-- Helper y Errores -->
-@let helper = $safeNavigationMigration(helperText() ?? inputConfig()?.helperText); 
-@let errorMsg = $safeNavigationMigration(error() ?? inputConfig()?.error); 
-@if (helper || errorMsg) {
-<div [id]="idRadio + '-description'" class="alf-sw-description">
+@let helper = $safeNavigationMigration(helperText() ?? inputConfig()?.helperText); @let errorMsg = $safeNavigationMigration(error() ??
+inputConfig()?.error); @if (helper || errorMsg) {
+<div [id]="idRadio + '-description'" [class]="classPrefix + '-description'">
   @if (errorMsg) {
-  <span class="alf-sw-error">{{ errorMsg }}</span>
+  <span [class]="classPrefix + '-error'">{{ errorMsg }}</span>
   } @else {
-  <span class="alf-sw-helper">{{ helper }}</span>
+  <span [class]="classPrefix + '-helper'">{{ helper }}</span>
   }
 </div>
 }

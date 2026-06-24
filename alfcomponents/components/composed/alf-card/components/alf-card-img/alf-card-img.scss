@@ -1,13 +1,39 @@
+@use '../../../../../visualStyles' as *;
+
 :host {
   display: block;
   width: 100%;
   overflow: hidden;
   box-sizing: border-box;
+}
+
+.alf-card-img {
+  @include alf-transition;
+  @include alf-padding-style('--alf-card-img', '.alf-card--disabled &', '.alf-card:focus &', '.alf-card:hover &', '.alf-card:active &');
+  @include alf-background-style('--alf-card-img', '.alf-card--disabled &', '.alf-card:focus &', '.alf-card:hover &', '.alf-card:active &');
+  @include alf-border-style('--alf-card-img', '.alf-card--disabled &', '.alf-card:focus &', '.alf-card:hover &', '.alf-card:active &');
+  @include alf-shadows-style('--alf-card-img', '.alf-card--disabled &', '.alf-card:focus &', '.alf-card:hover &', '.alf-card:active &');
+  @include alf-outline-style('--alf-card-img', '.alf-card--disabled &', '.alf-card:focus &', '.alf-card:hover &', '.alf-card:active &');
+  --alf-card-img-layout-box-sizing: border-box;
+  --alf-card-img-layout-width: 100%;
+  --alf-card-img-layout-overflow: hidden;
+
+  @include alf-display-and-layout-style('--alf-card-img', '.alf-card--disabled &', '.alf-card:focus &', '.alf-card:hover &', '.alf-card:active &');
+
+  // Ensure the image wrapper itself remains completely fixed
+  &:hover,
+  .alf-card:hover & {
+    transform: none !important;
+  }
 
   img, ::ng-deep img {
     display: block;
     width: 100%;
-    height: auto;
+    height: inherit;
     object-fit: cover;
+    
+    // Keep image completely static on hover
+    transition: none !important;
+    transform: none !important;
   }
 }

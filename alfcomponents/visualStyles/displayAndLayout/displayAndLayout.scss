@@ -2,6 +2,8 @@
   $prefix: '--alf',
   $disabled-selectors: '&:disabled, &.disabled',
   $focus-selectors: '&:focus, &:focus-visible',
+  $hover-selectors: '&:hover',
+  $active-selectors: '&:active',
   $default-display: block
 ) {
   // --- 1. BASE / DEFAULT STATE ---
@@ -34,7 +36,7 @@
   cursor:          var(#{$prefix}-layout-cursor,          auto);
 
   // --- 2. HOVER STATE ---
-  &:hover {
+  #{$hover-selectors} {
     display:         var(#{$prefix}-layout-hover-display,         var(#{$prefix}-layout-display,         $default-display));
     position:        var(#{$prefix}-layout-hover-position,        var(#{$prefix}-layout-position,        static));
     top:             var(#{$prefix}-layout-hover-top,             var(#{$prefix}-layout-top,             auto));
@@ -65,7 +67,7 @@
   }
 
   // --- 3. ACTIVE STATE ---
-  &:active {
+  #{$active-selectors} {
     display:         var(#{$prefix}-layout-active-display,         var(#{$prefix}-layout-hover-display,         var(#{$prefix}-layout-display,         $default-display)));
     position:        var(#{$prefix}-layout-active-position,        var(#{$prefix}-layout-hover-position,        var(#{$prefix}-layout-position,        static)));
     top:             var(#{$prefix}-layout-active-top,             var(#{$prefix}-layout-hover-top,             var(#{$prefix}-layout-top,             auto)));

@@ -41,4 +41,8 @@ export interface AlfInputInterface extends AlfBaseCommonConfigInterface {
   readonly showPwdLabel?: string;
   readonly hidePwdLbl?: string;
   readonly loadingLabel?: string;
+
+  // Custom float state
+  readonly forceFloat?: boolean;
 }
+

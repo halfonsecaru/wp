@@ -29,7 +29,7 @@ export const getAlfRadioButtonDefaultConfig = (
   return {
     ...ALF_RADIO_BUTTON_DEFAULT,
     ...variantConfig,
-    colorVariant: v,
+    variant: v,
   };
 };
 

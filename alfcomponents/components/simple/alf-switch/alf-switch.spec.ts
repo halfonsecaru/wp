@@ -58,32 +58,28 @@ describe('AlfSwitch', () => {
       fixture.componentRef.setInput('variant', AlfColorVariantEnum.Primary);
       fixture.detectChanges();
       
-      const config = (component as any).resolvedConfig();
-      expect(config.colorVariant).toBe(AlfColorVariantEnum.Primary);
+      expect(component.variant()).toBe(AlfColorVariantEnum.Primary);
     });
 
     it('should resolve Success variant correctly', () => {
       fixture.componentRef.setInput('variant', AlfColorVariantEnum.Success);
       fixture.detectChanges();
       
-      const config = (component as any).resolvedConfig();
-      expect(config.colorVariant).toBe(AlfColorVariantEnum.Success);
+      expect(component.variant()).toBe(AlfColorVariantEnum.Success);
     });
 
     it('should resolve Primary3D variant correctly', () => {
       fixture.componentRef.setInput('variant', AlfColorVariantEnum.Primary3D);
       fixture.detectChanges();
       
-      const config = (component as any).resolvedConfig();
-      expect(config.colorVariant).toBe(AlfColorVariantEnum.Primary3D);
+      expect(component.variant()).toBe(AlfColorVariantEnum.Primary3D);
     });
 
     it('should resolve GradientPurple variant correctly', () => {
       fixture.componentRef.setInput('variant', AlfColorVariantEnum.GradientPurple);
       fixture.detectChanges();
       
-      const config = (component as any).resolvedConfig();
-      expect(config.colorVariant).toBe(AlfColorVariantEnum.GradientPurple);
+      expect(component.variant()).toBe(AlfColorVariantEnum.GradientPurple);
     });
   });
 
@@ -105,6 +101,41 @@ describe('AlfSwitch', () => {
       
       const errorContainer = hostElement.querySelector('.alf-sw-error');
       expect(errorContainer).toBeTruthy();
+    });
+  });
+
+  describe('Class bindings and visual states', () => {
+    it('should not have alf-sw--checked by default', () => {
+      const container = fixture.nativeElement.querySelector('.alf-sw');
+      expect(container.classList.contains('alf-sw--checked')).toBe(false);
+    });
+
+    it('should add alf-sw--checked class when checked is true', () => {
+      fixture.componentRef.setInput('checked', true);
+      fixture.detectChanges();
+      const container = fixture.nativeElement.querySelector('.alf-sw');
+      expect(container.classList.contains('alf-sw--checked')).toBe(true);
+    });
+
+    it('should add alf-sw--disabled class when disabled', () => {
+      fixture.componentRef.setInput('disabled', true);
+      fixture.detectChanges();
+      const container = fixture.nativeElement.querySelector('.alf-sw');
+      expect(container.classList.contains('alf-sw--disabled')).toBe(true);
+    });
+
+    it('should add alf-sw--outline class when variant is an outline variant', () => {
+      fixture.componentRef.setInput('variant', AlfColorVariantEnum.SecondaryOutline);
+      fixture.detectChanges();
+      const container = fixture.nativeElement.querySelector('.alf-sw');
+      expect(container.classList.contains('alf-sw--outline')).toBe(true);
+    });
+
+    it('should not add alf-sw--outline class when variant is a solid variant', () => {
+      fixture.componentRef.setInput('variant', AlfColorVariantEnum.Secondary);
+      fixture.detectChanges();
+      const container = fixture.nativeElement.querySelector('.alf-sw');
+      expect(container.classList.contains('alf-sw--outline')).toBe(false);
     });
   });
 });

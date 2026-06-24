@@ -39,6 +39,7 @@ export class AlfTabComponent extends AlfBaseButtonConfiguration<AlfSingleTabInte
   // ==========================================
   public override readonly colorVariant = input<AlfColorVariantEnum>();
   public override readonly inputConfig = input<AlfSingleTabInterface>(undefined);
+  public readonly label = input<string>('');
   public readonly tabName = input<string>('');
   public readonly expandHeight = input<boolean>(false);
   public readonly closable = input<boolean>(false);
@@ -74,23 +75,6 @@ export class AlfTabComponent extends AlfBaseButtonConfiguration<AlfSingleTabInte
     return this.resolvedConfig()?.animations || this.parentContentAnimations();
   });
 
-  // protected override readonly backgroundsComputed = computed(() => {
-  //   // Obtenemos los backgrounds resueltos de la clase base mediante resolveVariantConfig
-  //   const variant = this.colorVariantComputed() ?? AlfColorVariantEnum.Default;
-  //   const base = resolveVariantConfig(variant, this.componentType).backgroundsBase;
-  //   const resolved = this.resolvedConfig()?.backgrounds || {};
-  //   const user = this.backgrounds() || {};
-  //   const parentBg = this.parentContentBackgrounds() || {};
-
-  //   // Hacemos merge priorizando: directos del usuario > configuración del tab > del padre > base del motor
-  //   return {
-  //     // default: { ...base?.default, ...parentBg?.default, ...resolved?.default, ...user?.default },
-  //     // hover: { ...base?.hover, ...parentBg?.hover, ...resolved?.hover, ...user?.hover },
-  //     // focus: { ...base?.focus, ...parentBg?.focus, ...resolved?.focus, ...user?.focus },
-  //     // active: { ...base?.active, ...parentBg?.active, ...resolved?.active, ...user?.active },
-  //     // disabled: { ...base?.disabled, ...parentBg?.disabled, ...resolved?.disabled, ...user?.disabled },
-  //   };
-  // });
 
   protected readonly currentAnimationClass = computed(() => {
     const anims = this.effectiveAnimations();

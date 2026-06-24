@@ -1,47 +1,129 @@
-<div class="alf-autocomplete-trigger-wrapper">
+@let variantColor = variantComputed();<!--Ignorar para la ia el comentario -->
+@let backgroundIn = backgroundComputed();<!--Ignorar para la ia el comentario -->
+@let tooltipIn = tooltipComputed();<!--Ignorar para la ia el comentario -->
+@let cursorIn = cursorComputed();<!--Ignorar para la ia el comentario -->
+@let sizeIn = sizeComputed();<!--Ignorar para la ia el comentario -->
+@let customClassIn = customClassComputed();<!--Ignorar para la ia el comentario -->
+@let customStyleIn = customStyleComputed();<!--Ignorar para la ia el comentario -->
+@let elevatedIn = elevatedComputed();<!--Ignorar para la ia el comentario -->
+@let disabledIn = disabledComputed();<!--Ignorar para la ia el comentario -->
+@let borderIn = borderComputed();
+@let rippleIn = rippleComputed();
+<!--Ignorar para la ia el comentario -->
+@let outlinedIn = outlineComputed();
+<!--Ignorar para la ia el comentario -->
+@let shadowsIn = shadowsComputed();
+<!--Ignorar para la ia el comentario -->
+@let marginIn = marginComputed();
+<!--Ignorar para la ia el comentario -->
+@let paddingIn = paddingComputed();<!--Ignorar para la ia el comentario -->
+@let typographyIn = typographyComputed();<!--Ignorar para la ia el comentario -->
+@let textStyleIn = textStyleComputed();<!--Ignorar para la ia el comentario -->
+@let transformIn = transformComputed();<!--Ignorar para la ia el comentario -->
+@let transitionIn = transitionComputed();<!--Ignorar para la ia el comentario -->
+@let displayAndLayoutIn = displayAndLayoutComputed();<!--Ignorar para la ia el comentario -->
+@let animationsIn = animationsComputed();<!--Ignorar para la ia el comentario -->
+@let requiredIn = requiredComputed();<!--Ignorar para la ia el comentario -->
+@let maxLengthIn = maxLengthComputed();<!--Ignorar para la ia el comentario -->
+@let minLengthIn = minLengthComputed();<!--Ignorar para la ia el comentario -->
+@let minIn = minComputed();<!--Ignorar para la ia el comentario -->
+@let maxIn = maxComputed();<!--Ignorar para la ia el comentario -->
+@let patternIn = patternComputed();<!--Ignorar para la ia el comentario -->
+@let validatorsIn = validatorsComputed();
+<!--Ignorar para la ia el comentario -->
+@let errorIn = errorComputed();
+<!--Ignorar para la ia el comentario -->
+@let labelIn = labelComputed();
+<!--Ignorar para la ia el comentario -->
+@let placeholderIn = placeholderComputed();
+<!--Ignorar para la ia el comentario -->
+@let helperTextIn = helperTextComputed();
+<!--Ignorar para la ia el comentario -->
+@let prefixIn = prefixComputed();
+<!--Ignorar para la ia el comentario -->
+@let suffixIn = suffixComputed();
+<!--Ignorar para la ia el comentario -->
+@let autocompleteIn = autocompleteComputed();
+<!--Ignorar para la ia el comentario -->
+@let clearableIn = clearableComputed();
+<!--Ignorar para la ia el comentario -->
+@let clearOnClickIn = clearOnClickComputed();
+<!--Ignorar para la ia el comentario -->
+@let autofocusIn = autofocusComputed();
+<!--Ignorar para la ia el comentario -->
+@let readonlyIn = readonlyComputed();
+<!--Ignorar para la ia el comentario -->
+@let appearanceIn = appearanceComputed();
+<!--  -->
+
+<div class="alf-autocomplete-container" style="position: relative; display: inline-block; width: 100%">
   <alf-input
-    [config]="inputTriggerConfigComputed()"
-    [value]="inputValueComputed()"
-    [variant]="inputTriggerConfigComputed().colorVariant"
-    [appearance]="inputTriggerConfigComputed().appearance"
-    (click)="onTriggerClick()"
-    (keydown)="onTriggerKeydown($event)">
-  </alf-input>
+    [appearance]="appearanceIn"
+    [label]="labelIn"
+    [placeholder]="placeholderIn"
+    [helperText]="helperTextIn"
+    [prefix]="prefixIn"
+    [suffix]="suffixIn"
+    [autocomplete]="autocompleteIn"
+    [clearable]="clearableIn"
+    [clearOnClick]="clearOnClickIn"
+    [autofocus]="autofocusIn"
+    [readonly]="readonlyIn"
+    [cursor]="cursorIn"
+    [shadows]="shadowsIn"
+    [outline]="outlinedIn"
+    [background]="backgroundIn"
+    [border]="borderIn"
+    [tooltip]="tooltipIn"
+    [variant]="variantColor"
+    [size]="sizeIn"
+    [customClass]="customClassIn"
+    [customStyle]="customStyleIn"
+    [elevated]="elevatedIn"
+    [disabled]="disabledIn || isLoading()"
+    [isLoading]="isLoading()"
+    [ripple]="rippleIn"
+    [value]="filterText()"
+    [forceFloat]="isDropdownOpen()"
+    [isExiting]="isExiting()"
+    (onFocus)="onInputFocus()"
+    (onBlur)="onInputBlur()"
+    (onInput)="onInputValueChange($event)"
+    (onClear)="onInputClear()"
+    [margin]="marginIn"
+    [padding]="paddingIn"
+    [typography]="typographyIn"
+    [textStyle]="textStyleIn"
+    [transform]="transformIn"
+    [transition]="transitionIn"
+    [displayAndLayout]="displayAndLayoutIn"
+    [animations]="animationsIn"
+    [required]="requiredIn"
+    [maxLength]="maxLengthIn"
+    [minLength]="minLengthIn"
+    [min]="minIn"
+    [max]="maxIn"
+    [pattern]="patternIn"
+    [validators]="validatorsIn"
+    [error]="errorIn"
+  ></alf-input>
+
+  @if (isDropdownOpen()) {
+  <alf-auto-complete-panel
+    [alfPrefix]="'--alf-ac'"
+    [background]="background() || null"
+    [alfBorder]="borderIn || null"
+    [alfOutline]="outlinedIn || null"
+    [alfTypography]="typographyIn || null"
+    [alfTextStyle]="textStyleIn || null"
+    [alfTransition]="transitionIn || null"
+    [variant]="variantColor"
+    [alfAnimations]="animationsIn || null"
+    [options]="filteredOptionsComputed()"
+    [isExiting]="isExitingPanel()"
+    (optionSelected)="onOptionSelected($event)"
+  >
+  </alf-auto-complete-panel>
+
+  }
 </div>
-
-<ng-template #panelTemplate>
-  <div class="alf-autocomplete-panel" [id]="containerId()">
-    @if (resolvedConfig().searchable) {
-      <div class="alf-autocomplete-search-container">
-        <alf-input
-          [config]="searchInputConfigComputed()"
-          [value]="searchTerm()"
-          (onInput)="onSearchTermChange($event)">
-        </alf-input>
-      </div>
-    }
-
-    <ul class="alf-autocomplete-options-list" role="listbox" id="alf-select-listbox">
-      @for (option of filteredOptions(); track $index) {
-        @let isSelected = resolvedConfig().multiple ? (value() && value().includes(option.value)) : (value() === option.value);
-        @let isFocused = focusedIndex() === $index;
-        <li
-          [id]="'alf-option-' + $index"
-          class="alf-autocomplete-option"
-          [class.alf-autocomplete-option--selected]="isSelected"
-          [class.alf-autocomplete-option--focused]="isFocused"
-          [class.alf-autocomplete-option--disabled]="option.disabled"
-          role="option"
-          [aria-selected]="isSelected"
-          (click)="selectOption(option)">
-          <span class="alf-autocomplete-option-label">{{ option.label }}</span>
-          @if (isSelected) {
-            <span class="alf-autocomplete-option-check">✓</span>
-          }
-        </li>
-      } @empty {
-        <li class="alf-autocomplete-no-options">No se encontraron opciones</li>
-      }
-    </ul>
-  </div>
-</ng-template>

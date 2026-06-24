@@ -10,7 +10,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
   generateUniqueId,
   visualprefixEnum,
@@ -39,7 +39,7 @@ import { generatedComponentFunction, calculateErrorBorder, calculateErrorTextSty
   ],
   host: {}
 })
-export class AlfInput extends AlfBaseDirectives {
+export class AlfInput extends AlfBaseDirectives<AlfInputInterface> {
   // ── 1. Constants & View Queries ───────────────────────────────────────────
   protected readonly AlfRemEnum = AlfRemEnum;
   private readonly inputElement = viewChild<ElementRef<HTMLInputElement | HTMLTextAreaElement>>('inputRef');
@@ -63,6 +63,7 @@ export class AlfInput extends AlfBaseDirectives {
   protected readonly showPasswordToggle = input<boolean>();
   protected readonly showCharCounter = input<boolean>();
   protected readonly clearOnClick = input<boolean>();
+  protected readonly forceFloat = input<boolean>(false);
   protected readonly debounceTime = input<number>();
 
   // ── 3. Outputs ────────────────────────────────────────────────────────────
@@ -79,6 +80,7 @@ export class AlfInput extends AlfBaseDirectives {
   protected readonly idComputed = computed(() => this.id() ?? this.inputConfig()?.id ?? this.internalId);
   protected readonly labelComputed = computed<string | null>(() => this.label() ?? this.inputConfig()?.label ?? null);
   protected readonly placeholderComputed = computed(() => this.placeholder() ?? this.inputConfig()?.placeholder ?? undefined);
+  protected readonly forceFloatComputed = computed(() => this.forceFloat() || (this.inputConfig()?.forceFloat ?? false));
   protected readonly inputTypeComputed = computed(() => {
 
     const type = this.inputType() ?? this.inputConfig()?.inputType;
@@ -121,15 +123,35 @@ export class AlfInput extends AlfBaseDirectives {
     return str.includes('depth-') || str.includes('gradient-') || !str.includes('-');
   });
 
+  protected readonly contrastingLabelColor = computed(() => {
+    const v = this.variant();
+    if (!v) return null;
+    const str = v.toString();
+    if (str.includes('depth-')) {
+      const baseColor = str.split('-')[1];
+      switch (baseColor) {
+        case 'primary': return 'var(--alf-primary, #0d6efd)';
+        case 'secondary': return 'var(--alf-secondary, #6c757d)';
+        case 'success': return 'var(--alf-success, #198754)';
+        case 'danger': return 'var(--alf-danger, #dc3545)';
+        case 'warning': return 'var(--alf-warning, #ffc107)';
+        case 'info': return 'var(--alf-info, #0dcaf0)';
+        case 'light': return 'var(--alf-dark, #212529)';
+        case 'dark': return 'var(--alf-dark, #212529)';
+        default: return 'var(--alf-primary, #0d6efd)';
+      }
+    }
+    return null;
+  });
+
   protected readonly shouldFloat = computed(() => {
     const v = this.value() ?? '';
-    return this.isFocused() || v.length > 0;
+    return this.isFocused() || v.length > 0 || this.forceFloatComputed();
   });
 
   protected readonly showClear = computed(() => {
-    const cfg = this.inputConfig();
     const v = this.value() ?? '';
-    return cfg?.clearable &&
+    return this.clearableComputed() &&
       v.length > 0 &&
       !this.disabledComputed() &&
       !this.isReadonly() &&

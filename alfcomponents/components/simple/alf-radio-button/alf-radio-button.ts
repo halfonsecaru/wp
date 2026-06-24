@@ -13,7 +13,8 @@ import {
   AlfRadioButtonVariantEnum,
   AlfSizeEnum,
   AlfIconsUnicodeIconEnum,
-  AlfColorVariantEnum
+  AlfColorVariantEnum,
+  AlfRadiusEnum
 } from '@alfcomponents/enums';
 import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
 import { AlfSpinner } from '../alf-spinner/alf-spinner';
@@ -32,14 +33,12 @@ import { AlfRadioButtonI18nLabels, getAlfRadioButtonLabel } from './i18n/alf-rad
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class AlfRadioButton extends AlfBaseDirectives{
+export class AlfRadioButton extends AlfBaseDirectives<AlfRadioButtonInterface> {
 
-  
+
   // ── 1. Constants & View Queries ───────────────────────────────────────────
-  // esto es en caso de ser necesario, eliminar si procede
-  //  private readonly checkboxElement = viewChild<ElementRef<HTMLInputElement | HTMLTextAreaElement>>('inputRef');
-  
-
+  protected readonly cssVarPrefix: string = visualprefixEnum.RadioButton as string;
+  protected readonly classPrefix: string = visualprefixEnum.RadioClass;
 
   // ── 2. Inputs & Models ────────────────────────────────────────────────────
   public readonly checked = model<boolean>(false);
@@ -47,6 +46,7 @@ export class AlfRadioButton extends AlfBaseDirectives{
   public readonly id = input<string>();
   public readonly inputConfig = input<AlfRadioButtonInterface>(undefined, { alias: 'config' });
   public readonly label = input<string>();
+  public readonly labelText = input<string>(undefined, { alias: 'labelText' });
   public readonly value = input<any>(undefined);
   public readonly name = input<string>(undefined);
   public readonly radioButtonStyle = input<AlfRadioButtonVariantEnum>();
@@ -66,18 +66,20 @@ export class AlfRadioButton extends AlfBaseDirectives{
   public readonly onCheckedChange = output<any>();
 
   // ── 4. Internal State (Signals & Variables) ─────────────────────────────────────────────
-  protected readonly internalId: string = generateUniqueId({ prefix: 'alf-rb' });
-  
+  protected readonly internalId: string = generateUniqueId({ prefix: this.classPrefix });
+
   // ── 5. Computed State (Derived from Inputs & State) ───────────────────────
   protected readonly idComputed = computed(() => this.id() ?? this.inputConfig()?.id ?? this.internalId);
-  
   public readonly disabledComputed = computed<boolean>(() => {
-    return this.disabled() ?? this.inputConfig()?.disabled ?? this._disabled() ?? false;
+    return !!(this.disabled() || this.inputConfig()?.disabled || this._disabled());
   });
-
   protected readonly labelComputed = computed<string | null>(() => {
-    const lbl = this._label() ?? this.label() ?? this.inputConfig()?.label;
-    if (lbl) return lbl;
+    // Prefer explicit label input/config; internal CVA label is only a fallback.
+    const explicitLabel = this.label() ?? this.labelText() ?? this.inputConfig()?.label;
+    if (explicitLabel) return explicitLabel;
+
+    const internalLabel = this._label();
+    if (internalLabel) return internalLabel;
 
     const pref = this.predefined() ?? this.inputConfig()?.predefined;
     if (pref) return getAlfRadioButtonLabel(pref as keyof AlfRadioButtonI18nLabels);
@@ -89,6 +91,7 @@ export class AlfRadioButton extends AlfBaseDirectives{
   protected readonly predefinedConfig = computed(() => {
     const currentVariant = this.variant() ?? AlfColorVariantEnum.SecondaryOutline;
     const vStr = currentVariant.toString();
+    const style = this.radioButtonStyle() ?? this.inputConfig()?.radioButtonStyle ?? AlfRadioButtonVariantEnum.Elegant;
 
     let comp;
     if (vStr.includes('soft-')) {
@@ -102,29 +105,26 @@ export class AlfRadioButton extends AlfBaseDirectives{
     // Override label color for solid, gradient, and 3D variants
     // so the label matches the base color (which is stored in border color) instead of being white.
     // Soft, outline, ghost, and crystal already handle their text color appropriately.
-    if (!vStr.includes('outline-') && !vStr.includes('ghost-') && !vStr.includes('soft-') && !vStr.includes('crystal-') && vStr !== 'transparent' && vStr !== 'Default') {
-      if (comp.border) {
-        if (!comp.typography) comp.typography = {};
-        if (!comp.typography.default) comp.typography.default = {};
-        comp.typography.default.color = comp.border.default?.borderColor;
+    if (
+      !vStr.includes('outline-') &&
+      !vStr.includes('ghost-') &&
+      !vStr.includes('soft-') &&
+      !vStr.includes('crystal-') &&
+      vStr !== 'transparent' &&
+      vStr !== 'Default') {
 
-        if (comp.border.hover) {
-          if (!comp.typography.hover) comp.typography.hover = {};
-          comp.typography.hover.color = comp.border.hover.borderColor || comp.border.default?.borderColor;
-        }
-        if (comp.border.focus) {
-          if (!comp.typography.focus) comp.typography.focus = {};
-          comp.typography.focus.color = comp.border.focus.borderColor || comp.border.default?.borderColor;
-        }
-        if (comp.border.active) {
-          if (!comp.typography.active) comp.typography.active = {};
-          comp.typography.active.color = comp.border.active.borderColor || comp.border.default?.borderColor;
-        }
-        if (comp.border.disabled) {
-          if (!comp.typography.disabled) comp.typography.disabled = {};
-          comp.typography.disabled.color = comp.border.disabled.borderColor || comp.border.default?.borderColor;
-        }
+      if (comp.border) {
+        if (!comp.typography) comp.typography = {
+          default: { color: comp.border.default?.borderColor }
+        };
       }
+
+    }
+
+    if (style === AlfRadioButtonVariantEnum.Standard) {
+      comp.border.default.borderRadius = AlfRadiusEnum.Sm;
+    } else {
+      comp.border.default.borderRadius = AlfRadiusEnum.Full;
     }
 
     return {
@@ -146,7 +146,7 @@ export class AlfRadioButton extends AlfBaseDirectives{
     () => this.labelPosition() ?? this.inputConfig()?.labelPosition ?? 'after'
   );
 
-  public readonly sizeComputed = computed<AlfSizeEnum>(() => 
+  public readonly sizeComputed = computed<AlfSizeEnum>(() =>
     (this.size() as AlfSizeEnum) ?? (this.inputConfig()?.size as AlfSizeEnum) ?? AlfSizeEnum.MD);
 
   // ── 6. Constructor ────────────────────────────────────────────────────────
@@ -185,51 +185,51 @@ export class AlfRadioButton extends AlfBaseDirectives{
     }
   };
 
-    // ── 8 ControlValueAccessor & Core Implementation ──────────────────────────────────────────────
-  
-    /**
-     * Getter interno para que el motor base (ej. validadores) sepa qué valor tiene el botón actualmente.
-     */
-    protected getControlValue = (): string => {
-      return this._label() ?? this.label() ?? this.inputConfig()?.label ?? '';
-    }
-  
-    /**
-     * Define el tipo de control para el engine base (útil si la clase base hace switch de lógicas por tipo).
-     */
-    protected getControlType(): string {
-      return AlfComponentTypeEnum.RadioButton;
-    }
-  
-    /**
-     * Conecta el motor base de validaciones con el diccionario de i18n
-     * para devolver los mensajes de error traducidos según el idioma actual.
-     */
-    protected getValidationLabel(key: string) {
-      return getAlfRadioButtonLabel(key as keyof AlfRadioButtonI18nLabels);
-    }
-  
-    /**
-     * Núcleo del motor de diseño: fusiona la configuración visual calculada internamente
-     * con cualquier configuración global/manual que el usuario pase por inputConfig.
-     */
-    protected getControlConfig() {
-      return deepMergeStates(this.predefinedConfig(), this.inputConfig());
-    }
-  
-    /**
-     * Implementación del patrón ControlValueAccessor (Reactive Forms / ngModel).
-     * Se ejecuta cuando el formulario inyecta un valor (ej. form.patchValue).
-     */
-    protected setControlValue(val: any): void {
-      this._label.set(val === null || val === undefined ? '' : String(val));
-    }
-  
-    /**
-     * Implementación del patrón ControlValueAccessor.
-     * Se ejecuta automáticamente cuando el formGroup deshabilita o habilita el control.
-     */
-    protected setControlDisabled(isDisabled: boolean): void {
-      this._disabled.set(isDisabled);
-    }
+  // ── 8 ControlValueAccessor & Core Implementation ──────────────────────────────────────────────
+
+  /**
+   * Getter interno para que el motor base (ej. validadores) sepa qué valor tiene el botón actualmente.
+   */
+  protected getControlValue = (): string => {
+    return this._label() ?? this.label() ?? this.inputConfig()?.label ?? '';
+  }
+
+  /**
+   * Define el tipo de control para el engine base (útil si la clase base hace switch de lógicas por tipo).
+   */
+  protected getControlType(): string {
+    return AlfComponentTypeEnum.RadioButton;
+  }
+
+  /**
+   * Conecta el motor base de validaciones con el diccionario de i18n
+   * para devolver los mensajes de error traducidos según el idioma actual.
+   */
+  protected getValidationLabel(key: string) {
+    return getAlfRadioButtonLabel(key as keyof AlfRadioButtonI18nLabels);
+  }
+
+  /**
+   * Núcleo del motor de diseño: fusiona la configuración visual calculada internamente
+   * con cualquier configuración global/manual que el usuario pase por inputConfig.
+   */
+  protected getControlConfig() {
+    return deepMergeStates(this.predefinedConfig(), this.inputConfig());
+  }
+
+  /**
+   * Implementación del patrón ControlValueAccessor (Reactive Forms / ngModel).
+   * Se ejecuta cuando el formulario inyecta un valor (ej. form.patchValue).
+   */
+  protected setControlValue(val: any): void {
+    this._label.set(val === null || val === undefined ? '' : String(val));
+  }
+
+  /**
+   * Implementación del patrón ControlValueAccessor.
+   * Se ejecuta automáticamente cuando el formGroup deshabilita o habilita el control.
+   */
+  protected setControlDisabled(isDisabled: boolean): void {
+    this._disabled.set(isDisabled);
+  }
 }

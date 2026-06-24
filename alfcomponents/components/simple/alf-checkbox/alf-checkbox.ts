@@ -34,11 +34,11 @@ import { AlfCheckboxI18nLabels, getAlfCheckboxLabel } from './i18n/checkbox-i18n
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class AlfCheckbox extends AlfBaseDirectives {
+export class AlfCheckbox extends AlfBaseDirectives<AlfCheckboxInterface> {
   
   // ── 1. Constants & View Queries ───────────────────────────────────────────
-  // esto es en caso de ser necesario, eliminar si procede
-  //  private readonly checkboxElement = viewChild<ElementRef<HTMLInputElement | HTMLTextAreaElement>>('inputRef');
+  protected readonly cssVarPrefix: string = visualprefixEnum.Checkbox as string;
+  protected readonly classPrefix: string = visualprefixEnum.CheckPrefix as string;
 
   // ── 2. Inputs & Models ────────────────────────────────────────────────────
   public readonly checked = model<boolean>(false);
@@ -67,7 +67,7 @@ export class AlfCheckbox extends AlfBaseDirectives {
   public readonly hovered = signal<boolean>(false);
 
   // ── 4. Internal State (Signals & Variables) ─────────────────────────────────────────────
-  protected readonly internalId: string = generateUniqueId({ prefix: 'alf-cb' });
+  protected readonly internalId: string = generateUniqueId({ prefix: this.classPrefix });
   protected readonly idComputed = computed(() => this.id() ?? this.inputConfig()?.id ?? this.internalId);
   protected readonly labelComputed = computed<string | null>(() => {
     const lbl = this._label() ?? this.label() ?? this.inputConfig()?.label;
@@ -80,6 +80,9 @@ export class AlfCheckbox extends AlfBaseDirectives {
   });
 
   // ── 5. Computed State (Derived from Inputs & State) ───────────────────────
+  public readonly disabledComputed = computed<boolean>(() => {
+    return !!(this.disabled() || this.inputConfig()?.disabled || this._disabled());
+  });
   protected readonly checkboxStyleComputed = computed<AlfCheckboxVariantEnum>(() => (this.checkboxStyle() ?? this.inputConfig()?.checkboxStyle ?? AlfCheckboxVariantEnum.Elegant) as AlfCheckboxVariantEnum);
   protected readonly labelPositionComputed = computed<'before' | 'after'>(() => this.labelPosition() ?? this.inputConfig()?.labelPosition);
   protected readonly sizeComputed = computed<AlfSizeEnum>(() => (this.size() as AlfSizeEnum) ?? (this.inputConfig()?.size as AlfSizeEnum) ?? AlfSizeEnum.MD);
@@ -111,32 +114,20 @@ export class AlfCheckbox extends AlfBaseDirectives {
       comp = this.createSolidComponent(currentVariant);
     }
 
-    // Override label color for solid, gradient, and 3D variants
-    // so the label matches the base color (which is stored in border color) instead of being white.
-    // Soft, outline, ghost, and crystal already handle their text color appropriately.
-    if (!vStr.includes('outline-') && !vStr.includes('ghost-') && !vStr.includes('soft-') && !vStr.includes('crystal-') && vStr !== 'transparent' && vStr !== 'Default') {
-      if (comp.border) {
-        if (!comp.typography) comp.typography = {};
-        if (!comp.typography.default) comp.typography.default = {};
-        comp.typography.default.color = comp.border.default?.borderColor;
+    if (
+      !vStr.includes('outline-') &&
+      !vStr.includes('ghost-') &&
+      !vStr.includes('soft-') &&
+      !vStr.includes('crystal-') &&
+      vStr !== 'transparent' &&
+      vStr !== 'Default') {
 
-        if (comp.border.hover) {
-          if (!comp.typography.hover) comp.typography.hover = {};
-          comp.typography.hover.color = comp.border.hover.borderColor || comp.border.default?.borderColor;
-        }
-        if (comp.border.focus) {
-          if (!comp.typography.focus) comp.typography.focus = {};
-          comp.typography.focus.color = comp.border.focus.borderColor || comp.border.default?.borderColor;
-        }
-        if (comp.border.active) {
-          if (!comp.typography.active) comp.typography.active = {};
-          comp.typography.active.color = comp.border.active.borderColor || comp.border.default?.borderColor;
-        }
-        if (comp.border.disabled) {
-          if (!comp.typography.disabled) comp.typography.disabled = {};
-          comp.typography.disabled.color = comp.border.disabled.borderColor || comp.border.default?.borderColor;
-        }
+      if (comp.border) {
+        if (!comp.typography) comp.typography = {
+          default: { color: comp.border.default?.borderColor }
+        };
       }
+
     }
 
     return {
@@ -153,7 +144,7 @@ export class AlfCheckbox extends AlfBaseDirectives {
   // ── 7. Handlers & Public API ──────────────────────────────────────────────
 
   public readonly toggle = (): void => {
-    if (this.disabled()) return;
+    if (this.disabledComputed() || this.isLoading()) return;
 
     const newValue = !this.checked();
     this.checked.set(newValue);
@@ -162,18 +153,18 @@ export class AlfCheckbox extends AlfBaseDirectives {
   };
 
   public readonly onInputChange = (event: Event): void => {
-    if (this.disabled()) return;
+    if (this.disabledComputed()) return;
     this.toggle();
   };
 
   protected readonly onLabelClick = (event: Event): void => {
-    if (this.disabled()) return;
+    if (this.disabledComputed()) return;
     event.preventDefault();
     this.toggle();
   };
 
   protected readonly onInputKeydown = (event: KeyboardEvent): void => {
-    if (this.disabled()) return;
+    if (this.disabledComputed()) return;
     if (event.key === ' ' || event.key === 'Enter') {
       event.preventDefault();
       this.toggle();
