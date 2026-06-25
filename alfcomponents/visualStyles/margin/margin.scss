@@ -1,7 +1,9 @@
 @mixin alf-margin-style(
   $prefix: '--alf',
   $disabled-selectors: '&:disabled, &.disabled',
-  $focus-selectors: '&:focus, &:focus-visible'
+  $focus-selectors: '&:focus, &:focus-visible',
+  $hover-selectors: '&:hover',
+  $active-selectors: '&:active'
 ) {
   // --- 1. BASE / DEFAULT STATE ---
   $m: var(#{$prefix}-margin, 0px);
@@ -16,7 +18,7 @@
   margin-left: $ml;
 
   // --- 2. HOVER STATE ---
-  &:hover {
+  #{$hover-selectors} {
     $hm: var(#{$prefix}-margin-hover, $m);
     $hmt: var(#{$prefix}-margin-hover-top, var(#{$prefix}-margin-top, $hm));
     $hmr: var(#{$prefix}-margin-hover-right, var(#{$prefix}-margin-right, $hm));
@@ -30,7 +32,7 @@
   }
 
   // --- 3. ACTIVE STATE ---
-  &:active {
+  #{$active-selectors} {
     $hm: var(#{$prefix}-margin-hover, $m);
     $am: var(#{$prefix}-margin-active, $hm);
     $amt: var(#{$prefix}-margin-active-top, var(#{$prefix}-margin-hover-top, var(#{$prefix}-margin-top, $am)));

@@ -19,6 +19,7 @@ export enum AlfComponentTypeEnum {
     Default = 'Default',
 }
 
+
 const defaultPadding: AlfPaddingBaseInterface = {
     paddingTop: AlfPxEnum.Px10,
     paddingBottom: AlfPxEnum.Px10,

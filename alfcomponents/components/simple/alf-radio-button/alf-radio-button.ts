@@ -20,8 +20,7 @@ import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
 import { AlfSpinner } from '../alf-spinner/alf-spinner';
 import { AlfRadioButtonInterface } from './interfaces/alf-radio-button.interface';
 
-import { AlfComponentTypeEnum } from '@alfcomponents/base/defaultVariants';
-import { AlfBaseDirectives, deepMergeStates } from '@alfcomponents/components/base/bases.directive';
+import { AlfBaseDirectives, AlfComponentTypeEnum, deepMergeStates } from '@alfcomponents/components/base/bases.directive';
 import { AlfRadioButtonI18nLabels, getAlfRadioButtonLabel } from './i18n/alf-radio-button-i18n';
 
 @Component({

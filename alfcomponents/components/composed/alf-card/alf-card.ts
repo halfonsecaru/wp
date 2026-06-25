@@ -7,9 +7,8 @@ import {
 } from '@angular/core';
 import { generateUniqueId, visualprefixEnum } from '@alfcomponents/shared';
 import { AlfColorVariantEnum } from '@alfcomponents/enums';
-import { AlfComponentTypeEnum } from '@alfcomponents/base/defaultVariants';
 import { AlfCardConfigInterface } from './interfaces/alf-card.interface';
-import { AlfBaseDirectives, deepMergeStates } from '@alfcomponents/components/base/bases.directive';
+import { AlfBaseDirectives, AlfComponentTypeEnum, deepMergeStates } from '@alfcomponents/components/base/bases.directive';
 import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
 
 @Component({

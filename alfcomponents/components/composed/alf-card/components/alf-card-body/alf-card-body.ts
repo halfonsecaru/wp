@@ -1,8 +1,7 @@
 import { Component, input, computed, ChangeDetectionStrategy, signal } from '@angular/core';
 import { visualprefixEnum } from '@alfcomponents/shared';
-import { AlfComponentTypeEnum } from '@alfcomponents/base/defaultVariants';
 import { AlfCardBodyConfigInterface } from './interfaces/alf-card-body.interface';
-import { AlfBaseDirectives, deepMergeStates } from '@alfcomponents/components/base/bases.directive';
+import { AlfBaseDirectives, AlfComponentTypeEnum, deepMergeStates } from '@alfcomponents/components/base/bases.directive';
 import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
 
 @Component({

@@ -1,0 +1,117 @@
+@let bg  = backgroundComputed();
+@let bd  = borderComputed();
+@let pd  = paddingComputed();
+@let mg  = marginComputed();
+@let sd  = shadowsComputed();
+@let ot  = outlineComputed();
+@let ts  = textStyleComputed();
+@let ty  = typographyComputed();
+@let tr  = transformComputed();
+@let tsn = transitionComputed();
+@let dl  = displayAndLayoutComputed();
+@let ds  = disabledComputed();
+@let cr  = cursor();
+@let cc  = customClass();
+@let cs  = customStyle();
+@let ar  = aria();
+@let tt  = tooltip();
+@let containerId = idComputed();
+@let isVertical  = orientation() === 'vertical';
+@let metrics     = headerMetrics();
+@let navTabs     = navigationTabs();
+@let activeIdx   = activeIndex();
+
+<div
+  [id]="containerId"
+  [alfBackground]="bg ?? null"
+  [alfBorder]="bd ?? null"
+  [alfPadding]="pd ?? null"
+  [alfMargin]="mg ?? null"
+  [alfShadows]="sd ?? null"
+  [alfOutline]="ot ?? null"
+  [alfTextStyle]="ts ?? null"
+  [alfTypography]="ty ?? null"
+  [alfTransform]="tr ?? null"
+  [alfTransition]="tsn ?? null"
+  [alfDisplayAndLayout]="dl ?? null"
+  [alfCursor]="cr ?? null"
+  [alfDisabled]="ds"
+  [alfAria]="ar ?? null"
+  [alfTooltipText]="tt ?? null"
+  [alfPrefix]="cssVarPrefix"
+  [class]="'alf-tabs' + (cc ? ' ' + cc : '')"
+  [class.alf-tabs--vertical]="isVertical"
+  [class.alf-tabs--disabled]="ds"
+  [style]="cs ?? null"
+>
+
+  <!-- ── Header wrapper ──────────────────────────────────────── -->
+  <div class="alf-tabs__header-wrapper">
+
+    @if (metrics.canLeft && !isVertical) {
+      <button
+        class="alf-tabs__arrow alf-tabs__arrow--left"
+        aria-label="Scroll tabs left"
+        (click)="scrollLeft()"
+      >‹</button>
+    }
+
+    <div #headerScroll class="alf-tabs__header-scroll" (scroll)="onScroll()">
+      <div class="alf-tabs__nav" role="tablist">
+
+        @for (tab of navTabs; track $index) {
+          <button
+            #tabButton
+            class="alf-tabs__tab-btn"
+            [class.alf-tabs__tab-btn--active]="tab.isActive"
+            [class.alf-tabs__tab-btn--disabled]="tab.disabled"
+            [disabled]="tab.disabled || disabledComputed()"
+            role="tab"
+            [attr.aria-selected]="activeIdx === $index"
+            [attr.tabindex]="activeIdx === $index ? 0 : -1"
+            (click)="setActiveTab($index)"
+            (keydown)="onHeaderKeydown($event, $index)"
+          >
+            @if (tab.iconLeft) {
+              <span class="alf-tabs__icon-left">{{ tab.iconLeft }}</span>
+            }
+            <span class="alf-tabs__label">{{ tab.label }}</span>
+            @if (tab.iconRight) {
+              <span class="alf-tabs__icon-right">{{ tab.iconRight }}</span>
+            }
+            @if (tab.closable) {
+              <span
+                class="alf-tabs__close"
+                role="button"
+                aria-label="Close tab"
+                (click)="closeTab($index, $event)"
+              >&times;</span>
+            }
+          </button>
+        }
+
+        <div #slider class="alf-tabs__slider"></div>
+      </div>
+    </div>
+
+    @if (metrics.canRight && !isVertical) {
+      <button
+        class="alf-tabs__arrow alf-tabs__arrow--right"
+        aria-label="Scroll tabs right"
+        (click)="scrollRight()"
+      >›</button>
+    }
+
+  </div>
+
+  <!-- ── Content area ─────────────────────────────────────────── -->
+  <div
+    #contentContainer
+    class="alf-tabs__content"
+    (touchstart)="onTouchStart($event)"
+    (touchend)="onTouchEnd($event)"
+  >
+    <ng-content />
+  </div>
+
+</div>

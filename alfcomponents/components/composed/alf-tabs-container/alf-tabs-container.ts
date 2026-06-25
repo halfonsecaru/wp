@@ -15,18 +15,16 @@ import {
   model,
   Injector,
   output,
-  ChangeDetectionStrategy,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { AlfTabComponent } from './components/alf-tab/alf-tab';
 import { generateUniqueId, visualprefixEnum } from '@alfcomponents/shared';
-import { AlfColorVariantEnum, AlfCursorEnum } from '@alfcomponents/enums';
-import { AlfComponentTypeEnum } from '@alfcomponents/base/defaultVariants';
-import { visualBackgroundBase } from '@alfcomponents/base/base-visual';
-import { AlfTabsContainerConfigInterface, ALF_TABS_CONTAINER_TOKEN, AlfTabsParentInterface } from './interfaces/alf-tabs.interface';
-import { getAlfDefaultConfig } from '@alfcomponents/shared/functions/generateStyles';
+import { AlfTabsContainerConfigInterface, ALF_TABS_CONTAINER_TOKEN } from './interfaces/alf-tabs.interface';
+import { AlfBaseDirectives, AlfComponentTypeEnum, deepMergeStates } from '@alfcomponents/components/base/bases.directive';
 import { ALF_TABS_CONTAINER_DEFAULT } from './predefined/alf-tabs-container.predefined';
-import { AlfBaseDirectives, deepMergeStates } from '@alfcomponents/components/base/bases.directive';
 import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
+
+import { AlfTabsHeightService } from './services/alf-tabs-height.service';
 
 @Component({
   selector: 'alf-tabs-container',
@@ -38,6 +36,7 @@ import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
   styleUrl: './alf-tabs-container.scss',
   changeDetection: ChangeDetectionStrategy.Eager,
   providers: [
+    AlfTabsHeightService,
     {
       provide: ALF_TABS_CONTAINER_TOKEN,
       useExisting: forwardRef(() => AlfTabsContainerComponent),
@@ -79,6 +78,11 @@ export class AlfTabsContainerComponent extends AlfBaseDirectives<AlfTabsContaine
       untracked(() => this.activeIndex.set(active));
     }
 
+    const container = this.contentContainer()?.nativeElement;
+    if (container && this.isFluidHeight() && this.orientation() !== 'vertical') {
+      this.applyMinMaxHeight(container, `${container.offsetHeight}px`);
+    }
+
     currentTabs.forEach((tab, index) => {
       const isActive = index === active;
       tab.setActive(isActive);
@@ -99,7 +103,7 @@ export class AlfTabsContainerComponent extends AlfBaseDirectives<AlfTabsContaine
   protected readonly classPrefix: string = visualprefixEnum.TabsContainerPrefix as string;
 
   // ── 2. Inputs & Models ────────────────────────────────────────────────────
-  
+
   protected readonly id = input<string>();
   protected readonly inputConfig = input<AlfTabsContainerConfigInterface>(undefined, { alias: 'config' });
   protected readonly fluidHeightInput = input<boolean | undefined>(undefined, { alias: 'fluidHeight' });
@@ -126,18 +130,23 @@ export class AlfTabsContainerComponent extends AlfBaseDirectives<AlfTabsContaine
   // ── 4. Internal State (Signals & Variables) ─────────────────────────────────────────────
   protected readonly internalId: string = generateUniqueId({ prefix: this.classPrefix });
   private readonly parentTab = inject(AlfTabComponent, { optional: true });
+  protected readonly hostRef = inject(ElementRef);
   private readonly injector = inject(Injector);
+  
+  private readonly localHeightService = inject(AlfTabsHeightService);
+  private readonly parentHeightService = inject(AlfTabsHeightService, { optional: true, skipSelf: true });
+  
   private resizeObserver?: ResizeObserver;
   private currentHeightAnimation: Animation | null = null;
   private _touchStartX = 0;
-  private _touchStartY = 0;  
+  private _touchStartY = 0;
   protected readonly headerScrollRef = viewChild<ElementRef<HTMLDivElement>>('headerScroll');
   protected readonly sliderRef = viewChild<ElementRef<HTMLDivElement>>('slider');
   public readonly contentContainer = viewChild<ElementRef<HTMLDivElement>>('contentContainer');
   protected readonly buttonRefs = viewChildren('tabButton', { read: ElementRef });
-  
-  
-  
+
+
+
   // ── 5. Computed State (Derived from Inputs & State) ───────────────────────
   protected readonly idComputed = computed(() => this.id() ?? this.inputConfig()?.id ?? this.internalId);
   public readonly disabledComputed = computed<boolean>(() => {
@@ -167,9 +176,21 @@ export class AlfTabsContainerComponent extends AlfBaseDirectives<AlfTabsContaine
     super();
     this.componentType.set(AlfComponentTypeEnum.Tabs);
     this.initialization(visualprefixEnum.TabsContainer, visualprefixEnum.TabsContainerClass, AlfComponentTypeEnum.Tabs);
+
+    effect(() => {
+      // Nos suscribimos a la señal reactiva
+      const _trigger = this.localHeightService.heightChangeSignal();
+      if (_trigger > 0) {
+        untracked(() => {
+          this.executeTabHeightMeasurement();
+        });
+      }
+    });
   };
 
   public readonly isFluidHeight = computed(() => {
+    if (this.orientation() === 'vertical') return false;
+
     const fromInput = this.fluidHeightInput();
     const config = this.inputConfig();
     const fromConfig = this.fluidHeightInput() ?? config?.fluidHeight;
@@ -187,19 +208,36 @@ export class AlfTabsContainerComponent extends AlfBaseDirectives<AlfTabsContaine
     this.updateScrollMetrics();
   };
 
+  private lastClientWidth = 0;
+  private lastClientHeight = 0;
+
   private readonly updateScrollMetrics = (): void => {
     const el = this.headerScrollRef()?.nativeElement;
     if (!el) return;
 
-    const { scrollLeft, scrollWidth, clientWidth } = el;
+    const { scrollLeft, scrollWidth, clientWidth, clientHeight } = el;
     this.headerMetrics.set({
       canLeft: scrollLeft > 1,
       canRight: scrollLeft + clientWidth < scrollWidth - 1,
     });
 
-    this.updateSlider(false);
-  };
+    if (this.lastClientWidth !== clientWidth || this.lastClientHeight !== clientHeight) {
+      this.lastClientWidth = clientWidth;
+      this.lastClientHeight = clientHeight;
+      this.updateSlider(false);
 
+      if (clientWidth === 0 || clientHeight === 0) {
+        const container = this.contentContainer()?.nativeElement;
+        if (container) {
+          this.applyMinMaxHeight(container, 'auto');
+        }
+        if (this.currentHeightAnimation) {
+          this.currentHeightAnimation.cancel();
+          this.currentHeightAnimation = null;
+        }
+      }
+    }
+  };
 
   private readonly updateSlider = (animate: boolean = true): void => {
     const active = this.activeIndex();
@@ -213,98 +251,36 @@ export class AlfTabsContainerComponent extends AlfBaseDirectives<AlfTabsContaine
 
     const isVertical = this.orientation() === 'vertical';
 
+    if (animate) {
+      slider.style.transition = 'transform 280ms cubic-bezier(0.35, 0, 0.25, 1), width 280ms cubic-bezier(0.35, 0, 0.25, 1), height 280ms cubic-bezier(0.35, 0, 0.25, 1)';
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      slider.offsetHeight; // Forzar reflow para asegurar que la transición se activa antes del cambio de transform
+    } else {
+      slider.style.transition = 'none';
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      slider.offsetHeight;
+    }
+
     if (isVertical) {
       const targetHeight = targetButton.offsetHeight;
       const targetTop = targetButton.offsetTop;
 
       if (targetHeight === 0) return;
 
-      const currentHeight = parseFloat(slider.style.height) || 0;
-      const currentTop = parseFloat(slider.style.top) || 0;
-
-      // Reset horizontal styles
       slider.style.width = '';
       slider.style.left = '';
-
-      if (animate && currentHeight > 0 && Math.abs(targetTop - currentTop) > 1) {
-        const isMovingDown = targetTop > currentTop;
-
-        let midTop: number;
-        let midHeight: number;
-
-        if (isMovingDown) {
-          midTop = currentTop + (targetTop - currentTop) * 0.15;
-          midHeight = targetTop + targetHeight - midTop;
-        } else {
-          midTop = targetTop;
-          midHeight = currentTop + currentHeight - targetTop;
-        }
-
-        slider.animate(
-          [
-            { top: `${currentTop}px`, height: `${currentHeight}px` },
-            { top: `${midTop}px`, height: `${midHeight}px` },
-            { top: `${targetTop}px`, height: `${targetHeight}px` },
-          ],
-          {
-            duration: 320,
-            easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
-            fill: 'forwards',
-          },
-        );
-      } else {
-        slider.style.height = `${targetHeight}px`;
-        slider.style.top = `${targetTop}px`;
-      }
-
       slider.style.height = `${targetHeight}px`;
-      slider.style.top = `${targetTop}px`;
+      slider.style.transform = `translateY(${targetTop}px)`;
     } else {
       const targetWidth = targetButton.offsetWidth;
       const targetLeft = targetButton.offsetLeft;
 
       if (targetWidth === 0) return;
 
-      const currentWidth = parseFloat(slider.style.width) || 0;
-      const currentLeft = parseFloat(slider.style.left) || 0;
-
-      // Reset vertical styles
       slider.style.height = '';
       slider.style.top = '';
-
-      if (animate && currentWidth > 0 && Math.abs(targetLeft - currentLeft) > 1) {
-        const isMovingRight = targetLeft > currentLeft;
-
-        let midLeft: number;
-        let midWidth: number;
-
-        if (isMovingRight) {
-          midLeft = currentLeft + (targetLeft - currentLeft) * 0.15;
-          midWidth = targetLeft + targetWidth - midLeft;
-        } else {
-          midLeft = targetLeft;
-          midWidth = currentLeft + currentWidth - targetLeft;
-        }
-
-        slider.animate(
-          [
-            { left: `${currentLeft}px`, width: `${currentWidth}px` },
-            { left: `${midLeft}px`, width: `${midWidth}px` },
-            { left: `${targetLeft}px`, width: `${targetWidth}px` },
-          ],
-          {
-            duration: 320,
-            easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
-            fill: 'forwards',
-          },
-        );
-      } else {
-        slider.style.width = `${targetWidth}px`;
-        slider.style.left = `${targetLeft}px`;
-      }
-
       slider.style.width = `${targetWidth}px`;
-      slider.style.left = `${targetLeft}px`;
+      slider.style.transform = `translateX(${targetLeft}px)`;
     }
   };
 
@@ -313,13 +289,37 @@ export class AlfTabsContainerComponent extends AlfBaseDirectives<AlfTabsContaine
   };
 
   public readonly onTabHeightMeasured = (): void => {
-    if (!this.isFluidHeight()) return;
     const container = this.contentContainer()?.nativeElement;
     if (!container) return;
+
+    const activeIdx = this.activeIndex();
+    const allTabs = this.tabs();
+    const activeTab = allTabs[activeIdx];
+    const activeTabEl = activeTab?.elementRef.nativeElement;
+    const hasNestedContainer = activeTabEl?.querySelector('alf-tabs-container') !== null;
+
+    if (this.orientation() === 'vertical' || hasNestedContainer) {
+      this.applyMinMaxHeight(container, 'auto');
+      return;
+    }
+
+    if (!this.isFluidHeight()) return;
 
     if (this.currentHeightAnimation) {
       this.currentHeightAnimation.cancel();
       this.currentHeightAnimation = null;
+    }
+
+    // Obtenemos la restricción maxHeight del CSS desde el HOST
+    const host = this.hostRef.nativeElement as HTMLElement;
+    const hostStyle = window.getComputedStyle(host);
+    let maxHeightStr = hostStyle.maxHeight;
+
+    if (!maxHeightStr || maxHeightStr === 'none') {
+      const cssVar = hostStyle.getPropertyValue('--alf-tbs-layout-max-height').trim();
+      if (cssVar && cssVar !== 'none') {
+        maxHeightStr = cssVar;
+      }
     }
 
     const startHeight = container.offsetHeight;
@@ -327,10 +327,53 @@ export class AlfTabsContainerComponent extends AlfBaseDirectives<AlfTabsContaine
 
     if (endHeight === 0) return;
 
-    if (startHeight === 0 || Math.abs(startHeight - endHeight) < 2) {
-      this.applyHeight(container, `${endHeight}px`);
+    let limitHeight = endHeight;
+    if (maxHeightStr && maxHeightStr !== 'none') {
+      const maxVal = parseFloat(maxHeightStr);
+      if (!isNaN(maxVal)) {
+        const headerEl = host.querySelector(`.${this.classPrefix}__header-wrapper`);
+        const headerHeight = headerEl ? (headerEl as HTMLElement).offsetHeight : 0;
+        const availableHeight = maxVal - headerHeight;
+
+        if (endHeight > availableHeight) {
+          limitHeight = availableHeight;
+        }
+      }
+    }
+
+    if (startHeight === 0 || Math.abs(startHeight - limitHeight) < 2) {
+      this.applyMinMaxHeight(container, `${limitHeight}px`);
+      // Notify parent about instant height change!
+      this.parentHeightService?.notifyHeightChange();
       return;
     }
+
+    this.currentHeightAnimation = container.animate(
+      [
+        { minHeight: `${startHeight}px`, maxHeight: `${startHeight}px` },
+        { minHeight: `${limitHeight}px`, maxHeight: `${limitHeight}px` }
+      ],
+      {
+        duration: 320,
+        easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+        fill: 'forwards'
+      }
+    );
+
+    this.currentHeightAnimation.onfinish = () => {
+      this.applyMinMaxHeight(container, `${limitHeight}px`);
+      const anim = this.currentHeightAnimation;
+      this.currentHeightAnimation = null;
+      if (anim) {
+        anim.onfinish = null;
+        anim.oncancel = null;
+        anim.cancel();
+      }
+
+      // Avisamos al componente padre (si existe) de que nuestra altura ha cambiado
+      // para que pueda recalcular la suya automáticamente de forma fluida.
+      this.parentHeightService?.notifyHeightChange();
+    };
 
   }
 
@@ -341,12 +384,6 @@ export class AlfTabsContainerComponent extends AlfBaseDirectives<AlfTabsContaine
     const activeTab = allTabs[activeIdx];
     if (!activeTab) return 0;
 
-    const container = this.contentContainer()?.nativeElement;
-    if (!container) return 0;
-
-    const savedToken = container.style.getPropertyValue(visualprefixEnum.TabsContentHeight);
-    container.style.setProperty(visualprefixEnum.TabsContentHeight, 'auto');
-
     const savedDisplays: { el: HTMLElement; display: string }[] = [];
     for (let i = 0; i < allTabs.length; i++) {
       if (i !== activeIdx) {
@@ -356,11 +393,12 @@ export class AlfTabsContainerComponent extends AlfBaseDirectives<AlfTabsContaine
       }
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    container.offsetHeight; // Reflow
-    const naturalHeight = container.scrollHeight;
+    // MEDIMOS LA PESTAÑA ACTIVA DIRECTAMENTE
+    const activeTabEl = activeTab.elementRef.nativeElement;
+    // Buscamos el elemento interior (.alf-tab-content)
+    const contentInner = activeTabEl.querySelector('.alf-tab-content') as HTMLElement;
+    const naturalHeight = contentInner ? contentInner.scrollHeight : activeTabEl.scrollHeight;
 
-    container.style.setProperty(visualprefixEnum.TabsContentHeight, savedToken || 'auto');
     for (const saved of savedDisplays) {
       saved.el.style.display = saved.display;
     }
@@ -369,8 +407,9 @@ export class AlfTabsContainerComponent extends AlfBaseDirectives<AlfTabsContaine
   };
 
 
-  private readonly applyHeight = (container: HTMLElement, value: string): void => {
-    container.style.setProperty(visualprefixEnum.TabsContentHeight, value);
+  private readonly applyMinMaxHeight = (container: HTMLElement, value: string): void => {
+    container.style.minHeight = value === 'auto' ? '' : value;
+    container.style.maxHeight = value === 'auto' ? '' : value;
   };
 
 
@@ -511,4 +550,8 @@ export class AlfTabsContainerComponent extends AlfBaseDirectives<AlfTabsContaine
   };
 
 
+  // ── Control Config override ────────────────────────────────────────────
+  protected override getControlConfig() {
+    return deepMergeStates(ALF_TABS_CONTAINER_DEFAULT, this.inputConfig());
+  }
 }

@@ -40,6 +40,10 @@ export const routes: Routes = [
   {
     path: 'playground',
     loadComponent: () => import('./app/pages/alf-playground/alf-playground').then(m => m.AlfPlayground)
+  },
+  {
+    path: 'tabs',
+    loadComponent: () => import('./app/pages/alf-tabs-viewer/alf-tabs-viewer').then(m => m.AlfTabsViewer)
   }
 ];
 

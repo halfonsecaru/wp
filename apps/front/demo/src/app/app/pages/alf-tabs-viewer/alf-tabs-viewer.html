@@ -1,0 +1,200 @@
+<div class="tabs-showcase" style="padding-bottom: 50px;">
+  <h1>AlfTabsContainer Component Showcase</h1>
+
+  <!-- ── 1. Basic horizontal ─────────────────────────────────────────── -->
+  <section>
+    <h2>Basic — Horizontal</h2>
+    <p class="desc">Simple tabs with three panels. Default underline style.</p>
+
+    <alf-tabs-container [(activeIndex)]="activeBasic">
+      <alf-tab label="Overview">
+        <div class="tab-panel">
+          <h3>Overview</h3>
+          <p>Welcome to the overview panel. This tab demonstrates the basic horizontal layout with smooth slider animation.</p>
+          <p>Switch between tabs to see the animated underline slider move with a satisfying elastic effect.</p>
+        </div>
+      </alf-tab>
+      <alf-tab label="Details">
+        <div class="tab-panel">
+          <h3>Details</h3>
+          <p>Here you can find all the detailed information about the component.</p>
+          <ul>
+            <li>Supports keyboard navigation (Arrow keys, Home, End)</li>
+            <li>Touch swipe support for mobile devices</li>
+            <li>ARIA roles and attributes for accessibility</li>
+            <li>Scrollable header when tabs overflow</li>
+          </ul>
+        </div>
+      </alf-tab>
+      <alf-tab label="Configuration">
+        <div class="tab-panel">
+          <h3>Configuration</h3>
+          <p>Pass a <code>config</code> input object or use individual inputs to customize the tabs container.</p>
+          <pre>&#x3C;alf-tabs-container orientation="horizontal" keyboardActivation="automatic"&#x3E;
+  &#x3C;alf-tab label="Tab 1"&#x3E;...&#x3C;/alf-tab&#x3E;
+&#x3C;/alf-tabs-container&#x3E;</pre>
+        </div>
+      </alf-tab>
+    </alf-tabs-container>
+  </section>
+
+  <!-- ── 2. Vertical ─────────────────────────────────────────────────── -->
+  <section>
+    <h2>Vertical Orientation</h2>
+    <p class="desc">Tabs placed on the left side. The slider moves vertically with the same elastic animation.</p>
+
+    <alf-tabs-container orientation="vertical" [(activeIndex)]="activeVertical" style="min-height: 280px;">
+      <alf-tab label="Dashboard">
+        <div class="tab-panel">
+          <h3>Dashboard</h3>
+          <p>Your main workspace. Access all metrics and KPIs at a glance.</p>
+        </div>
+      </alf-tab>
+      <alf-tab label="Users">
+        <div class="tab-panel">
+          <h3>Users</h3>
+          <p>Manage your team members, roles and permissions from here.</p>
+        </div>
+      </alf-tab>
+      <alf-tab label="Analytics">
+        <div class="tab-panel">
+          <h3>Analytics</h3>
+          <p>Deep dive into traffic, conversions and engagement data.</p>
+        </div>
+      </alf-tab>
+      <alf-tab label="Settings">
+        <div class="tab-panel">
+          <h3>Settings</h3>
+          <p>This tab is disabled.</p>
+        </div>
+      </alf-tab>
+    </alf-tabs-container>
+  </section>
+
+  <!-- ── 3. Variants ─────────────────────────────────────────────────── -->
+  <section>
+    <h2>Color Variants</h2>
+    <p class="desc">The tabs container inherits the color system from AlfBaseDirectives — pass a <code>variant</code> to change the palette.</p>
+
+    <div class="variants-grid">
+      @for (variant of variants; track variant) {
+        <div class="variant-block">
+          <span class="variant-label">{{ variant }}</span>
+          <alf-tabs-container [variant]="variant">
+            <alf-tab label="Tab A">
+              <div class="tab-panel--sm">Panel A · {{ variant }}</div>
+            </alf-tab>
+            <alf-tab label="Tab B">
+              <div class="tab-panel--sm">Panel B · {{ variant }}</div>
+            </alf-tab>
+            <alf-tab label="Tab C">
+              <div class="tab-panel--sm">Panel C · {{ variant }}</div>
+            </alf-tab>
+          </alf-tabs-container>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- ── 4. Closable tabs ────────────────────────────────────────────── -->
+  <section>
+    <h2>Closable Tabs</h2>
+    <p class="desc">Tabs can show a close button. Clicking it emits <code>(tabClose)</code> with the index.</p>
+
+    <alf-tabs-container [(activeIndex)]="activeClosable" (tabClose)="closeTab($event)">
+      @for (tab of closableTabs(); track tab) {
+        <alf-tab [label]="tab" [closable]="true">
+          <div class="tab-panel">
+            <h3>{{ tab }}</h3>
+            <p>This is the content panel for <strong>{{ tab }}</strong>. Close this tab using the × button.</p>
+          </div>
+        </alf-tab>
+      }
+    </alf-tabs-container>
+
+    @if (closableTabs().length === 0) {
+      <div class="empty-state">All tabs closed. Refresh the page to reset.</div>
+    }
+  </section>
+
+  <!-- ── 5. Many tabs (scroll) ───────────────────────────────────────── -->
+  <section>
+    <h2>Overflow — Scroll Arrows</h2>
+    <p class="desc">When tabs overflow the container, scroll arrows appear. Each tab shows as many lines of content as its number.</p>
+
+    <alf-tabs-container>
+      @for (n of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]; track n) {
+        <alf-tab [label]="'Tab ' + n">
+          <div class="tab-panel">
+            <h3>Panel {{ n }}</h3>
+            @for (line of lines(n); track $index) {
+              <p>Line {{ $index + 1 }} of panel {{ n }} — lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            }
+          </div>
+        </alf-tab>
+      }
+    </alf-tabs-container>
+  </section>
+
+  <!-- ── 6. Nested Tabs ────────────────────────────────────────────── -->
+  <section>
+    <h2>Nested Tabs (Fluid Height)</h2>
+    <p class="desc">A parent tab container with a nested tab container inside one of the tabs, showing different content sizes.</p>
+
+    <alf-tabs-container [fluidHeight]="true">
+      <alf-tab label="Outer Tab 1" iconLeft="📦">
+        <div class="tab-panel">
+          <h3>Outer Tab 1 Content</h3>
+          <p>This is the first outer tab. It has some basic content.</p>
+        </div>
+      </alf-tab>
+      
+      <alf-tab label="Outer Tab 2 (Nested)" iconLeft="🗂️">
+        <div class="tab-panel" style="padding-bottom: 8px;">
+          <h3>Nested Tabs Inside</h3>
+          <p>This tab contains another alf-tabs-container!</p>
+          
+          <alf-tabs-container [fluidHeight]="true">
+            <alf-tab label="Inner 1">
+              <div class="tab-panel">
+                <h4>Short Content</h4>
+                <p>Just one line here.</p>
+              </div>
+            </alf-tab>
+            <alf-tab label="Inner 2">
+              <div class="tab-panel">
+                <h4>Medium Content</h4>
+                <p>Line 1</p>
+                <p>Line 2</p>
+                <p>Line 3</p>
+              </div>
+            </alf-tab>
+            <alf-tab label="Inner 3">
+              <div class="tab-panel">
+                <h4>Long Content</h4>
+                <p>Line 1</p>
+                <p>Line 2</p>
+                <p>Line 3</p>
+                <p>Line 4</p>
+                <p>Line 5</p>
+                <p>Line 6</p>
+                <p>Line 7</p>
+                <p>Line 8</p>
+              </div>
+            </alf-tab>
+          </alf-tabs-container>
+        </div>
+      </alf-tab>
+      
+      <alf-tab label="Outer Tab 3" iconLeft="⚙️">
+        <div class="tab-panel">
+          <h3>Outer Tab 3 Content</h3>
+          <p>This is the third outer tab.</p>
+          <p>It also has some lines to show fluid height on the outer level.</p>
+          <p>More lines...</p>
+        </div>
+      </alf-tab>
+    </alf-tabs-container>
+  </section>
+
+</div>

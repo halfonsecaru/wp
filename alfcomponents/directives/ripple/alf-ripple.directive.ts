@@ -1,6 +1,53 @@
 import { Directive, ElementRef, Renderer2, inject, Input, effect, computed, signal } from '@angular/core';
 import { AlfRippleInterface } from '../../interfaces/alf-ripple.interface';
-import { AlfColorEnum } from '@alfcomponents/enums';
+import { AlfColorEnum, AlfColorVariantEnum } from '@alfcomponents/enums';
+import { resolveAlfColorVariant } from '@alfcomponents/shared';
+/**
+ * Resuelve matemáticamente el color base ideal para el efecto Ripple, asegurando
+ * siempre un contraste óptimo (WCAG) sobre el fondo de la variante elegida.
+ *
+ * @param input Variante actual.
+ * @returns El color calculado para la expansión del Ripple.
+ */
+export const visualRippleColorBase = (input: { type: AlfColorVariantEnum }): AlfColorEnum => {
+    const resolved = resolveAlfColorVariant(input.type);
+    const variantName = resolved.toLowerCase();
+
+    const isOutline = variantName.includes('outline');
+    const isSoft = variantName.includes('soft');
+    const isGhost = variantName.includes('ghost');
+    const isCrystal = variantName.includes('crystal');
+
+    // 1. CASO: Fondos Claros o Transparentes (Outline, Soft, Ghost, Crystal)
+    // El ripple debe ser oscuro y del color de la variante para contraste.
+    if (isOutline || isSoft || isGhost || isCrystal) {
+        const baseColor = variantName.split('-').pop() || '';
+        switch (baseColor) {
+            case 'primary': return AlfColorEnum.Blue700;
+            case 'success': return AlfColorEnum.Green700;
+            case 'danger': return AlfColorEnum.Red700;
+            case 'warning': return AlfColorEnum.Orange800;
+            case 'info': return AlfColorEnum.Cyan800;
+            default: return AlfColorEnum.Gray700;
+        }
+    }
+
+    // 2. CASO: Fondos Sólidos Claros (Light, White, Warning, Info)
+    // El ripple debe ser oscuro (Gris o color profundo).
+    const isLightVariant =
+        variantName.includes('light') ||
+        variantName.includes('white') ||
+        variantName.includes('warning') ||
+        variantName.includes('info');
+
+    if (isLightVariant) {
+        return AlfColorEnum.Gray700;
+    }
+
+    // 3. CASO: Fondos Sólidos Oscuros (Primary, Success, Danger, Dark, Secondary, 3D)
+    // En fondos oscuros, un ripple oscuro no se ve. Usamos Blanco (la directiva aplica 0.35 opacity).
+    return AlfColorEnum.White;
+};
 
 
 /**

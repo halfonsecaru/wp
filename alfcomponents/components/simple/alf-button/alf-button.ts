@@ -21,8 +21,7 @@ import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
 
 import { AlfButtonInterface, ButtonLink } from './interfaces/alf-button.interface';
 import { AlfButtonI18nLabels, getAlfButtonLabel } from './i18n/alf-button.i18n';
-import { AlfComponentTypeEnum } from '@alfcomponents/base/defaultVariants';
-import { AlfBaseDirectives, deepMergeStates } from '@alfcomponents/components/base/bases.directive';
+import { AlfBaseDirectives, AlfComponentTypeEnum, deepMergeStates } from '@alfcomponents/components/base/bases.directive';
 @Component({
   selector: 'alf-button',
   standalone: true,

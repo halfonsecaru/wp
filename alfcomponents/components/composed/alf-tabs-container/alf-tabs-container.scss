@@ -1,7 +1,292 @@
 @use '../../../visualStyles' as *;
 
+// ── Host ─────────────────────────────────────────────────────────────────────
 :host {
   display: block;
   width: 100%;
-  height: 100%;
+}
+
+// ── Wrapper principal (recibe mixins de AlfBaseDirectives vía --alf-tbs) ─────
+.alf-tabs {
+  @include alf-transition-style('--alf-tbs', '&--disabled', '&--focused, &:focus-within, &:focus-visible');
+  @include alf-background-style('--alf-tbs', '&--disabled', '&--focused, &:focus-within, &:focus-visible', '&:hover', '&--active');
+  @include alf-border-style('--alf-tbs', '&--disabled', '&--focused, &:focus-within, &:focus-visible', '&:hover', '&--active');
+  @include alf-padding-style('--alf-tbs', '&--disabled', '&--focused, &:focus-within, &:focus-visible', '&:hover', '&--active');
+  @include alf-margin-style('--alf-tbs', '&--disabled', '&--focused, &:focus-within, &:focus-visible', '&:hover', '&--active');
+  @include alf-shadows-style('--alf-tbs', '&--disabled', '&--focused, &:focus-within, &:focus-visible', '&:hover', '&--active');
+  @include alf-outline-style('--alf-tbs', '&--disabled', '&--focused, &:focus-within, &:focus-visible', '&:hover', '&--active');
+  @include alf-transform-style('--alf-tbs', '&--disabled', '&--focused, &:focus-within, &:focus-visible', '&:hover', '&--active');
+  @include alf-text-style('--alf-tbs', '&--disabled', '&--focused, &:focus-within, &:focus-visible', '&:hover', '&--active');
+  @include alf-typography-style('--alf-tbs', '&--disabled', '&--focused, &:focus-within, &:focus-visible', '&:hover', '&--active');
+  @include alf-display-and-layout-style('--alf-tbs', '&--disabled', '&--focused, &:focus-within, &:focus-visible', '&:hover', '&--active', flex);
+
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate; /* Fixes z-index border-radius clipping bug */
+  border-radius: inherit; /* Safe fallback */
+
+  // Reset css variables that shouldn't be inherited by nested components
+  --alf-tbs-layout-max-height: none;
+
+  // ── Header wrapper ──────────────────────────────────────────────────────
+  &__header-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--alf-tabs-border-color, var(--alf-tbs-border-default-border-color, #e5e7eb));
+    width: 100%;
+    border-top-left-radius: var(--alf-tbs-border-radius, 0px);
+    border-top-right-radius: var(--alf-tbs-border-radius, 0px);
+  }
+
+  // ── Scroll area ─────────────────────────────────────────────────────────
+  &__header-scroll {
+    flex: 1;
+    position: relative;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  // ── Nav row ─────────────────────────────────────────────────────────────
+  &__nav {
+    display: flex;
+    position: relative;
+    width: max-content;
+    min-width: 100%;
+    align-items: stretch;
+  }
+
+  // ── Tab buttons ─────────────────────────────────────────────────────────
+  &__tab-btn {
+    box-sizing: border-box;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0 24px;
+    height: 48px;
+    font-family: inherit;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    flex: 1 0 auto;
+    border-radius: 0;
+    transition: color 0.25s ease, background-color 0.25s ease;
+    color: var(--alf-tbs-text-default-color, inherit);
+    outline: none;
+
+    &:hover {
+      color: var(--alf-tbs-text-hover-color, inherit);
+      background-color: color-mix(in srgb, var(--alf-tbs-text-hover-color, currentColor) 6%, transparent);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--alf-tbs-outline-default-outline-color, currentColor);
+      outline-offset: -2px;
+    }
+
+    &--active {
+      color: var(--alf-tbs-border-default-border-color, var(--alf-color-primary, #3b82f6));
+      font-weight: 600;
+      background-color: color-mix(
+        in srgb,
+        var(--alf-tbs-border-default-border-color, var(--alf-color-primary, #3b82f6)) 10%,
+        transparent
+      );
+
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--alf-tbs-border-default-border-color, var(--alf-color-primary, #3b82f6)) 18%,
+          transparent
+        );
+      }
+    }
+
+    &--disabled,
+    &[disabled] {
+      cursor: not-allowed;
+      opacity: 0.45;
+      pointer-events: none;
+    }
+  }
+
+  // ── Icons dentro del botón ───────────────────────────────────────────────
+  &__icon-left {
+    margin-right: 8px;
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+  }
+
+  &__icon-right {
+    margin-left: 8px;
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+  }
+
+  // ── Close button ────────────────────────────────────────────────────────
+  &__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    color: inherit;
+    opacity: 0.5;
+    transition: opacity 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+
+    &:hover {
+      opacity: 1;
+      background-color: color-mix(in srgb, currentColor 15%, transparent);
+      transform: rotate(90deg) scale(1.1);
+    }
+  }
+
+  // ── Slider ──────────────────────────────────────────────────────────────
+  &__slider {
+    position: absolute;
+    bottom: -1px;
+    height: 3px;
+    width: 100px;
+    background-color: var(--alf-tbs-border-default-border-color, var(--alf-color-primary, #3b82f6));
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    z-index: 1;
+    transform-origin: left center;
+    will-change: transform;
+  }
+
+  // ── Scroll arrows ───────────────────────────────────────────────────────
+  &__arrow {
+    appearance: none;
+    background: none;
+    border: none;
+    outline: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: inherit;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &--left {
+      left: 0;
+      padding: 0 12px 0 8px;
+      background: linear-gradient(to right, var(--alf-tbs-bg-default-background-color, white) 55%, transparent);
+      border-top-left-radius: var(--alf-tbs-border-radius, 0px);
+    }
+
+    &--right {
+      right: 0;
+      padding: 0 8px 0 12px;
+      background: linear-gradient(to left, var(--alf-tbs-bg-default-background-color, white) 55%, transparent);
+      border-top-right-radius: var(--alf-tbs-border-radius, 0px);
+    }
+  }
+
+  // ── Content container ───────────────────────────────────────────────────
+  &__content {
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    // Altura controlada mediante min-height y max-height dinámicos en JS para transiciones fluidas.
+    height: auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    overflow: hidden;
+  }
+
+  // ── Vertical modifier ───────────────────────────────────────────────────
+  &--vertical {
+    flex-direction: row !important;
+
+    .alf-tabs__header-wrapper {
+      flex-direction: column;
+      width: 220px;
+      min-width: 160px;
+      border-bottom: none;
+      border-right: 1px solid var(--alf-tbs-border-default-border-color, #e5e7eb);
+      align-items: stretch;
+    }
+
+    .alf-tabs__header-scroll {
+      overflow-x: hidden;
+      overflow-y: auto;
+      width: 100%;
+    }
+
+    .alf-tabs__nav {
+      flex-direction: column;
+      width: 100%;
+      min-width: 100%;
+      align-items: stretch;
+    }
+
+    .alf-tabs__tab-btn {
+      width: 100%;
+      flex: none;
+      justify-content: flex-start;
+      padding: 12px 24px;
+      height: auto;
+      min-height: 48px;
+      text-align: left;
+    }
+
+    .alf-tabs__slider {
+      bottom: auto;
+      right: -1px;
+      left: auto;
+      width: 3px;
+      height: 100px;
+      top: 0;
+      border-top-left-radius: 3px;
+      border-bottom-left-radius: 3px;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      transform-origin: center top;
+      will-change: transform;
+    }
+
+    .alf-tabs__content {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+
+  // ── Disabled modifier ───────────────────────────────────────────────────
+  &--disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
 }

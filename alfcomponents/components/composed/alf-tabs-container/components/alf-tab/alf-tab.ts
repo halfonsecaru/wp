@@ -1,10 +1,15 @@
-import { Component, input, signal, computed, inject, ElementRef, viewChild, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  input,
+  signal,
+  computed,
+  inject,
+  ElementRef,
+  OnDestroy,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { AlfSingleTabInterface, ALF_TABS_CONTAINER_TOKEN } from '../../interfaces/alf-tabs.interface';
-import { visualprefixEnum } from '@alfcomponents/shared';
-import { AlfColorVariantEnum, AlfCursorEnum } from '@alfcomponents/enums';
 import { AlfAnimateCssInterface, AlfBackgroundsInterface } from '@alfcomponents/interfaces';
-import { AlfBaseButtonConfiguration } from '../../../../simple/alf-button/base/alf-base-button-configuration';
-import { AlfComponentTypeEnum, resolveVariantConfig } from '@alfcomponents/base/defaultVariants';
 
 @Component({
   selector: 'alf-tab',
@@ -20,89 +25,61 @@ import { AlfComponentTypeEnum, resolveVariantConfig } from '@alfcomponents/base/
     '[style.min-width]': '"0"',
   },
 })
-export class AlfTabComponent extends AlfBaseButtonConfiguration<AlfSingleTabInterface> implements OnDestroy {
-  // ==========================================
-  // 1. Effects
-  // ==========================================
-  // (No effects)
+export class AlfTabComponent implements OnDestroy {
 
-  // ==========================================
-  // 2. Attributes (Properties, Injections)
-  // ==========================================
-  protected readonly visualPrefix = visualprefixEnum.TabsContent;
+  // ── Injections ──────────────────────────────────────────────────────────
   public readonly elementRef: ElementRef<HTMLElement> = inject(ElementRef);
   private readonly container = inject(ALF_TABS_CONTAINER_TOKEN, { optional: true });
   private exitResolveFn: (() => void) | null = null;
 
-  // ==========================================
-  // 3. Signals (Inputs, Models, State)
-  // ==========================================
-  public override readonly colorVariant = input<AlfColorVariantEnum>();
-  public override readonly inputConfig = input<AlfSingleTabInterface>(undefined);
-  public readonly label = input<string>('');
-  public readonly tabName = input<string>('');
-  public readonly expandHeight = input<boolean>(false);
-  public readonly closable = input<boolean>(false);
+  // ── Inputs ──────────────────────────────────────────────────────────────
+  public readonly inputConfig   = input<AlfSingleTabInterface>(undefined);
+  public readonly label         = input<string>('');
+  public readonly tabName       = input<string>('');
+  public readonly expandHeight  = input<boolean>(false);
+  public readonly closable      = input<boolean>(false);
+  public readonly disabled      = input<boolean>(false);
+  public readonly iconLeft      = input<string | undefined>(undefined);
+  public readonly iconRight     = input<string | undefined>(undefined);
 
-  private readonly _isActive = signal<boolean>(false);
-  public readonly isActive = this._isActive.asReadonly();
-  protected readonly isExiting = signal<boolean>(false);
-  public readonly parentContentAnimations = signal<AlfAnimateCssInterface | undefined>(undefined);
-  public readonly parentContentBackgrounds = signal<AlfBackgroundsInterface | undefined>(undefined);
+  // ── State ───────────────────────────────────────────────────────────────
+  private readonly _isActive              = signal<boolean>(false);
+  public  readonly isActive               = this._isActive.asReadonly();
+  public  readonly isExiting              = signal<boolean>(false);
+  public  readonly parentContentAnimations = signal<AlfAnimateCssInterface | undefined>(undefined);
+  public  readonly parentContentBackgrounds = signal<AlfBackgroundsInterface | undefined>(undefined);
 
-  public readonly contentInner = viewChild<ElementRef<HTMLDivElement>>('contentInner');
+  // ── Computed ─────────────────────────────────────────────────────────────
+  public readonly isDisabled = computed(() =>
+    this.disabled() || this.inputConfig()?.disabled || false
+  );
 
-  // ==========================================
-  // 4. Computed
-  // ==========================================
+  public readonly finalLabel = computed(() =>
+    this.label() || this.inputConfig()?.tabName || 'Tab'
+  );
 
-  public readonly isDisabled = computed(() => this.disabledComputed());
+  public readonly effectiveAnimations = computed(() =>
+    this.inputConfig()?.animations || this.parentContentAnimations()
+  );
 
-  protected override readonly cursorComputed = computed(() => {
-    return this.cursor() ?? this.resolvedConfig()?.cursor ?? AlfCursorEnum.Default;
-  });
-
-  public override readonly resolvedConfig = computed(() => {
-    const manual = this.inputConfig();
-    return {
-      ...manual,
-    };
-  });
-
-  public readonly finalLabel = computed(() => this.label() || this.resolvedConfig()?.tabName || 'Tab');
-
-  public readonly effectiveAnimations = computed(() => {
-    return this.resolvedConfig()?.animations || this.parentContentAnimations();
-  });
-
-
-  protected readonly currentAnimationClass = computed(() => {
+  public readonly currentAnimationClass = computed(() => {
     const anims = this.effectiveAnimations();
     if (this.isExiting()) return anims?.exitStage ?? '';
-    if (this.isActive()) return anims?.enterStage ?? '';
+    if (this.isActive())  return anims?.enterStage ?? '';
     return '';
   });
 
-  protected readonly animationStyle = computed(() => {
+  public readonly animationStyle = computed(() => {
     const anim = this.effectiveAnimations();
     if (!anim) return '';
-    const declarations: string[] = [];
-    if (anim.duration) declarations.push(`--animate-duration: ${anim.duration};`);
-
-    // Solo aplicamos delay en la entrada (isActive) para permitir que la salida (isExiting) sea inmediata
+    const parts: string[] = [];
+    if (anim.duration) parts.push(`--animate-duration: ${anim.duration};`);
     const delay = this.isActive() && !this.isExiting() ? anim.delay || '0s' : '0s';
-    declarations.push(`--animate-delay: ${delay};`);
-
-    return declarations.join(' ');
+    parts.push(`--animate-delay: ${delay};`);
+    return parts.join(' ');
   });
 
-  // ==========================================
-  // 5. Lifecycle Hooks
-  // ==========================================
-  constructor() {
-    super();
-  }
-
+  // ── Lifecycle ───────────────────────────────────────────────────────────
   public ngOnDestroy(): void {
     if (this.exitResolveFn) {
       this.exitResolveFn();
@@ -110,16 +87,27 @@ export class AlfTabComponent extends AlfBaseButtonConfiguration<AlfSingleTabInte
     }
   }
 
-  // ==========================================
-  // 6. Functions (Arrow Functions)
-  // ==========================================
+  // ── Public API (called by container) ────────────────────────────────────
+  public readonly setActive = (active: boolean): void => {
+    this._isActive.set(active);
+  };
+
   public readonly playExitAnimation = (): Promise<void> => {
     return new Promise(this.executeExitAnimation);
   };
 
-  private readonly executeExitAnimation = (resolve: (value: void | PromiseLike<void>) => void): void => {
+  public readonly reportHeight = (): void => {
+    if (this.container) {
+      this.container.onTabHeightMeasured();
+    }
+  };
+
+  // ── Private ──────────────────────────────────────────────────────────────
+  private readonly executeExitAnimation = (
+    resolve: (value: void | PromiseLike<void>) => void
+  ): void => {
     const anims = this.effectiveAnimations();
-    if (!anims || !anims.exitStage) {
+    if (!anims?.exitStage) {
       resolve();
       return;
     }
@@ -139,25 +127,13 @@ export class AlfTabComponent extends AlfBaseButtonConfiguration<AlfSingleTabInte
 
   private readonly onExitAnimationEnd = (): void => {
     const el = this.elementRef.nativeElement.firstElementChild as HTMLElement;
-    if (el) {
-      el.removeEventListener('animationend', this.onExitAnimationEnd);
-    }
+    if (el) el.removeEventListener('animationend', this.onExitAnimationEnd);
 
     this.isExiting.set(false);
 
     if (this.exitResolveFn) {
       this.exitResolveFn();
       this.exitResolveFn = null;
-    }
-  };
-
-  public readonly setActive = (active: boolean): void => {
-    this._isActive.set(active);
-  };
-
-  public readonly reportHeight = (): void => {
-    if (this.container) {
-      this.container.onTabHeightMeasured();
     }
   };
 }

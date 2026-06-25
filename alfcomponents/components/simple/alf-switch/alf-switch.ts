@@ -3,9 +3,8 @@ import { AlfSwitchInterface, AlfSwitchVariantEnum } from './interfaces/alf-switc
 import { generateUniqueId, visualprefixEnum } from '@alfcomponents/shared';
 import { AlfLabelsPositionEnum, AlfColorVariantEnum, AlfSizeEnum, AlfRadiusEnum, AlfColorEnum } from '@alfcomponents/enums';
 
-import { AlfComponentTypeEnum } from '@alfcomponents/base/defaultVariants';
 import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
-import { AlfBaseDirectives, deepMergeStates } from '@alfcomponents/components/base/bases.directive';
+import { AlfBaseDirectives, AlfComponentTypeEnum, deepMergeStates } from '@alfcomponents/components/base/bases.directive';
 import { AlfSwitchI18nLabels, getAlfSwitchLabel } from './i18n/switch-i18n';
 import { AlfSpinner } from '../alf-spinner/alf-spinner';
 import { AlfRemEnum } from '@alfcomponents/enums';

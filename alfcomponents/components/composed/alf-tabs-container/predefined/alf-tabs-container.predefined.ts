@@ -1,6 +1,5 @@
 import { AlfTabsStyleEnum } from '../enums/alf-tabs.enum';
 import {
-  AlfColorVariantEnum,
   AlfColorEnum,
   AlfPxEnum,
   AlfBorderStyleEnum,
@@ -9,14 +8,10 @@ import {
   AlfFlexDirectionEnum,
   AlfAlignItemsEnum,
   AlfJustifyContentEnum,
-  AlfPercentageEnum,
   AlfAnimationTypeEnum,
   AlfFontWeightEnum,
-  AlfCursorEnum,
-  AlfShadowEnum
 } from '@alfcomponents/enums';
-import { AlfTabsContainerConfigInterface, AlfSingleTabInterface } from '../interfaces/alf-tabs.interface';
-import { AlfComponentTypeEnum, resolveVariantConfig } from '@alfcomponents/base/defaultVariants';
+import { AlfTabsContainerConfigInterface } from '../interfaces/alf-tabs.interface';
 
 /**
  * Configuración por defecto para el contenedor de pestañas.

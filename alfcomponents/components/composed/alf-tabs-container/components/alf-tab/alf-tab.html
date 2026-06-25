@@ -1,15 +1,10 @@
-<!-- @let customClass = customClassComputed();
+@let animClass = currentAnimationClass();
+@let animSty   = animationStyle();
 
 <div
-  [class]="'alf-tab-content ' + customClass + ' ' + currentAnimationClass()"
-  [class.alf-tab-expand]="isActive() && (expandHeight())"
-  [class.alf-tab-use-expand]="expandHeight()"
-  [style.display]="isActive() || isExiting() ? null : 'none'"
-  [style.pointer-events]="isActive() ? 'auto' : 'none'"
-  [style.width]="'100%'"
-  [style]="combinedStyles() + ' ' + animationStyle()"
+  #contentInner
+  [class]="'alf-tab-content ' + animClass"
+  [style]="animSty"
 >
-  <div #contentInner class="alf-tab-content-inner">
-    <ng-content />
-  </div>
-</div> -->
+  <ng-content />
+</div>

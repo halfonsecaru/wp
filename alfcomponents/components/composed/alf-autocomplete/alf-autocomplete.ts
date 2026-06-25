@@ -10,10 +10,9 @@ import { AlfColorVariantEnum, AlfCursorEnum, AlfSizeEnum, AlfInputAppearanceEnum
 import { AlfAutocompleteConfigInterface } from './interfaces/alf-autocomplete.interface';
 import { AlfInput } from '../../simple/alf-input/alf-input';
 import { AlfAnimateCssInterface, AlfBackgroundsBaseInterface, AlfBackgroundsInterface, AlfBackgroundsStyleInterface, AlfBorderBaseInterface, AlfBorderInterface, AlfDisplayAndLayoutBaseInterface, AlfDisplayAndLayoutInterface, AlfMarginBaseInterface, AlfMarginInterface, AlfOutlineBaseInterface, AlfOutlineInterface, AlfPaddingBaseInterface, AlfPaddingInterface, AlfRippleInterface, AlfShadowsBaseInterface, AlfShadowsInterface, AlfTextStyleInterface, AlfTextStyleStateBaseInterface, AlfTransformBaseInterface, AlfTransformInterface, AlfTransitionBaseInterface, AlfTransitionInterface, AlfTypographyBaseInterface, AlfTypographyInterface } from '@alfcomponents/interfaces';
-import { AlfTooltipConfig } from '@alfcomponents/directives';
+import { AlfTooltipConfig, visualRippleColorBase } from '@alfcomponents/directives';
 import { AlfValidationResult } from '@alfcomponents/shared';
 import { deepMergeStates, expandToAllStates } from '@alfcomponents/components/base/bases.directive';
-import { visualRippleColorBase } from '@alfcomponents/base';
 
 import { AlfSelectOption } from './interfaces/alf-auto-complete-options-interface';
 import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
