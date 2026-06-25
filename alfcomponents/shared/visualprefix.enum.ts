@@ -25,6 +25,13 @@ export enum visualprefixEnum {
     CardClass = 'alf-cards',
     Card = `--${visualprefixEnum.CardPrefix}`,
 
+    // TabsContainer
+    TabsContainerPrefix = 'alf-tbs',
+    TabsContainerClass = 'alf-tabs',
+    TabsContainer = `--${visualprefixEnum.TabsContainerPrefix}`,
+    TabsContentHeight = '--alf-tabs-content-height',
+    
+
     CardTitle = '--alf-card-title',
     CardBody = '--alf-card-body',
     CardImg = '--alf-card-img',
@@ -32,7 +39,6 @@ export enum visualprefixEnum {
 
     // Componentes
     Buttons = '--alf-btn',
-    TabsContainer = '--alf-tabs',
     TabsContent = '--alf-tab-content',
     TabsNavigation = '--alf-tabs-navigation',
     TabsSlider = '--alf-tabs-slider',
