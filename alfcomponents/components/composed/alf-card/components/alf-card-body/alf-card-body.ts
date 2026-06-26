@@ -14,16 +14,13 @@ import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
   styleUrl: './alf-card-body.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AlfCardBodyComponent extends AlfBaseDirectives<AlfCardBodyConfigInterface> {
+export class AlfCardBodyComponent extends AlfBaseDirectives {
   protected readonly cssVarPrefix: string = visualprefixEnum.CardBody as string;
   protected readonly classPrefix: string = 'alf-card-body';
 
   public readonly inputConfig = input<AlfCardBodyConfigInterface>(undefined, { alias: 'config' });
-  private readonly _disabled = signal<boolean>(false);
 
-  public readonly disabledComputed = computed<boolean>(() => {
-    return !!(this.disabled() || this.inputConfig()?.disabled || this._disabled());
-  });
+
 
   protected readonly predefinedConfig = computed(() => {
     return {

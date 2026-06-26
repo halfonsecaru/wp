@@ -5,9 +5,9 @@ Componente de botón standalone de alto rendimiento diseñado para Angular 22. I
 ## Características Principales
 
 - **Render Polimórfico**: Alterna automáticamente entre `<button>` y `<a>` según la configuración del input `link`.
-- **Elite Visual Engine**: Toda la lógica visual (Sólido, Outline, Soft, Ghost, etc.) está centralizada en `defaultVariants.ts`.
+- **Elite Visual Engine**: Toda la lógica visual (Sólido, Outline, Soft, Ghost, etc.) se resuelve de manera reactiva mediante la clase base.
 - **Sistema de Temas Dinámico**: Utiliza `AlfColorEnum` con variables CSS y fallbacks para un cambio de tema instantáneo y sin parpadeos.
-- **Herencia de Identidad Inteligente**: Las variantes decorativas (ej: `PrimaryOutline`) heredan automáticamente el ADN cromático de su familia base (`Primary`).
+- **Inputs Atómicos**: Divide la configuración en inputs reactivos individuales (evita objetos de configuración gigantes).
 - **Protección de Doble Click**: Implementa un sistema de `debounceTime` reactivo para evitar múltiples ejecuciones en acciones críticas.
 - **Zoneless Ready**: Diseñado para funcionar de forma óptima en arquitecturas Angular sin Zone.js.
 
@@ -16,7 +16,7 @@ Componente de botón standalone de alto rendimiento diseñado para Angular 22. I
 ```html
 <alf-button
   [id]="'btn-save'"
-  [colorVariant]="AlfColorVariantEnum.Primary"
+  [variant]="AlfColorVariantEnum.Primary"
   [label]="'Guardar Cambios'"
   (onClick)="handleSave($event)">
 </alf-button>
@@ -24,7 +24,7 @@ Componente de botón standalone de alto rendimiento diseñado para Angular 22. I
 
 ```typescript
 import { AlfColorVariantEnum } from '@alfcomponents/enums';
-```,StartLine:14,TargetContent:
+```
 
 ## API del Componente
 
@@ -32,20 +32,18 @@ import { AlfColorVariantEnum } from '@alfcomponents/enums';
 
 | Input | Tipo | Descripción |
 |---|---|---|
-| `inputConfig` | `AlfButtonInterface` | Objeto de configuración integral del botón. |
 | `type` | `AlfButtonTypeEnum` | Tipo HTML del botón (`button`, `submit`, `reset`). |
 | `label` | `string` | Texto visible del botón (sobrescribe i18n). |
-| `iconLeft` | `AlfIconsUnicodeIconEnum` | Icono a la izquierda del texto. |
-| `iconRight` | `AlfIconsUnicodeIconEnum` | Icono a la derecha del texto. |
-| `link` | `AlfLinkInterface` | Configuración de enlace (convierte el botón en `<a>`). |
+| `iconLeft` | `string \| AlfIconsUnicodeIconEnum` | Icono a la izquierda del texto. |
+| `iconRight` | `string \| AlfIconsUnicodeIconEnum` | Icono a la derecha del texto. |
+| `link` | `ButtonLink` | Configuración de enlace (convierte el botón en `<a>`). |
 | `debounceTime` | `number` | Tiempo de espera en ms para filtrar clicks repetidos. |
 
-### Configuración Visual (Heredada)
+### Configuración Visual (Heredada de `AlfBaseDirectives`)
 
 | Propiedad | Descripción |
 |---|---|
-| `colorVariant` | Variante de color base (Primary, Success, etc.). |
-| `visualType` | Estilo visual (Solid, Outline, Ghost, Soft, Crystal, 3D, Gradient). |
+| `variant` | Variante de color y estilo visual (Primary, Success, SuccessSoft, PrimaryOutline, etc.). |
 | `disabled` | Estado de interacción del componente. |
 | `ripple` | Configuración del efecto de ondas al hacer click. |
 | `animations` | Animaciones de entrada/salida (Animate.css). |

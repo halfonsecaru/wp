@@ -47,10 +47,10 @@ describe('AlfTabsContainerComponent', () => {
   });
 
   it('should create the tabs container and display all tabs', () => {
-    const containerEl = fixture.debugElement.query(By.css('.alf-tabs-container'));
+    const containerEl = fixture.debugElement.query(By.css('.alf-tabs'));
     expect(containerEl).toBeTruthy();
 
-    const buttons = fixture.debugElement.queryAll(By.css('.alf-tab-header-button'));
+    const buttons = fixture.debugElement.queryAll(By.css('.alf-tabs__tab-btn'));
     expect(buttons.length).toBe(3);
     expect(buttons[0].nativeElement.textContent.trim()).toBe('Tab One');
     expect(buttons[1].nativeElement.textContent.trim()).toBe('Tab Two');
@@ -58,14 +58,14 @@ describe('AlfTabsContainerComponent', () => {
   });
 
   it('should initialize with activeIndex from the parent host', () => {
-    const activeTabButton = fixture.debugElement.query(By.css('.alf-tab-header-button.alf-tab-active'));
+    const activeTabButton = fixture.debugElement.query(By.css('.alf-tabs__tab-btn--active'));
     expect(activeTabButton).toBeTruthy();
     expect(activeTabButton.nativeElement.textContent.trim()).toBe('Tab One');
     expect(containerComponent.activeIndex()).toBe(0);
   });
 
   it('should change active tab when a tab button is clicked', async () => {
-    const buttons = fixture.debugElement.queryAll(By.css('.alf-tab-header-button'));
+    const buttons = fixture.debugElement.queryAll(By.css('.alf-tabs__tab-btn'));
     
     // Click the second tab
     buttons[1].nativeElement.click();
@@ -75,12 +75,12 @@ describe('AlfTabsContainerComponent', () => {
     expect(containerComponent.activeIndex()).toBe(1);
     expect(hostComponent.activeIndex).toBe(1);
 
-    const activeTabButton = fixture.debugElement.query(By.css('.alf-tab-header-button.alf-tab-active'));
+    const activeTabButton = fixture.debugElement.query(By.css('.alf-tabs__tab-btn--active'));
     expect(activeTabButton.nativeElement.textContent.trim()).toBe('Tab Two');
   });
 
   it('should NOT change tab or select when clicking a disabled tab button', async () => {
-    const buttons = fixture.debugElement.queryAll(By.css('.alf-tab-header-button'));
+    const buttons = fixture.debugElement.queryAll(By.css('.alf-tabs__tab-btn'));
     expect(buttons[2].nativeElement.disabled).toBe(true);
 
     // Click the third (disabled) tab
@@ -93,7 +93,7 @@ describe('AlfTabsContainerComponent', () => {
   });
 
   it('should navigate tabs on touch/swipe gestures', () => {
-    const contentEl = fixture.debugElement.query(By.css('.alf-tabs-content-container')).nativeElement;
+    const contentEl = fixture.debugElement.query(By.css('.alf-tabs__content')).nativeElement;
 
     // Simulate swipe left (next tab)
     const touchStartEventNext = new TouchEvent('touchstart', {
@@ -178,20 +178,20 @@ describe('AlfTabsContainerComponent Advanced Features', () => {
   });
 
   it('should support closable tabs rendering cross icon', () => {
-    const buttons = fixture.debugElement.queryAll(By.css('.alf-tab-header-button'));
+    const buttons = fixture.debugElement.queryAll(By.css('.alf-tabs__tab-btn'));
     
     // First tab (closable: true) should have a close button
-    const closeBtn1 = buttons[0].query(By.css('.alf-tab-close-btn'));
+    const closeBtn1 = buttons[0].query(By.css('.alf-tabs__close'));
     expect(closeBtn1).toBeTruthy();
 
     // Second tab (closable: false) should NOT have a close button
-    const closeBtn2 = buttons[1].query(By.css('.alf-tab-close-btn'));
+    const closeBtn2 = buttons[1].query(By.css('.alf-tabs__close'));
     expect(closeBtn2).toBeFalsy();
   });
 
   it('should emit tabClose when close icon is clicked', async () => {
-    const buttons = fixture.debugElement.queryAll(By.css('.alf-tab-header-button'));
-    const closeBtn1 = buttons[0].query(By.css('.alf-tab-close-btn')).nativeElement;
+    const buttons = fixture.debugElement.queryAll(By.css('.alf-tabs__tab-btn'));
+    const closeBtn1 = buttons[0].query(By.css('.alf-tabs__close')).nativeElement;
 
     closeBtn1.click();
     fixture.detectChanges();
@@ -201,7 +201,7 @@ describe('AlfTabsContainerComponent Advanced Features', () => {
   });
 
   it('should handle circular keyboard navigation with ArrowRight/ArrowLeft (automatic activation)', async () => {
-    const buttons = fixture.debugElement.queryAll(By.css('.alf-tab-header-button'));
+    const buttons = fixture.debugElement.queryAll(By.css('.alf-tabs__tab-btn'));
     const firstButton = buttons[0].nativeElement;
 
     // Press ArrowRight on first tab button
@@ -240,8 +240,7 @@ class TestHostVerticalComponent {}
     verticalFixture.detectChanges();
     await verticalFixture.whenStable();
 
-    const containerEl = verticalFixture.debugElement.query(By.css('.alf-tabs-container'));
-    expect(containerEl.nativeElement.classList.contains('alf-tabs-container--vertical')).toBe(true);
+    const containerEl = verticalFixture.debugElement.query(By.css('.alf-tabs'));
+    expect(containerEl.nativeElement.classList.contains('alf-tabs--vertical')).toBe(true);
   });
 });
-

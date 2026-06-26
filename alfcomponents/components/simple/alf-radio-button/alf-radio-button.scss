@@ -166,22 +166,22 @@
   }
 
   // Descripciones y Helpers
-    &-description,
-    &-error,
-    &-helper {
-      margin-top: 3px;
-      margin-left: 10px;
-      font-size: 0.7rem;
-      opacity: 0.9;
-    }
-  
-    &-description,
-    &-helper {
-      color: var(--alf-sw-text-color, inherit);
-    }
-  
-    &-error {
-      color: var(--alf-danger, #dc3545) !important;
-    }
+  &-description,
+  &-error,
+  &-helper {
+    margin-top: 3px;
+    margin-left: 10px;
+    font-size: 0.7rem;
+    opacity: 0.9;
+  }
+
+  &-description,
+  &-helper {
+    color: var(--alf-sw-text-color, inherit);
+  }
+
+  &-error {
+    color: var(--alf-danger, #dc3545) !important;
+  }
 
 }

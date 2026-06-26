@@ -32,7 +32,10 @@
         <div class="pg-preview-stage">
           @if (showPreview()) { @if (selectedComponentId() === 'alf-button') {
           <alf-button
-            [config]="buttonBehaviorConfig()"
+            [iconLeft]="buttonBehaviorConfig().iconLeft"
+            [iconRight]="buttonBehaviorConfig().iconRight"
+            [type]="buttonBehaviorConfig().type"
+            [predefined]="buttonBehaviorConfig().predefined"
             [label]="compLabel()"
             [variant]="compVariant()"
             [size]="compSize()"

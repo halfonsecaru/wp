@@ -14,18 +14,15 @@ import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
   styleUrl: './alf-card-img.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AlfCardImgComponent extends AlfBaseDirectives<AlfCardImgConfigInterface> {
+export class AlfCardImgComponent extends AlfBaseDirectives {
   protected readonly cssVarPrefix: string = visualprefixEnum.CardImg as string;
   protected readonly classPrefix: string = 'alf-card-img';
 
   public readonly inputConfig = input<AlfCardImgConfigInterface>(undefined, { alias: 'config' });
   public readonly src = input<string | undefined>();
   public readonly alt = input<string | undefined>();
-  private readonly _disabled = signal<boolean>(false);
 
-  public readonly disabledComputed = computed<boolean>(() => {
-    return !!(this.disabled() || this.inputConfig()?.disabled || this._disabled());
-  });
+
 
   protected readonly resolvedSrc = computed(() => this.src() ?? this.inputConfig()?.src ?? '');
   protected readonly resolvedAlt = computed(() => this.alt() ?? this.inputConfig()?.alt ?? '');

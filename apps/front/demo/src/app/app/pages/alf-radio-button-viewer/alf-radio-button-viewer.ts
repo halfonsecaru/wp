@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { AlfRadioButton } from '@alfcomponents/components';
-import { 
-  AlfColorVariantEnum, 
-  AlfSizeEnum, 
-  AlfRadioButtonVariantEnum 
+import {
+  AlfColorVariantEnum,
+  AlfSizeEnum,
+  AlfRadioButtonVariantEnum
 } from '@alfcomponents/enums';
 
 @Component({
@@ -25,7 +25,7 @@ export class AlfRadioButtonViewer {
   public readonly selectedLabelPosGroup = signal<string>('after');
   public readonly selectedExtraGroup = signal<string>('tooltip');
   public readonly selectedSizeGroup = signal<AlfSizeEnum>(AlfSizeEnum.MD);
-  
+
   // States for demo groups
   public readonly selectedSolidElegantGroup = signal<string>('primary');
   public readonly selectedSolidStandardGroup = signal<string>('primary');

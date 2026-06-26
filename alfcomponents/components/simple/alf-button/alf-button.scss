@@ -75,6 +75,18 @@
     pointer-events: none;
     font-size: 1.2em;
     flex-shrink: 0;
+
+    &--left {
+      &:has(+ .alf-button__label) {
+        padding-right: 0.5rem;
+      }
+    }
+
+    &--right {
+      .alf-button__label + & {
+        padding-left: 0.5rem;
+      }
+    }
   }
 
   &__label {

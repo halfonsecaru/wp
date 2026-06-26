@@ -188,9 +188,10 @@ describe('AlfInput', () => {
     fixture.componentRef.setInput('isLoading', true);
     fixture.detectChanges();
 
-    const loadingEl = fixture.debugElement.query(By.css('.alf-input-loading'));
+    const loadingEl = fixture.debugElement.query(By.css('.alf-input-loading-overlay'));
     expect(loadingEl).toBeTruthy();
-    expect(loadingEl.nativeElement.textContent).toContain('⏳');
+    const spinnerEl = fixture.debugElement.query(By.css('alf-spinner'));
+    expect(spinnerEl).toBeTruthy();
   });
 
   it('debe marcar el input como readonly si se le pasa por input', () => {

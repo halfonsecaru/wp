@@ -32,7 +32,7 @@ import { AlfRadioButtonI18nLabels, getAlfRadioButtonLabel } from './i18n/alf-rad
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class AlfRadioButton extends AlfBaseDirectives<AlfRadioButtonInterface> {
+export class AlfRadioButton extends AlfBaseDirectives {
 
 
   // ── 1. Constants & View Queries ───────────────────────────────────────────
@@ -56,7 +56,6 @@ export class AlfRadioButton extends AlfBaseDirectives<AlfRadioButtonInterface> {
 
   // Internal State Signals
   protected readonly _label = signal<string>(undefined);
-  private readonly _disabled = signal<boolean>(false);
 
   // ── 3. Outputs and state signals ────────────────────────────────────────────────────────
 
@@ -69,9 +68,7 @@ export class AlfRadioButton extends AlfBaseDirectives<AlfRadioButtonInterface> {
 
   // ── 5. Computed State (Derived from Inputs & State) ───────────────────────
   protected readonly idComputed = computed(() => this.id() ?? this.inputConfig()?.id ?? this.internalId);
-  public readonly disabledComputed = computed<boolean>(() => {
-    return !!(this.disabled() || this.inputConfig()?.disabled || this._disabled());
-  });
+
   protected readonly labelComputed = computed<string | null>(() => {
     // Prefer explicit label input/config; internal CVA label is only a fallback.
     const explicitLabel = this.label() ?? this.labelText() ?? this.inputConfig()?.label;
@@ -224,11 +221,4 @@ export class AlfRadioButton extends AlfBaseDirectives<AlfRadioButtonInterface> {
     this._label.set(val === null || val === undefined ? '' : String(val));
   }
 
-  /**
-   * Implementación del patrón ControlValueAccessor.
-   * Se ejecuta automáticamente cuando el formGroup deshabilita o habilita el control.
-   */
-  protected setControlDisabled(isDisabled: boolean): void {
-    this._disabled.set(isDisabled);
-  }
 }

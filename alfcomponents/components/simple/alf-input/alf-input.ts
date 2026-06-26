@@ -39,7 +39,7 @@ import { generatedComponentFunction, calculateErrorBorder, calculateErrorTextSty
   ],
   host: {}
 })
-export class AlfInput extends AlfBaseDirectives<AlfInputInterface> {
+export class AlfInput extends AlfBaseDirectives {
   // ── 1. Constants & View Queries ───────────────────────────────────────────
   protected readonly AlfRemEnum = AlfRemEnum;
   private readonly inputElement = viewChild<ElementRef<HTMLInputElement | HTMLTextAreaElement>>('inputRef');
@@ -73,7 +73,6 @@ export class AlfInput extends AlfBaseDirectives<AlfInputInterface> {
   // ── 4. Internal State (Signals & Variables) ───────────────────────────────
   protected readonly internalId: string = generateUniqueId({ prefix: visualprefixEnum.Input });
   protected readonly isPasswordVisible = signal<boolean>(false);
-  private readonly _disabled = signal<boolean>(false);
   private debounceTimerId: any = null;
 
   // ── 5. Computed State (Derived from Inputs & State) ───────────────────────
@@ -105,7 +104,6 @@ export class AlfInput extends AlfBaseDirectives<AlfInputInterface> {
     (this.showCharCounter() && this.maxLength()) ||
     (this.inputConfig()?.showCharCounter && this.inputConfig()?.maxLength)
   );
-  protected readonly disabledComputed = computed(() => this.disabled() || this._disabled() || (this.inputConfig()?.disabled ?? false));
   protected readonly isReadonly = computed(() => this.readonly() ?? this.inputConfig()?.readonly ?? false);
 
   protected readonly hasSuffix = computed(() =>
@@ -256,13 +254,7 @@ export class AlfInput extends AlfBaseDirectives<AlfInputInterface> {
     this.value.set(val === null || val === undefined ? '' : String(val));
   }
 
-  /**
-   * Implementación del patrón ControlValueAccessor.
-   * Se ejecuta automáticamente cuando el formGroup deshabilita o habilita el control.
-   */
-  protected setControlDisabled(isDisabled: boolean): void {
-    this._disabled.set(isDisabled);
-  }
+
 
   // ── 8. Constructor ────────────────────────────────────────────────────────
   constructor() {

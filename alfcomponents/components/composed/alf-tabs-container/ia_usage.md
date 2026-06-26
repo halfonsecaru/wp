@@ -8,7 +8,7 @@
 
 ## Architecture Highlights
 - **Communication**: Uses `contentChildren(AlfTabComponent)` to orchestrate children. Syncs `active` state via `setActive()` method in children.
-- **Height Management**: Uses a "Ghost" element strategy for fluid height transitions. The parent container animates its height based on the `reportHeight()` signal from the active child.
+- **Height Management**: Uses `AlfTabsHeightService` (a local Signal-based orchestrator) for fluid height transitions. The component animates `minHeight` and `maxHeight` via the Web Animations API (WAAPI). If a tab contains a nested `<alf-tabs-container>`, the parent automatically switches its height constraints to `auto`, allowing native CSS layout to synchronize perfectly with the nested animations.
 - **Cross-Fade**: Non-blocking tab switching. Triggering `playExitAnimation()` on the old tab while simultaneously activating the new one. Entry animation is delayed by 100ms for a smoother overlay effect.
 
 ## Key Inputs & Signals

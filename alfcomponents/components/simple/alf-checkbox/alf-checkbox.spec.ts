@@ -68,7 +68,7 @@ describe('AlfCheckbox', () => {
 
   describe('Elite Variants', () => {
     it('should resolve StandardPrimary correctly', () => {
-      fixture.componentRef.setInput('colorVariant', AlfColorVariantEnum.Primary);
+      fixture.componentRef.setInput('variant', AlfColorVariantEnum.Primary);
       fixture.detectChanges();
       
       expect(component.isSoft()).toBe(false);
@@ -76,14 +76,14 @@ describe('AlfCheckbox', () => {
     });
 
     it('should resolve SoftSuccess correctly', () => {
-      fixture.componentRef.setInput('colorVariant', AlfColorVariantEnum.SuccessSoft);
+      fixture.componentRef.setInput('variant', AlfColorVariantEnum.SuccessSoft);
       fixture.detectChanges();
       
       expect(component.isSoft()).toBe(true);
     });
 
     it('should resolve CrystalInfo correctly', () => {
-      fixture.componentRef.setInput('colorVariant', AlfColorVariantEnum.InfoCrystal);
+      fixture.componentRef.setInput('variant', AlfColorVariantEnum.InfoCrystal);
       fixture.detectChanges();
       
       expect(component.isCrystal()).toBe(true);
@@ -94,7 +94,7 @@ describe('AlfCheckbox', () => {
 
   describe('Validation & Messages', () => {
     it('should render helper text when provided', () => {
-      fixture.componentRef.setInput('config', { helperText: 'Helper message' });
+      fixture.componentRef.setInput('helperText', 'Helper message');
       fixture.detectChanges();
       
       const hostElement = fixture.nativeElement as HTMLElement;
@@ -102,7 +102,7 @@ describe('AlfCheckbox', () => {
     });
 
     it('should render error text and apply error styles', () => {
-      fixture.componentRef.setInput('config', { error: 'Error message' });
+      fixture.componentRef.setInput('error', 'Error message');
       fixture.detectChanges();
       
       const hostElement = fixture.nativeElement as HTMLElement;

@@ -21,7 +21,7 @@ This document describes how to extend and use the `alf-checkbox` component safel
    </alf-checkbox>
    ```
 
-2. **Customization**: Spreading and combining configs can also be done via the optional `inputConfig` input if needed, but direct signal inputs are the preferred approach for reactivity.
+2. **Customization**: Visual properties are customized directly via the component's input signals (such as `variant`, `size`, `checkboxStyle`).
 
 ## Technical Rules (Mandatory)
 
@@ -30,7 +30,7 @@ This document describes how to extend and use the `alf-checkbox` component safel
 - **Arrow Functions**: Use arrow functions for all class methods, except lifecycle hooks and host event handlers which can be standard methods.
 - **No Directives Overuse**: Do NOT use `CommonModule` or `*ngIf`. Use `@if`, `@for`, and `@let`.
 - **Direct Template Listeners**: Listen to interactive DOM events directly in the template (e.g., `(click)`) to prevent unnecessary host propagation and maintain precision.
-- **Hierarchy**: The component resolves properties using: `Individual Inputs > inputConfig > Inherited Context`.
+- **Hierarchy**: The component resolves properties using: `Individual Inputs > Inherited Context`.
 
 ## State Management
 

@@ -15,11 +15,11 @@
         <div class="btn-demo-row">
           <div class="btn-demo-item">
             <span class="btn-demo-label">Botón Estándar</span>
-            <alf-button label="Guardar Cambios" [variant]="AlfColorVariantEnum.Primary" />
+            <alf-button label="Guardar Cambios" />
           </div>
           <div class="btn-demo-item">
             <span class="btn-demo-label">Acción de Envío (Save predefined)</span>
-            <alf-button predefined="save" [variant]="AlfColorVariantEnum.Success" />
+            <alf-button predefined="save" />
           </div>
         </div>
       </div>
@@ -34,20 +34,16 @@
       <div class="btn-card__body">
         <div class="btn-demo-row" style="gap: 1rem;">
           <div class="btn-demo-item">
-            <span class="btn-demo-label">Sin Icono</span>
-            <alf-button label="Enviar Correo" [variant]="AlfColorVariantEnum.Primary" />
+            <span class="btn-demo-label">Monocromo (Hereda Color)</span>
+            <alf-button label="Enviar" [iconLeft]="AlfIconsUnicodeIconEnum.Envelope" />
           </div>
           <div class="btn-demo-item">
-            <span class="btn-demo-label">Icono Izquierdo</span>
-            <alf-button label="Enviar" [iconLeft]="AlfIconsUnicodeIconEnum.Envelope" [variant]="AlfColorVariantEnum.Primary" />
-          </div>
-          <div class="btn-demo-item">
-            <span class="btn-demo-label">Icono Derecho</span>
-            <alf-button label="Siguiente" [iconRight]="AlfIconsUnicodeIconEnum.ArrowRight" [variant]="AlfColorVariantEnum.Primary" />
+            <span class="btn-demo-label">Emoji (Color Fijo)</span>
+            <alf-button label="Enviar" [iconLeft]="AlfIconsEmojiIconEnum.Envelope" />
           </div>
           <div class="btn-demo-item">
             <span class="btn-demo-label">Solo Icono</span>
-            <alf-button label="" [iconLeft]="AlfIconsUnicodeIconEnum.Settings" [variant]="AlfColorVariantEnum.Primary" />
+            <alf-button label="" [iconLeft]="AlfIconsUnicodeIconEnum.Settings" />
           </div>
         </div>
       </div>
@@ -64,7 +60,7 @@
           @for (sz of sizes; track sz) {
             <div class="btn-size-item">
               <span class="btn-size-badge">{{ sz }}</span>
-              <alf-button [size]="sz" [label]="'Acción (' + sz + ')'" [variant]="AlfColorVariantEnum.Primary" />
+              <alf-button [size]="sz" [label]="'Acción (' + sz + ')'" />
             </div>
           }
         </div>

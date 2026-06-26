@@ -21,7 +21,7 @@ import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
   styleUrl: './alf-card.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AlfCardComponent extends AlfBaseDirectives<AlfCardConfigInterface> {
+export class AlfCardComponent extends AlfBaseDirectives {
 
   // ── 1. Constants & View Queries ───────────────────────────────────────────
   protected readonly cssVarPrefix: string = visualprefixEnum.Card as string;
@@ -32,7 +32,6 @@ export class AlfCardComponent extends AlfBaseDirectives<AlfCardConfigInterface> 
   public readonly inputConfig = input<AlfCardConfigInterface>(undefined, { alias: 'config' });
   public readonly helperText = input<string>();
   override readonly elevated = input<boolean>(true);
-  private readonly _disabled = signal<boolean>(false);
 
   // ── 3. Internal State (Signals & Variables) ─────────────────────────────────────────────
   protected readonly internalId: string = generateUniqueId({ prefix: this.classPrefix });
@@ -40,9 +39,7 @@ export class AlfCardComponent extends AlfBaseDirectives<AlfCardConfigInterface> 
   // ── 4. Computed State (Derived from Inputs & State) ───────────────────────
   protected readonly idComputed = computed(() => this.id() ?? this.inputConfig()?.id ?? this.internalId);
   protected readonly helperTextComputed = computed(() => this.helperText() ?? this.inputConfig()?.helperText);
-  public readonly disabledComputed = computed<boolean>(() => {
-    return !!(this.disabled() || this.inputConfig()?.disabled || this._disabled());
-  });
+
 
   protected readonly predefinedConfig = computed(() => {
     const currentVariant = this.variant() ?? AlfColorVariantEnum.SecondaryOutline;

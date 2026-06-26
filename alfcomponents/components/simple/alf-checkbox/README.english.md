@@ -31,7 +31,6 @@ import { AlfColorVariantEnum } from '@alfcomponents/enums';
 
 | Input | Type | Description |
 |---|---|---|
-| `inputConfig` | `AlfCheckboxInterface` | Comprehensive checkbox configuration object. |
 | `checked` | `model<boolean>` | Two-way binding for the checked state. |
 | `indeterminate` | `model<boolean>` | Two-way binding for the indeterminate state. |
 | `label` | `input<string>` | Checkbox label text. |

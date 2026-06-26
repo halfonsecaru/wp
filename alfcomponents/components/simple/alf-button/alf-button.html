@@ -1,10 +1,30 @@
-@let bg = backgroundComputed(); @let bd = borderComputed(); @let ot = outlineComputed(); 
-@let sd = shadowsComputed();
-@let mg = marginComputed(); @let pd = paddingComputed(); @let ty = typographyComputed(); @let ts = textStyleComputed(); @let tr = transformComputed();
-@let tsn = transitionComputed(); @let dl = displayAndLayoutComputed(); @let sz = size(); @let ar = aria(); @let tt = tooltip(); @let rp = ripple();
-@let cr = cursor(); @let ds = disabledComputed(); @let cc = customClass(); @let cs = customStyle(); @let bid = idComputed();
-@let ld = isLoading() || inputConfig()?.loading; @let bt = typeComputed(); @let lk = linkComputed(); @let lb = labelComputed(); @let il =
-iconLeftComputed(); @let ir = iconRightComputed(); 
+@let bd = borderComputed(); <!--  -->
+@let ot = outlineComputed(); <!--  -->
+@let sd = shadowsComputed(); <!--  -->
+@let mg = marginComputed(); <!--  --> 
+@let pd = paddingComputed(); <!--  --> 
+@let ty = typographyComputed(); <!--  -->
+@let ts = textStyleComputed(); <!--  -->
+@let tr = transformComputed(); <!--  -->
+@let tsn = transitionComputed(); <!--  -->
+@let dl = displayAndLayoutComputed(); <!--  --> 
+@let sz = size(); <!--  --> 
+@let ar = aria(); <!--  --> 
+@let tt = tooltip(); <!--  --> 
+@let rp = ripple(); <!--  -->
+@let cr = cursor(); <!--  -->
+@let ds = disabledComputed(); <!--  -->
+@let cc = customClass(); <!--  --> 
+@let cs = customStyle(); <!--  --> 
+@let bid = idComputed();<!--  --> 
+@let ld = isLoading(); <!--  --> 
+@let bt = type() ?? 'button'; <!--  --> 
+@let lk = link(); <!--  --> 
+@let lb = labelComputed(); <!--  --> 
+@let il = iconLeft(); <!--  -->
+@let ir = iconRight(); <!--  -->
+@let bg = backgroundComputed(); <!--  --> 
+
 @if (lk) {
 <a
   [id]="bid"
@@ -43,7 +63,9 @@ iconLeftComputed(); @let ir = iconRightComputed();
     @if (il) {
     <span class="alf-button__icon alf-button__icon--left">{{ il }}</span>
     }
+    @if (lb) {
     <span class="alf-button__label">{{ lb }}</span>
+    }
     @if (ir) {
     <span class="alf-button__icon alf-button__icon--right">{{ ir }}</span>
     }
@@ -65,25 +87,15 @@ iconLeftComputed(); @let ir = iconRightComputed();
   [alfBackground]="bg ? bg : null"
   alfPrefix="--alf-btn"
   [alfBorder]="bd ? bd : null"
-  alfPrefix="--alf-btn"
   [alfOutline]="ot ? ot : null"
-  alfPrefix="--alf-btn"
   [alfShadows]="sd ? sd : null"
-  alfPrefix="--alf-btn"
   [alfMargin]="mg ? mg : null"
-  alfPrefix="--alf-btn"
   [alfPadding]="pd ? pd : null"
-  alfPrefix="--alf-btn"
   [alfTypography]="ty ? ty : null"
-  alfPrefix="--alf-btn"
   [alfTextStyle]="ts ? ts : null"
-  alfPrefix="--alf-btn"
   [alfTransform]="tr ? tr : null"
-  alfPrefix="--alf-btn"
   [alfTransition]="tsn ? tsn : null"
-  alfPrefix="--alf-btn"
   [alfDisplayAndLayout]="dl ? dl : null"
-  alfPrefix="--alf-btn"
   [alfCursor]="cr ? cr : null"
   [alfSize]="sz ? sz : null"
   [alfDisabled]="ds"
@@ -100,7 +112,9 @@ iconLeftComputed(); @let ir = iconRightComputed();
     @if (il) {
     <span class="alf-button__icon alf-button__icon--left">{{ il }}</span>
     }
+    @if (lb) {
     <span class="alf-button__label">{{ lb }}</span>
+    }
     @if (ir) {
     <span class="alf-button__icon alf-button__icon--right">{{ ir }}</span>
     }

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, signal, computed } from '@angular/core';
 import { AlfButton } from '@alfcomponents/components';
-import { AlfColorVariantEnum, AlfSizeEnum, AlfIconsUnicodeIconEnum } from '@alfcomponents/enums';
+import { AlfColorVariantEnum, AlfSizeEnum, AlfIconsUnicodeIconEnum, AlfIconsEmojiIconEnum } from '@alfcomponents/enums';
 
 @Component({
   selector: 'app-alf-button-viewer',
@@ -15,6 +15,7 @@ export class AlfButtonViewer {
   public readonly AlfColorVariantEnum = AlfColorVariantEnum;
   public readonly AlfSizeEnum = AlfSizeEnum;
   public readonly AlfIconsUnicodeIconEnum = AlfIconsUnicodeIconEnum;
+  public readonly AlfIconsEmojiIconEnum = AlfIconsEmojiIconEnum;
 
   // ── Interactive state of examples ─────────────────────────────────────────
   public readonly clickCount = signal<number>(0);
