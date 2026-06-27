@@ -21,13 +21,13 @@ export class AlfRadioButtonViewer {
   public readonly AlfRadioButtonVariantEnum = AlfRadioButtonVariantEnum;
 
   // ── Reactive group states ──────────────────────────────────────────────────
-  public readonly selectedStyleGroup = signal<string>('elegant');
-  public readonly selectedLabelPosGroup = signal<string>('after');
+  public readonly selectedStyleGroup = signal<string>('none');
+  public readonly selectedLabelPosGroup = signal<string>('none');
   public readonly selectedExtraGroup = signal<string>('tooltip');
   public readonly selectedSizeGroup = signal<AlfSizeEnum>(AlfSizeEnum.MD);
 
   // States for demo groups
-  public readonly selectedSolidElegantGroup = signal<string>('primary');
+  public readonly selectedSolidElegantGroup = signal<string>('none');
   public readonly selectedSolidStandardGroup = signal<string>('primary');
   public readonly selectedOutlineGroup = signal<string>('primary-outline');
   public readonly selectedSoftGroup = signal<string>('primary-soft');

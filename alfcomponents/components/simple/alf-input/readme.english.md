@@ -32,25 +32,9 @@
 </alf-input>
 ```
 
-### Using Config Object
-Instead of passing individual bindings, you can pass an entire `AlfInputInterface` configuration object:
-```html
-<alf-input [config]="inputConfig()"></alf-input>
-```
-```typescript
-inputConfig = signal<AlfInputInterface>({
-  label: 'Password',
-  inputType: AlfInputTypeEnum.Password,
-  showPasswordToggle: true,
-  clearable: true,
-  helperText: 'Must be at least 8 characters'
-});
-```
-
 ## API
 
 ### Inputs
-- `config` (`AlfInputInterface`): A master configuration object.
 - `label` (`string`): The floating or static label for the input.
 - `placeholder` (`string`): Placeholder text.
 - `type` (`AlfInputTypeEnum | string`): HTML input type (e.g., text, password, email).

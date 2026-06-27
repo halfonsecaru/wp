@@ -1,29 +1,14 @@
 import { ChangeDetectionStrategy, Component, computed, input, model, output, signal, ViewEncapsulation } from '@angular/core';
-import { AlfSwitchInterface, AlfSwitchVariantEnum } from './interfaces/alf-switch.interface';
+import { AlfSwitchVariantEnum } from './interfaces/alf-switch.interface';
 import { generateUniqueId, visualprefixEnum } from '@alfcomponents/shared';
-import { AlfLabelsPositionEnum, AlfColorVariantEnum, AlfSizeEnum, AlfRadiusEnum, AlfColorEnum } from '@alfcomponents/enums';
+import { AlfLabelsPositionEnum, AlfColorVariantEnum, AlfSizeEnum, AlfColorEnum } from '@alfcomponents/enums';
 
 import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
-import { AlfBaseDirectives, AlfComponentTypeEnum, deepMergeStates } from '@alfcomponents/components/base/bases.directive';
+import { AlfBaseDirectives } from '@alfcomponents/components/base/bases.directive';
 import { AlfSwitchI18nLabels, getAlfSwitchLabel } from './i18n/switch-i18n';
 import { AlfSpinner } from '../alf-spinner/alf-spinner';
 import { AlfRemEnum } from '@alfcomponents/enums';
-import { resetAlfBorderRadiusAndGiveBorder } from '@alfcomponents/shared/functions/generateStyles';
-
-type SwitchCompConfig = {
-  background: any;
-  border: any;
-  padding: any;
-  textStyle: any;
-  shadows?: any;
-  typography?: {
-    default?: { color?: string };
-    hover?: { color?: string };
-    focus?: { color?: string };
-    active?: { color?: string };
-    disabled?: { color?: string };
-  };
-};
+import { AlfComponentTypeEnum } from '@alfcomponents/components/base/enum/AlfComponentType.enum';
 
 
 
@@ -48,7 +33,6 @@ export class AlfSwitch extends AlfBaseDirectives {
 
 
   public readonly id = input<string>();
-  public readonly inputConfig = input<AlfSwitchInterface>(undefined, { alias: 'config' });
   public readonly label = input<string | undefined>();
   public readonly labelText = input<string | undefined>(undefined, { alias: 'labelText' });
   public readonly switchStyle = input<AlfSwitchVariantEnum | 'standard' | 'elegant'>(AlfSwitchVariantEnum.Elegant);
@@ -57,13 +41,6 @@ export class AlfSwitch extends AlfBaseDirectives {
   public readonly labelPosition = input<AlfLabelsPositionEnum | 'before' | 'after'>(AlfLabelsPositionEnum.After);
   public readonly predefined = input<keyof AlfSwitchI18nLabels>();
   public readonly colorSwitch = input<AlfColorEnum | string | undefined>(undefined);
-
-  // Workaround for strict template checker not resolving inherited signal/computed members.
-
-
-  // A) Generales a todo el componente
-  //protected override readonly visualPrefix: string = visualprefixEnum.Switch;
-  //protected override readonly componentType = AlfComponentTypeEnum.Switch;
 
   // Internal State Signals
   protected readonly _label = signal<string>(undefined);
@@ -78,47 +55,23 @@ export class AlfSwitch extends AlfBaseDirectives {
   protected readonly internalId: string = generateUniqueId({ prefix: this.classPrefix });
 
   // ── 5. Computed State (Derived from Inputs & State) ───────────────────────
-  protected readonly idComputed = computed(() => this.id() ?? this.inputConfig()?.id ?? this.internalId);
-
+  protected readonly idComputed = computed(() => this.id() ?? this.internalId);
 
 
   protected readonly labelComputed = computed<string | null>(() => {
     // Prefer explicit label input/config; internal CVA label is only a fallback.
-    const explicitLabel = this.label() ?? this.labelText() ?? this.inputConfig()?.label;
+    const explicitLabel = this._label() ?? this.label() ?? this.labelText();
     if (explicitLabel) return explicitLabel;
 
     const internalLabel = this._label();
     if (internalLabel) return internalLabel;
 
-    const pref = this.predefined() ?? this.inputConfig()?.predefined;
+    const pref = this.predefined();
     if (pref) return getAlfSwitchLabel(pref as keyof AlfSwitchI18nLabels);
 
     return '';
   });
 
-  public readonly switchStyleComputed = computed<AlfSwitchVariantEnum>(() =>
-    (this.switchStyle() ?? this.inputConfig()?.switchStyle ?? AlfSwitchVariantEnum.Elegant) as AlfSwitchVariantEnum
-  );
-
-  protected readonly predefinedConfig = computed(() => {
-    const currentVariant = this.variant() ?? this.inputConfig()?.variant ?? AlfColorVariantEnum.SecondaryOutline;
-    const currentSwitchStyle = this.switchStyleComputed();
-
-    return getSwitch(
-      currentVariant,
-      currentSwitchStyle,
-      (v) => this.createSolidComponentSoftBackground(v),
-      (v) => this.create3dComponentSolidText(v),
-      (v) => this.createSolidComponent(v)
-    );
-  });
-
-  public readonly labelPositionComputed = computed<AlfLabelsPositionEnum>(
-    () => (this.labelPosition() ?? this.inputConfig()?.labelPosition ?? AlfLabelsPositionEnum.After) as AlfLabelsPositionEnum
-  );
-
-  public readonly sizeComputed = computed<AlfSizeEnum>(() =>
-    (this.size() as AlfSizeEnum) ?? (this.inputConfig()?.size as AlfSizeEnum) ?? AlfSizeEnum.MD);
 
   public readonly isOutlineVariant = computed<boolean>(() => {
     const currentVariant = this.variant() ?? AlfColorVariantEnum.Secondary;
@@ -127,13 +80,12 @@ export class AlfSwitch extends AlfBaseDirectives {
   });
 
 
-  protected readonly colorSwitchComputed = computed<AlfColorEnum | string | undefined>(() =>
-    this.colorSwitch() ?? this.inputConfig()?.colorSwitch
-  );
+
 
   // ── 6. Constructor ────────────────────────────────────────────────────────
   constructor() {
     super();
+    this.componentType.set(AlfComponentTypeEnum.Switch);
     this.initialization(this.cssVarPrefix, visualprefixEnum.SwitchClass, AlfComponentTypeEnum.Switch);
   };
 
@@ -161,7 +113,7 @@ export class AlfSwitch extends AlfBaseDirectives {
    * Getter interno para que el motor base (ej. validadores) sepa qué valor tiene el botón actualmente.
    */
   protected getControlValue = (): string => {
-    return this._label() ?? this.label() ?? this.inputConfig()?.label ?? '';
+    return this._label() ?? this.label() ?? '';
   }
 
   /**
@@ -184,17 +136,15 @@ export class AlfSwitch extends AlfBaseDirectives {
    * con cualquier configuración global/manual que el usuario pase por inputConfig.
    */
   protected getControlConfig() {
-    const thumbColor = this.colorSwitchComputed();
+    const thumbColor = this.colorSwitch();
 
-    const thumbColorConfig = thumbColor
+    return thumbColor
       ? {
         textStyle: {
           default: { color: thumbColor },
         }
       }
       : undefined;
-
-    return deepMergeStates(this.predefinedConfig(), this.inputConfig(), thumbColorConfig);
   }
 
   /**
@@ -205,58 +155,4 @@ export class AlfSwitch extends AlfBaseDirectives {
     this._label.set(val === null || val === undefined ? '' : String(val));
   }
 
-}
-
-
-const getSwitch = (
-  currentVariant: AlfColorVariantEnum,
-  currentSwitchStyle: AlfSwitchVariantEnum,
-  createSolidComponentSoftBackground: (variant: AlfColorVariantEnum) => SwitchCompConfig,
-  create3dComponentSolidText: (variant: AlfColorVariantEnum) => SwitchCompConfig,
-  createSolidComponent: (variant: AlfColorVariantEnum) => SwitchCompConfig
-) => {
-
-  const vStr = currentVariant.toString();
-
-  let comp: SwitchCompConfig;
-  if (vStr.includes('soft-')) {
-    comp = createSolidComponentSoftBackground(currentVariant);
-  } else if (vStr.includes('depth-')) {
-    comp = create3dComponentSolidText(currentVariant);
-  } else {
-    comp = createSolidComponent(currentVariant);
-  }
-
-  if (currentSwitchStyle === AlfSwitchVariantEnum.Standard) {
-    resetAlfBorderRadiusAndGiveBorder(AlfRadiusEnum.Lg, comp);
-  } else {
-    resetAlfBorderRadiusAndGiveBorder(AlfRadiusEnum.Full, comp);
-  }
-
-  if (
-    !vStr.includes('outline-') &&
-    !vStr.includes('ghost-') &&
-    !vStr.includes('soft-') &&
-    !vStr.includes('crystal-') &&
-    vStr !== 'transparent' &&
-    vStr !== 'Default') {
-
-    if (comp.border) {
-      if (!comp.typography) comp.typography = {
-        default: { color: comp.border.default?.borderColor }
-      };
-    }
-
-  }
-
-  const finalConfig = {
-    backgrounds: comp.background,
-    border: comp.border,
-    padding: comp.padding,
-    textStyle: comp.textStyle,
-    typography: comp.typography,
-    shadows: comp.shadows
-  };
-
-  return finalConfig;
 }

@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   ElementRef,
   forwardRef,
   input,
@@ -15,13 +16,14 @@ import {
   generateUniqueId,
   visualprefixEnum,
 } from '@alfcomponents/shared';
-import { AlfInputTypeEnum, AlfInputAppearanceEnum, AlfInputAdornmentEnum, AlfColorEnum, AlfRemEnum, AlfColorVariantEnum } from '@alfcomponents/enums';
+import { AlfInputTypeEnum, AlfInputAppearanceEnum, AlfColorEnum, AlfRemEnum, AlfColorVariantEnum, AlfIconsUnicodeIconEnum, AlfIconsEmojiIconEnum } from '@alfcomponents/enums';
 import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
 import { AlfSpinner } from '@alfcomponents/components/simple/alf-spinner/alf-spinner';
-import { AlfInputInterface } from './interfaces/alf-input.interface';
 import { getAlfInputLabel, AlfInputI18nLabels } from './i18n/alf-input.i18n';
-import { AlfBaseDirectives, AlfComponentTypeEnum, deepMergeStates } from '@alfcomponents/components/base/bases.directive';
-import { generatedComponentFunction, calculateErrorBorder, calculateErrorTextStyle, calculateErrorBackground } from './alf-input-functions';
+import { AlfBaseDirectives } from '@alfcomponents/components/base/bases.directive';
+import { calculateErrorBorder, calculateErrorTextStyle, calculateErrorBackground, calculateErrorTypography } from './alf-input-functions';
+import { AlfRippleInterface } from '@alfcomponents/interfaces';
+import { AlfComponentTypeEnum } from '@alfcomponents/components/base/enum/AlfComponentType.enum';
 
 @Component({
   selector: 'alf-input',
@@ -46,23 +48,23 @@ export class AlfInput extends AlfBaseDirectives {
 
   // ── 2. Inputs & Models ────────────────────────────────────────────────────
   public readonly value = model<string>();
-  protected readonly inputConfig = input<AlfInputInterface | undefined>(undefined, { alias: 'config' });
+  public override readonly ripple = input<boolean | AlfRippleInterface | undefined>(false);
   protected readonly id = input<string>();
   protected readonly label = input<string>();
   protected readonly placeholder = input<string>();
-  protected readonly inputType = input<AlfInputTypeEnum | string | undefined>(undefined, { alias: 'type' });
+  protected readonly inputType = input<AlfInputTypeEnum>(undefined, { alias: 'type' });
   protected readonly helperText = input<string>();
-  protected readonly appearance = input<AlfInputAppearanceEnum>();
-  protected readonly prefix = input<string | AlfInputAdornmentEnum>();
-  protected readonly suffix = input<string | AlfInputAdornmentEnum>();
-  protected readonly readonly = input<boolean>();
+  protected readonly appearance = input<AlfInputAppearanceEnum>(AlfInputAppearanceEnum.Standard);
+  protected readonly prefix = input<string | AlfIconsEmojiIconEnum | AlfIconsUnicodeIconEnum>();
+  protected readonly suffix = input<string | AlfIconsEmojiIconEnum | AlfIconsUnicodeIconEnum>();
+  protected readonly readonly = input<boolean>(false);
   protected readonly step = input<number>();
-  protected readonly autofocus = input<boolean>();
+  protected readonly autofocus = input<boolean>(false);
   protected readonly autocomplete = input<string>();
-  protected readonly clearable = input<boolean>();
+  protected readonly clearable = input<boolean>(false);
   protected readonly showPasswordToggle = input<boolean>();
   protected readonly showCharCounter = input<boolean>();
-  protected readonly clearOnClick = input<boolean>();
+  protected readonly clearOnClick = input<boolean>(false);
   protected readonly forceFloat = input<boolean>(false);
   protected readonly debounceTime = input<number>();
 
@@ -76,40 +78,25 @@ export class AlfInput extends AlfBaseDirectives {
   private debounceTimerId: any = null;
 
   // ── 5. Computed State (Derived from Inputs & State) ───────────────────────
-  protected readonly idComputed = computed(() => this.id() ?? this.inputConfig()?.id ?? this.internalId);
-  protected readonly labelComputed = computed<string | null>(() => this.label() ?? this.inputConfig()?.label ?? null);
-  protected readonly placeholderComputed = computed(() => this.placeholder() ?? this.inputConfig()?.placeholder ?? undefined);
-  protected readonly forceFloatComputed = computed(() => this.forceFloat() || (this.inputConfig()?.forceFloat ?? false));
-  protected readonly inputTypeComputed = computed(() => {
+  protected readonly idComputed = computed(() => this.id() ?? this.internalId);
 
-    const type = this.inputType() ?? this.inputConfig()?.inputType;
+  protected readonly inputTypeComputed = computed(() => {
+    const type = this.inputType();
     if (!type || (type === AlfInputTypeEnum.Password && this.isPasswordVisible())) return 'text';
     return type;
   });
 
-  protected readonly helperTextComputed = computed(() => this.helperText() ?? this.inputConfig()?.helperText);
-  protected readonly appearanceComputed = computed(() => this.appearance() ?? this.inputConfig()?.appearance ?? AlfInputAppearanceEnum.Standard);
-  protected readonly prefixComputed = computed(() => this.prefix() ?? this.inputConfig()?.prefix);
-  protected readonly suffixComputed = computed(() => this.suffix() ?? this.inputConfig()?.suffix);
-  protected readonly stepComputed = computed(() => this.step() ?? this.inputConfig()?.step);
-  protected readonly autofocusComputed = computed(() => this.autofocus() ?? this.inputConfig()?.autofocus ?? false);
-  protected readonly autocompleteComputed = computed(() => this.autocomplete() ?? this.inputConfig()?.autocomplete);
-  protected readonly clearableComputed = computed(() => this.clearable() ?? this.inputConfig()?.clearable ?? false);
-  protected readonly clearOnClickComputed = computed(() => this.clearOnClick() ?? this.inputConfig()?.clearOnClick ?? false);
   protected readonly showPasswordToggleComputed = computed(() => {
-    const type = this.inputType() ?? this.inputConfig()?.inputType;
-    return type === AlfInputTypeEnum.Password && (this.showPasswordToggle() ?? this.inputConfig()?.showPasswordToggle !== false);
+    const type = this.inputType();
+    return type === AlfInputTypeEnum.Password && (this.showPasswordToggle() !== false);
   });
+  
   protected readonly showCharCounterComputed = computed(() =>
-    (this.showCharCounter() && this.maxLength()) ||
-    (this.inputConfig()?.showCharCounter && this.inputConfig()?.maxLength)
+    this.showCharCounter() && this.maxLength()
   );
-  protected readonly isReadonly = computed(() => this.readonly() ?? this.inputConfig()?.readonly ?? false);
 
   protected readonly hasSuffix = computed(() =>
     this.suffix() ||
-    this.inputConfig()?.suffix ||
-    this.showPasswordToggleComputed() ||
     this.showPasswordToggleComputed() ||
     this.showClear()
   );
@@ -144,15 +131,15 @@ export class AlfInput extends AlfBaseDirectives {
 
   protected readonly shouldFloat = computed(() => {
     const v = this.value() ?? '';
-    return this.isFocused() || v.length > 0 || this.forceFloatComputed();
+    return this.isFocused() || v.length > 0 || this.forceFloat();
   });
 
   protected readonly showClear = computed(() => {
     const v = this.value() ?? '';
-    return this.clearableComputed() &&
+    return this.clearable() &&
       v.length > 0 &&
       !this.disabledComputed() &&
-      !this.isReadonly() &&
+      !this.readonly() &&
       !this.isLoading();
   });
 
@@ -162,57 +149,39 @@ export class AlfInput extends AlfBaseDirectives {
   protected readonly loadingLabel = computed(() => getAlfInputLabel('loading'));
 
   // ── 6. Styling Computeds & Overrides ──────────────────────────────────────
-  protected readonly generatedComponent = computed(() => {
-    const appearance = this.appearanceComputed();
-    const currentVariant = this.variant() ?? AlfColorVariantEnum.SecondaryOutline;
-
-    const ccc = generatedComponentFunction(
-      this.predefinedInputComponent(),
-      appearance,
-      currentVariant,
-      (v: AlfColorVariantEnum) => this.createSolidComponentSoftBackground(v),
-      (v: AlfColorVariantEnum) => this.create3dComponentSolidText(v),
-      (v: AlfColorVariantEnum) => this.createSolidComponent(v)
-    );
-    return ccc;
-  });
-
-  protected readonly finalPaddingComputed = computed(() => {
-    const comp = this.generatedComponent();
-    return deepMergeStates(comp?.padding, this.paddingComputed());
-  });
-
-  protected readonly inputShadowsComputed = computed(() => {
-    const comp = this.generatedComponent();
-    return deepMergeStates(comp?.shadows, this.shadowsComputed());
-  });
-
   protected readonly colorComputed = computed(() => {
     const err = this.errorComputed();
     if (!err) return null;
-    return this.inputConfig()?.border?.default?.borderColor ?? AlfColorEnum.Danger;
+    return AlfColorEnum.Danger;
   });
 
   protected readonly inputBorderComputed = computed(() => {
-    const comp = this.generatedComponent();
-    const baseBorder = deepMergeStates(comp?.border, this.borderComputed());
+    const baseBorder = this.borderComputed();
     const color = this.colorComputed();
     return calculateErrorBorder(baseBorder, color);
   });
 
   protected readonly inputTextStyleComputed = computed(() => {
-    const comp = this.generatedComponent();
-    const baseTextStyle = deepMergeStates(comp?.textStyle, this.textStyleComputed());
+    const baseTextStyle = this.textStyleComputed();
     const color = this.colorComputed();
     return calculateErrorTextStyle(baseTextStyle, color);
   });
 
   protected readonly inputBackgroundComputed = computed(() => {
-    const comp = this.generatedComponent();
-    const baseBackground = deepMergeStates(comp?.background, this.backgroundComputed());
+    const baseBackground = this.backgroundComputed();
     const hasError = !!this.errorComputed();
     return calculateErrorBackground(baseBackground, hasError);
   });
+
+  protected readonly inputTypographyComputed = computed(() => {
+    const baseTypography = this.typographyComputed();
+    const color = this.colorComputed();
+    return calculateErrorTypography(baseTypography, color);
+  });
+
+
+  // ── 6. Effects ────────────────────────────────────────────────────────────
+  private readonly appearanceEffect = effect(() => this.setAppearance(this.appearance()));
 
 
   // ── 7 ControlValueAccessor Implementation ──────────────────────────────────────────────
@@ -239,14 +208,6 @@ export class AlfInput extends AlfBaseDirectives {
   }
 
   /**
-   * Obtiene la configuración manual del usuario. En el caso del input,
-   * la fusión visual (deepMerge) se hace a nivel de propiedad por propiedad en computeds individuales.
-   */
-  protected getControlConfig() {
-    return this.inputConfig();
-  }
-
-  /**
    * Implementación del patrón ControlValueAccessor (Reactive Forms / ngModel).
    * Se ejecuta cuando el formulario inyecta un valor (ej. form.patchValue).
    */
@@ -266,7 +227,7 @@ export class AlfInput extends AlfBaseDirectives {
   protected readonly handleInput = (event: Event): void => {
     this.markAsDirty();
     const val = (event.target as HTMLInputElement).value;
-    const time = this.debounceTime() ?? this.inputConfig()?.debounceTime ?? 0;
+    const time = this.debounceTime() ?? 0;
 
     if (time > 0) {
       if (this.debounceTimerId) clearTimeout(this.debounceTimerId);
@@ -283,7 +244,7 @@ export class AlfInput extends AlfBaseDirectives {
   };
 
   protected readonly handleClick = (event: MouseEvent): void => {
-    if (this.clearOnClickComputed() && this.value()) {
+    if (this.clearOnClick() && this.value()) {
       this.value.set('');
     }
   };

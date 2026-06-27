@@ -153,10 +153,19 @@ export const generatedComponentFunction = (
 
 export const calculateErrorBorder = (baseBorder: AlfBorderInterface | undefined, errorColor: AlfColorEnum | null): AlfBorderInterface | undefined => {
     if (errorColor && baseBorder) {
+        const defaultB = baseBorder.default || {};
         const errorDefaultBorder = {
-            ...baseBorder.default,
-            borderColor: errorColor
+            ...defaultB,
+            borderColor: defaultB.borderColor ? errorColor : defaultB.borderColor,
+            borderBottomColor: defaultB.borderBottomColor ? errorColor : defaultB.borderBottomColor,
+            borderTopColor: defaultB.borderTopColor ? errorColor : defaultB.borderTopColor,
+            borderLeftColor: defaultB.borderLeftColor ? errorColor : defaultB.borderLeftColor,
+            borderRightColor: defaultB.borderRightColor ? errorColor : defaultB.borderRightColor,
         };
+        if (!defaultB.borderColor && !defaultB.borderBottomColor && !defaultB.borderTopColor && !defaultB.borderLeftColor && !defaultB.borderRightColor) {
+            errorDefaultBorder.borderColor = errorColor;
+            errorDefaultBorder.borderBottomColor = errorColor;
+        }
         return {
             ...baseBorder,
             default: errorDefaultBorder,
@@ -183,6 +192,23 @@ export const calculateErrorTextStyle = (baseTextStyle: AlfTextStyleInterface | u
         };
     }
     return baseTextStyle;
+};
+
+export const calculateErrorTypography = (baseTypography: any | undefined, errorColor: AlfColorEnum | null): any | undefined => {
+    if (errorColor && baseTypography) {
+        const errorDefaultTypography = {
+            ...baseTypography.default,
+            color: errorColor
+        };
+        return {
+            ...baseTypography,
+            default: errorDefaultTypography,
+            hover: errorDefaultTypography,
+            focus: errorDefaultTypography,
+            active: errorDefaultTypography
+        };
+    }
+    return baseTypography;
 };
 
 export const calculateErrorBackground = (baseBackground: AlfBackgroundsInterface | undefined, hasError: boolean): AlfBackgroundsInterface | undefined => {

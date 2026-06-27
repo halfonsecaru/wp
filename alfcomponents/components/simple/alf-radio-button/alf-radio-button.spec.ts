@@ -87,8 +87,9 @@ describe('AlfRadioButton', () => {
       expect(component.value()).toBe('testValue');
     });
 
-    it('should fall back to inputConfig correctly', () => {
-      fixture.componentRef.setInput('config', { radioButtonStyle: 'elegant', labelPosition: 'after' });
+    it('should use flat inputs for radioButtonStyle and labelPosition', () => {
+      fixture.componentRef.setInput('radioButtonStyle', 'elegant');
+      fixture.componentRef.setInput('labelPosition', 'after');
       fixture.detectChanges();
       
       expect(component.radioButtonStyleComputed()).toBe('elegant');
@@ -98,7 +99,7 @@ describe('AlfRadioButton', () => {
 
   describe('Validation & Messages', () => {
     it('should render helper text when provided', () => {
-      fixture.componentRef.setInput('config', { helperText: 'Helper message' });
+      fixture.componentRef.setInput('helperText', 'Helper message');
       fixture.detectChanges();
       
       const hostElement = fixture.nativeElement as HTMLElement;
@@ -106,7 +107,7 @@ describe('AlfRadioButton', () => {
     });
 
     it('should render error text and apply error styles', () => {
-      fixture.componentRef.setInput('config', { error: 'Error message' });
+      fixture.componentRef.setInput('error', 'Error message');
       fixture.detectChanges();
       
       const hostElement = fixture.nativeElement as HTMLElement;

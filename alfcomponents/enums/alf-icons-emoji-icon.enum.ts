@@ -39,26 +39,6 @@ export enum AlfIconsEmojiIconEnum {
     Save = '💾',
     Home = '🏠',
     User = '👤',
-    Menu = '☰',
-    CheckSquare = '☑️',
-
-    // Arrows
-    ArrowRight = '➡️',
-    ArrowLeft = '⬅️',
-    ArrowUp = '⬆️',
-    ArrowDown = '⬇️',
-
-    // Angle Brackets
-    AngleBracketLeft = '〈',
-    AngleBracketRight = '〉',
-    AngleBracketUp = '︿',
-    AngleBracketDown = '﹀',
-    DoubleAngleBracketLeft = '《',
-    DoubleAngleBracketRight = '》',
-
-    // Guillemets
-    ChevronDoubleLeft = '«',
-    ChevronDoubleRight = '»',
 
     // Social / Communication
     Email = '📧',

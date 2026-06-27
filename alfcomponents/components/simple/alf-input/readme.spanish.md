@@ -32,25 +32,9 @@
 </alf-input>
 ```
 
-### Usando el Objeto de Configuración
-En lugar de pasar bindings individuales, puedes pasar un objeto de configuración `AlfInputInterface` completo:
-```html
-<alf-input [config]="inputConfig()"></alf-input>
-```
-```typescript
-inputConfig = signal<AlfInputInterface>({
-  label: 'Contraseña',
-  inputType: AlfInputTypeEnum.Password,
-  showPasswordToggle: true,
-  clearable: true,
-  helperText: 'Debe tener al menos 8 caracteres'
-});
-```
-
 ## API
 
 ### Entradas (Inputs)
-- `config` (`AlfInputInterface`): Un objeto maestro de configuración.
 - `label` (`string`): La etiqueta flotante o estática para el input.
 - `placeholder` (`string`): Texto de marcador de posición.
 - `type` (`AlfInputTypeEnum | string`): Tipo de input HTML (ej. text, password, email).

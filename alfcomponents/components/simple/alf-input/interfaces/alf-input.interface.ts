@@ -19,8 +19,8 @@ export interface AlfInputInterface extends AlfBaseCommonConfigInterface {
   readonly readonly?: boolean;
   readonly maxLength?: number;
   readonly minLength?: number;
-  readonly min?: number | string;
-  readonly max?: number | string;
+  readonly min?: number;
+  readonly max?: number;
   readonly step?: number;
   readonly pattern?: string;
   readonly autocomplete?: string;

@@ -1,6 +1,6 @@
 import { Component, computed, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
-import { createSolidComponentSoftBackground, create3dComponentSolidText, createSolidComponent, deepMergeStates } from '@alfcomponents/components/base/bases.directive';
+import { createSolidComponentSoftBackground, create3dComponentSolidText, createSolidComponent } from '@alfcomponents/components/base/bases.directive';
 import { generateUniqueId, visualprefixEnum } from '@alfcomponents/shared';
 import { AlfColorVariantEnum } from '@alfcomponents/enums';
 import { AlfSelectOption } from '../interfaces/alf-auto-complete-options-interface';
@@ -19,6 +19,7 @@ import {
   AlfTypographyInterface,
   AlfTypographyBaseInterface
 } from '@alfcomponents/interfaces';
+import { deepMergeStates } from '@alfcomponents/components/base/default/functions';
 
 @Component({
   selector: 'alf-auto-complete-panel',

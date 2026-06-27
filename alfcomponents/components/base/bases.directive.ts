@@ -5,19 +5,19 @@ import { interpolate } from '@alfcomponents/i18n/i18n-utils';
 import { computed, Directive, input, signal, untracked, output, inject, ElementRef, effect } from "@angular/core";
 import { ControlValueAccessor } from '@angular/forms';
 import { AlfTooltipConfig } from "@alfcomponents/directives";
-
-export enum AlfComponentTypeEnum {
-    Button = 'Button',
-    Switch = 'Switch',
-    Checkbox = 'Checkbox',
-    RadioButton = 'RadioButton',
-    Input = 'Input',
-    Textarea = 'Textarea',
-    Tabs = 'alf-tabs',
-    Autocomplete = 'Autocomplete',
-    Card = 'Card',
-    Default = 'Default',
-}
+import { buildColorBackgroundConfig } from "./default/background";
+import { deepEqual, deepMergeStates, getPredefinedColorByVariant } from "./default/functions";
+import { buildColorShadowsConfig } from "./default/shadows";
+import { buildDisplayAndLayoutConfig } from "./default/displayAndLayout";
+import { buildTransitionConfig } from "./default/transition";
+import { buildTransformConfig } from "./default/transform";
+import { buildTextColorStyleConfig } from "./default/textColor";
+import { buildTypographyConfig } from "./default/typography";
+import { buildPaddingConfig } from "./default/padding";
+import { buildMarginConfig } from "./default/margin";
+import { buildColorOutlineConfig } from "./default/outline";
+import { buildColorBorderConfig } from "./default/border";
+import { AlfComponentTypeEnum } from "./enum/AlfComponentType.enum";
 
 
 const defaultPadding: AlfPaddingBaseInterface = {
@@ -26,45 +26,6 @@ const defaultPadding: AlfPaddingBaseInterface = {
     paddingLeft: AlfPxEnum.Px10,
     paddingRight: AlfPxEnum.Px10
 };
-
-const deepEqual = (a: any, b: any) => JSON.stringify(a) === JSON.stringify(b);
-
-/**
- * Cuando el usuario pasa un objeto de estilos con solo el estado `default` (sin hover/focus/etc.),
- * lo expande copiando `default` a todos los demás estados para que el merge final
- * sobreescriba también hover, focus, active y disabled del config predefinido.
- * Si el usuario ya definió estados explícitos, esos se respetan.
- */
-const VISUAL_STATES = ['hover', 'focus', 'active', 'disabled'] as const;
-export const expandToAllStates = (input: any): any => {
-    if (!input || typeof input !== 'object') return input;
-    // Si NO tiene ningún estado explícito (hover, focus, active, disabled) pero SÍ tiene default,
-    // es una BaseInterface → la expandimos a todos los estados.
-    const hasExplicitStates = VISUAL_STATES.some(s => s in input);
-    if (!hasExplicitStates && input.default) {
-        return {
-            default: input.default,
-            hover: input.default,
-            focus: input.default,
-            active: input.default,
-            disabled: input.default,
-        };
-    }
-    return input;
-};
-
-
-export const deepMergeStates = (...configs: any[]): any => {
-    const result: any = {};
-    for (const config of configs) {
-        if (!config) continue;
-        for (const [state, stateObj] of Object.entries(config)) {
-            if (!stateObj) continue;
-            result[state] = { ...result[state], ...(stateObj as any) };
-        }
-    }
-    return Object.keys(result).length > 0 ? result : undefined;
-}
 
 @Directive()
 export abstract class AlfBaseDirectives implements ControlValueAccessor {
@@ -150,7 +111,9 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
         const innerBackground = this._background();
         const signalBackground = this.background();
         const variant = this.variant();
-        const defaultBackground = buildColorBackgroundConfig(variant);
+        const type = this.componentType();
+
+        const defaultBackground = buildColorBackgroundConfig(variant, type, this.getInternalAppearance());
         return deepMergeStates(defaultBackground, innerBackground, signalBackground)
     });
 
@@ -186,7 +149,7 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
         const innerShadows = this._shadows();
         const signalShadows = this.shadows();
         const variant = this.variant();
-        const defaultShadows = buildColorShadowsConfig(variant, this.elevated());
+        const defaultShadows = buildColorShadowsConfig(variant, this.elevated(), this.componentType(), this.getInternalAppearance());
         return deepMergeStates(defaultShadows, innerShadows, signalShadows);
     });
 
@@ -205,8 +168,7 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
         const innerPadding = this._padding();
         const signalPadding = this.padding();
         const componentType = this.componentType() || AlfComponentTypeEnum.Default;
-        const variant = this.variant();
-        const defaultPadding = buildPaddingConfig(componentType, variant);
+        const defaultPadding = buildPaddingConfig(componentType, this.getInternalAppearance());
         return deepMergeStates(defaultPadding, innerPadding, signalPadding);
     });
 
@@ -216,7 +178,7 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
         const signalTypography = this.typography();
         const componentType = this.componentType() || AlfComponentTypeEnum.Default;
         const variant = this.variant();
-        const defaultTypography = buildTypographyConfig(componentType, variant);
+        const defaultTypography = buildTypographyConfig(componentType, variant, this.getInternalAppearance());
         return deepMergeStates(defaultTypography, innerTypography, signalTypography);
     });
 
@@ -250,7 +212,7 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
         const c2 = this.getControlConfig()?.animations || {};
         const c3 = this.animations() || {};
         const merged = { ...c1, ...c2, ...c3 };
-        
+
         return Object.keys(merged).length > 0 ? merged as AlfAnimateCssInterface : undefined;
     });
 
@@ -642,6 +604,14 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
     protected getInternalTransition() { return untracked(() => this._transition()); }
     protected getInternalDisplayAndLayout() { return untracked(() => this._displayAndLayout()); }
     protected getInternalAnimations() { return untracked(() => this._animations()); }
+    protected getInternalAppearance() { return this._appearance(); }
+
+    public readonly isSolid3dGradient = computed(() => {
+        const v = this.variant() || AlfColorVariantEnum.Default;
+        if (v === AlfColorVariantEnum.Default || v === AlfColorVariantEnum.Standard || v === AlfColorVariantEnum.Transparent) return false;
+        if (v.includes('outline') || v.includes('ghost') || v.includes('soft') || v.includes('crystal')) return false;
+        return true;
+    });
 
     protected setBackground(value: AlfBackgroundsInterface | AlfBackgroundsBaseInterface) { this._background.set(value); }
     protected setBorder(value: AlfBorderInterface | AlfBorderBaseInterface) { this._border.set(value); }
@@ -655,6 +625,7 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
     protected setTransition(value: AlfTransitionInterface | AlfTransitionBaseInterface) { this._transition.set(value); }
     protected setDisplayAndLayout(value: AlfDisplayAndLayoutInterface | AlfDisplayAndLayoutBaseInterface) { this._displayAndLayout.set(value); }
     protected setAnimations(value: AlfAnimateCssInterface) { this._animations.set(value); }
+    protected setAppearance(value: AlfInputAppearanceEnum) { this._appearance.set(value); }
 
 
 
@@ -716,56 +687,7 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
 //* **** Funciones fuera de la clase **** */
 //* ************************************* */
 
-const getPredefinedColorByVariant = (variant: AlfColorVariantEnum, seleccion: number): {
-    default: AlfColorEnum,
-    hover: AlfColorEnum,
-    focus: AlfColorEnum,
-    disabled: AlfColorEnum,
-    active: AlfColorEnum,
-} => {
-    const variantKeys = Object.keys(AlfColorVariantEnum) as (keyof typeof AlfColorVariantEnum)[];
-    const prefix = variantKeys.find(key => AlfColorVariantEnum[key] === variant) || 'Default';
 
-    let suffixDefault = '';
-    let suffixHover = 'Hover';
-    let suffixFocus = 'Focus';
-    let suffixDisabled = 'Disabled';
-    let suffixActive = 'Active';
-
-    if (seleccion === 0) {
-        suffixDefault = 'Border';
-        suffixHover = 'BorderHover';
-        suffixFocus = 'BorderFocus';
-        suffixDisabled = 'BorderDisabled';
-        suffixActive = 'BorderActive';
-    } else if (seleccion === 1) {
-        suffixDefault = 'Text';
-        suffixHover = 'TextHover';
-        suffixFocus = 'TextFocus';
-        suffixDisabled = 'TextDisabled';
-        suffixActive = 'TextActive';
-    } else if (seleccion === 2) {
-        suffixDefault = 'BG';
-        suffixHover = 'HoverBG';
-        suffixFocus = 'FocusBG';
-        suffixDisabled = 'DisabledBG';
-        suffixActive = 'ActiveBG';
-    }
-
-    const kDefault = `${prefix}${suffixDefault}` as keyof typeof AlfColorEnum;
-    const kHover = `${prefix}${suffixHover}` as keyof typeof AlfColorEnum;
-    const kFocus = `${prefix}${suffixFocus}` as keyof typeof AlfColorEnum;
-    const kDisabled = `${prefix}${suffixDisabled}` as keyof typeof AlfColorEnum;
-    const kActive = `${prefix}${suffixActive}` as keyof typeof AlfColorEnum;
-
-    return {
-        default: AlfColorEnum[kDefault] || AlfColorEnum.Transparent,
-        hover: AlfColorEnum[kHover] || AlfColorEnum.Transparent,
-        focus: AlfColorEnum[kFocus] || AlfColorEnum.Transparent,
-        disabled: AlfColorEnum[kDisabled] || AlfColorEnum.Transparent,
-        active: AlfColorEnum[kActive] || AlfColorEnum.Transparent,
-    };
-}
 
 const inputBackgroundPredefined = (color: any): AlfBackgroundsInterface => {
     const resolveBg = (c: any) => {
@@ -937,444 +859,3 @@ export const create3dComponentSolidText = (variant: AlfColorVariantEnum, padding
 }
 
 
-// ------------------------------------------------------------------------
-const isGrad = (val: AlfColorEnum) => val.includes('gradient');
-
-const state = (v: AlfColorEnum) => isGrad(v)
-    ? { backgroundImage: v, backgroundColor: AlfColorEnum.Transparent }
-    : { backgroundColor: v, backgroundImage: 'none' };
-
-const buildColorBackgroundConfig = (
-    variant: AlfColorVariantEnum = AlfColorVariantEnum.SecondaryOutline,
-): AlfBackgroundsInterface => {
-    // 1. Buscamos la clave correspondiente dentro del enum de variantes
-    const variantKeys = Object.keys(AlfColorVariantEnum) as (keyof typeof AlfColorVariantEnum)[];
-    let prefix = variantKeys.find(key => AlfColorVariantEnum[key] === variant) || 'Default';
-
-    // 2. Si la variante es 'standard', definimos su fallback por defecto (ej. 'Light' o 'Secondary')
-    if (prefix === 'Standard') {
-        prefix = 'Light';
-    }
-
-    // Helper para buscar el color en AlfColorEnum de forma segura
-    const getColor = (keyStr: string): AlfColorEnum => {
-        return (AlfColorEnum[keyStr as keyof typeof AlfColorEnum] ?? AlfColorEnum.Transparent);
-    };
-
-    // 3. Resolvemos los colores dinámicamente usando el prefijo (ej. 'Primary', 'PrimarySoft', etc.)
-    // Primero intenta buscar con sufijo 'BG' (ej: PrimaryBG) y si no existe usa la base (ej: Primary)
-    const main = getColor(`${prefix}BG`) !== AlfColorEnum.Transparent ? getColor(`${prefix}BG`) : getColor(prefix);
-    const hover = getColor(`${prefix}HoverBG`) !== AlfColorEnum.Transparent ? getColor(`${prefix}HoverBG`) : getColor(`${prefix}Hover`);
-    const focus = getColor(`${prefix}FocusBG`) !== AlfColorEnum.Transparent ? getColor(`${prefix}FocusBG`) : getColor(`${prefix}Focus`);
-    const active = getColor(`${prefix}ActiveBG`) !== AlfColorEnum.Transparent ? getColor(`${prefix}ActiveBG`) : getColor(`${prefix}Active`);
-    const disabled = getColor(`${prefix}DisabledBG`) !== AlfColorEnum.Transparent ? getColor(`${prefix}DisabledBG`) : getColor(`${prefix}Disabled`);
-
-    return {
-        default: state(main),
-        hover: state(hover),
-        focus: state(focus),
-        active: state(active),
-        disabled: state(disabled)
-    };
-}
-
-const buildColorBorderConfig = (
-    variant: AlfColorVariantEnum = AlfColorVariantEnum.SecondaryOutline,
-    appearance: AlfInputAppearanceEnum = AlfInputAppearanceEnum.Standard,
-    width: AlfPxEnum = AlfPxEnum.Px015,
-    radius: AlfRadiusEnum = AlfRadiusEnum.None,
-    style: AlfBorderStyleEnum = AlfBorderStyleEnum.Solid,
-    componentType: AlfComponentTypeEnum = AlfComponentTypeEnum.Default,
-    cbStyle?: any,
-): AlfBorderInterface => {
-    const variantKeys = Object.keys(AlfColorVariantEnum) as (keyof typeof AlfColorVariantEnum)[];
-    let prefix = variantKeys.find(key => AlfColorVariantEnum[key] === variant) || 'Default';
-
-    if (prefix === 'Standard') {
-        prefix = 'Light';
-    }
-
-    const getColor = (keyStr: string): AlfColorEnum => {
-        return (AlfColorEnum[keyStr as keyof typeof AlfColorEnum] ?? AlfColorEnum.Transparent);
-    };
-
-    const main = getColor(`${prefix}Border`) !== AlfColorEnum.Transparent ? getColor(`${prefix}Border`) : getColor(prefix);
-    const hover = getColor(`${prefix}BorderHover`) !== AlfColorEnum.Transparent ? getColor(`${prefix}BorderHover`) : getColor(`${prefix}Hover`);
-    const focus = getColor(`${prefix}BorderFocus`) !== AlfColorEnum.Transparent ? getColor(`${prefix}BorderFocus`) : getColor(`${prefix}Focus`);
-    const active = getColor(`${prefix}BorderActive`) !== AlfColorEnum.Transparent ? getColor(`${prefix}BorderActive`) : getColor(`${prefix}Active`);
-    const disabled = getColor(`${prefix}BorderDisabled`) !== AlfColorEnum.Transparent ? getColor(`${prefix}BorderDisabled`) : getColor(`${prefix}Disabled`);
-
-    let resolvedRadius = radius;
-    switch (componentType) {
-        case AlfComponentTypeEnum.Input:
-            resolvedRadius = AlfRadiusEnum.Lg;
-            break;
-        case AlfComponentTypeEnum.Checkbox:
-            resolvedRadius = String(cbStyle) === 'standard' ? AlfRadiusEnum.Base : AlfRadiusEnum.Full;
-            break;
-        default:
-            resolvedRadius = radius;
-            break;
-    }
-
-    switch (appearance) {
-        // Standard: solo línea inferior
-        case AlfInputAppearanceEnum.Standard: {
-            const bottomBase = {
-                borderBottomColor: main,
-                borderBottomWidth: width,
-                borderBottomStyle: style,
-                borderRadius: AlfRadiusEnum.None,
-            };
-            return {
-                default: bottomBase,
-                hover: { ...bottomBase, borderBottomColor: hover },
-                focus: { ...bottomBase, borderBottomColor: focus },
-                active: { ...bottomBase, borderBottomColor: active },
-                disabled: { ...bottomBase, borderBottomColor: disabled || AlfColorEnum.Gray300 },
-            };
-        }
-
-        // Fill: sin borde visible, solo radius
-        case AlfInputAppearanceEnum.Fill: {
-            const fillBase = {
-                borderColor: AlfColorEnum.Transparent,
-                borderWidth: width,
-                borderStyle: style,
-                borderRadius: resolvedRadius,
-            };
-            return {
-                default: fillBase,
-                hover: fillBase,
-                focus: { ...fillBase, borderColor: focus },
-                active: { ...fillBase, borderColor: active },
-                disabled: fillBase,
-            };
-        }
-
-        // Outline: borde completo (comportamiento por defecto)
-        default: {
-            const outlineBase = {
-                borderColor: main,
-                borderStyle: style,
-                borderWidth: width,
-                borderRadius: resolvedRadius,
-            };
-            return {
-                default: outlineBase,
-                hover: { ...outlineBase, borderColor: hover },
-                focus: { ...outlineBase, borderColor: focus },
-                active: { ...outlineBase, borderColor: active },
-                disabled: { ...outlineBase, borderColor: disabled || AlfColorEnum.Gray300 },
-            };
-        }
-    }
-};
-
-const buildColorOutlineConfig = (): AlfOutlineInterface => {
-
-    const hidden = {
-        outlineColor: AlfColorEnum.Transparent,
-        outlineWidth: AlfPxEnum.None,
-        outlineStyle: AlfBorderStyleEnum.None,
-        outlineOffset: AlfPxEnum.None,
-    };
-
-    return {
-        default: hidden,
-        hover: hidden,
-        focus: {
-            outlineColor: AlfColorEnum.Transparent,
-            outlineWidth: AlfRemEnum.None,
-            outlineStyle: AlfBorderStyleEnum.None,
-            outlineOffset: AlfRemEnum.None,
-        },
-        active: {
-            outlineColor: AlfColorEnum.Transparent,
-            outlineWidth: AlfRemEnum.None,
-            outlineStyle: AlfBorderStyleEnum.None,
-            outlineOffset: AlfRemEnum.None,
-        },
-        disabled: {
-            outlineColor: AlfColorEnum.Transparent,
-            outlineWidth: AlfRemEnum.None,
-            outlineStyle: AlfBorderStyleEnum.None,
-            outlineOffset: AlfRemEnum.None,
-        },
-    };
-};
-
-const buildColorShadowsConfig = (
-    variant: AlfColorVariantEnum = AlfColorVariantEnum.SecondaryOutline,
-    elevated: boolean = true,
-): AlfShadowsInterface => {
-    const variantKeys = Object.keys(AlfColorVariantEnum) as (keyof typeof AlfColorVariantEnum)[];
-    let prefix = variantKeys.find(key => AlfColorVariantEnum[key] === variant) || 'Default';
-
-    if (prefix === 'Standard') {
-        prefix = 'Light';
-    }
-
-    const getColor = (keyStr: string): AlfColorEnum => {
-        return (AlfColorEnum[keyStr as keyof typeof AlfColorEnum] ?? AlfColorEnum.Transparent);
-    };
-
-    const cleanColor = (color: AlfColorEnum, fallbackPrefix: string): AlfColorEnum => {
-        const colorStr = color as string;
-        if (colorStr.includes('gradient')) {
-            const cleanPrefix = fallbackPrefix.replace('3D', '').replace('Gradient', '');
-            return (AlfColorEnum[cleanPrefix as keyof typeof AlfColorEnum] ?? AlfColorEnum.Gray500);
-        }
-        return color;
-    };
-
-    const mainColor = cleanColor(getColor(prefix), prefix);
-    const hoverColor = cleanColor(getColor(`${prefix}Hover`) !== AlfColorEnum.Transparent ? getColor(`${prefix}Hover`) : getColor(prefix), prefix);
-    const focusColor = cleanColor(getColor(`${prefix}Focus`) !== AlfColorEnum.Transparent ? getColor(`${prefix}Focus`) : getColor(prefix), prefix);
-    const activeColor = cleanColor(getColor(`${prefix}Active`) !== AlfColorEnum.Transparent ? getColor(`${prefix}Active`) : getColor(prefix), prefix);
-    const disabledColor = cleanColor(getColor(`${prefix}Disabled`), prefix);
-
-    const shadowVal = elevated ? AlfShadowEnum.Elevated : AlfShadowEnum.None;
-
-    return {
-        default: {
-            boxShadow: shadowVal,
-            boxShadowColor: mainColor,
-            boxShadowInset: false,
-            textShadow: AlfTextShadowEnum.None,
-            textShadowColor: mainColor
-        },
-        hover: {
-            boxShadow: shadowVal,
-            boxShadowColor: hoverColor,
-            boxShadowInset: false,
-            textShadow: AlfTextShadowEnum.None,
-            textShadowColor: hoverColor
-        },
-        focus: {
-            boxShadow: shadowVal,
-            boxShadowColor: focusColor,
-            boxShadowInset: false,
-            textShadow: AlfTextShadowEnum.None,
-            textShadowColor: focusColor
-        },
-        active: {
-            boxShadow: shadowVal,
-            boxShadowColor: activeColor,
-            boxShadowInset: false,
-            textShadow: AlfTextShadowEnum.None,
-            textShadowColor: activeColor
-        },
-        disabled: {
-            boxShadow: AlfShadowEnum.None,
-            boxShadowColor: disabledColor,
-            boxShadowInset: false,
-            textShadow: AlfTextShadowEnum.None,
-            textShadowColor: disabledColor
-        }
-    };
-};
-
-const buildMarginConfig = (componentType: AlfComponentTypeEnum, variant: AlfColorVariantEnum): AlfMarginInterface => {
-    return {
-        default: {
-            margin: AlfPxEnum.None,
-        },
-        hover: {
-            margin: AlfPxEnum.None,
-        },
-        focus: {
-            margin: AlfPxEnum.None,
-        },
-        active: {
-            margin: AlfPxEnum.None,
-        },
-        disabled: {
-            margin: AlfPxEnum.None,
-        }
-    };
-};
-
-const buildPaddingConfig = (componentType: AlfComponentTypeEnum, variant: AlfColorVariantEnum): AlfPaddingInterface => {
-
-    let paddingDefault = AlfPxEnum.None;
-
-    const basePadding: AlfPaddingBaseInterface = {
-        paddingTop: paddingDefault,
-        paddingBottom: paddingDefault,
-        paddingLeft: paddingDefault,
-        paddingRight: paddingDefault
-    };
-
-    switch (componentType) {
-        case AlfComponentTypeEnum.Input:
-            paddingDefault = AlfPxEnum.Px10;
-            basePadding.paddingTop = paddingDefault;
-            basePadding.paddingBottom = paddingDefault;
-            basePadding.paddingLeft = paddingDefault;
-            basePadding.paddingRight = paddingDefault;
-            break;
-        case AlfComponentTypeEnum.Button:
-            paddingDefault = AlfPxEnum.Px5;
-            let paddingDefaultLR = AlfPxEnum.Px10;
-            basePadding.paddingTop = paddingDefault;
-            basePadding.paddingBottom = paddingDefault;
-            basePadding.paddingLeft = paddingDefaultLR;
-            basePadding.paddingRight = paddingDefaultLR;
-            break;
-        default:
-            break;
-    }
-
-    return {
-        default: basePadding,
-        hover: basePadding,
-        focus: basePadding,
-        active: basePadding,
-        disabled: basePadding
-    };
-};
-
-const buildTypographyConfig = (componentType: AlfComponentTypeEnum, variant: AlfColorVariantEnum = AlfColorVariantEnum.SecondaryOutline): AlfTypographyInterface => {
-    const variantKeys = Object.keys(AlfColorVariantEnum) as (keyof typeof AlfColorVariantEnum)[];
-    let prefix = variantKeys.find(key => AlfColorVariantEnum[key] === variant) || 'Default';
-
-    if (prefix === 'Standard') {
-        prefix = 'Light';
-    }
-
-    const getColor = (keyStr: string): AlfColorEnum => {
-        return (AlfColorEnum[keyStr as keyof typeof AlfColorEnum] ?? AlfColorEnum.Transparent);
-    };
-
-    // Para tipografía, debemos buscar las claves de texto: ej. PrimaryText, PrimaryTextHover, etc.
-    const mainColor = getColor(`${prefix}Text`) !== AlfColorEnum.Transparent ? getColor(`${prefix}Text`) : getColor(prefix);
-    const hoverColor = getColor(`${prefix}TextHover`) !== AlfColorEnum.Transparent ? getColor(`${prefix}TextHover`) : getColor(`${prefix}Hover`);
-    const focusColor = getColor(`${prefix}TextFocus`) !== AlfColorEnum.Transparent ? getColor(`${prefix}TextFocus`) : getColor(`${prefix}Focus`);
-    const activeColor = getColor(`${prefix}TextActive`) !== AlfColorEnum.Transparent ? getColor(`${prefix}TextActive`) : getColor(`${prefix}Active`);
-    const disabledColor = getColor(`${prefix}TextDisabled`) !== AlfColorEnum.Transparent ? getColor(`${prefix}TextDisabled`) : getColor(`${prefix}Disabled`);
-
-    return {
-        default: {
-            color: mainColor !== AlfColorEnum.Transparent ? mainColor : undefined,
-        },
-        hover: {
-            color: hoverColor !== AlfColorEnum.Transparent ? hoverColor : undefined,
-        },
-        focus: {
-            color: focusColor !== AlfColorEnum.Transparent ? focusColor : undefined,
-        },
-        active: {
-            color: activeColor !== AlfColorEnum.Transparent ? activeColor : undefined,
-        },
-        disabled: {
-            color: disabledColor !== AlfColorEnum.Transparent ? disabledColor : undefined,
-        }
-    };
-};
-
-const buildTextColorStyleConfig = (componentType: AlfComponentTypeEnum, variant: AlfColorVariantEnum = AlfColorVariantEnum.SecondaryOutline): AlfTextStyleInterface => {
-    const variantKeys = Object.keys(AlfColorVariantEnum) as (keyof typeof AlfColorVariantEnum)[];
-    let prefix = variantKeys.find(key => AlfColorVariantEnum[key] === variant) || 'Default';
-
-    if (prefix === 'Standard') {
-        prefix = 'Light';
-    }
-
-    const getColor = (keyStr: string): AlfColorEnum => {
-        return (AlfColorEnum[keyStr as keyof typeof AlfColorEnum] ?? AlfColorEnum.Transparent);
-    };
-
-    const mainColor = getColor(`${prefix}Text`) !== AlfColorEnum.Transparent ? getColor(`${prefix}Text`) : getColor(prefix);
-    const hoverColor = getColor(`${prefix}TextHover`) !== AlfColorEnum.Transparent ? getColor(`${prefix}TextHover`) : getColor(`${prefix}Hover`);
-    const focusColor = getColor(`${prefix}TextFocus`) !== AlfColorEnum.Transparent ? getColor(`${prefix}TextFocus`) : getColor(`${prefix}Focus`);
-    const activeColor = getColor(`${prefix}TextActive`) !== AlfColorEnum.Transparent ? getColor(`${prefix}TextActive`) : getColor(`${prefix}Active`);
-    const disabledColor = getColor(`${prefix}TextDisabled`) !== AlfColorEnum.Transparent ? getColor(`${prefix}TextDisabled`) : getColor(`${prefix}Disabled`);
-
-    return {
-        default: {
-            color: mainColor !== AlfColorEnum.Transparent ? mainColor : undefined,
-        },
-        hover: {
-            color: hoverColor !== AlfColorEnum.Transparent ? hoverColor : undefined,
-        },
-        focus: {
-            color: focusColor !== AlfColorEnum.Transparent ? focusColor : undefined,
-        },
-        active: {
-            color: activeColor !== AlfColorEnum.Transparent ? activeColor : undefined,
-        },
-        disabled: {
-            color: disabledColor !== AlfColorEnum.Transparent ? disabledColor : undefined,
-        }
-    };
-};
-
-const buildTransformConfig = (): AlfTransformInterface => {
-    const baseVal: AlfTransformBaseInterface = {
-        translateX: undefined,
-        translateY: undefined,
-        translateZ: undefined,
-        scaleX: undefined,
-        scaleY: undefined,
-        scaleZ: undefined,
-        scale: undefined,
-        rotate: undefined,
-        rotateX: undefined,
-        rotateY: undefined,
-        rotateZ: undefined,
-        skewX: undefined,
-        skewY: undefined,
-        perspective: undefined,
-        transformStyle: undefined,
-        backfaceVisibility: undefined
-    };
-
-    return {
-        default: baseVal,
-        hover: baseVal,
-        focus: baseVal,
-        active: baseVal,
-        disabled: baseVal
-    };
-};
-
-const buildTransitionConfig = (): AlfTransitionInterface => {
-    const noTransition: AlfTransitionBaseInterface = {
-        duration: '0s',
-        timingFunction: 'ease-in-out',
-        delay: '0s',
-        property: 'none'
-    };
-
-    const activeTransition: AlfTransitionBaseInterface = {
-        duration: '150ms',
-        timingFunction: 'ease-in-out',
-        delay: '0s',
-        property: 'all'
-    };
-
-    return {
-        default: noTransition,
-        hover: activeTransition,
-        focus: activeTransition,
-        active: activeTransition,
-        disabled: noTransition
-    };
-};
-
-const buildDisplayAndLayoutConfig = (componentType: AlfComponentTypeEnum): AlfDisplayAndLayoutInterface => {
-    if (componentType === AlfComponentTypeEnum.Tabs) {
-        return {
-            default: {
-                display: 'flex' as any,
-                flexDirection: 'column' as any,
-                alignItems: 'stretch' as any,
-                justifyContent: 'flex-start' as any,
-                width: AlfPxEnum.auto,
-                height: AlfPxEnum.auto
-            }
-        };
-    }
-    return {};
-};

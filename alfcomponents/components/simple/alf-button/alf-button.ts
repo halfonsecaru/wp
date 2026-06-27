@@ -20,7 +20,8 @@ import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
 
 import { ButtonLink } from './interfaces/alf-button.interface';
 import { AlfButtonI18nLabels, getAlfButtonLabel } from './i18n/alf-button.i18n';
-import { AlfBaseDirectives, AlfComponentTypeEnum } from '@alfcomponents/components/base/bases.directive';
+import { AlfBaseDirectives } from '@alfcomponents/components/base/bases.directive';
+import { AlfComponentTypeEnum } from '@alfcomponents/components/base/enum/AlfComponentType.enum';
 @Component({
   selector: 'alf-button',
   standalone: true,

@@ -115,6 +115,11 @@
     }
   }
 
+  &--light-selection &-dot {
+    background-color: var(--alf-rb-border-color, var(--alf-rb-text-color, var(--alf-white, #ffffff)));
+    filter: brightness(10) saturate(0.1);
+  }
+
   &--disabled {
     .alf-rb-dot {
       background-color: var(--alf-rb-text-disabled-color, var(--alf-rb-text-color, var(--alf-white, #ffffff))) !important;
@@ -182,6 +187,15 @@
 
   &-error {
     color: var(--alf-danger, #dc3545) !important;
+  }
+
+  // Shape variants
+  &--standard &-circle {
+    border-radius: 0.25rem;
+  }
+
+  &--elegant &-circle {
+    border-radius: 50%;
   }
 
 }

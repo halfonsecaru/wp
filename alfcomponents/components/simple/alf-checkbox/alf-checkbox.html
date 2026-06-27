@@ -1,34 +1,65 @@
-@let bd = borderComputed(); <!--  -->
-@let ot = outlineComputed(); <!--  -->
-@let sd = shadowsComputed(); <!--  -->
-@let mg = marginComputed(); <!--  -->
-@let pd = paddingComputed(); <!--  -->
-@let ty = typographyComputed(); <!--  -->
-@let ts = textStyleComputed(); <!--  -->
-@let tr = transformComputed(); <!--  -->
-@let tsn = transitionComputed(); <!--  -->
-@let dl = displayAndLayoutComputed(); <!--  -->
-@let sz = size(); <!--  -->
-@let ar = aria(); <!--  -->
-@let tt = tooltip(); <!--  -->
-@let rp = ripple(); <!--  -->
-@let cr = cursor(); <!--  -->
-@let ds = disabledComputed(); <!--  -->
-@let cc = customClass(); <!--  -->
-@let cs = customStyle(); <!--  -->
-@let idCheckbox = idComputed(); <!--  -->
-@let labelText = labelComputed(); <!--  -->
-@let labelPos = labelPosition(); <!--  -->
-@let isChecked = checked(); <!--  -->
-@let isIndeterminate = indeterminate(); <!--  -->
-@let styleVariant = checkboxStyle(); <!--  -->
-@let icon = iconSelected(); <!--  -->
-@let checkboxName = name(); <!--  -->
-@let isHovered = hovered(); <!--  -->
-@let isFocused = focused(); <!--  -->
-@let ld = isLoading(); <!--  -->
-@let bg = backgroundComputed(); <!--  -->
-@let an = animations(); <!--  -->
+@let bd = borderComputed();
+<!--  -->
+@let ot = outlineComputed();
+<!--  -->
+@let sd = shadowsComputed();
+<!--  -->
+@let mg = marginComputed();
+<!--  -->
+@let pd = paddingComputed();
+<!--  -->
+@let ty = typographyComputed();
+<!--  -->
+@let ts = textStyleComputed();
+<!--  -->
+@let tr = transformComputed();
+<!--  -->
+@let tsn = transitionComputed();
+<!--  -->
+@let dl = displayAndLayoutComputed();
+<!--  -->
+@let sz = size();
+<!--  -->
+@let ar = aria();
+<!--  -->
+@let tt = tooltip();
+<!--  -->
+@let rp = ripple();
+<!--  -->
+@let cr = cursor();
+<!--  -->
+@let ds = disabledComputed();
+<!--  -->
+@let cc = customClass();
+<!--  -->
+@let cs = customStyle();
+<!--  -->
+@let idCheckbox = idComputed();
+<!--  -->
+@let labelText = labelComputed();
+<!--  -->
+@let labelPos = labelPosition();
+<!--  -->
+@let isChecked = checked();
+<!--  -->
+@let isIndeterminate = indeterminate();
+<!--  -->
+@let styleVariant = checkboxStyle();
+<!--  -->
+@let icon = iconSelected();
+<!--  -->
+@let checkboxName = name();
+<!--  -->
+@let isHovered = hovered();
+<!--  -->
+@let isFocused = focused();
+<!--  -->
+@let ld = isLoading();
+<!--  -->
+@let bg = backgroundComputed();
+<!--  -->
+@let an = animations();
+<!--  -->
 
 <div
   [alfPrefix]="cssVarPrefix"
@@ -52,6 +83,7 @@
   [class]="'alf-cb alf-cb--' + styleVariant + ' alf-cb--' + sz + (cc ? ' ' + cc : '')"
   [class.alf-cb--checked]="isChecked"
   [class.alf-cb--indeterminate]="isIndeterminate"
+  [class.alf-cb--light-selection]="isSolid3dGradient()"
   [class.alf-cb--disabled]="ds"
   [class.alf-cb--loading]="ld"
   [class.alf-cb--hovered]="isHovered"

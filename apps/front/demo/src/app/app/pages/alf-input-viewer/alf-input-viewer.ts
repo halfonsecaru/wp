@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { AlfInput } from '@alfcomponents/components';
-import { AlfColorVariantEnum, AlfInputAppearanceEnum } from '@alfcomponents/enums';
+import { AlfColorVariantEnum, AlfInputAppearanceEnum, AlfInputTypeEnum, AlfIconsUnicodeIconEnum } from '@alfcomponents/enums';
 
 @Component({
   selector: 'app-alf-input-viewer',
@@ -11,14 +11,18 @@ import { AlfColorVariantEnum, AlfInputAppearanceEnum } from '@alfcomponents/enum
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AlfInputViewer {
+  public readonly alfInputTypeEnum = AlfInputTypeEnum;
   public readonly AlfColorVariantEnum = AlfColorVariantEnum;
   public readonly AlfInputAppearanceEnum = AlfInputAppearanceEnum;
+  public readonly AlfIconsUnicodeIconEnum = AlfIconsUnicodeIconEnum;
 
   public readonly selectedAppearance = signal<AlfInputAppearanceEnum>(AlfInputAppearanceEnum.Outline);
+  public readonly isElevated = signal<boolean>(true);
 
   public readonly valOutline = signal<string | undefined>(undefined);
   public readonly valFill = signal<string | undefined>(undefined);
   public readonly valStandard = signal<string | undefined>(undefined);
+  public readonly valStandardPrefix = signal<string | undefined>(undefined);
 
   public onAppearanceChange(event: Event) {
     const value = (event.target as HTMLSelectElement).value as AlfInputAppearanceEnum;

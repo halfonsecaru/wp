@@ -15,8 +15,9 @@ import {
 } from '@alfcomponents/enums';
 import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
 import { AlfSpinner } from '@alfcomponents/components/simple/alf-spinner/alf-spinner';
-import { AlfBaseDirectives, AlfComponentTypeEnum } from '@alfcomponents/components/base/bases.directive';
+import { AlfBaseDirectives } from '@alfcomponents/components/base/bases.directive';
 import { AlfCheckboxI18nLabels, getAlfCheckboxLabel } from './i18n/checkbox-i18n';
+import { AlfComponentTypeEnum } from '@alfcomponents/components/base/enum/AlfComponentType.enum';
 
 @Component({
   selector: 'alf-checkbox',

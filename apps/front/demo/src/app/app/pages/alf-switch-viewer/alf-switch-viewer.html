@@ -317,22 +317,22 @@
           <div class="sw-demo-row" style="margin-top: 0.5rem; gap: 1rem;">
             <div class="sw-demo-item">
               <span class="sw-demo-label">Elegant Disabled Off</span>
-              <alf-switch labelText="Bloqueado" [config]="{ disabled: false, checked: false }" />
+              <alf-switch labelText="Bloqueado" [disabled]="false" [checked]="false" />
             </div>
             <div class="sw-demo-item">
               <span class="sw-demo-label">Elegant Disabled On</span>
-              <alf-switch labelText="Bloqueado" [config]="{ disabled: true, checked: true }" />
+              <alf-switch labelText="Bloqueado" [disabled]="true" [checked]="true" />
             </div>
           </div>
           
           <div class="sw-demo-row" style="gap: 1rem;">
             <div class="sw-demo-item">
               <span class="sw-demo-label">Standard Disabled Off</span>
-              <alf-switch switchStyle="standard" labelText="Bloqueado" [config]="{ disabled: false, checked: false }" />
+              <alf-switch switchStyle="standard" labelText="Bloqueado" [disabled]="false" [checked]="false" />
             </div>
             <div class="sw-demo-item">
               <span class="sw-demo-label">Standard Disabled On</span>
-              <alf-switch switchStyle="standard" labelText="Bloqueado" [config]="{ disabled: true, checked: true }" />
+              <alf-switch switchStyle="standard" labelText="Bloqueado" [disabled]="true" [checked]="true" />
             </div>
           </div>
         </div>
@@ -412,7 +412,7 @@
           <div class="sw-demo-item">
             <span class="sw-demo-label">Con Tooltip Nativo</span>
             <alf-switch 
-              [config]="{ labelText: 'Pasa el ratón' }" 
+              labelText="Pasa el ratón" 
               [tooltip]="'Soy un tooltip interactivo nativo'"
               [checked]="selectedExtraGroup() === 'tooltip'"
               (onCheckedChange)="selectedExtraGroup.set('tooltip')"
@@ -423,7 +423,7 @@
           <div class="sw-demo-item">
             <span class="sw-demo-label">Sin Efecto Ripple</span>
             <alf-switch 
-              [config]="{ labelText: 'Click sin onda' }" 
+              labelText="Click sin onda" 
               [ripple]="false"
               [checked]="selectedExtraGroup() === 'noripple'"
               (onCheckedChange)="selectedExtraGroup.set('noripple')"
@@ -434,7 +434,7 @@
           <div class="sw-demo-item">
             <span class="sw-demo-label">Animación Infinita</span>
             <alf-switch 
-              [config]="{ labelText: 'Mírame pulsar' }" 
+              [labelText]="'Mírame pulsar'" 
               [animations]="{ enterStage: 'pulse', infinite: true, duration: '2s' }"
               [checked]="selectedExtraGroup() === 'anim'"
               (onCheckedChange)="selectedExtraGroup.set('anim')"

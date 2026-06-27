@@ -2,12 +2,12 @@
 @let border = inputBorderComputed();
 @let margin = marginComputed();
 @let outline = outlineComputed();
-@let padding = finalPaddingComputed();
-@let shadows = inputShadowsComputed();
+@let padding = paddingComputed();
+@let shadows = shadowsComputed();
 @let textStyle = inputTextStyleComputed();
 @let transform = transformComputed();
 @let transition = transitionComputed();
-@let typography = typographyComputed();
+@let typography = inputTypographyComputed();
 @let tt = tooltip();
 @let rp = ripple();
 @let an = animations();
@@ -37,20 +37,20 @@
     [alfPrefix]="cssPrefix()"
     (click)="focusInput()"
   >
-    @if (prefixComputed()) {
-    <div class="alf-input-prefix">{{ prefixComputed() }}</div>
+    @if (prefix()) {
+    <div class="alf-input-prefix">{{ prefix() }}</div>
     }
     <ng-content select="[alfPrefix]"></ng-content>
     <div class="alf-input-container" [alfDisplayAndLayout]="displayAndLayout()" alfPrefix="--alf-inp-cont">
-      @if (labelComputed()) {
+      @if (label()) {
       <label
         [for]="idComputed()"
         class="alf-input-label"
         [class.alf-input-label--float]="shouldFloat()"
-        [class.alf-input-label--has-prefix]="prefixComputed()"
+        [class.alf-input-label--has-prefix]="prefix()"
         [style.color]="(shouldFloat() && contrastingLabelColor()) ? contrastingLabelColor() : null"
       >
-        {{ labelComputed() }}@if (requiredComputed()) {
+        {{ label() }}@if (requiredComputed()) {
         <span class="alf-input-required">&nbsp;*</span>
         }
       </label>
@@ -60,18 +60,18 @@
         #inputRef
         [id]="idComputed()"
         [type]="inputTypeComputed()"
-        [placeholder]="(!labelComputed() || shouldFloat()) ? (placeholderComputed() || '') : ''"
+        [placeholder]="(!label() || shouldFloat()) ? (placeholder() || '') : ''"
         [disabled]="disabledComputed()"
-        [readOnly]="isReadonly()"
+        [readOnly]="readonly()"
         [value]="value() || ''"
         [attr.maxlength]="maxLengthComputed()"
         [attr.minlength]="minLengthComputed()"
         [attr.min]="minComputed()"
         [attr.max]="maxComputed()"
-        [attr.step]="stepComputed()"
+        [attr.step]="step()"
         [attr.pattern]="patternComputed()"
-        [attr.autofocus]="autofocusComputed() ? '' : null"
-        [attr.autocomplete]="autocompleteComputed() || null"
+        [attr.autofocus]="autofocus() ? '' : null"
+        [attr.autocomplete]="autocomplete() || null"
         [required]="requiredComputed()"
         (input)="handleInput($event)"
         (focus)="handleFocus($event)"
@@ -138,7 +138,7 @@
         </svg>
         }
       </button>
-      } @else if (suffixComputed()) { {{ suffixComputed() }} }
+      } @else if (suffix()) { {{ suffix() }} }
     </div>
     }
     
@@ -149,16 +149,15 @@
     }
   </div>
 
-  @if (errorComputed() || helperTextComputed() || showCharCounterComputed()) {
   <div class="alf-input-footer">
     @if (errorComputed()) {
     <div class="alf-input-error">{{ errorComputed() }}</div>
-    } @else if (helperTextComputed()) {
+    } @else if (helperText()) {
     <div
       class="alf-input-helper-text"
       [style.color]="hasContrastingLabel() ? border?.hover?.borderColor || border?.default?.borderColor : textStyle?.hover?.color || textStyle?.default?.color"
     >
-      {{ helperTextComputed() }}
+      {{ helperText() }}
     </div>
     } @if (showCharCounterComputed()) {
     <div
@@ -169,5 +168,4 @@
     </div>
     }
   </div>
-  }
 </div>

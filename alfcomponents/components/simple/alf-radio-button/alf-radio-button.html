@@ -1,34 +1,58 @@
 <!-- 1. Comportamiento y Directivas -->
-@let bg = backgroundComputed(); 
-@let bd = borderComputed(); 
-@let ot = outlineComputed(); 
-@let sd = shadowsComputed(); 
-@let mg = marginComputed(); 
-@let pd = paddingComputed(); 
-@let ty = typographyComputed(); 
-@let ts = textStyleComputed(); 
-@let tr = transformComputed(); 
-@let tsn = transitionComputed(); 
-@let dl = displayAndLayoutComputed(); 
-@let sz = sizeComputed(); 
-@let ar = aria(); 
-@let tt = tooltip(); 
-@let rp = ripple(); 
-@let cr = cursor(); 
-@let ds = disabledComputed();
-@let cc = customClass(); 
-@let cs = customStyle(); 
 
+@let bg = backgroundComputed();
+<!--  -->
+@let bd = borderComputed();
+<!--  -->
+@let ot = outlineComputed();
+<!--  -->
+@let sd = shadowsComputed();
+<!--  -->
+@let mg = marginComputed();
+<!--  -->
+@let pd = paddingComputed();
+<!--  -->
+@let ty = typographyComputed();
+<!--  -->
+@let ts = textStyleComputed();
+<!--  -->
+@let tr = transformComputed();
+<!--  -->
+@let tsn = transitionComputed();
+<!--  -->
+@let dl = displayAndLayoutComputed();
+<!--  -->
+@let sz = size();
+<!--  -->
+@let ar = aria();
+<!--  -->
+@let tt = tooltip();
+<!--  -->
+@let rp = ripple();
+<!--  -->
+@let cr = cursor();
+<!--  -->
+@let ds = disabledComputed();<!--  -->
+@let cc = customClass();
+<!--  -->
+@let cs = customStyle();
+<!--  -->
 
-@let idRadio = idComputed(); 
-@let labelText = labelComputed(); 
-@let labelPos = labelPositionComputed(); 
-@let isChecked = checked();
-@let styleVariant = radioButtonStyleComputed(); 
-@let radioName = name();
-@let isHovered = hovered(); 
-@let isFocused = focused(); 
-@let ld = isLoading();
+@let idRadio = idComputed();
+<!--  -->
+@let labelText = labelComputed();
+<!--  -->
+@let labelPos = labelPosition();
+<!--  -->
+@let isChecked = checked();<!--  -->
+@let styleVariant = radioButtonStyle();
+<!--  -->
+@let radioName = name();<!--  -->
+@let isHovered = hovered();
+<!--  -->
+@let isFocused = focused();
+<!--  -->
+@let ld = isLoading();<!--  -->
 
 <div
   (mouseenter)="hovered.set(true)"
@@ -51,6 +75,7 @@
   [alfAria]="ar ? ar : null"
   [class]="classPrefix + ' ' + classPrefix + '--' + styleVariant + ' ' + classPrefix + '--' + sz + (cc ? ' ' + cc : '')"
   [class.alf-rb--checked]="isChecked"
+  [class.alf-rb--light-selection]="isSolid3dGradient()"
   [class.alf-rb--disabled]="ds"
   [class.alf-rb--loading]="ld"
   [class.alf-rb--hovered]="isHovered"
@@ -105,10 +130,7 @@
 </div>
 
 <!-- Helper y Errores -->
-@let helper = $safeNavigationMigration(helperText() ?? inputConfig()?.helperText); 
-@let errorMsg = $safeNavigationMigration(error() ?? inputConfig()?.error); 
-@if (helper
-|| errorMsg) {
+@let helper = $safeNavigationMigration(helperText()); @let errorMsg = $safeNavigationMigration(error()); @if (helper || errorMsg) {
 <div [id]="idRadio + '-description'" class="alf-rb-description">
   @if (errorMsg) {
   <span class="alf-rb-error">{{ errorMsg }}</span>

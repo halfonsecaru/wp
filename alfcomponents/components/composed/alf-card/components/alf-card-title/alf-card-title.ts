@@ -1,8 +1,9 @@
 import { Component, input, computed, ChangeDetectionStrategy, signal } from '@angular/core';
 import { visualprefixEnum } from '@alfcomponents/shared';
 import { AlfCardTitleConfigInterface } from './interfaces/alf-card-title.interface';
-import { AlfBaseDirectives, AlfComponentTypeEnum } from '@alfcomponents/components/base/bases.directive';
+import { AlfBaseDirectives } from '@alfcomponents/components/base/bases.directive';
 import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
+import { AlfComponentTypeEnum } from '@alfcomponents/components/base/enum/AlfComponentType.enum';
 
 @Component({
   selector: 'alf-card-title',

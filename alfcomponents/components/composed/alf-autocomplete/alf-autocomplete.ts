@@ -12,19 +12,12 @@ import { AlfInput } from '../../simple/alf-input/alf-input';
 import { AlfAnimateCssInterface, AlfBackgroundsBaseInterface, AlfBackgroundsInterface, AlfBackgroundsStyleInterface, AlfBorderBaseInterface, AlfBorderInterface, AlfDisplayAndLayoutBaseInterface, AlfDisplayAndLayoutInterface, AlfMarginBaseInterface, AlfMarginInterface, AlfOutlineBaseInterface, AlfOutlineInterface, AlfPaddingBaseInterface, AlfPaddingInterface, AlfRippleInterface, AlfShadowsBaseInterface, AlfShadowsInterface, AlfTextStyleInterface, AlfTextStyleStateBaseInterface, AlfTransformBaseInterface, AlfTransformInterface, AlfTransitionBaseInterface, AlfTransitionInterface, AlfTypographyBaseInterface, AlfTypographyInterface } from '@alfcomponents/interfaces';
 import { AlfTooltipConfig, visualRippleColorBase } from '@alfcomponents/directives';
 import { AlfValidationResult } from '@alfcomponents/shared';
-import { deepMergeStates, expandToAllStates } from '@alfcomponents/components/base/bases.directive';
 
 import { AlfSelectOption } from './interfaces/alf-auto-complete-options-interface';
 import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
 import { AlfAutoCompletefPanel } from './al-auto-completef-panel/alf-auto-complete-panel';
+import { deepMergeStates } from '@alfcomponents/components/base/default/functions';
 
-// ****************************************************
-// ************ Interfaces ******************
-// ****************************************************
-
-// ****************************************************
-// *** Predefined Functions (Switch Pattern) **********
-// ****************************************************
 @Component({
   selector: 'alf-autocomplete',
   standalone: true,
@@ -102,21 +95,21 @@ export class AlfAutocompleteComponent {
     return deepMergeStates(this.config()?.outline, this.outline());
   })
 
-  protected readonly borderComputed = computed(() => {
-    return deepMergeStates(this.config()?.border, expandToAllStates(this.border()));
-  })
+  // protected readonly borderComputed = computed(() => {
+  //  // return deepMergeStates(this.config()?.border, expandToAllStates(this.border()));
+  // })
 
-  protected readonly backgroundComputed = computed(() => {
-    return deepMergeStates(this.config()?.backgrounds, expandToAllStates(this.background()));
-  })
+  // protected readonly backgroundComputed = computed(() => {
+  //  // return deepMergeStates(this.config()?.backgrounds, expandToAllStates(this.background()));
+  // })
 
   protected readonly marginComputed = computed(() => {
     return deepMergeStates(this.config()?.margin, this.margin());
   })
 
-  protected readonly paddingComputed = computed(() => {
-    return deepMergeStates(this.config()?.padding, expandToAllStates(this.padding()));
-  })
+  // protected readonly paddingComputed = computed(() => {
+  //  // return deepMergeStates(this.config()?.padding, expandToAllStates(this.padding()));
+  // })
 
   protected readonly typographyComputed = computed(() => {
     return deepMergeStates(this.config()?.typography, this.typography());

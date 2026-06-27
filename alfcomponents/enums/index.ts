@@ -24,7 +24,6 @@ export * from './alf-icon-source.enum';
 export * from './alf-icon-style.enum';
 export * from './alf-icons-unicode-icon.enum';
 export * from './alf-icons-emoji-icon.enum';
-export * from './alf-input-adornment.enum';
 export * from './alf-input-appearance.enum';
 export * from './alf-input-type.enum';
 export * from './alf-labels-position.enum';

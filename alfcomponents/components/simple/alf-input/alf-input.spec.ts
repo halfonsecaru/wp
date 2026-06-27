@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, getTestBed } from '@angular/core/testing';
 import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
 import { By } from '@angular/platform-browser';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { AlfInput } from './alf-input';
 import { AlfInputTypeEnum } from '@alfcomponents/enums';
@@ -25,6 +25,10 @@ describe('AlfInput', () => {
     fixture = TestBed.createComponent(AlfInput);
     component = fixture.componentInstance;
     await fixture.whenStable();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   it('should create', () => {
@@ -63,7 +67,7 @@ describe('AlfInput', () => {
   });
 
   it('debe mostrar el botón de limpiar cuando clearable es true y tiene valor', () => {
-    fixture.componentRef.setInput('config', { clearable: true });
+    fixture.componentRef.setInput('clearable', true);
     fixture.componentRef.setInput('value', 'algo');
     fixture.detectChanges();
 
@@ -72,7 +76,7 @@ describe('AlfInput', () => {
   });
 
   it('debe limpiar el valor al hacer click en el botón de limpiar', () => {
-    fixture.componentRef.setInput('config', { clearable: true });
+    fixture.componentRef.setInput('clearable', true);
     fixture.componentRef.setInput('value', 'texto');
     fixture.detectChanges();
 
@@ -106,7 +110,7 @@ describe('AlfInput', () => {
 
   it('debe aplicar debounceTime', async () => {
     vi.useFakeTimers();
-    fixture.componentRef.setInput('config', { debounceTime: 500 });
+    fixture.componentRef.setInput('debounceTime', 500);
     fixture.detectChanges();
 
     const onInputSpy = vi.fn();
@@ -120,13 +124,12 @@ describe('AlfInput', () => {
 
     vi.advanceTimersByTime(500);
     expect(onInputSpy).toHaveBeenCalledWith('test');
-    vi.useRealTimers();
   });
 
   // --- NUEVOS TESTS AÑADIDOS PARA COBERTURA COMPLETA --- //
 
   it('debe mostrar mensaje de error cuando tiene errorComputed', () => {
-    fixture.componentRef.setInput('config', { error: 'Nombre inválido' });
+    fixture.componentRef.setInput('error', 'Nombre inválido');
     fixture.detectChanges();
 
     const errorEl = fixture.debugElement.query(By.css('.alf-input-error'));
@@ -144,7 +147,8 @@ describe('AlfInput', () => {
   });
 
   it('debe mostrar el contador de caracteres si maxlength está definido', () => {
-    fixture.componentRef.setInput('config', { showCharCounter: true, maxLength: 10 });
+    fixture.componentRef.setInput('showCharCounter', true);
+    fixture.componentRef.setInput('maxLength', 10);
     fixture.componentRef.setInput('value', '12345');
     fixture.detectChanges();
 

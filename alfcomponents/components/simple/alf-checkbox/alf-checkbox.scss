@@ -142,6 +142,15 @@
     color: var(--alf-cb-text-color, var(--alf-cb-icon-color, var(--alf-white, #ffffff))) !important;
   }
 
+  &--light-selection {
+    .alf-cb-icon,
+    svg path {
+      stroke: var(--alf-cb-border-color, var(--alf-cb-text-color, var(--alf-white, #ffffff))) !important;
+      color: var(--alf-cb-border-color, var(--alf-cb-text-color, var(--alf-white, #ffffff))) !important;
+      filter: brightness(10) saturate(0.1);
+    }
+  }
+
   &--hovered svg path {
     stroke: var(--alf-cb-text-hover-color, var(--alf-cb-text-color, var(--alf-white, #ffffff))) !important;
   }

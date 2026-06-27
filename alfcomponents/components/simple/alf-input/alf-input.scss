@@ -23,6 +23,16 @@
   @include alf-margin-style('--alf-inp', '&--disabled', '&--focused, &:focus-within, &:focus-visible');
   @include alf-display-and-layout-style('--alf-inp', '&--disabled', '&--focused, &:focus-within, &:focus-visible', $default-display: inline-flex);
   @include alf-animations-style('--alf-inp');
+
+  &--error {
+
+    .alf-input-prefix,
+    .alf-input-suffix,
+    [alfPrefix],
+    [alfSuffix] {
+      color: var(--alf-danger, #dc3545);
+    }
+  }
 }
 
 .alf-input-prefix {
@@ -32,6 +42,7 @@
   justify-content: center;
   flex-shrink: 0;
   padding-right: 3px;
+  color: inherit;
 }
 
 .alf-input-element {
@@ -100,7 +111,7 @@
     font-weight: 500;
     opacity: 1;
     font-size: 12px;
-    color: var(--alf-inp-text-focus-color, var(--alf-inp-text-color, inherit));
+    color: var(--alf-inp-text-focus-color, var(--alf-inp-text-color, var(--alf-inp-border-bottom-color, var(--alf-inp-border-color, inherit))));
   }
 
   &--has-prefix {
@@ -113,7 +124,7 @@
   // Si es un input con fondo sólido o degradado (Solid, 3D o gradient) y está flotando, 
   // forzamos que el label tome el color del borde para que sea visible fuera del fondo
   .alf-input--contrasting-label &--float {
-    color: var(--alf-inp-border-color-focus);
+    color: var(--alf-inp-border-bottom-color-focus, var(--alf-inp-border-color-focus, var(--alf-inp-border-bottom-color, var(--alf-inp-border-color, var(--alf-inp-text-color, inherit)))));
     opacity: 1;
   }
 }
@@ -147,6 +158,7 @@
   width: 100%;
   margin-top: 4px;
   padding: 0 4px;
+  min-height: 20px;
 }
 
 .alf-input-helper-text,
@@ -175,6 +187,7 @@
   justify-content: center;
   padding-left: 8px;
   flex-shrink: 0;
+  color: inherit;
 }
 
 .alf-input-password-toggle,

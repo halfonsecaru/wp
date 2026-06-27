@@ -50,7 +50,7 @@
           />
           <alf-radio-button 
             label="Label a la izquierda" 
-            [config]="{ labelPosition: 'before' }"
+            labelPosition="before"
             [checked]="selectedLabelPosGroup() === 'before'"
             (onCheckedChange)="selectedLabelPosGroup.set('before')"
           />
@@ -287,22 +287,22 @@
           <div class="rb-demo-row" style="margin-top: 0.5rem; gap: 1rem;">
             <div class="rb-demo-item">
               <span class="rb-demo-label">Elegant Disabled Off</span>
-              <alf-radio-button label="Bloqueado" [config]="{ disabled: false, checked: false }" />
+              <alf-radio-button label="Bloqueado" [disabled]="false" [checked]="false" />
             </div>
             <div class="rb-demo-item">
               <span class="rb-demo-label">Elegant Disabled On</span>
-              <alf-radio-button label="Bloqueado" [config]="{ disabled: false, checked: true }" />
+              <alf-radio-button label="Bloqueado" [disabled]="false" [checked]="true" />
             </div>
           </div>
           
           <div class="rb-demo-row" style="gap: 1rem;">
             <div class="rb-demo-item">
               <span class="rb-demo-label">Standard Disabled Off</span>
-              <alf-radio-button [radioButtonStyle]="AlfRadioButtonVariantEnum.Standard" label="Bloqueado" [config]="{ disabled: true, checked: false }" />
+              <alf-radio-button [radioButtonStyle]="AlfRadioButtonVariantEnum.Standard" label="Bloqueado" [disabled]="true" [checked]="false" />
             </div>
             <div class="rb-demo-item">
               <span class="rb-demo-label">Standard Disabled On</span>
-              <alf-radio-button [radioButtonStyle]="AlfRadioButtonVariantEnum.Standard" label="Bloqueado" [config]="{ disabled: true, checked: true }" />
+              <alf-radio-button [radioButtonStyle]="AlfRadioButtonVariantEnum.Standard" label="Bloqueado" [disabled]="true" [checked]="true" />
             </div>
           </div>
         </div>

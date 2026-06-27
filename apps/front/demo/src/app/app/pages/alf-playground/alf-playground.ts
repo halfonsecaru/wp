@@ -22,7 +22,7 @@ import {
   AlfAnimationTypeEnum,
   AlfInputAppearanceEnum,
   AlfInputTypeEnum,
-  AlfInputAdornmentEnum,
+  AlfIconsUnicodeIconEnum,
 } from '@alfcomponents/enums';
 import {
   AlfBackgroundsInterface,
@@ -63,8 +63,8 @@ export class AlfPlayground {
   public readonly AlfSizeEnum = AlfSizeEnum;
   public readonly AlfInputAppearanceEnum = AlfInputAppearanceEnum;
   public readonly AlfInputTypeEnum = AlfInputTypeEnum;
-  public readonly AlfInputAdornmentEnum = AlfInputAdornmentEnum;
-  public readonly adornmentOptions = enumEntries(AlfInputAdornmentEnum);
+  public readonly AlfIconsUnicodeIconEnum = AlfIconsUnicodeIconEnum;
+  public readonly adornmentOptions = enumEntries(AlfIconsUnicodeIconEnum);
 
   public readonly colorOptions = enumEntries(AlfColorEnum);
   public readonly pxOptions = enumEntries(PX_SUBSET);

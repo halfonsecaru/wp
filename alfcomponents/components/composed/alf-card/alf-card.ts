@@ -3,13 +3,14 @@ import {
   input,
   computed,
   ChangeDetectionStrategy,
-  signal,
 } from '@angular/core';
 import { generateUniqueId, visualprefixEnum } from '@alfcomponents/shared';
 import { AlfColorVariantEnum } from '@alfcomponents/enums';
 import { AlfCardConfigInterface } from './interfaces/alf-card.interface';
-import { AlfBaseDirectives, AlfComponentTypeEnum, deepMergeStates } from '@alfcomponents/components/base/bases.directive';
+import { AlfBaseDirectives } from '@alfcomponents/components/base/bases.directive';
 import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
+import { deepMergeStates } from '@alfcomponents/components/base/default/functions';
+import { AlfComponentTypeEnum } from '@alfcomponents/components/base/enum/AlfComponentType.enum';
 
 @Component({
   selector: 'alf-card',

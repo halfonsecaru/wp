@@ -8,6 +8,7 @@ AlfRadioButton is a premium radio button component for Alfonizer, designed under
 - Full i18n support (7 languages).
 - Highly customizable via the central visual engine.
 - Visual variants: Elegant (Neumorphic) and Standard.
+- Flat-input architecture — no `config` object required.
 
 ## Installation
 
@@ -32,15 +33,27 @@ import { AlfRadioButton } from '@alfcomponents/components';
 
 | Property | Type | Description |
 |-----------|------|-------------|
-| `variant` | `string \| AlfColorVariantEnum` | Predefined variant (e.g., 'SolidPrimary', 'OutlinedSuccess'). |
-| `config` | `AlfRadioButtonInterface` | Detailed component configuration. |
+| `variant` | `string \| AlfColorVariantEnum` | Predefined variant (e.g., 'Primary', 'SuccessOutline'). |
 | `checked` | `model<boolean>` | Selection state (Two-way binding). |
 | `label` | `input<string>` | Label text. |
-| `size` | `input<AlfSizeEnum \| string>` | Size (SM, MD, LG, XL). |
+| `labelPosition` | `input<'before' \| 'after'>` | Position of the label (default: `'after'`). |
+| `size` | `input<AlfSizeEnum \| string>` | Size (XS, SM, MD, LG, XL, 2XL). |
+| `radioButtonStyle` | `input<AlfRadioButtonVariantEnum>` | Visual style: `Elegant` or `Standard`. |
+| `disabled` | `input<boolean>` | Disables the radio button. |
+| `error` | `input<string>` | Validation error message. |
+| `helperText` | `input<string>` | Informational helper text. |
+| `value` | `input<any>` | Value emitted on selection. |
+| `name` | `input<string>` | Group name for native radio behavior. |
 
 ## Style Variants
 
-Can be configured via the `radioButtonStyle` property in the configuration:
+Can be configured via the `radioButtonStyle` property:
 
 - `Elegant`: Style with neumorphic shadows and smooth transitions.
-- `Standard`: Classic and clean style.
+- `Standard`: Classic and clean box style.
+
+## Events
+
+| Event | Type | Description |
+|-------|------|-------------|
+| `onCheckedChange` | `output<any>` | Emits the `value` when the radio button is selected. |

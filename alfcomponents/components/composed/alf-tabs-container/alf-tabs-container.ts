@@ -19,12 +19,13 @@ import {
 } from '@angular/core';
 import { AlfTabComponent } from './components/alf-tab/alf-tab';
 import { generateUniqueId, visualprefixEnum } from '@alfcomponents/shared';
-import { AlfTabsContainerConfigInterface, ALF_TABS_CONTAINER_TOKEN } from './interfaces/alf-tabs.interface';
-import { AlfBaseDirectives, AlfComponentTypeEnum } from '@alfcomponents/components/base/bases.directive';
+import { ALF_TABS_CONTAINER_TOKEN } from './interfaces/alf-tabs.interface';
+import { AlfBaseDirectives } from '@alfcomponents/components/base/bases.directive';
 import { ALF_TABS_CONTAINER_DEFAULT } from './predefined/alf-tabs-container.predefined';
 import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
 
 import { AlfTabsHeightService } from './services/alf-tabs-height.service';
+import { AlfComponentTypeEnum } from '@alfcomponents/components/base/enum/AlfComponentType.enum';
 
 @Component({
   selector: 'alf-tabs-container',

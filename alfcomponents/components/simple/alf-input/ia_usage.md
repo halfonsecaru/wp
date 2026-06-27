@@ -3,13 +3,10 @@
 This document outlines how AI assistants should implement and interact with the `AlfInput` component.
 
 ## 1. Architecture & Reactivity (Angular 18+)
-- **Signals Only**: Do not use `@Input()`, `@Output()`, or `ngOnChanges`. `AlfInput` is built strictly with `input()`, `model()`, `computed()`, and `output()`.
-- **Value Binding**: Use `[(value)]="mySignal"` or `[value]="mySignal()"` for the main data. Do not use `ngModel` directly on the inner tag unless passing through a `ControlValueAccessor` wrapper.
+- **Signals Only**: Do not use old `@Input()`, `@Output()`, or `ngOnChanges`. `AlfInput` is built strictly with `input()`, `model()`, `computed()`, and `output()`.
+- **Flat Inputs**: Pass all properties directly and individually (e.g. `[label]="'Name'"`, `[placeholder]="'Enter name'"`, `[disabled]="true"`). The obsolete config object is no longer supported.
+- **Value Binding**: Use `[(value)]="mySignal"` or `[value]="mySignal()"` for the main data.
 - **Change Detection**: The component is fully `OnPush`.
-
-## 2. Configuration (`AlfInputInterface`)
-Most properties can be passed individually (e.g., `[label]="'Name'"`), but it is recommended to use the configuration object `[config]="myConfig"` of type `AlfInputInterface` for complex setups.
-- Supported properties in config: `label`, `placeholder`, `inputType` (`text`, `password`, `email`, etc.), `helperText`, `appearance`, `clearable`, `showPasswordToggle`, `showCharCounter`, `debounceTime`, `maxLength`, `error`, `isLoading`, etc.
 
 ## 3. Appearances & Variants
 `AlfInput` has three primary structural **Appearances**:
