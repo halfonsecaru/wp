@@ -40,10 +40,10 @@
   [alfAnimations]="an ? an : null"
   [alfPrefix]="cssVarPrefix"
 >
-  @if (resolvedSrc()) {
+  @if (src() || alt()) {
     <img
-      [src]="resolvedSrc()"
-      [alt]="resolvedAlt()"
+      [src]="src()"
+      [alt]="alt()"
     />
   } @else {
     <ng-content />

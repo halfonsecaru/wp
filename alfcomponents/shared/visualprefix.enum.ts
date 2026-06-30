@@ -46,10 +46,32 @@ export enum visualprefixEnum {
     Checkbox = '--alf-cb',
     Input = '--alf-inp',
 
+    // Paginator
+    PaginatorPrefix = "alf-pagi",
+    PaginatorClass = "alf-paginator",
+    Paginator = `--${visualprefixEnum.PaginatorPrefix}`,
+    
+    // Select
+    SelectPrefix = "alf-slc",
+    SelectClass = "alf-select",
+    Select = `--${visualprefixEnum.SelectPrefix}`,
+    
+    // Select Panel Option
+    SelectPanelOptionPrefix = "alf-slc-opt",
+    SelectPanelOptionClass = "alf-select-panel-option",
+    SelectPanelOption = `--${visualprefixEnum.SelectPanelOptionPrefix}`,
+    
+    // Option
+    OptionPrefix = "alf-opt",
+    OptionClass = "alf-option",
+    Option = `--${visualprefixEnum.OptionPrefix}`,
     
     
     // InternalIds
     ButtonsInternalId = '-alf-btn-id',
+    PaginatorInternalId = "-alf-paginator-id",
+    SelectInternalId = "-alf-select-id",
+    OptionInternalId = "-alf-option-id",
     
     
     // Directivas
@@ -63,5 +85,5 @@ export enum visualprefixEnum {
 
 
     TabsContainerInternalId = "--alf-tabs-id",
-    CardInternalId = '--alf-card-id'
+    CardInternalId = '--alf-card-id',
 }

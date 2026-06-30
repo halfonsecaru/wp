@@ -1,0 +1,97 @@
+@use '../../../../../visualStyles' as *;
+
+:host {
+  display: block;
+  position: absolute !important;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+  margin-top: 4px;
+  opacity: 0;
+  will-change: opacity, transform;
+  --alf-slc-animations-fill-mode: both;
+
+
+  &:not(.animate__animated) {
+    opacity: 1;
+    transition: opacity 1ms;
+  }
+}
+
+.alf-select-panel {
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  @include alf-border-style('--alf-slc', '&--disabled', '&--focused, &:focus-within, &:focus-visible', '&:hover');
+  @include alf-outline-style('--alf-slc', '&--disabled', '&--focused, &:focus-within, &:focus-visible', '&:hover');
+  @include alf-shadows-style('--alf-slc', '&--disabled', '&--focused, &:focus-within, &:focus-visible', '&:hover');
+  @include alf-background-style('--alf-slc', '&--disabled', '&--focused, &:focus-within, &:focus-visible', '&:hover');
+  @include alf-disabled-style;
+
+  margin-top: -20px;
+}
+
+.alf-select-panel__group-header {
+  padding: 8px 12px 4px 12px;
+  font-weight: bold;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.alf-select-panel__search {
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  z-index: 0;
+  border-bottom: 1px solid var(--alf-slc-border-color, var(--alf-slc-border-color, inherit)) !important;
+
+  @include alf-text-style('--alf-slc', '&--disabled', '&--focused, &:focus-within, &:focus-visible', '&:hover');
+  @include alf-typography-style('--alf-slc', '&--disabled', '&--focused, &:focus-within, &:focus-visible', '&:hover');
+}
+
+.alf-select-panel__search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: inherit;
+  outline: none;
+  padding: 0;
+  width: 100%;
+  color: var(--alf-slc-opt-typography-color, var(--alf-slc-opt-text-color, inherit));
+
+  &::placeholder {
+    color: var(--alf-slc-opt-typography-color, var(--alf-slc-opt-text-color, inherit));
+    opacity: 0.7;
+  }
+}
+
+.alf-select-panel__search-clear {
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  line-height: 1;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--alf-slc-opt-typography-color, var(--alf-slc-opt-text-color, inherit));
+  opacity: 0.6;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.alf-select-panel__empty {
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  text-align: center;
+  color: var(--alf-slc-opt-typography-color, var(--alf-slc-opt-text-color, inherit));
+  opacity: 0.8;
+}

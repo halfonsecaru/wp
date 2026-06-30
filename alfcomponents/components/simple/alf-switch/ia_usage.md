@@ -1,56 +1,51 @@
 # AI Usage Guide: AlfSwitch (Elite Standard)
 
-This document describes how to use and extend the `alf-switch` component safely from an AI assistant, following the project's technical rigor.
+This document describes how to use and extend the `alf-switch` component safely when generating code via AI assistants, following the project's technical rigor.
 
-## Current Architecture
+## 🏗️ Current Architecture
 
 - **Component**: `alfcomponents/components/simple/alf-switch/alf-switch.ts`
-- **Core Engine**: Fully integrated with `alfcomponents/base/defaultVariants.ts` via `resolveVariantConfig`.
-- **Styling**: Dual strategy using SCSS (layout) and CSS Variables (`AlfColorEnum`) via visualprefix `--alf-sw` for dynamic theming.
-- **Signals**: Native Angular 22 Signals (`input`, `model`, `computed`) for full reactivity and Zoneless support.
+- **Core Base Engine**: Inherits from `AlfBaseDirectives` for centralized reactive styles (background, border, shadows, typography).
+- **Styling**: SCSS layout + CSS custom properties (`--alf-sw-*`) linked to `AlfColorEnum` tokens.
+- **Signals**: Native Angular 22 Signals (`input`, `model`, `computed`) for full Zoneless reactivity.
 
-## Recommended Usage
+## 💡 Recommended Implementation Examples
 
-### 1. Predefined Configuration
-Always use the factory to get system defaults:
-```ts
-import { getAlfSwitchDefaultConfig } from './predefined/alf-switch.predefined';
-
-const config = getAlfSwitchDefaultConfig(AlfColorVariantEnum.Success);
-```
-
-### 2. Implementation Example
+### 1. Standard Toggle
 ```html
 <alf-switch
-  [(checked)]="isActive"
-  [label]="'Enable notifications'"
+  [(checked)]="isEnabled"
+  label="Enable Feature"
   [variant]="AlfColorVariantEnum.Primary"
 />
 ```
 
-## Technical Rules (Mandatory)
+### 2. Custom Style & Position
+```html
+<alf-switch
+  [(checked)]="autoSave"
+  label="Auto Save Changes"
+  labelPosition="before"
+  switchStyle="elegant"
+  [variant]="AlfColorVariantEnum.Success"
+  (onCheckedChange)="onSaveToggle($event)"
+/>
+```
 
-- **Modifiers**: NEVER omit access modifiers (`public`, `private`, `protected`).
-- **Readonly**: All signals and injected dependencies MUST be `readonly`.
-- **Arrow Functions**: All class methods MUST be arrow functions to preserve `this`.
-- **Signals**: Use `model()` for two-way bindings like `checked`.
-- **Hierarchy**: The component resolves properties using: `Individual Inputs > inputConfig > Factory Defaults`.
+## 📐 Technical Rules (Mandatory)
 
-## State Management
+1. **Access Modifiers**: Always specify `public`, `protected`, or `private`.
+2. **Immutability & Readonly**: Declare all signal inputs, models, and injected properties as `readonly`.
+3. **Arrow Functions**: Component handlers MUST be defined as arrow functions to preserve lexical binding.
+4. **Two-Way Binding**: Use `model<boolean>()` for `checked`.
+5. **No Ad-Hoc Hex Colors**: Colors must always resolve via `AlfColorEnum` or CSS variables linked to tokens.
+
+## ⚡ State & Event API
 
 - `checked`: `model<boolean>` - Controls the switch toggle state.
-- `disabled`: `input<boolean>` - Inherited from `AlfBaseConfiguration`.
-
-## Events
-
-- `onCheckedChange`: `output<boolean>` - Emits the new state after a toggle.
-
-## Refactoring Status
-- [x] Standardized Directory Structure
-- [x] Inherits from `AlfBaseCommonConfigInterface`
-- [x] Integrated with Elite Visual Engine
-- [x] CSS Variables with fallbacks
-- [x] Readonly signals and arrow functions
+- `disabled`: `input<boolean>` - Inherited state disabling interaction.
+- `isLoading`: `input<boolean>` - Renders an integrated loading spinner (`AlfSpinner`).
+- `onCheckedChange`: `output<boolean>` - Emits new boolean state after toggling.
 
 ---
-*Technical reference for AI agents.*
+*Technical reference for AI agent generators.*

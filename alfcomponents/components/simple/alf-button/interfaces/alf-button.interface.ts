@@ -2,7 +2,8 @@ import {
   AlfButtonTypeEnum, 
   AlfColorVariantEnum,
   AlfIconsUnicodeIconEnum,
-  AlfCursorEnum 
+  AlfCursorEnum,
+  AlfSizeEnum
 } from "@alfcomponents/enums";
 import { 
   AlfBackgroundsInterface, 
@@ -31,6 +32,7 @@ export interface AlfButtonInterface extends AlfBaseCommonConfigInterface {
   readonly type?: AlfButtonTypeEnum;
   readonly disabled?: boolean;
   readonly loading?: boolean;
+  readonly size?: AlfSizeEnum;
   readonly colorVariant?: AlfColorVariantEnum;
   readonly link?: ButtonLink;
   readonly debounceTime?: number;

@@ -1,0 +1,385 @@
+<div class="demo-page">
+  <div class="demo-header">
+    <h1>💎 AlfPaginator Demo Showcase</h1>
+    <p>Componente reactivo de paginación de alto rendimiento con Signals, transiciones orgánicas y soporte i18n.</p>
+  </div>
+
+  <!-- 1. USO BÁSICO Y REACTIVO -->
+  <section class="demo-section">
+    <h2>1. Uso Básico e Inspección de Eventos</h2>
+    <div class="demo-component-box">
+      <alf-paginator 
+        [totalItems]="120" 
+        [itemsPerPage]="10" 
+        [showPageInfo]="true"
+        [(page)]="pageBasic"
+        (pageChanged)="onPageChange($event)">
+      </alf-paginator>
+    </div>
+    @if (lastEvent()) {
+      <div class="demo-event-log-container">
+        <span class="demo-log-title">Último evento emitido (pageChanged):</span>
+        <pre class="demo-event-log">{{ lastEvent() | json }}</pre>
+      </div>
+    }
+  </section>
+
+  <!-- 2. VARIANTES DE COLOR Y TEMAS -->
+  <section class="demo-section">
+    <h2>2. Variantes de Color del Sistema (variant)</h2>
+    
+    <h3 style="margin-top: 1rem; color: #475569;">Variantes Sólidas (Solid)</h3>
+    <div class="demo-grid">
+      <div class="demo-card">
+        <h3>Primary</h3>
+        <div class="demo-component-box">
+          <alf-paginator 
+            [totalItems]="100" 
+            [itemsPerPage]="10" 
+            [variant]="AlfColorVariantEnum.Primary"
+            [(page)]="pageVarPrimary">
+          </alf-paginator>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h3>Secondary</h3>
+        <div class="demo-component-box">
+          <alf-paginator 
+            [totalItems]="100" 
+            [itemsPerPage]="10" 
+            [variant]="AlfColorVariantEnum.Secondary"
+            [(page)]="pageVarSecondary">
+          </alf-paginator>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h3>Success</h3>
+        <div class="demo-component-box">
+          <alf-paginator 
+            [totalItems]="100" 
+            [itemsPerPage]="10" 
+            [variant]="AlfColorVariantEnum.Success"
+            [(page)]="pageVarSuccess">
+          </alf-paginator>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h3>Danger</h3>
+        <div class="demo-component-box">
+          <alf-paginator 
+            [totalItems]="100" 
+            [itemsPerPage]="10" 
+            [variant]="AlfColorVariantEnum.Danger"
+            [(page)]="pageVarDanger">
+          </alf-paginator>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="margin-top: 2rem; color: #475569;">Variantes Outline</h3>
+    <div class="demo-grid">
+      <div class="demo-card">
+        <h3>Primary Outline</h3>
+        <div class="demo-component-box">
+          <alf-paginator 
+            [totalItems]="100" 
+            [itemsPerPage]="10" 
+            [variant]="AlfColorVariantEnum.PrimaryOutline"
+            [(page)]="pageVarPrimaryOut">
+          </alf-paginator>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h3>Secondary Outline (Default)</h3>
+        <div class="demo-component-box">
+          <alf-paginator 
+            [totalItems]="100" 
+            [itemsPerPage]="10" 
+            [variant]="AlfColorVariantEnum.SecondaryOutline"
+            [(page)]="pageVarSecondaryOut">
+          </alf-paginator>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h3>Success Outline</h3>
+        <div class="demo-component-box">
+          <alf-paginator 
+            [totalItems]="100" 
+            [itemsPerPage]="10" 
+            [variant]="AlfColorVariantEnum.SuccessOutline"
+            [(page)]="pageVarSuccessOut">
+          </alf-paginator>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h3>Danger Outline</h3>
+        <div class="demo-component-box">
+          <alf-paginator 
+            [totalItems]="100" 
+            [itemsPerPage]="10" 
+            [variant]="AlfColorVariantEnum.DangerOutline"
+            [(page)]="pageVarDangerOut">
+          </alf-paginator>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="margin-top: 2rem; color: #475569;">Variantes Soft y Degradados</h3>
+    <div class="demo-grid">
+      <div class="demo-card">
+        <h3>Primary Soft</h3>
+        <div class="demo-component-box">
+          <alf-paginator 
+            [totalItems]="100" 
+            [itemsPerPage]="10" 
+            [variant]="AlfColorVariantEnum.PrimarySoft"
+            [(page)]="pageVarPrimarySoft">
+          </alf-paginator>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h3>Success Soft</h3>
+        <div class="demo-component-box">
+          <alf-paginator 
+            [totalItems]="100" 
+            [itemsPerPage]="10" 
+            [variant]="AlfColorVariantEnum.SuccessSoft"
+            [(page)]="pageVarSuccessSoft">
+          </alf-paginator>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h3>Gradient Purple</h3>
+        <div class="demo-component-box">
+          <alf-paginator 
+            [totalItems]="100" 
+            [itemsPerPage]="10" 
+            [variant]="AlfColorVariantEnum.GradientPurple"
+            [(page)]="pageVarPurpleGrad">
+          </alf-paginator>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. VARIANTES DE APARIENCIA -->
+  <section class="demo-section">
+    <h2>3. Estilos de Apariencia (appearance)</h2>
+    
+    <div class="demo-grid">
+      <div class="demo-card">
+        <h3>Standard (Borde Md estándar)</h3>
+        <div class="demo-component-box">
+          <alf-paginator 
+            [totalItems]="100" 
+            [itemsPerPage]="10" 
+            appearance="standard"
+            [(page)]="pageAppStandard">
+          </alf-paginator>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h3>Full (Botones Circulares / Píldora)</h3>
+        <div class="demo-component-box">
+          <alf-paginator 
+            [totalItems]="100" 
+            [itemsPerPage]="10" 
+            appearance="full"
+            [(page)]="pageAppFull">
+          </alf-paginator>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h3>Sm (Esquinas Suaves Reducidas)</h3>
+        <div class="demo-component-box">
+          <alf-paginator 
+            [totalItems]="100" 
+            [itemsPerPage]="10" 
+            appearance="sm"
+            [(page)]="pageAppSm">
+          </alf-paginator>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h3>None (Sin Fondo y Sin Borde)</h3>
+        <div class="demo-component-box">
+          <alf-paginator 
+            [totalItems]="100" 
+            [itemsPerPage]="10" 
+            appearance="none"
+            [(page)]="pageAppNone">
+          </alf-paginator>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. POSICIONAMIENTO DEL TEXTO INFORMATIVO -->
+  <section class="demo-section">
+    <h2>4. Posicionamiento del Texto Informativo (pageInfoPosition)</h2>
+    
+    <div class="demo-grid">
+      <div class="demo-card">
+        <h3>A la Derecha (Default - Right)</h3>
+        <div class="demo-component-box">
+          <alf-paginator 
+            [totalItems]="100" 
+            [itemsPerPage]="10" 
+            [showPageInfo]="true"
+            pageInfoPosition="right"
+            [(page)]="pageInfoRight">
+          </alf-paginator>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h3>A la Izquierda (Left)</h3>
+        <div class="demo-component-box">
+          <alf-paginator 
+            [totalItems]="100" 
+            [itemsPerPage]="10" 
+            [showPageInfo]="true"
+            pageInfoPosition="left"
+            [(page)]="pageInfoLeft">
+          </alf-paginator>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h3>Arriba (Top)</h3>
+        <div class="demo-component-box">
+          <alf-paginator 
+            [totalItems]="100" 
+            [itemsPerPage]="10" 
+            [showPageInfo]="true"
+            pageInfoPosition="top"
+            [(page)]="pageInfoTop">
+          </alf-paginator>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h3>Abajo (Bottom)</h3>
+        <div class="demo-component-box">
+          <alf-paginator 
+            [totalItems]="100" 
+            [itemsPerPage]="10" 
+            [showPageInfo]="true"
+            pageInfoPosition="bottom"
+            [(page)]="pageInfoBottom">
+          </alf-paginator>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. ALINEACIÓN DEL PAGINADOR -->
+  <section class="demo-section">
+    <h2>5. Alineación Horizontal (align)</h2>
+    
+    <div class="demo-col">
+      <div class="demo-card">
+        <h3>Alineado al Inicio (Start)</h3>
+        <div class="demo-component-box">
+          <alf-paginator 
+            [totalItems]="80" 
+            [itemsPerPage]="10" 
+            align="start"
+            [(page)]="pageAlignStart">
+          </alf-paginator>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h3>Centrado (Center - Default)</h3>
+        <div class="demo-component-box">
+          <alf-paginator 
+            [totalItems]="80" 
+            [itemsPerPage]="10" 
+            align="center"
+            [(page)]="pageAlignCenter">
+          </alf-paginator>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h3>Alineado al Final (End)</h3>
+        <div class="demo-component-box">
+          <alf-paginator 
+            [totalItems]="80" 
+            [itemsPerPage]="10" 
+            align="end"
+            [(page)]="pageAlignEnd">
+          </alf-paginator>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. MODOS AGRUPADOS Y ESTADOS -->
+  <section class="demo-section">
+    <h2>6. Modos Agrupados (Grouped) y Estados</h2>
+    
+    <div class="demo-grid">
+      <div class="demo-card">
+        <h3>Modo Agrupado (gap="0")</h3>
+        <div class="demo-component-box">
+          <alf-paginator 
+            [totalItems]="90" 
+            [itemsPerPage]="10" 
+            [gap]="AlfPxEnum.None"
+            [(page)]="pageGrouped">
+          </alf-paginator>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h3>Estado de Carga (Loading)</h3>
+        <div class="demo-component-box">
+          <alf-paginator 
+            [totalItems]="90" 
+            [itemsPerPage]="10" 
+            [loading]="true"
+            [(page)]="pageLoading">
+          </alf-paginator>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h3>Estado Deshabilitado (Disabled)</h3>
+        <div class="demo-component-box">
+          <alf-paginator 
+            [totalItems]="90" 
+            [itemsPerPage]="10" 
+            [disabled]="true"
+            [(page)]="pageDisabled">
+          </alf-paginator>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h3>Etiqueta Personalizada y sin Navegación Extrema</h3>
+        <div class="demo-component-box">
+          <alf-paginator 
+            [totalItems]="60" 
+            [itemsPerPage]="10" 
+            [showPageInfo]="true"
+            [pageInfoLabel]="'Bloque {{current}} de {{total}}'"
+            [showFirstLastButtons]="false">
+          </alf-paginator>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

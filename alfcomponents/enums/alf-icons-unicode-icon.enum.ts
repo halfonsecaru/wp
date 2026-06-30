@@ -66,6 +66,8 @@ export enum AlfIconsUnicodeIconEnum {
   DoubleAngleBracketRight = '\u{300B}\u{FE0E}',
   ChevronDoubleLeft = '\u{AB}\u{FE0E}',
   ChevronDoubleRight = '\u{BB}\u{FE0E}',
+  ChevronLeftSlim = '\u{2039}\u{FE0E}',
+  ChevronRightSlim = '\u{203A}\u{FE0E}',
 
   // Symbols & Shapes
   Heart = '\u{2764}\u{FE0E}',

@@ -56,7 +56,7 @@
             <alf-autocomplete
               label="Básico (Selecciona un país)"
               [options]="countries"
-              [config]="{ appearance: selectedAppearance() }"
+              [appearance]="selectedAppearance()"
             ></alf-autocomplete>
           </div>
 
@@ -65,7 +65,7 @@
             <alf-autocomplete
               label="Con Búsqueda"
               [options]="countries"
-              [config]="{ appearance: selectedAppearance(), searchable: true }"
+              [appearance]="selectedAppearance()"
             ></alf-autocomplete>
           </div>
 
@@ -74,7 +74,8 @@
             <alf-autocomplete
               label="Con Limpiado (Clearable)"
               [options]="countries"
-              [config]="{ appearance: selectedAppearance(), clearable: true }"
+              [appearance]="selectedAppearance()"
+              [clearable]="true"
             ></alf-autocomplete>
           </div>
 
@@ -83,7 +84,7 @@
             <alf-autocomplete
               label="Con Grupos"
               [options]="groupedCountries"
-              [config]="{ appearance: selectedAppearance(), groupBy: 'group' }"
+              [appearance]="selectedAppearance()"
             ></alf-autocomplete>
           </div>
 
@@ -92,7 +93,7 @@
             <alf-autocomplete
               label="Scroll Virtual (1000 Elementos)"
               [options]="largeDataset"
-              [config]="{ appearance: selectedAppearance(), virtualScroll: true }"
+              [appearance]="selectedAppearance()"
             ></alf-autocomplete>
           </div>
 
@@ -102,7 +103,7 @@
               label="Deshabilitado"
               [options]="countries"
               [disabled]="true"
-              [config]="{ appearance: selectedAppearance() }"
+              [appearance]="selectedAppearance()"
             ></alf-autocomplete>
           </div>
 
@@ -124,7 +125,7 @@
                 [variant]="variant"
                 [label]="variant"
                 [options]="countries"
-                [config]="{ appearance: selectedAppearance() }"
+                [appearance]="selectedAppearance()"
               ></alf-autocomplete>
             </div>
           }
@@ -146,7 +147,7 @@
                 [variant]="variant"
                 [label]="variant"
                 [options]="countries"
-                [config]="{ appearance: selectedAppearance() }"
+                [appearance]="selectedAppearance()"
               ></alf-autocomplete>
             </div>
           }
@@ -168,7 +169,7 @@
                 [variant]="variant"
                 [label]="variant"
                 [options]="countries"
-                [config]="{ appearance: selectedAppearance() }"
+                [appearance]="selectedAppearance()"
               ></alf-autocomplete>
             </div>
           }
@@ -190,7 +191,7 @@
                 [variant]="variant"
                 [label]="variant"
                 [options]="countries"
-                [config]="{ appearance: selectedAppearance() }"
+                [appearance]="selectedAppearance()"
               ></alf-autocomplete>
             </div>
           }
@@ -212,7 +213,7 @@
                 [variant]="variant"
                 [label]="variant"
                 [options]="countries"
-                [config]="{ appearance: selectedAppearance() }"
+                [appearance]="selectedAppearance()"
               ></alf-autocomplete>
             </div>
           }
@@ -234,7 +235,7 @@
                 [variant]="variant"
                 [label]="variant"
                 [options]="countries"
-                [config]="{ appearance: selectedAppearance() }"
+                [appearance]="selectedAppearance()"
               ></alf-autocomplete>
             </div>
           }
@@ -256,7 +257,7 @@
                 [variant]="variant"
                 [label]="variant"
                 [options]="countries"
-                [config]="{ appearance: selectedAppearance() }"
+                [appearance]="selectedAppearance()"
               ></alf-autocomplete>
             </div>
           }

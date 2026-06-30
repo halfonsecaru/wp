@@ -111,10 +111,10 @@ export const generatedComponentFunction = (
             if (component.padding) {
                 component.padding = JSON.parse(JSON.stringify(component.padding));
                 if (component.padding.default) {
-                    component.padding.default.paddingTop = AlfPxEnum.Px2;
-                    component.padding.default.paddingRight = AlfPxEnum.Px2;
-                    component.padding.default.paddingBottom = AlfPxEnum.Px2;
-                    component.padding.default.paddingLeft = AlfPxEnum.Px5;
+                    component.padding.default.paddingTop = AlfPxEnum.Px12;
+                    component.padding.default.paddingRight = AlfPxEnum.Px10;
+                    component.padding.default.paddingBottom = AlfPxEnum.Px12;
+                    component.padding.default.paddingLeft = AlfPxEnum.Px10;
                 }
             }
 

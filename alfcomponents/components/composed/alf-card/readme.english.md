@@ -1,52 +1,62 @@
-# AlfCard Component
+# AlfCard Component (Elite Composed)
 
-`AlfCard` is a highly flexible, modern, and visually premium card component for Angular 18+ built on the new **Signals** architecture. It integrates with the Élite visual theme engine, automatically applying borders, padding, shadows, glassmorphism, or gradients depending on the selected variant.
+`AlfCard` is a modular, flexible, and high-performance card component designed for Angular 22. Fully integrated with the **Omni-Reactive** engine on top of native Signals architecture, ready for Zoneless applications.
 
-## Features
-- **Signals Powered**: Uses Angular's reactive Signals (`input()`, `computed()`) for high-performance rendering.
-- **Modular Subcomponents**: Structure cards using `<alf-card-img>`, `<alf-card-title>`, `<alf-card-body>`, and `<alf-card-actions>`.
-- **Predefined Premium Themes**: Supports various variant paradigms including Solid, Outline, Soft, Ghost, Crystal (Glassmorphism), 3D Depth, and Gradients.
-- **Responsive & Interactive**: Responds beautifully to focus, hover, active, and disabled states.
+## 🌟 Key Features
 
-## Installation / Structure
-The card relies on the following subcomponents:
-- `alf-card` (Root container)
-- `alf-card-img` (Header banner image wrapper)
-- `alf-card-title` (Centered bold title heading)
-- `alf-card-body` (Main text content body)
-- `alf-card-actions` (Footer action container)
+- **Native Signals Powered**: Uses Angular's reactive Signals (`input()`, `model()`, `computed()`) for ultra-fast rendering and change detection.
+- **Modular Subcomponents**: Cleanly structure your cards using `<alf-card-img>`, `<alf-card-title>`, `<alf-card-body>`, `<alf-card-actions>`, `<alf-card-header>`, and `<alf-card-footer>`.
+- **Omni-Reactive Engine Integration**: The root container manages variant background and elevation shadows, while subcomponents dynamically inherit transparent text colors intelligently.
+- **Automatic Image Fitting**: The `<alf-card-img>` subcomponent automatically inherits top border radii (`borderTopLeftRadius` and `borderTopRightRadius`) configured in `border.ts` for smooth and seamless clipping.
 
-## Usage Example
+## 🧱 Subcomponent Structure
 
-### Basic Solid Card
+The card is composed of the following combinable child tags:
+- `<alf-card>` (Root container with variant and elevation)
+- `<alf-card-img>` (Header image banner with automatic border clipping)
+- `<alf-card-title>` (Formatted centered heading)
+- `<alf-card-body>` (Description text or main content body)
+- `<alf-card-actions>` (Footer action container for buttons or links)
+
+## 🚀 Usage Examples
+
+### Standard Card with Action Buttons
 ```html
-<alf-card variant="primary">
-  <alf-card-img src="/assets/landscape.png" alt="Header Image" />
-  <alf-card-title>Beautiful Destination</alf-card-title>
+<alf-card>
+  <alf-card-img src="/assets/landscape.jpg" alt="Cover Photo" />
+  <alf-card-title>Minimalist Product Edition</alf-card-title>
   <alf-card-body>
-    Enjoy a wonderful journey to some of the most premium and visually stunning destinations.
+    Crafted with high quality organic materials. Designed for maximum comfort and durability.
   </alf-card-body>
-  <alf-card-actions>
-    <button style="background: transparent; border: none; font-weight: 600; cursor: pointer; color: inherit;">Read More</button>
+  <alf-card-actions style="justify-content: space-between; align-items: center;">
+    <span style="font-size: 1.25rem; font-weight: 800;">$49.00</span>
+    <alf-button [variant]="AlfColorVariantEnum.Primary">Add to Cart</alf-button>
   </alf-card-actions>
 </alf-card>
 ```
 
-### Crystal (Glassmorphism) Variant
+### Thematic Chromatic Variant (e.g. Success)
 ```html
-<alf-card variant="crystal-primary" [elevated]="true">
-  <alf-card-title>Glassmorphism Effect</alf-card-title>
+<alf-card [variant]="AlfColorVariantEnum.Success" [elevated]="true">
+  <alf-card-title>Operation Successful</alf-card-title>
   <alf-card-body>
-    Renders with a sleek background blur and translucent borders.
+    Data has been successfully synchronized with the central server.
   </alf-card-body>
+  <alf-card-actions style="justify-content: flex-end;">
+    <alf-button [variant]="AlfColorVariantEnum.Light">Accept</alf-button>
+  </alf-card-actions>
 </alf-card>
 ```
 
-## API Reference
+## 📋 API Reference (`<alf-card>`)
 
-### `<alf-card>` Inputs
-- `config` (`AlfCardConfigInterface`): A master configuration object combining all attributes.
-- `variant` (`AlfColorVariantEnum | string`): The thematic color variant of the card.
-- `elevated` (`boolean`): Adds a soft, premium drop-shadow to the card (defaults to `true`).
-- `helperText` (`string`): Helper or accessibility label text.
-- `disabled` (`boolean`): Toggles the card's disabled state visual style.
+| Property | Type | Description |
+|---|---|---|
+| `variant` | `AlfColorVariantEnum \| string` | Thematic color variant of the card. |
+| `elevated` | `boolean` | Adds soft elevation drop-shadow to the card (defaults to `true`). |
+| `id` | `input<string>` | Optional unique identifier. |
+| `helperText` | `input<string>` | Helper or accessibility text. |
+| `disabled` | `input<boolean>` | Reactive disabled state for the card and its subcomponents. |
+
+---
+Part of the **Alfonizer Design System** ecosystem.

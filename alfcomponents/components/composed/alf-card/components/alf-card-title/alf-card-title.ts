@@ -1,6 +1,5 @@
-import { Component, input, computed, ChangeDetectionStrategy, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { visualprefixEnum } from '@alfcomponents/shared';
-import { AlfCardTitleConfigInterface } from './interfaces/alf-card-title.interface';
 import { AlfBaseDirectives } from '@alfcomponents/components/base/bases.directive';
 import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
 import { AlfComponentTypeEnum } from '@alfcomponents/components/base/enum/AlfComponentType.enum';
@@ -19,14 +18,10 @@ export class AlfCardTitleComponent extends AlfBaseDirectives {
   protected readonly cssVarPrefix: string = visualprefixEnum.CardTitle as string;
   protected readonly classPrefix: string = 'alf-card-title';
 
-  public readonly inputConfig = input<AlfCardTitleConfigInterface>(undefined, { alias: 'config' });
-
-
-
   constructor() {
     super();
-    this.componentType.set(AlfComponentTypeEnum.Card);
-    this.initialization(this.classPrefix, this.classPrefix, AlfComponentTypeEnum.Card);
+    this.componentType.set(AlfComponentTypeEnum.CardTitle);
+    this.initialization(this.classPrefix, this.classPrefix, AlfComponentTypeEnum.CardTitle);
   }
 
   protected override getControlValue = (): any => {
@@ -34,10 +29,7 @@ export class AlfCardTitleComponent extends AlfBaseDirectives {
   };
 
   protected override getControlType(): string {
-    return 'CardTitle';
+    return AlfComponentTypeEnum.CardTitle;
   }
 
-  protected override getControlConfig() {
-    return this.inputConfig();
-  }
 }

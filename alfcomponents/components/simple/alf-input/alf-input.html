@@ -25,6 +25,7 @@
     [class.alf-input--focused]="isFocused()"
     [class.alf-input--error]="errorComputed()"
     [class.alf-input--contrasting-label]="hasContrastingLabel()"
+    [class.alf-input--standard]="appearance() === AlfInputAppearanceEnum.Standard"
     [alfPadding]="padding"
     [alfBorder]="border"
     [alfBackground]="background"

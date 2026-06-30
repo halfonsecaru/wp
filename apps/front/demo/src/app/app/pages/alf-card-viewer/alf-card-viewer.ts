@@ -5,6 +5,7 @@ import {
   AlfCardImgComponent,
   AlfCardBodyComponent,
   AlfCardActionsComponent,
+  AlfButton,
 } from '@alfcomponents/components';
 import { AlfColorVariantEnum } from '@alfcomponents/enums';
 
@@ -17,6 +18,7 @@ import { AlfColorVariantEnum } from '@alfcomponents/enums';
     AlfCardImgComponent,
     AlfCardBodyComponent,
     AlfCardActionsComponent,
+    AlfButton,
   ],
   templateUrl: './alf-card-viewer.html',
   styleUrl: './alf-card-viewer.scss',

@@ -1,0 +1,131 @@
+<!-- 1. Comportamiento y Directivas Base -->
+@let variantColor = variant();
+@let backgroundIn = background();
+@let tooltipIn = tooltip();
+@let cursorIn = cursor();
+@let sizeIn = size();
+@let customClassIn = customClass();
+@let customStyleIn = customStyle();
+@let elevatedIn = elevated();
+@let disabledIn = disabled();
+@let borderIn = border();
+@let rippleIn = ripple();
+@let outlinedIn = outline();
+@let shadowsIn = shadows();
+@let marginIn = margin();
+@let paddingIn = padding();
+@let typographyIn = typography();
+@let textStyleIn = textStyle();
+@let transformIn = transform();
+@let transitionIn = transition();
+@let displayAndLayoutIn = displayAndLayout();
+@let animationsIn = animations();
+@let panelAnimationsIn = panelAnimations();
+@let requiredIn = required();
+@let maxLengthIn = maxLength();
+@let minLengthIn = minLength();
+@let minIn = min();
+@let maxIn = max();
+@let patternIn = pattern();
+@let validatorsIn = validators();
+@let errorIn = error();
+@let labelIn = label();
+@let placeholderIn = placeholder();
+@let helperTextIn = helperText();
+@let prefixIn = prefix();
+@let suffixIn = suffix();
+@let autocompleteIn = autocomplete();
+@let clearableIn = clearable();
+@let clearOnClickIn = clearOnClick();
+@let autofocusIn = autofocus();
+@let readonlyIn = readonly();
+@let appearanceIn = appearance();
+@let searchableIn = searchable();
+@let idSel = idComputed();
+
+<div
+  class="alf-select-container"
+  [alfPrefix]="cssVarPrefix"
+  [alfMargin]="marginIn ? marginIn : null"
+  [alfTransform]="transformIn ? transformIn : null"
+  [alfTransition]="transitionIn ? transitionIn : null"
+  [alfAnimations]="animationsIn ? animationsIn : null"
+  [id]="idSel"
+  style="position: relative; display: inline-block; width: 100%"
+>
+  <alf-input
+    [appearance]="appearanceIn"
+    [label]="labelIn"
+    [placeholder]="placeholderIn"
+    [helperText]="helperTextIn"
+    [prefix]="prefixIn"
+    [suffix]="suffixIn"
+    [autocomplete]="autocompleteIn"
+    [clearable]="clearableIn"
+    [clearOnClick]="clearOnClickIn"
+    [autofocus]="autofocusIn"
+    [readonly]="readonlyIn"
+    [cursor]="cursorIn"
+    [shadows]="shadowsIn"
+    [outline]="outlinedIn"
+    [background]="backgroundIn"
+    [border]="borderIn"
+    [tooltip]="tooltipIn"
+    [variant]="variantColor"
+    [size]="sizeIn"
+    [customClass]="customClassIn"
+    [customStyle]="customStyleIn"
+    [elevated]="elevatedIn"
+    [disabled]="disabledIn || loading()"
+    [isLoading]="loading()"
+    [ripple]="rippleIn"
+    [value]="inputValue()"
+    [forceFloat]="isPanelOpen()"
+    [isExiting]="isExiting()"
+    (onClick)="onInputClick()"
+    (onFocus)="onInputFocus($event)"
+    (onBlur)="onInputBlur($event)"
+    (onClear)="onInputClear()"
+    [margin]="marginIn"
+    [padding]="paddingIn"
+    [typography]="typographyIn"
+    [textStyle]="textStyleIn"
+    [transform]="transformIn"
+    [transition]="transitionIn"
+    [displayAndLayout]="displayAndLayoutIn"
+    [animations]="animationsIn"
+    [required]="requiredIn"
+    [maxLength]="maxLengthIn"
+    [minLength]="minLengthIn"
+    [min]="minIn"
+    [max]="maxIn"
+    [pattern]="patternIn"
+    [validators]="validatorsIn"
+    [error]="errorIn"
+  >
+  </alf-input>
+
+  @if (isPanelOpen()) {
+    <alf-select-panel
+      [variant]="variantColor"
+      [background]="backgroundIn"
+      [border]="borderIn"
+      [outline]="outlinedIn"
+      [typography]="typographyIn"
+      [textStyle]="textStyleIn"
+      [transition]="transitionIn"
+      [animations]="panelAnimationsIn"
+      [shadows]="shadowsComputed()"
+      [options]="filteredOptions()"
+      [isExiting]="isPanelExiting()"
+      [multiple]="multiple()"
+      [searchable]="searchableIn"
+      [(searchTerm)]="searchTerm"
+      (optionSelected)="onOptionSelected($event)"
+      (onMouseEnter)="onPanelMouseEnter()"
+      (onMouseLeave)="onPanelMouseLeave()"
+    >
+    </alf-select-panel>
+  }
+
+</div>

@@ -1,9 +1,7 @@
-import { Component, input, computed, ChangeDetectionStrategy, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { visualprefixEnum } from '@alfcomponents/shared';
-import { AlfCardBodyConfigInterface } from './interfaces/alf-card-body.interface';
 import { AlfBaseDirectives } from '@alfcomponents/components/base/bases.directive';
 import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
-import { deepMergeStates } from '@alfcomponents/components/base/default/functions';
 import { AlfComponentTypeEnum } from '@alfcomponents/components/base/enum/AlfComponentType.enum';
 
 @Component({
@@ -20,19 +18,10 @@ export class AlfCardBodyComponent extends AlfBaseDirectives {
   protected readonly cssVarPrefix: string = visualprefixEnum.CardBody as string;
   protected readonly classPrefix: string = 'alf-card-body';
 
-  public readonly inputConfig = input<AlfCardBodyConfigInterface>(undefined, { alias: 'config' });
-
-
-
-  protected readonly predefinedConfig = computed(() => {
-    return {
-    };
-  });
-
   constructor() {
     super();
-    this.componentType.set(AlfComponentTypeEnum.Card);
-    this.initialization(this.classPrefix, this.classPrefix, AlfComponentTypeEnum.Card);
+    this.componentType.set(AlfComponentTypeEnum.CardBody);
+    this.initialization(this.classPrefix, this.classPrefix, AlfComponentTypeEnum.CardBody);
   }
 
   protected override getControlValue = (): any => {
@@ -40,10 +29,7 @@ export class AlfCardBodyComponent extends AlfBaseDirectives {
   };
 
   protected override getControlType(): string {
-    return 'CardBody';
+    return AlfComponentTypeEnum.CardBody;
   }
 
-  protected override getControlConfig() {
-    return deepMergeStates(this.predefinedConfig(), this.inputConfig());
-  }
 }

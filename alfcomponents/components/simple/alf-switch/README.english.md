@@ -1,48 +1,56 @@
 # AlfSwitch - Elite Switch Component
 
-High-performance standalone switch/toggle component designed for Angular 22. Fully integrated with the **Elite Visual Engine** and optimized for Zoneless architectures using native Signals.
+High-performance standalone switch/toggle component designed for Angular 22. Fully integrated with the **Omni-Reactive** chromatic token system and optimized for Zoneless architectures using Angular Signals.
 
-## Key Features
+## 🌟 Key Features
 
 - **Native Signals**: Powered by `input()`, `model()`, and `computed()` for pure and efficient reactivity.
-- **Elite Visual Engine**: Colors, ripples, and borders centrally managed via `defaultVariants.ts`.
-- **Visual Styles**: Support for `Elegant` (rounded/pills) and `Standard` (square/rectangular) styles.
-- **Dynamic Theming**: Implemented with `AlfColorEnum` and CSS variables for instant theme switching.
-- **Accessibility**: Full ARIA management and keyboard support (Space/Enter).
+- **Omni-Reactive Palette Engine**: Centrally managed colors, shadows, and borders via `AlfColorEnum`.
+- **Visual Styles**: Support for `Elegant` (rounded/pill) and `Standard` (square/rectangular) styles.
+- **Dynamic Theming**: Seamless integration with chromatic variants (`primary`, `success`, `danger`, etc.).
+- **Accessibility & Micro-interactions**: Full ARIA support, keyboard interaction (Space/Enter), and smooth thumb and track transitions.
 
-## Basic Usage
+## 🚀 Basic Usage
 
 ```html
 <alf-switch
   [(checked)]="isActive"
-  [label]="'Enable notifications'"
+  label="Enable notifications"
   [variant]="AlfColorVariantEnum.Primary"
 />
 ```
 
-### Usage with Full Configuration
-```typescript
-import { getAlfSwitchDefaultConfig } from './predefined/alf-switch.predefined';
-
-config = getAlfSwitchDefaultConfig(AlfColorVariantEnum.Success);
-```
+### Advanced Example
 ```html
-<alf-switch [config]="config" />
+<alf-switch
+  [(checked)]="darkMode"
+  label="Dark Mode"
+  labelPosition="before"
+  switchStyle="elegant"
+  [variant]="AlfColorVariantEnum.Success"
+  (onCheckedChange)="handleToggle($event)"
+/>
 ```
 
-## Component API
+## 📋 Component API
 
 | Property | Type | Description |
 |---|---|---|
 | `checked` | `model<boolean>` | Two-way binding for the checked/active state. |
 | `label` | `input<string>` | Switch label text. |
+| `labelText` | `input<string>` | Alternative alias for switch label. |
 | `switchStyle` | `'elegant' \| 'standard'` | Visual style (`elegant` or `standard`). |
-| `size` | `AlfSizeEnum` | Dimension scale (XS to 2XL). |
-| `disabled` | `input<boolean>` | Disabled state. |
-| `error` | `input<string>` | Reactive error message. |
+| `labelPosition` | `'before' \| 'after'` | Position of the label relative to the switch track. |
+| `colorSwitch` | `AlfColorEnum \| string` | Custom direct color override for track/thumb. |
+| `variant` | `AlfColorVariantEnum` | Main chromatic variant (`primary`, `danger`, etc.). |
+| `disabled` | `input<boolean>` | Disables interaction with the switch. |
+| `isLoading` | `input<boolean>` | Displays an integrated loading spinner (`AlfSpinner`). |
 
-## Elite Refactoring
-This component has been migrated to the "Centralized Engine" architecture, ensuring its colors and behaviors are 100% consistent with other components such as `AlfButton`.
+## 🔔 Events (*Outputs*)
+
+| Event | Type | Description |
+|---|---|---|
+| `onCheckedChange` | `output<boolean>` | Emits the new boolean state upon toggling. |
 
 ---
 Part of the **Alfonizer Design System** ecosystem.

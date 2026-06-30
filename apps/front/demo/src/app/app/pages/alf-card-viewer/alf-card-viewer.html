@@ -1,5 +1,76 @@
-<div style="padding: 2rem; max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 2rem;">
-  <h1>AlfCard Component Showcase</h1>
+<div style="padding: 2.5rem 1.5rem; max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 3rem; font-family: system-ui, -apple-system, sans-serif;">
+  
+  <!-- HERO HEADER -->
+  <header style="text-align: center; max-width: 700px; margin: 0 auto;">
+    <span style="display: inline-block; padding: 0.35rem 0.85rem; border-radius: 9999px; background: rgba(13, 110, 253, 0.1); color: #0d6efd; font-weight: 600; font-size: 0.85rem; margin-bottom: 1rem;">
+      ✨ Elite Components System
+    </span>
+    <h1 style="font-size: 2.5rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 0.75rem; color: #0f172a;">
+      AlfCard Showcase
+    </h1>
+    <p style="font-size: 1.125rem; color: #64748b; line-height: 1.6;">
+      Tarjetas interactivas y modulares diseñadas para ofrecer experiencias de usuario modernas, adaptables y cromáticamente reactivas.
+    </p>
+  </header>
+
+  <!-- DESTACADOS / FEATURED CARDS -->
+  <section>
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
+      <h2 style="font-size: 1.5rem; font-weight: 700; color: #1e293b; margin: 0;">🔥 Diseños Destacados</h2>
+      <span style="font-size: 0.875rem; color: #64748b;">Composición de subcomponentes integrados</span>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
+      
+      <!-- CARD 1: PRODUCT SHIRT -->
+      <alf-card>
+        <alf-card-img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80" alt="Product Image" />
+        <alf-card-title>Minimalist T-Shirt Edition</alf-card-title>
+        <alf-card-body>
+          <p style="margin: 0; font-size: 0.925rem; line-height: 1.5; color: #64748b;">
+            Confeccionada con algodón 100% orgánico ultra suave. Diseñada para un ajuste cómodo y moderno en cualquier ocasión.
+          </p>
+        </alf-card-body>
+        <alf-card-actions style="justify-content: space-between; align-items: center; padding-top: 0.5rem;">
+          <span style="font-size: 1.25rem; font-weight: 800; color: #0f172a;">$49.00</span>
+          <alf-button [variant]="AlfColorVariantEnum.Primary" style="border-radius: 8px;">Añadir al carrito</alf-button>
+        </alf-card-actions>
+      </alf-card>
+
+      <!-- CARD 2: TRAVEL DESTINATION -->
+      <alf-card>
+        <alf-card-img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" alt="Destination" />
+        <alf-card-title>Maldivas Paradise Resort</alf-card-title>
+        <alf-card-body>
+          <p style="margin: 0; font-size: 0.925rem; line-height: 1.5; color: #64748b;">
+            Disfruta de villas flotantes sobre aguas cristalinas. Reserva tu experiencia de lujo con todo incluido esta temporada.
+          </p>
+        </alf-card-body>
+        <alf-card-actions style="justify-content: space-between; align-items: center; padding-top: 0.5rem;">
+          <span style="font-size: 0.85rem; font-weight: 600; color: #64748b;">⭐ 4.9 (128 reviews)</span>
+          <alf-button [variant]="AlfColorVariantEnum.PrimaryOutline" style="border-radius: 8px;">Explorar Villa</alf-button>
+        </alf-card-actions>
+      </alf-card>
+
+      <!-- CARD 3: WORKSPACE CREATIVITY -->
+      <alf-card>
+        <alf-card-img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80" alt="Workspace" />
+        <alf-card-title>Developer Setup Pro 2026</alf-card-title>
+        <alf-card-body>
+          <p style="margin: 0; font-size: 0.925rem; line-height: 1.5; color: #64748b;">
+            Optimiza tu productividad con nuestra guía de periféricos ergonómicos, iluminación ambiental e integración de agentes AI.
+          </p>
+        </alf-card-body>
+        <alf-card-actions style="justify-content: flex-end; gap: 0.5rem; padding-top: 0.5rem;">
+          <alf-button [variant]="AlfColorVariantEnum.SecondaryOutline" style="border-radius: 8px;">Guardar</alf-button>
+          <alf-button [variant]="AlfColorVariantEnum.Primary" style="border-radius: 8px;">Leer Artículo</alf-button>
+        </alf-card-actions>
+      </alf-card>
+
+    </div>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 1rem 0;" />
 
   <h2>Solid Variants</h2>
   <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem;">

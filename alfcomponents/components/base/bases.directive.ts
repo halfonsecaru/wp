@@ -107,10 +107,14 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
 
     /* */
 
+    protected getEffectiveVariant(): AlfColorVariantEnum | undefined {
+        return this.variant();
+    }
+
     public readonly backgroundComputed = computed(() => {
         const innerBackground = this._background();
         const signalBackground = this.background();
-        const variant = this.variant();
+        const variant = this.getEffectiveVariant();
         const type = this.componentType();
 
         const defaultBackground = buildColorBackgroundConfig(variant, type, this.getInternalAppearance());
@@ -120,7 +124,7 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
     public readonly borderComputed = computed(() => {
         const innerBorder = this._border();
         const signalBorder = this.border();
-        const variant = this.variant();
+        const variant = this.getEffectiveVariant();
         const appearance = this._appearance();
         const type = this.componentType();
         const cbStyle = (this as any).checkboxStyle?.();
@@ -140,7 +144,7 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
     public readonly outlineComputed = computed(() => {
         const innerOutline = this._outline();
         const signalOutline = this.outline();
-        const variant = this.variant();
+        const variant = this.getEffectiveVariant();
         const defaultOutline = buildColorOutlineConfig();
         return deepMergeStates(defaultOutline, innerOutline, signalOutline)
     });
@@ -148,7 +152,7 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
     public readonly shadowsComputed = computed(() => {
         const innerShadows = this._shadows();
         const signalShadows = this.shadows();
-        const variant = this.variant();
+        const variant = this.getEffectiveVariant();
         const defaultShadows = buildColorShadowsConfig(variant, this.elevated(), this.componentType(), this.getInternalAppearance());
         return deepMergeStates(defaultShadows, innerShadows, signalShadows);
     });
@@ -159,7 +163,7 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
         const innerMargin = this._margin();
         const signalMargin = this.margin();
         const componentType = this.componentType() || AlfComponentTypeEnum.Default;
-        const variant = this.variant();
+        const variant = this.getEffectiveVariant();
         const defaultMargin = buildMarginConfig(componentType, variant);
         return deepMergeStates(defaultMargin, innerMargin, signalMargin);
     });
@@ -177,7 +181,7 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
         const innerTypography = this._typography();
         const signalTypography = this.typography();
         const componentType = this.componentType() || AlfComponentTypeEnum.Default;
-        const variant = this.variant();
+        const variant = this.getEffectiveVariant();
         const defaultTypography = buildTypographyConfig(componentType, variant, this.getInternalAppearance());
         return deepMergeStates(defaultTypography, innerTypography, signalTypography);
     });
@@ -186,7 +190,7 @@ export abstract class AlfBaseDirectives implements ControlValueAccessor {
         const innerTextStyle = this._textStyle();
         const signalTextStyle = this.textStyle();
         const componentType = this.componentType() || AlfComponentTypeEnum.Default;
-        const variant = this.variant();
+        const variant = this.getEffectiveVariant();
         const defaultTextStyle = buildTextColorStyleConfig(componentType, variant);
         return deepMergeStates(defaultTextStyle, innerTextStyle, signalTextStyle);
     });

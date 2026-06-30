@@ -1,0 +1,122 @@
+<!-- 1. Comportamiento y Directivas Base -->
+@let bg = backgroundComputed(); @let bd = borderComputed(); @let ot = outlineComputed(); @let sd = shadowsComputed(); @let mg = marginComputed(); @let
+pd = paddingComputed(); @let ty = typographyComputed(); @let ts = textStyleComputed(); @let tr = transformComputed(); @let tsn = transitionComputed();
+@let dl = displayAndLayoutComputed(); @let sz = size(); @let ar = aria(); @let tt = tooltip(); @let cr = cursor(); @let ds = disabledComputed(); @let
+cc = customClass(); @let cs = customStyle(); @let idPagi = idComputed(); @let ld = loading() || isLoading(); @let rp = ripple();
+
+
+<nav
+  [id]="idPagi"
+  [alfPrefix]="cssVarPrefix"
+  [alfBackground]="bg ? bg : null"
+  [alfBorder]="bd ? bd : null"
+  [alfOutline]="ot ? ot : null"
+  [alfShadows]="sd ? sd : null"
+  [alfMargin]="mg ? mg : null"
+  [alfPadding]="pd ? pd : null"
+  [alfTypography]="ty ? ty : null"
+  [alfTextStyle]="ts ? ts : null"
+  [alfTransform]="tr ? tr : null"
+  [alfTransition]="tsn ? tsn : null"
+  [alfDisplayAndLayout]="dl ? dl : null"
+  [alfCursor]="cr ? cr : null"
+  [alfSize]="sz ? sz : null"
+  [alfDisabled]="ds || ld"
+  [alfAria]="ar ? ar : null"
+  [class]="classPrefix + (gap() === AlfPxEnum.None ? ' ' + classPrefix + '--grouped' : '') + (cc ? ' ' + cc : '')"
+  [style]="cs ? cs : null"
+  [alfTooltipText]="tt ? tt : null"
+  aria-label="Paginación"
+>
+  @if (showPageInfo()) {
+  <div class="alf-paginator-info" [style.color]="pageInfoColor() ? 'var(--alf-color-' + pageInfoColor() + ')' : null">{{ resolvedPageInfo() }}</div>
+  }
+
+  <div class="alf-paginator-buttons">
+    <!-- << First -->
+    @if (showFirstLastButtons()) {
+    <button
+      type="button"
+      class="alf-paginator-btn alf-paginator-btn--nav"
+      [disabled]="ds || ld || page() === 1"
+      [attr.aria-label]="firstPageAriaLabel()"
+      [alfRipple]="rp !== undefined ? rp : null"
+      (click)="first()"
+    >
+      @if (firstLabel()) {
+      <span>{{ firstLabel() }}</span>
+      } @else {
+      <span class="alf-paginator-btn-icon">{{ iconFirstComputed() }}</span>
+      }
+    </button>
+    }
+
+    <!-- < Prev -->
+    <button
+      type="button"
+      class="alf-paginator-btn alf-paginator-btn--nav"
+      [disabled]="ds || ld || page() === 1"
+      [attr.aria-label]="prevPageAriaLabel()"
+      [alfRipple]="rp !== undefined ? rp : null"
+      (click)="prev()"
+    >
+      @if (prevLabel()) {
+      <span>{{ prevLabel() }}</span>
+      } @else {
+      <span class="alf-paginator-btn-icon">{{ iconBackComputed() }}</span>
+      }
+    </button>
+
+    <!-- Page Numbers Wrapper (Animated) -->
+    <div [class]="'alf-paginator-pages ' + animationClass()">
+      @for (p of visiblePages(); track p) { @let isActive = p === page();
+      <button
+        type="button"
+        class="alf-paginator-btn alf-paginator-btn--page"
+        [class.alf-paginator-btn--active]="isActive"
+        [disabled]="ds || ld"
+        [attr.aria-label]="'Página ' + p"
+        [attr.aria-selected]="isActive"
+        [alfRipple]="rp !== undefined ? rp : null"
+        (click)="goTo(p)"
+      >
+        {{ p }}
+      </button>
+      }
+    </div>
+
+    <!-- > Next -->
+    <button
+      type="button"
+      class="alf-paginator-btn alf-paginator-btn--nav"
+      [disabled]="ds || ld || page() === totalPages()"
+      [attr.aria-label]="nextPageAriaLabel()"
+      [alfRipple]="rp !== undefined ? rp : null"
+      (click)="next()"
+    >
+      @if (nextLabel()) {
+      <span>{{ nextLabel() }}</span>
+      } @else {
+      <span class="alf-paginator-btn-icon">{{ iconNextComputed() }}</span>
+      }
+    </button>
+
+    <!-- >> Last -->
+    @if (showFirstLastButtons()) {
+    <button
+      type="button"
+      class="alf-paginator-btn alf-paginator-btn--nav"
+      [disabled]="ds || ld || page() === totalPages()"
+      [attr.aria-label]="lastPageAriaLabel()"
+      [alfRipple]="rp !== undefined ? rp : null"
+      (click)="last()"
+    >
+      @if (lastLabel()) {
+      <span>{{ lastLabel() }}</span>
+      } @else {
+      <span class="alf-paginator-btn-icon">{{ iconLastComputed() }}</span>
+      }
+    </button>
+    }
+  </div>
+</nav>

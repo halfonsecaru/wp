@@ -16,4 +16,7 @@ export interface AlfSelectOption {
 
     /** Datos adicionales personalizados */
     data?: any;
+
+    /** Si la opción está seleccionada (para multiselect) */
+    selected?: boolean;
 }

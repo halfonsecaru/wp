@@ -73,15 +73,15 @@ export class AlfCheckbox extends AlfBaseDirectives {
   });
 
 
-  public readonly isSoft = computed(() => {
-    const v = this.variant() || '';
-    return v.toLowerCase().includes('soft');
-  });
+  // public readonly isSoft = computed(() => {
+  //   const v = this.variant() || '';
+  //   return v.toLowerCase().includes('soft');
+  // });
 
-  public readonly isCrystal = computed(() => {
-    const v = this.variant() || '';
-    return v.toLowerCase().includes('crystal');
-  });
+  // public readonly isCrystal = computed(() => {
+  //   const v = this.variant() || '';
+  //   return v.toLowerCase().includes('crystal');
+  // });
 
   constructor() {
     super();

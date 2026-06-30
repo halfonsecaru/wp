@@ -1,0 +1,36 @@
+@let bg = backgroundComputed();
+@let ty = typographyComputed();
+@let ts = textStyleComputed();
+@let tr = transitionComputed();
+@let rp = ripple();
+@let ds = disabledComputed();
+@let cc = customClass();
+@let cs = customStyle();
+
+<div
+  [class]="classPrefix + (cc ? ' ' + cc : '')"
+  [class.alf-select-panel-option--selected]="isSelected()"
+  [class.alf-select-panel-option--disabled]="isDisabled()"
+  [alfPrefix]="cssVarPrefix"
+  [alfBackground]="bg ? bg : null"
+  [alfTypography]="ty ? ty : null"
+  [alfTextStyle]="ts ? ts : null"
+  [alfTransition]="tr ? tr : null"
+  [alfRipple]="rp !== undefined ? rp : null"
+  [alfDisabled]="ds"
+  [style]="cs ? cs : null"
+  (click)="handleClick()"
+>
+  @if (multiple()) {
+    <alf-checkbox
+      [checked]="isSelected()"
+      [disabled]="isDisabled()"
+      checkboxStyle="standard"
+      [variant]="variant()"
+    />
+  }
+  @if (option().icon) {
+    <span>{{ option().icon }}</span>
+  }
+  <span>{{ option().label }}</span>
+</div>

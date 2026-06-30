@@ -180,7 +180,6 @@
           } @if (selectedComponentId() === 'alf-autocomplete') {
           <alf-autocomplete
             [options]="countries"
-            [config]="acBehaviorConfig()"
             [variant]="compVariant()"
             [disabled]="compDisabled()"
             [isLoading]="compIsLoading()"
@@ -202,6 +201,26 @@
           <div style="position: relative; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center">
             <alf-spinner />
           </div>
+          } @if (selectedComponentId() === 'alf-paginator') {
+          <alf-paginator
+            [totalItems]="paginatorTotalItems()"
+            [itemsPerPage]="paginatorItemsPerPage()"
+            [showPageInfo]="paginatorShowPageInfo()"
+            [variant]="compVariant()"
+            [background]="backgroundConfig()"
+            [border]="borderConfig()"
+            [outline]="outlineConfig()"
+            [shadows]="shadowsConfig()"
+            [textStyle]="textStyleConfig()"
+            [typography]="typographyConfig()"
+            [padding]="paddingConfig()"
+            [margin]="marginConfig()"
+            [transform]="transformConfig()"
+            [transition]="transitionConfig()"
+            [animations]="previewAnimationsConfig()"
+            [isExiting]="isExiting()"
+            [displayAndLayout]="displayLayoutConfig()"
+          />
           } }
         </div>
       </div>

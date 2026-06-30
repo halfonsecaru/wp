@@ -16,7 +16,7 @@ import {
   generateUniqueId,
   visualprefixEnum,
 } from '@alfcomponents/shared';
-import { AlfInputTypeEnum, AlfInputAppearanceEnum, AlfColorEnum, AlfRemEnum, AlfColorVariantEnum, AlfIconsUnicodeIconEnum, AlfIconsEmojiIconEnum } from '@alfcomponents/enums';
+import { AlfInputTypeEnum, AlfInputAppearanceEnum, AlfColorEnum, AlfRemEnum, AlfIconsUnicodeIconEnum, AlfIconsEmojiIconEnum } from '@alfcomponents/enums';
 import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
 import { AlfSpinner } from '@alfcomponents/components/simple/alf-spinner/alf-spinner';
 import { getAlfInputLabel, AlfInputI18nLabels } from './i18n/alf-input.i18n';
@@ -44,6 +44,7 @@ import { AlfComponentTypeEnum } from '@alfcomponents/components/base/enum/AlfCom
 export class AlfInput extends AlfBaseDirectives {
   // ── 1. Constants & View Queries ───────────────────────────────────────────
   protected readonly AlfRemEnum = AlfRemEnum;
+  protected readonly AlfInputAppearanceEnum = AlfInputAppearanceEnum;
   private readonly inputElement = viewChild<ElementRef<HTMLInputElement | HTMLTextAreaElement>>('inputRef');
 
   // ── 2. Inputs & Models ────────────────────────────────────────────────────
@@ -71,6 +72,9 @@ export class AlfInput extends AlfBaseDirectives {
   // ── 3. Outputs ────────────────────────────────────────────────────────────
   public readonly onInput = output<string>();
   public readonly onClear = output<void>();
+  public readonly onClick = output<MouseEvent>();
+  public readonly onFocus = output<FocusEvent>();
+  public readonly onBlur = output<FocusEvent>();
 
   // ── 4. Internal State (Signals & Variables) ───────────────────────────────
   protected readonly internalId: string = generateUniqueId({ prefix: visualprefixEnum.Input });
@@ -90,7 +94,7 @@ export class AlfInput extends AlfBaseDirectives {
     const type = this.inputType();
     return type === AlfInputTypeEnum.Password && (this.showPasswordToggle() !== false);
   });
-  
+
   protected readonly showCharCounterComputed = computed(() =>
     this.showCharCounter() && this.maxLength()
   );
@@ -220,6 +224,7 @@ export class AlfInput extends AlfBaseDirectives {
   // ── 8. Constructor ────────────────────────────────────────────────────────
   constructor() {
     super();
+    this.componentType.set(AlfComponentTypeEnum.Input);
     this.initialization(visualprefixEnum.Input, visualprefixEnum.Inputt, AlfComponentTypeEnum.Input);
   }
 
@@ -244,9 +249,21 @@ export class AlfInput extends AlfBaseDirectives {
   };
 
   protected readonly handleClick = (event: MouseEvent): void => {
+    this.onClick.emit(event);
     if (this.clearOnClick() && this.value()) {
       this.value.set('');
     }
+  };
+
+  protected readonly handleFocus = (event: FocusEvent): void => {
+    this.isFocused.set(true);
+    this.onFocus.emit(event);
+  };
+
+  protected readonly handleBlur = (event: FocusEvent): void => {
+    this.markAsDirty();
+    this.isFocused.set(false);
+    this.onBlur.emit(event);
   };
 
   protected readonly handleKeyDown = (event: KeyboardEvent): void => {

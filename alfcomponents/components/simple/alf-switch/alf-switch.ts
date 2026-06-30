@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input, model, output, signal, ViewEncapsulation } from '@angular/core';
 import { AlfSwitchVariantEnum } from './interfaces/alf-switch.interface';
 import { generateUniqueId, visualprefixEnum } from '@alfcomponents/shared';
-import { AlfLabelsPositionEnum, AlfColorVariantEnum, AlfSizeEnum, AlfColorEnum } from '@alfcomponents/enums';
+import { AlfLabelsPositionEnum, AlfColorEnum } from '@alfcomponents/enums';
 
 import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
 import { AlfBaseDirectives } from '@alfcomponents/components/base/bases.directive';
@@ -73,11 +73,7 @@ export class AlfSwitch extends AlfBaseDirectives {
   });
 
 
-  public readonly isOutlineVariant = computed<boolean>(() => {
-    const currentVariant = this.variant() ?? AlfColorVariantEnum.Secondary;
-    const vStr = currentVariant.toString();
-    return vStr.includes('outline-');
-  });
+
 
 
 

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, signal, computed } from '@angular/core';
-import { AlfButton, AlfCheckbox, AlfInput, AlfRadioButton, AlfSwitch, AlfSpinner, AlfAutocompleteComponent } from '@alfcomponents/components';
+import { AlfButton, AlfCheckbox, AlfInput, AlfRadioButton, AlfSwitch, AlfSpinner, AlfAutocompleteComponent, AlfPaginator } from '@alfcomponents/components';
 import { AlfSelectOption } from '@alfcomponents/components/composed/alf-autocomplete/interfaces/alf-auto-complete-options-interface';
 import { AlfAutocompleteConfigInterface } from '@alfcomponents/components/composed/alf-autocomplete/interfaces/alf-autocomplete.interface';
 import { AlfInputInterface } from '@alfcomponents/components/simple/alf-input/interfaces/alf-input.interface';
@@ -53,7 +53,7 @@ type CssState = 'default' | 'hover' | 'focus' | 'active' | 'disabled';
 @Component({
   selector: 'app-alf-playground',
   standalone: true,
-  imports: [AlfButton, AlfCheckbox, AlfInput, AlfRadioButton, AlfSwitch, AlfSpinner, AlfAutocompleteComponent],
+  imports: [AlfButton, AlfCheckbox, AlfInput, AlfRadioButton, AlfSwitch, AlfSpinner, AlfAutocompleteComponent, AlfPaginator],
   templateUrl: './alf-playground.html',
   styleUrl: './alf-playground.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -89,7 +89,8 @@ export class AlfPlayground {
     { id: 'alf-input', label: 'AlfInput', icon: '⌨️' },
     { id: 'alf-radio-button', label: 'AlfRadioButton', icon: '📻' },
     { id: 'alf-switch', label: 'AlfSwitch', icon: '🎚️' },
-    { id: 'alf-autocomplete', label: 'AlfAutocomplete', icon: '🔍' }
+    { id: 'alf-autocomplete', label: 'AlfAutocomplete', icon: '🔍' },
+    { id: 'alf-paginator', label: 'AlfPaginator', icon: '📄' }
   ] as const;
   public readonly selectedComponentId = signal<string>('alf-autocomplete');
 
@@ -229,6 +230,11 @@ export class AlfPlayground {
     { value: 'cn', label: 'China', icon: '🇨🇳', group: 'Asia' },
     { value: 'in', label: 'India', icon: '🇮🇳', group: 'Asia' },
   ];
+
+  // Paginator properties
+  public readonly paginatorTotalItems = signal<number>(100);
+  public readonly paginatorItemsPerPage = signal<number>(10);
+  public readonly paginatorShowPageInfo = signal<boolean>(true);
 
   public readonly acBehaviorConfig = computed<AlfAutocompleteConfigInterface>(() => {
     const inputCfg = this.inputBehaviorConfig();

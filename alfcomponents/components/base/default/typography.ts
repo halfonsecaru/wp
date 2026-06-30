@@ -26,17 +26,19 @@ const checkSolidGradient3D = (variant: AlfColorVariantEnum): boolean => {
     return isSolidOrGradientOr3D;
 }
 const getInputAppearance = (variant: AlfColorVariantEnum, appearance: AlfInputAppearanceEnum) => {
+   
+
     if (appearance === AlfInputAppearanceEnum.Standard) {
-        const borderColors = getPredefinedColorByVariant(variant, 0);
+        const textColors = getPredefinedColorByVariant(variant, 0);
         const prefix = getPrefixByVariant(variant);
         const fallback = getColor(prefix);
-        const mainColor = borderColors.default !== AlfColorEnum.Transparent ? borderColors.default : fallback;
+        const mainColor = textColors.default !== AlfColorEnum.Transparent ? textColors.default : fallback;
         return {
             main: mainColor,
-            hover: borderColors.hover !== AlfColorEnum.Transparent ? borderColors.hover : mainColor,
-            focus: borderColors.focus !== AlfColorEnum.Transparent ? borderColors.focus : mainColor,
-            active: borderColors.active !== AlfColorEnum.Transparent ? borderColors.active : mainColor,
-            disabled: borderColors.disabled !== AlfColorEnum.Transparent ? borderColors.disabled : mainColor,
+            hover: textColors.hover !== AlfColorEnum.Transparent ? textColors.hover : mainColor,
+            focus: textColors.focus !== AlfColorEnum.Transparent ? textColors.focus : mainColor,
+            active: textColors.active !== AlfColorEnum.Transparent ? textColors.active : mainColor,
+            disabled: textColors.disabled !== AlfColorEnum.Transparent ? textColors.disabled : mainColor,
         };
     }
 
@@ -46,7 +48,6 @@ const getInputAppearance = (variant: AlfColorVariantEnum, appearance: AlfInputAp
 const defaultTypographyConfig = (
     variant: AlfColorVariantEnum = AlfColorVariantEnum.SecondaryOutline,
 ) => {
-
 
     //---------------------------------------------------------
 
@@ -111,6 +112,7 @@ export const buildTypographyConfig = (
     variant: AlfColorVariantEnum = AlfColorVariantEnum.SecondaryOutline,
     appearance: AlfInputAppearanceEnum = AlfInputAppearanceEnum.Standard,
 ): AlfTypographyInterface => {
+    
     let colors = {
         main: AlfColorEnum.Transparent,
         hover: AlfColorEnum.Transparent,
@@ -121,21 +123,37 @@ export const buildTypographyConfig = (
 
     if (componentType === AlfComponentTypeEnum.Input) {
         colors = getInputAppearance(variant, appearance);
-    } else if (componentType === AlfComponentTypeEnum.Checkbox || componentType === AlfComponentTypeEnum.RadioButton) {
+    } else if (
+        componentType === AlfComponentTypeEnum.Checkbox ||
+        componentType === AlfComponentTypeEnum.RadioButton ||
+        componentType === AlfComponentTypeEnum.Switch ||
+        componentType === AlfComponentTypeEnum.SelectPanel ||
+        componentType === AlfComponentTypeEnum.SelectPanelOption
+    ) {
         const isSolidOrGradientOr3D = checkSolidGradient3D(variant);
         if (isSolidOrGradientOr3D) {
-            const borderColors = getPredefinedColorByVariant(variant, 0);
+            const textColors = getPredefinedColorByVariant(variant, 1);
             const prefix = getPrefixByVariant(variant);
             const fallback = getColor(prefix);
-            colors.main = borderColors.default !== AlfColorEnum.Transparent ? borderColors.default : fallback;
-            colors.hover = borderColors.hover !== AlfColorEnum.Transparent ? borderColors.hover : colors.main;
-            colors.focus = borderColors.focus !== AlfColorEnum.Transparent ? borderColors.focus : colors.main;
-            colors.active = borderColors.active !== AlfColorEnum.Transparent ? borderColors.active : colors.main;
-            colors.disabled = borderColors.disabled !== AlfColorEnum.Transparent ? borderColors.disabled : colors.main;
+            colors.main = textColors.default !== AlfColorEnum.Transparent ? textColors.default : fallback;
+            colors.hover = textColors.hover !== AlfColorEnum.Transparent ? textColors.hover : colors.main;
+            colors.focus = textColors.focus !== AlfColorEnum.Transparent ? textColors.focus : colors.main;
+            colors.active = textColors.active !== AlfColorEnum.Transparent ? textColors.active : colors.main;
+            colors.disabled = textColors.disabled !== AlfColorEnum.Transparent ? textColors.disabled : colors.main;
         } else {
             colors = defaultTypographyConfig(variant);
         }
-    } else if (componentType === AlfComponentTypeEnum.Button) {
+    } else if (
+        componentType === AlfComponentTypeEnum.Button ||
+        componentType === AlfComponentTypeEnum.Card ||
+        componentType === AlfComponentTypeEnum.CardTitle ||
+        componentType === AlfComponentTypeEnum.CardBody ||
+        componentType === AlfComponentTypeEnum.CardActions ||
+        componentType === AlfComponentTypeEnum.CardHeader ||
+        componentType === AlfComponentTypeEnum.CardFooter ||
+        componentType === AlfComponentTypeEnum.CardImage ||
+        componentType === AlfComponentTypeEnum.Paginator
+    ) {
         colors = defaultTypographyConfig(variant);
     }
 

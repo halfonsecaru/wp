@@ -8,6 +8,8 @@ export * from './simple/alf-input/alf-input';
 export * from './simple/alf-input/interfaces/alf-input.interface';
 export * from './simple/alf-switch/alf-switch';
 export * from './simple/alf-switch/interfaces/alf-switch.interface';
+export * from './simple/alf-paginator/alf-paginator';
+export * from './simple/alf-paginator/interfaces/alf-paginator.interface';
 
 
 // Standar Components
@@ -23,6 +25,9 @@ export * from './composed/alf-tabs-container/predefined/alf-tabs-container.prede
 export * from './composed/alf-autocomplete/alf-autocomplete';
 export * from './composed/alf-autocomplete/interfaces/alf-autocomplete.interface';
 export * from './composed/alf-autocomplete/enums/alf-autocomplete.enum';
+
+export * from './composed/alf-select/alf-select';
+export * from './composed/alf-select/components/alf-select-panel/alf-select-panel';
 
 export * from './composed/alf-card/alf-card';
 export * from './composed/alf-card/interfaces/alf-card.interface';

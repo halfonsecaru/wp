@@ -1,52 +1,62 @@
-# Componente AlfCard
+# Componente AlfCard (Élite Composed)
 
-`AlfCard` es un componente de tarjeta modular, premium y flexible diseñado para Angular 18+ sobre la arquitectura de **Signals**. Está totalmente integrado con el motor visual de estilos Élite, aplicando de forma reactiva bordes, sombras, difuminados de cristal (glassmorphism) y gradientes en base a la variante seleccionada.
+`AlfCard` es un componente de tarjeta modular, flexibe y de alto rendimiento diseñado para Angular 22. Totalmente integrado con el motor **Omni-Reactive** sobre arquitectura de Signals nativas y preparado para aplicaciones Zoneless.
 
-## Características
-- **Basado en Signals**: Utiliza las reactivas Signals de Angular (`input()`, `computed()`) para un rendimiento y detección de cambios ultra rápidos.
-- **Subcomponentes Modulares**: Estructura tus tarjetas utilizando `<alf-card-img>`, `<alf-card-title>`, `<alf-card-body>`, y `<alf-card-actions>`.
-- **Estilos de Variantes Premium**: Soporta múltiples modalidades de diseño: Sólido, Outline, Soft, Ghost, Cristal (Glassmorphism), Profundidad 3D y Degradados.
-- **Interactividad**: Responde de manera fluida y fluida a los estados hover, focus, active y disabled.
+## 🌟 Características Clave
 
-## Estructura de Subcomponentes
-La tarjeta se compone de las siguientes etiquetas hijas:
-- `alf-card` (Contenedor raíz)
-- `alf-card-img` (Contenedor de la imagen de cabecera)
-- `alf-card-title` (Título en negrita y centrado)
-- `alf-card-body` (Contenido de descripción o cuerpo principal)
-- `alf-card-actions` (Footer para botones o enlaces de acción)
+- **Basado en Signals Nativas**: Impulsado por `input()`, `model()` y `computed()` para un rendimiento y detección de cambios ultra rápidos.
+- **Subcomponentes Modulares**: Estructura tus tarjetas limpiamente utilizando `<alf-card-img>`, `<alf-card-title>`, `<alf-card-body>`, `<alf-card-actions>`, `<alf-card-header>` y `<alf-card-footer>`.
+- **Integración con Omni-Reactive Engine**: El contenedor principal gestiona el fondo y las sombras de la variante, mientras que los subcomponentes adaptan su texto de forma cromáticamente transparente e inteligente.
+- **Ajuste Automático de Imágenes**: El subcomponente `<alf-card-img>` hereda automáticamente los radios de borde superiores (`borderTopLeftRadius` y `borderTopRightRadius`) definidos en `border.ts` para un encaje suave e impecable.
 
-## Ejemplos de Uso
+## 🧱 Estructura de Subcomponentes
 
-### Tarjeta Sólida Básica
+La tarjeta se compone de las siguientes etiquetas hijas combinables:
+- `<alf-card>` (Contenedor raíz con variante y elevación)
+- `<alf-card-img>` (Cabecera de imagen con recorte de bordes automático)
+- `<alf-card-title>` (Título formateado y centrado)
+- `<alf-card-body>` (Cuerpo de texto o contenido principal)
+- `<alf-card-actions>` (Contenedor de botones o acciones de pie)
+
+## 🚀 Ejemplos de Uso
+
+### Tarjeta Estándar con Botones de Acción
 ```html
-<alf-card variant="primary">
-  <alf-card-img src="/assets/landscape.png" alt="Header Image" />
-  <alf-card-title>Destino Increíble</alf-card-title>
+<alf-card>
+  <alf-card-img src="/assets/landscape.jpg" alt="Foto de Portada" />
+  <alf-card-title>Minimalist Product Edition</alf-card-title>
   <alf-card-body>
-    Disfruta de un viaje maravilloso a los rincones más visualmente impactantes y exclusivos del mundo.
+    Confeccionada con materiales orgánicos de alta calidad. Diseñada para ofrecer máxima comodidad y durabilidad.
   </alf-card-body>
-  <alf-card-actions>
-    <button style="background: transparent; border: none; font-weight: 600; cursor: pointer; color: inherit;">Leer Más</button>
+  <alf-card-actions style="justify-content: space-between; align-items: center;">
+    <span style="font-size: 1.25rem; font-weight: 800;">$49.00</span>
+    <alf-button [variant]="AlfColorVariantEnum.Primary">Añadir al carrito</alf-button>
   </alf-card-actions>
 </alf-card>
 ```
 
-### Variante Cristal (Glassmorphism)
+### Variante Temática Cromática (ej. Success)
 ```html
-<alf-card variant="crystal-primary" [elevated]="true">
-  <alf-card-title>Efecto Glassmorphism</alf-card-title>
+<alf-card [variant]="AlfColorVariantEnum.Success" [elevated]="true">
+  <alf-card-title>Operación Exitosa</alf-card-title>
   <alf-card-body>
-    Se renderiza con un elegante difuminado de fondo (backdrop-filter) y bordes translúcidos.
+    Los datos se han sincronizado correctamente con el servidor central.
   </alf-card-body>
+  <alf-card-actions style="justify-content: flex-end;">
+    <alf-button [variant]="AlfColorVariantEnum.Light">Aceptar</alf-button>
+  </alf-card-actions>
 </alf-card>
 ```
 
-## Referencia de la API
+## 📋 Referencia de la API (`<alf-card>`)
 
-### Entradas (Inputs) de `<alf-card>`
-- `config` (`AlfCardConfigInterface`): Objeto maestro de configuración.
-- `variant` (`AlfColorVariantEnum | string`): Variante de color y temática de la tarjeta.
-- `elevated` (`boolean`): Agrega una sombra elegante (drop-shadow) a la tarjeta (por defecto `true`).
-- `helperText` (`string`): Texto de ayuda o accesibilidad.
-- `disabled` (`boolean`): Desactiva visualmente e interactivamente la tarjeta.
+| Propiedad | Tipo | Descripción |
+|---|---|---|
+| `variant` | `AlfColorVariantEnum \| string` | Variante de color y temática cromática de la tarjeta. |
+| `elevated` | `boolean` | Agrega sombra de elevación a la tarjeta (por defecto `true`). |
+| `id` | `input<string>` | Identificador único opcional. |
+| `helperText` | `input<string>` | Texto de ayuda o accesibilidad. |
+| `disabled` | `input<boolean>` | Estado deshabilitado reactivo de la tarjeta y sus subcomponentes. |
+
+---
+Parte del ecosistema **Alfonizer Design System**.

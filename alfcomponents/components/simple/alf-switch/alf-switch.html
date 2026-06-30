@@ -1,32 +1,60 @@
 <!-- 1. Comportamiento y Directivas -->
-@let bg = backgroundComputed(); <!-- -->
-@let bd = borderComputed(); <!-- -->
-@let ot = outlineComputed(); <!-- -->
-@let sd = shadowsComputed(); <!-- -->
-@let mg = marginComputed(); <!-- -->
-@let pd = paddingComputed(); <!-- -->
-@let ty = typographyComputed(); <!-- -->
-@let ts = textStyleComputed(); <!-- -->
-@let tr = transformComputed(); <!-- -->
-@let tsn = transitionComputed(); <!-- -->
-@let dl = displayAndLayoutComputed(); <!-- -->
-@let sz = size(); <!-- -->
-@let ar = aria(); <!-- -->
-@let tt = tooltip(); <!-- -->
-@let rp = ripple(); <!-- -->
-@let cr = cursor(); <!-- -->
-@let ds = disabledComputed(); <!-- -->
-@let cc = customClass(); <!-- -->
-@let cs = customStyle(); <!-- -->
-@let idRadio = idComputed(); <!-- -->
-@let labelText = labelComputed(); <!-- -->
-@let labelPos = labelPosition(); <!-- -->
-@let isChecked = checked(); <!-- -->
-@let styleVariant = switchStyle(); <!-- -->
-@let radioName = name(); <!-- -->
-@let isHovered = hovered(); <!-- -->
-@let isFocused = focused(); <!-- -->
-@let ld = isLoading(); <!-- -->
+@let bg = backgroundComputed();
+<!-- -->
+@let bd = borderComputed();
+<!-- -->
+@let ot = outlineComputed();
+<!-- -->
+@let sd = shadowsComputed();
+<!-- -->
+@let mg = marginComputed();
+<!-- -->
+@let pd = paddingComputed();
+<!-- -->
+@let ty = typographyComputed();
+<!-- -->
+@let ts = textStyleComputed();
+<!-- -->
+@let tr = transformComputed();
+<!-- -->
+@let tsn = transitionComputed();
+<!-- -->
+@let dl = displayAndLayoutComputed();
+<!-- -->
+@let sz = size();
+<!-- -->
+@let ar = aria();
+<!-- -->
+@let tt = tooltip();
+<!-- -->
+@let rp = ripple();
+<!-- -->
+@let cr = cursor();
+<!-- -->
+@let ds = disabledComputed();
+<!-- -->
+@let cc = customClass();
+<!-- -->
+@let cs = customStyle();
+<!-- -->
+@let idRadio = idComputed();
+<!-- -->
+@let labelText = labelComputed();
+<!-- -->
+@let labelPos = labelPosition();
+<!-- -->
+@let isChecked = checked();
+<!-- -->
+@let styleVariant = switchStyle();
+<!-- -->
+@let radioName = name();
+<!-- -->
+@let isHovered = hovered();
+<!-- -->
+@let isFocused = focused();
+<!-- -->
+@let ld = isLoading();
+<!-- -->
 
 <div
   [alfPrefix]="cssVarPrefix"
@@ -47,8 +75,9 @@
   [alfSize]="sz ? sz : null"
   [alfDisabled]="ds"
   [alfAria]="ar ? ar : null"
-  [class]="classPrefix + ' ' + classPrefix + '--' + styleVariant + ' ' + classPrefix + '--' + sz + (isOutlineVariant() ? ' ' + classPrefix + '--outline' : '') + (cc ? ' ' + cc : '')"
+  [class]="classPrefix + ' ' + classPrefix + '--' + styleVariant + ' ' + classPrefix + '--' + sz + (cc ? ' ' + cc : '')"
   [class.alf-sw--checked]="isChecked"
+  [class.alf-sw--light-selection]="isSolid3dGradient()"
   [class.alf-sw--disabled]="ds"
   [class.alf-sw--loading]="ld"
   [class.alf-sw--hovered]="isHovered"
@@ -100,8 +129,10 @@
 </div>
 
 <!-- Helper y Errores -->
-@let helper = $safeNavigationMigration(helperText()); <!--  -->
-@let errorMsg = $safeNavigationMigration(error()); <!--  -->
+@let helper = $safeNavigationMigration(helperText());
+<!--  -->
+@let errorMsg = $safeNavigationMigration(error());
+<!--  -->
 @if (helper || errorMsg) {
 <div [id]="idRadio + '-description'" [class]="classPrefix + '-description'">
   @if (errorMsg) {

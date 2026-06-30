@@ -1,0 +1,324 @@
+<div class="viewer-page">
+  <header class="viewer-page__header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2.5rem;">
+    <div>
+      <h1 class="viewer-page__title">💎 AlfSelect Elite Demo</h1>
+      <p class="viewer-page__subtitle">Selector desplegable premium integrado con el Elite Visual Engine y <code>alf-input</code>.</p>
+    </div>
+
+    <!-- Selector de Apariencia Premium -->
+    <div class="appearance-selector" style="display: flex; background: #f1f5f9; padding: 4px; border-radius: 12px; gap: 4px; border: 1px solid #e2e8f0; box-shadow: inset 0 2px 4px rgba(0,0,0,0.04);">
+      <button 
+        type="button"
+        (click)="selectedAppearance.set(AlfInputAppearanceEnum.Outline)"
+        [style.background]="selectedAppearance() === AlfInputAppearanceEnum.Outline ? '#ffffff' : 'transparent'"
+        [style.color]="selectedAppearance() === AlfInputAppearanceEnum.Outline ? '#4f46e5' : '#64748b'"
+        [style.font-weight]="selectedAppearance() === AlfInputAppearanceEnum.Outline ? '600' : '400'"
+        style="border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s ease; display: flex; align-items: center; gap: 6px;"
+      >
+        🔲 Outline
+      </button>
+      <button 
+        type="button"
+        (click)="selectedAppearance.set(AlfInputAppearanceEnum.Fill)"
+        [style.background]="selectedAppearance() === AlfInputAppearanceEnum.Fill ? '#ffffff' : 'transparent'"
+        [style.color]="selectedAppearance() === AlfInputAppearanceEnum.Fill ? '#4f46e5' : '#64748b'"
+        [style.font-weight]="selectedAppearance() === AlfInputAppearanceEnum.Fill ? '600' : '400'"
+        style="border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s ease; display: flex; align-items: center; gap: 6px;"
+      >
+        🗂️ Fill
+      </button>
+      <button 
+        type="button"
+        (click)="selectedAppearance.set(AlfInputAppearanceEnum.Standard)"
+        [style.background]="selectedAppearance() === AlfInputAppearanceEnum.Standard ? '#ffffff' : 'transparent'"
+        [style.color]="selectedAppearance() === AlfInputAppearanceEnum.Standard ? '#4f46e5' : '#64748b'"
+        [style.font-weight]="selectedAppearance() === AlfInputAppearanceEnum.Standard ? '600' : '400'"
+        style="border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s ease; display: flex; align-items: center; gap: 6px;"
+      >
+        ➖ Standard
+      </button>
+    </div>
+  </header>
+
+  <div class="viewer-grid">
+    
+    <!-- 1. CARACTERÍSTICAS PRINCIPALES -->
+    <div class="viewer-card viewer-card--wide">
+      <h2 class="viewer-card__title">
+        <span class="viewer-card__dot viewer-card__dot--blue"></span>
+        Características Principales
+      </h2>
+      <div class="viewer-card__body">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
+          
+          <!-- Básico -->
+          <div class="viewer-demo-item">
+            <span class="viewer-demo-label">Básico (Idioma)</span>
+            <alf-select
+              label="Selecciona un idioma"
+              [options]="languages"
+              [appearance]="selectedAppearance()"
+              (optionsSelected)="onOptionSelected($event)"
+            ></alf-select>
+          </div>
+
+          <!-- Con Grupos -->
+          <div class="viewer-demo-item">
+            <span class="viewer-demo-label">Con Grupos</span>
+            <alf-select
+              label="Ciudades por país"
+              [options]="groupedCities"
+              [appearance]="selectedAppearance()"
+              (optionsSelected)="onOptionSelected($event)"
+            ></alf-select>
+          </div>
+
+          <!-- Deshabilitado -->
+          <div class="viewer-demo-item">
+            <span class="viewer-demo-label">Deshabilitado</span>
+            <alf-select
+              label="Idioma deshabilitado"
+              [options]="languages"
+              [disabled]="true"
+              [appearance]="selectedAppearance()"
+            ></alf-select>
+          </div>
+
+          <!-- Cargando -->
+          <div class="viewer-demo-item">
+            <span class="viewer-demo-label">Cargando</span>
+            <alf-select
+              label="Cargando opciones..."
+              [options]="[]"
+              [loading]="true"
+              [appearance]="selectedAppearance()"
+            ></alf-select>
+          </div>
+
+          <!-- Multi-select -->
+          <div class="viewer-demo-item">
+            <span class="viewer-demo-label">Multi-select (Idiomas)</span>
+            <alf-select
+              label="Selecciona varios idiomas"
+              [options]="languages"
+              [multiple]="true"
+              [clearable]="true"
+              [appearance]="selectedAppearance()"
+              (optionsSelected)="onOptionSelected($event)"
+            ></alf-select>
+          </div>
+
+          <!-- Searchable -->
+          <div class="viewer-demo-item">
+            <span class="viewer-demo-label">Searchable (Idiomas)</span>
+            <alf-select
+              label="Busca un idioma"
+              [options]="languages"
+              [searchable]="true"
+              [clearable]="true"
+              [appearance]="selectedAppearance()"
+              (optionsSelected)="onOptionSelected($event)"
+            ></alf-select>
+          </div>
+
+          <!-- Searchable Multi-select with Primary Variant -->
+          <div class="viewer-demo-item">
+            <span class="viewer-demo-label">Multiselect Buscador (Primary)</span>
+            <alf-select
+              label="Selecciona varios idiomas"
+              [options]="languages"
+              [variant]="AlfColorVariantEnum.Primary"
+              [multiple]="true"
+              [searchable]="true"
+              [clearable]="true"
+              [appearance]="selectedAppearance()"
+              (optionsSelected)="onOptionSelected($event)"
+            ></alf-select>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. CONSOLA DE ESTADO -->
+    <div class="viewer-card viewer-card--wide viewer-card--terminal">
+      <h2 class="viewer-card__title viewer-card__title--light">
+        <span class="viewer-terminal-dot viewer-terminal-dot--red"></span>
+        <span class="viewer-terminal-dot viewer-terminal-dot--yellow"></span>
+        <span class="viewer-terminal-dot viewer-terminal-dot--green"></span>
+        <span class="viewer-terminal-title">Consola de Estado Reactiva</span>
+      </h2>
+      <div class="viewer-terminal__body">
+        <div>
+          <p class="viewer-terminal__line">
+            <span class="viewer-terminal__key">selectedValue</span>
+            <span class="viewer-terminal__sep">→</span>
+            <span class="viewer-terminal__value" [class.viewer-terminal__value--true]="selectedValue() !== null" style="white-space: pre-wrap; font-family: monospace; font-size: 0.9rem;">{{ selectedValue() || 'null' }}</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. VARIANTES SOLID -->
+    <div class="viewer-card viewer-card--wide">
+      <h2 class="viewer-card__title">
+        <span class="viewer-card__dot viewer-card__dot--blue"></span>
+        VARIANTES SOLID (Fondo Relleno Premium)
+      </h2>
+      <div class="viewer-card__body">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
+          @for (variant of solidVariants; track variant) {
+            <div class="viewer-demo-item">
+              <alf-select
+                [variant]="variant"
+                [label]="variant"
+                [options]="languages"
+                [appearance]="selectedAppearance()"
+                (optionsSelected)="onOptionSelected($event)"
+              ></alf-select>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. VARIANTES OUTLINE -->
+    <div class="viewer-card viewer-card--wide">
+      <h2 class="viewer-card__title">
+        <span class="viewer-card__dot viewer-card__dot--blue"></span>
+        VARIANTES OUTLINE (Borde Fino Premium)
+      </h2>
+      <div class="viewer-card__body">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
+          @for (variant of outlineVariants; track variant) {
+            <div class="viewer-demo-item">
+              <alf-select
+                [variant]="variant"
+                [label]="variant"
+                [options]="languages"
+                [appearance]="selectedAppearance()"
+                (optionsSelected)="onOptionSelected($event)"
+              ></alf-select>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. VARIANTES GHOST -->
+    <div class="viewer-card viewer-card--wide">
+      <h2 class="viewer-card__title">
+        <span class="viewer-card__dot viewer-card__dot--purple"></span>
+        VARIANTES GHOST (Minimalista Transparente)
+      </h2>
+      <div class="viewer-card__body">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
+          @for (variant of ghostVariants; track variant) {
+            <div class="viewer-demo-item">
+              <alf-select
+                [variant]="variant"
+                [label]="variant"
+                [options]="languages"
+                [appearance]="selectedAppearance()"
+                (optionsSelected)="onOptionSelected($event)"
+              ></alf-select>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. VARIANTES SOFT -->
+    <div class="viewer-card viewer-card--wide">
+      <h2 class="viewer-card__title">
+        <span class="viewer-card__dot viewer-card__dot--amber"></span>
+        VARIANTES SOFT (Fondo Pastel Elegante)
+      </h2>
+      <div class="viewer-card__body">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
+          @for (variant of softVariants; track variant) {
+            <div class="viewer-demo-item">
+              <alf-select
+                [variant]="variant"
+                [label]="variant"
+                [options]="languages"
+                [appearance]="selectedAppearance()"
+                (optionsSelected)="onOptionSelected($event)"
+              ></alf-select>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. VARIANTES CRYSTAL -->
+    <div class="viewer-card viewer-card--wide">
+      <h2 class="viewer-card__title">
+        <span class="viewer-card__dot viewer-card__dot--purple"></span>
+        VARIANTES CRYSTAL (Glassmorphic Neumorfismo)
+      </h2>
+      <div class="viewer-card__body">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
+          @for (variant of crystalVariants; track variant) {
+            <div class="viewer-demo-item">
+              <alf-select
+                [variant]="variant"
+                [label]="variant"
+                [options]="languages"
+                [appearance]="selectedAppearance()"
+                (optionsSelected)="onOptionSelected($event)"
+              ></alf-select>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. VARIANTES 3D -->
+    <div class="viewer-card viewer-card--wide">
+      <h2 class="viewer-card__title">
+        <span class="viewer-card__dot viewer-card__dot--blue"></span>
+        VARIANTES 3D (Efecto de Profundidad)
+      </h2>
+      <div class="viewer-card__body">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
+          @for (variant of depthVariants; track variant) {
+            <div class="viewer-demo-item">
+              <alf-select
+                [variant]="variant"
+                [label]="variant"
+                [options]="languages"
+                [appearance]="selectedAppearance()"
+                (optionsSelected)="onOptionSelected($event)"
+              ></alf-select>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. VARIANTES GRADIENT -->
+    <div class="viewer-card viewer-card--wide">
+      <h2 class="viewer-card__title">
+        <span class="viewer-card__dot viewer-card__dot--purple"></span>
+        VARIANTES GRADIENT (Fondos y Colores Vibrantes)
+      </h2>
+      <div class="viewer-card__body">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
+          @for (variant of gradientVariants; track variant) {
+            <div class="viewer-demo-item">
+              <alf-select
+                [variant]="variant"
+                [label]="variant"
+                [options]="languages"
+                [appearance]="selectedAppearance()"
+                (optionsSelected)="onOptionSelected($event)"
+              ></alf-select>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

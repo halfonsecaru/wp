@@ -12,7 +12,6 @@ import {
 } from '@alfcomponents/shared';
 import {
   AlfButtonTypeEnum,
-  AlfColorVariantEnum,
   AlfIconsUnicodeIconEnum,
   AlfIconsEmojiIconEnum,
 } from '@alfcomponents/enums';

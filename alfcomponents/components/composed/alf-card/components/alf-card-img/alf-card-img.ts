@@ -1,9 +1,7 @@
-import { Component, input, computed, ChangeDetectionStrategy, signal } from '@angular/core';
+import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 import { visualprefixEnum } from '@alfcomponents/shared';
-import { AlfCardImgConfigInterface } from './interfaces/alf-card-img.interface';
 import { AlfBaseDirectives } from '@alfcomponents/components/base/bases.directive';
 import { ALF_CORE_DIRECTIVES } from '@alfcomponents/directives';
-import { deepMergeStates } from '@alfcomponents/components/base/default/functions';
 import { AlfComponentTypeEnum } from '@alfcomponents/components/base/enum/AlfComponentType.enum';
 
 @Component({
@@ -20,23 +18,13 @@ export class AlfCardImgComponent extends AlfBaseDirectives {
   protected readonly cssVarPrefix: string = visualprefixEnum.CardImg as string;
   protected readonly classPrefix: string = 'alf-card-img';
 
-  public readonly inputConfig = input<AlfCardImgConfigInterface>(undefined, { alias: 'config' });
   public readonly src = input<string | undefined>();
   public readonly alt = input<string | undefined>();
 
-
-
-  protected readonly resolvedSrc = computed(() => this.src() ?? this.inputConfig()?.src ?? '');
-  protected readonly resolvedAlt = computed(() => this.alt() ?? this.inputConfig()?.alt ?? '');
-
-  protected readonly predefinedConfig = computed(() => {
-    return {};
-  });
-
   constructor() {
     super();
-    this.componentType.set(AlfComponentTypeEnum.Card);
-    this.initialization(this.classPrefix, this.classPrefix, AlfComponentTypeEnum.Card);
+    this.componentType.set(AlfComponentTypeEnum.CardImage);
+    this.initialization(this.classPrefix, this.classPrefix, AlfComponentTypeEnum.CardImage);
   }
 
   protected override getControlValue = (): any => {
@@ -44,10 +32,8 @@ export class AlfCardImgComponent extends AlfBaseDirectives {
   };
 
   protected override getControlType(): string {
-    return 'CardImg';
+    return AlfComponentTypeEnum.CardImage;
   }
 
-  protected override getControlConfig() {
-    return deepMergeStates(this.predefinedConfig(), this.inputConfig());
-  }
+
 }

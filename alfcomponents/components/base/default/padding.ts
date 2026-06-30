@@ -58,10 +58,19 @@ export const buildPaddingConfig = (
                     return config(AlfPxEnum.Px1, AlfPxEnum.Px1, AlfPxEnum.Px10, AlfPxEnum.Px10);
                 }
 
-                return config(AlfPxEnum.Px10, AlfPxEnum.Px10, AlfPxEnum.Px10, AlfPxEnum.Px10);
+                return config(AlfPxEnum.Px8, AlfPxEnum.Px8, AlfPxEnum.Px12, AlfPxEnum.Px12);
 
             case AlfComponentTypeEnum.Button:
+            case AlfComponentTypeEnum.Paginator:
                 return config(AlfPxEnum.Px5, AlfPxEnum.Px5, AlfPxEnum.Px10, AlfPxEnum.Px10);
+
+            case AlfComponentTypeEnum.CardTitle:
+            case AlfComponentTypeEnum.CardBody:
+            case AlfComponentTypeEnum.CardActions:
+            case AlfComponentTypeEnum.CardHeader:
+            case AlfComponentTypeEnum.CardFooter:
+            case AlfComponentTypeEnum.CardImage:
+                return config(AlfPxEnum.Px5, AlfPxEnum.Px5, AlfPxEnum.Px5, AlfPxEnum.Px5);
 
             default:
                 return config(AlfPxEnum.None,AlfPxEnum.None,AlfPxEnum.None,AlfPxEnum.None)

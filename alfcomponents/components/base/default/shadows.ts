@@ -57,7 +57,7 @@ const defaultShadow = (variant: AlfColorVariantEnum, elevated: boolean = true, s
             textShadowColor: activeColor
         },
         disabled: {
-            boxShadow: AlfShadowEnum.None,
+            boxShadow: shadowVal,
             boxShadowColor: disabledColor,
             boxShadowInset: false,
             textShadow: shadowPredefined ? shadowPredefined : AlfTextShadowEnum.None,
@@ -75,6 +75,18 @@ export const buildColorShadowsConfig = (
 
     if (!elevated) {
         return defaultShadow(variant, elevated);
+    }
+
+    if (
+        componentType === AlfComponentTypeEnum.CardTitle ||
+        componentType === AlfComponentTypeEnum.CardBody ||
+        componentType === AlfComponentTypeEnum.CardActions ||
+        componentType === AlfComponentTypeEnum.CardHeader ||
+        componentType === AlfComponentTypeEnum.CardFooter ||
+        componentType === AlfComponentTypeEnum.CardImage ||
+        componentType === AlfComponentTypeEnum.Paginator
+    ) {
+        return defaultShadow(variant, false);
     }
 
     if (componentType === AlfComponentTypeEnum.Input && (appearance === AlfInputAppearanceEnum.Standard || appearance === AlfInputAppearanceEnum.Fill)) {

@@ -1,0 +1,90 @@
+@let bg = backgroundComputed();
+@let bd = borderComputed();
+@let ot = outlineComputed();
+@let an = animationsComputed();
+@let ds = disabledComputed();
+@let sz = size();
+@let cr = cursor();
+@let cc = customClass();
+@let cs = customStyle();
+@let mg = marginComputed();
+@let pd = paddingComputed();
+@let sd = shadowsComputed();
+@let dl = displayAndLayoutComputed();
+@let ty = typographyComputed();
+@let ts = textStyleComputed();
+@let ar = aria();
+@let tt = tooltip();
+
+<div
+  [class]="classPrefix + (cc ? ' ' + cc : '')"
+  [class.alf-select-panel--disabled]="ds"
+  [alfPrefix]="cssVarPrefix"
+  [alfBackground]="bg ? bg : null"
+  [alfBorder]="bd ? bd : null"
+  [alfOutline]="ot ? ot : null"
+  [alfShadows]="sd ? sd : null"
+  [alfMargin]="mg ? mg : null"
+  [alfPadding]="pd ? pd : null"
+  [alfTypography]="ty ? ty : null"
+  [alfTextStyle]="ts ? ts : null"
+  [alfDisplayAndLayout]="dl ? dl : null"
+  [alfCursor]="cr ? cr : null"
+  [alfSize]="sz ? sz : null"
+  [alfDisabled]="ds"
+  [alfAria]="ar ? ar : null"
+  [alfTooltipText]="tt ? tt : null"
+  [alfAnimations]="an ? an : null"
+  [class.alf-select-panel--exiting]="isExiting()"
+  [style]="cs ? cs : null"
+  (mouseenter)="onMouseEnter.emit()"
+  (mouseleave)="onMouseLeave.emit()"
+>
+  <div class="alf-select-panel__content">
+    @if (searchable()) {
+      <div class="alf-select-panel__search">
+        <input
+          class="alf-select-panel__search-input"
+          placeholder="Buscar..."
+          [value]="searchTerm()"
+          (input)="handleSearchInput($event)"
+        />
+        @if (searchTerm()) {
+          <button
+            class="alf-select-panel__search-clear"
+            type="button"
+            (click)="searchTerm.set('')"
+          >
+            ✕
+          </button>
+        }
+      </div>
+    }
+
+    @for (group of groupedOptions(); track group.name) {
+      @if (group.name) {
+        <div class="alf-select-panel__group-header">{{ group.name }}</div>
+      }
+
+      @for (option of group.options; track option.value) {
+        <alf-select-panel-option
+          [option]="option"
+          [multiple]="multiple()"
+          [variant]="variant()"
+          [background]="background()"
+          [typography]="typography()"
+          [textStyle]="textStyle()"
+          [cursor]="cursor()"
+          [customClass]="customClass()"
+          [customStyle]="customStyle()"
+          [disabled]="disabled()"
+          [aria]="aria()"
+          [ripple]="ripple()"
+          (optionClicked)="selectOption($event)"
+        />
+      }
+    } @empty {
+      <div class="alf-select-panel__empty">Sin resultados</div>
+    }
+  </div>
+</div>
